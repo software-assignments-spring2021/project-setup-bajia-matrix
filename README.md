@@ -37,4 +37,10 @@ We wanted to develop an app that would not only make our lives much more conveni
 * [Contributions](https://github.com/agile-dev-assignments/project-setup-bajia-matrix/blob/master/CONTRIBUTING.md)
 
 # Building and Testing
-TBD
+Run the following commands in the command line:
+```
+git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git
+cd front-end/letsmeet
+npm install
+npm start
+```
