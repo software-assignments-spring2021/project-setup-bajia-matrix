@@ -1,14 +1,12 @@
 # Let's Meet
 
 ## Description
-
 Have you ever struggled with finding the best time to meet with your friends? Been flaked or have flaked on friends at the last minute? Let's Meet is a web application that is designed to help users easily coordinate and plan out events. 
 Let's Meet aims to allow users to create, accept, and schedule public events. The beauty behind our design is that a user can define roles and a budget for each event so that each event is organized without added stress to the meeting planner. 
 
 ### Minimal Viable Product
 
 #### The main features of this application are:
-
 * Creating an account with the following information: name, email, location, and age
 * Searching for friends and inviting new users
 * Creating an event draft with event title, description, and attendees
@@ -32,17 +30,11 @@ Let's Meet aims to allow users to create, accept, and schedule public events. Th
 * [Crystal Lee](https://github.com/leecrystal)
 
 ## History
-After much heated debate over a viable idea, our lord and savior Rahul Das came up with a brillant idea of creating an app that manages time due to his hectic schedule. Due to the allure of his idea, his team memebrs quickly agreed, and we have never looked back once!
+We wanted to develop an app that would not only make our lives much more convenient, but also increase our exposure to new libraries and technologies, which ultimately led us to decide on an application that relies on communication among users. We were inspired by apps such as Doodle and when2meet, but we felt like they could be improved upon. So, we decided to implement new features of our own that would make our app stand out and be more attractive to potential users. 
 
-# Contributions
-[CONTRIBUTING.md](https://github.com/agile-dev-assignments/project-setup-bajia-matrix/blob/master/CONTRIBUTING.md)
+# Useful Links
+* [Original Proposal](https://github.com/agile-dev-assignments/user-experience-design-bajia-matrix)
+* [Contributions](https://github.com/agile-dev-assignments/project-setup-bajia-matrix/blob/master/CONTRIBUTING.md)
 
 # Building and Testing
 TBD
-
-
-
-
-
-
-  
