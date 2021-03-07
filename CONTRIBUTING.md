@@ -25,7 +25,8 @@
 * If resolution is not reached, we will consult the professor or tutor.
 
 ## Local Setup
-* Clone repository onto local machine using Visual Studio.
+* Clone repository onto local machine using Visual Studio OR
+* Clone through command line: `git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git`
 
 ## Building and Testing the Project 
 TBD
