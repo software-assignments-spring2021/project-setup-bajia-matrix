@@ -5,8 +5,10 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 
 /*
     This component accepts the isAuthenticated prop from App.js
-    to render the navbar depending on whether the user is authenticated
-    or not
+    to render the entire page, including:
+        the navbar which depends on whether the user is authenticated
+        or not, and 
+        the contents of the page, depending on which route is active
 */
 
 const layout = (props) => {
