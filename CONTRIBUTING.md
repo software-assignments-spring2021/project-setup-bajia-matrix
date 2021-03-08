@@ -29,7 +29,10 @@
 * Clone through command line: `git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git`
 
 ## Building and Testing the Project 
-TBD
-
-
-
+Run the following commands in the command line:
+```
+git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git
+cd front-end/letsmeet
+npm install
+npm start
+```
