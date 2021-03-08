@@ -1,5 +1,22 @@
-/*
 .Toolbar {
-
+    height: 56px;
+    width: 100%;
+    position: fixed; /* fix navbar to the top */
+    top: 0;
+    left: 0; /* align top-left */
+    background-color: #1d38ed;
+    display: flex; /* flexible container and put items inside container*/
+    justify-content: space-between; /* space between Logo and NavItems */
+    align-items: center;
+    padding: 0 30px;
+    box-sizing: border-box; /* makes total height 56, including padding and border*/
 }
-*/
+
+.Logo {
+    width: 200px;
+    height: 56px;
+    padding: 0;
+    margin: 0 20px 0 0;
+    display: block;
+    box-sizing: border-box;
+}

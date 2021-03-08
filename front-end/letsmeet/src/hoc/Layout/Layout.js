@@ -10,10 +10,17 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 */
 
 const layout = (props) => {
-    return (
-        <div>
+    /* 
+        Toolbar is the Navbar
+        props.children will render different components depending on which route is active,
+        these componens are the so-called different "pages"
+    */
+    return ( 
+        <div> 
             <Toolbar isAuth={props.isAuthenticated} />
-            {props.children}
+            <main className={classes.Content}>
+                {props.children}
+            </main>
         </div>
     );
 };
