@@ -1,0 +1,19 @@
+.LandingLogo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 70%;
+}
+
+.Text {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-bottom: 20px;
+    width: 65%;
+    background-color: #dce5e259;
+}
