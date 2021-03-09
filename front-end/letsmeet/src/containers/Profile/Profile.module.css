@@ -1,0 +1,46 @@
+.Profile {
+    margin: auto;
+    display: flex;
+    width: 100%;
+    overflow: scroll; /* enable scrolling if too long */
+    align-items: center;
+    flex-flow: column;
+    padding: 20px 0; /* top and bottom, left and right */
+}
+
+.Card {
+    text-align: center;
+    background-color: #dce5e2;
+    width: 50%;
+    border: thin solid #d2dad9; /* width, style, color */
+    border-radius: 25px; /* rounded borders */
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin: 20px; /* space b/t each card */
+}  
+
+.CardImg {
+    height: 75%;
+    width: 75%;
+}
+
+.FriendsTitle {
+    margin: 20px 0 0 0;
+    width: 100%;
+}
+
+.CardBody {
+    width: 100%;
+    padding: 20px 0;
+    margin: -30px 0 0 0;
+}
+
+.FriendsBody {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+    overflow: scroll;
+    height: 200px;
+}

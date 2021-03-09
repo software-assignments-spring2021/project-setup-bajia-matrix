@@ -14,7 +14,7 @@
 }
 
 .NavigationItem a:hover,
-.NavigationItem a:active,
-.NavigationItem a.active {
+.NavigationItem a:active {
     color: #939cf1;
+    text-decoration: none;
 }

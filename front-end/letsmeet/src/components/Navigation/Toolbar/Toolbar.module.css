@@ -10,6 +10,7 @@
     align-items: center;
     padding: 0 30px;
     box-sizing: border-box; /* makes total height 56, including padding and border*/
+    z-index: 100;
 }
 
 .Logo {
