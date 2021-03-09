@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 import classes from './App.module.css';
@@ -14,44 +14,44 @@ import Layout from './hoc/Layout/Layout';
 
     all possible routes needs to be defined in App.js before it can be used
 */
-class App extends Component {
+
+const App = (props) => {
     // HOW TO ADD ROUTING TO YOUR COMPONENT: to test between authenticated and not,
     // change this boolean variable. Later we will have to add real authentication
-    state = {
-        isAuthenticated: true
-    }
+    const [state, setState] = useState({
+        isAuthenticated: false
+    });
 
     // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible without an account
     // it should sit above the <Redirect to="/" />
-    render() {
-        // <Route path="/signin" component={SignIn} />
-        // <Route path="/signout" component={SignOut} />
-        // <Route path="/" exact component={Landing} />
-        let routes = (
-            <Switch>
-                <Redirect to="/" />
-            </Switch>
-        )
+    
+    // <Route path="/signin" component={SignIn} />
+    // <Route path="/signout" component={SignOut} />
+    // <Route path="/" exact component={Landing} />
+    let routes = (
+        <Switch>
+            <Redirect to="/" />
+        </Switch>
+    )
 
-        // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible only with an account
-        // it should sit above the <Route path="/" exact component={Landing} />
-        // if (this.state.isAuthenticated) {
-        //     routes = (
-        //         <Switch>
-        //                 <Route path="/" exact component={Landing} />
-        //                 <Redirect to="/" />
-        //         </Switch>
-        //     )
-        // }
-        return (
-            <div className="App">
-                <Layout isAuthenticated={this.state.isAuthenticated}>
-                    {routes}
-                </Layout>
-                <button className={classes.Button}>Hello World!</button>
-            </div>
-        );
-    }
+    // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible only with an account
+    // it should sit above the <Route path="/" exact component={Landing} />
+    // if (this.state.isAuthenticated) {
+    //     routes = (
+    //         <Switch>
+    //                 <Route path="/" exact component={Landing} />
+    //                 <Redirect to="/" />
+    //         </Switch>
+    //     )
+    // }
+    return (
+        <div className="App">
+            <Layout isAuthenticated={state.isAuthenticated}>
+                {routes}
+            </Layout>
+            <button className={classes.Button}>Hello World!</button>
+        </div>
+    );
 }
 
 export default withRouter(App);

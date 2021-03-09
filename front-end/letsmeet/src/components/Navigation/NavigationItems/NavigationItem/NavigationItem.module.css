@@ -1,5 +1,20 @@
-/*
 .NavigationItem {
-
+    margin: 0 10px 0 10px; /* top, right, bottom, left */
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
 }
-*/
+
+.NavigationItem a {
+    color: #d2dad9;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+
+.NavigationItem a:hover,
+.NavigationItem a:active,
+.NavigationItem a.active {
+    color: #939cf1;
+}

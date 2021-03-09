@@ -1,5 +1,12 @@
-/*
 .NavigationItems {
-
+    margin: 0 0 0 20px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: row; /* items horizontal instead of vertical */
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+    width: 100%;
 }
-*/
+
