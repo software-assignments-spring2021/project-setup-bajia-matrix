@@ -46,29 +46,6 @@ const landing = () => {
 
             <div className={classes.Text}>
                 <h2>FEATURES</h2>
-                <div style={{display: 'flex', justifyContent:'center'}}>
-                    <p style={{padding: '20px 70px', paddingBottom: '5px', border: 'solid #939cf1'}}>
-                        <b>With an account, you can:</b>
-                        <ul>
-                            <li>Select your availability so we can suggest best meeting times</li>
-                            <li>Automatically send invitation links to friends</li>
-                            <li>Manage events you've created</li>
-                            <li>Keep track of upcoming events you're attending</li>
-                            <li>See your pending invitations</li>
-                            <li>Track supplies and costs and split expenses</li>
-                            <li>Manage a friends list for easy invitations</li>
-                        </ul>
-                        <b>Without an account, you can: </b>
-                        <ul>
-                            <li>Create new events with a specified time</li>
-                            <li>Send invitations to friends via a shareable link</li>
-                            <li>Accept an event by manually adding your name to list of attendees</li>
-                            <li>Access event details with event link</li>
-                            <li>See who is attending an event</li>
-                        </ul>
-                    </p>
-                </div>
-
                 <table>
                     <tr>
                         <th>Highlighted Features</th>
