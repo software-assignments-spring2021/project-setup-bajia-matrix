@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect,Link } from 'react-router-dom';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 import classes from './App.module.css';
 import Layout from './hoc/Layout/Layout';
+import SignIn from '../src/containers/Auth/SignIn/SignIn'
+import SignUp from '../src/containers/Auth/SignUp/SignUp'
+
 //import Landing from './components/Landing/Landing';
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
@@ -30,6 +35,8 @@ const App = (props) => {
     // <Route path="/" exact component={Landing} />
     let routes = (
         <Switch>
+            <Route path="/signin" component={SignIn} />]
+            <Route path="/signup" component={SignUp} />]
             <Redirect to="/" />
         </Switch>
     )
