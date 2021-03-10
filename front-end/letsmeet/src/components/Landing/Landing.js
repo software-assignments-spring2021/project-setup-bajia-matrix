@@ -1,21 +1,26 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './Landing.module.css';
 import Logo from '../../assets/Logo.png';
 import image1 from '../../assets/LandingImages/calendar-colour-800px.png';
 import image2 from '../../assets/LandingImages/holding-phone-colour-800px.png';
 import image3 from '../../assets/LandingImages/reading-corner-colour-800px.png';
 import image4 from '../../assets/LandingImages/drawkit-list-app-colour-800px.png';
+import CardDeck from 'react-bootstrap/CardDeck';
+import Card from 'react-bootstrap/Card';
 
 // The template for the app walkthrough containing image, header, paragraph
 const Step = (props) => {
     return (
-      <article>
-        <img src={props.img} className={classes.Images}/>
-        <h3>{props.title}</h3>
-        <p>
-          {props.lead}
-        </p>
-      </article>
+        <Card className={classes.article}>
+            <Card.Img src={props.img} className={classes.Images} variant="top" />
+            <Card.Body>
+                <Card.Title>{props.title}</Card.Title>
+                <Card.Text>
+                    {props.lead}
+                </Card.Text>
+            </Card.Body>
+        </Card>
     )
 }
 
@@ -26,7 +31,7 @@ const landing = () => {
             <h1 className={classes.TagLine} style={{paddingTop: '50px'}}>Planning a hangout shouldn't take more than 10 minutes.</h1>
             <h1 className={classes.TagLine} style={{color: '#939cf1', paddingBottom: '20px'}}>Let us help.</h1>
             
-            <section>
+            <CardDeck>
                 <Step title="Skip the back-and-forth texts" img={image1} lead="Want to schedule a picnic with your friends?
                 Create a new event, fill out some details, and select your availability using the calendar."/>
 
@@ -38,7 +43,7 @@ const landing = () => {
 
                 <Step title="Manage the little things" img={image4} lead="Manage your events, see who's attending, and who's
                 bringing what. We'll even help you split costs after your event is over."/>
-            </section>
+            </CardDeck>
 
             <a href="/SignUp" style={{textDecoration:'none'}}><button className={classes.Button} ><b>
                 Get Started - Create An Account
