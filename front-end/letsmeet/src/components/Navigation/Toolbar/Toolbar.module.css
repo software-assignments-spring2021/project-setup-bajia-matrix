@@ -10,6 +10,7 @@
     align-items: center;
     padding: 0 30px;
     box-sizing: border-box; /* makes total height 56, including padding and border*/
+    z-index: 100;
 }
 
 .Logo {
@@ -19,4 +20,10 @@
     margin: 0 20px 0 0;
     display: block;
     box-sizing: border-box;
+}
+
+@media (max-width: 459px) {
+    .Medium {
+        display: none;
+    }
 }

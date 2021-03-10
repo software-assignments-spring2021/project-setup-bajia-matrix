@@ -14,7 +14,13 @@
 }
 
 .NavigationItem a:hover,
-.NavigationItem a:active,
-.NavigationItem a.active {
+.NavigationItem a:active {
     color: #939cf1;
+    text-decoration: none;
+}
+
+@media (max-width: 459px) {
+    .NavigationItem a {
+        color: #000000;
+    }
 }
