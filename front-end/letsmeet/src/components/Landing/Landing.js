@@ -114,7 +114,7 @@ const landing = () => {
                     </tr>
                 </table>
 
-                <a href="/NewEvent" style={{textDecoration:'none'}}><button className={classes.Button} ><b>
+                <a href="/newevent" style={{textDecoration:'none'}}><button className={classes.Button} ><b>
                     Get Started Without An Account: Create New Event
                 </b></button></a>
                 

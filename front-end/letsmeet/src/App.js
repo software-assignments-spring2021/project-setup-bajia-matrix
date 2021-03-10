@@ -4,6 +4,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import classes from './App.module.css';
 import Layout from './hoc/Layout/Layout';
 import Landing from './components/Landing/Landing';
+import NewEvent from './containers/NewEvent/NewEvent';
 import Profile from './containers/Profile/Profile';
 //import Landing from './components/Landing/Landing';
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
@@ -33,7 +34,7 @@ const App = (props) => {
     let routes = (
         <Switch>
             <Route path="/" exact component={Landing} />
-            <Redirect to="/" />
+            <Route path="/newevent" component={NewEvent}/>
         </Switch>
     )
 
