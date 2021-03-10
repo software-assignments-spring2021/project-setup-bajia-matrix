@@ -14,8 +14,8 @@ const navigationItems = (props) => {
 
     let navItems = (
         <ul className={classes.NavigationItems}>
-            <NavigationItem link="/signin" exact>Sign In</NavigationItem>
-            <NavigationItem link="/signup" exact>Sign Up</NavigationItem>
+            <NavigationItem link="/signin">Sign In</NavigationItem>
+            <NavigationItem link="/signup">Sign Up</NavigationItem>
         </ul>
     );
 
@@ -23,7 +23,7 @@ const navigationItems = (props) => {
         navItems = (
             <ul className={classes.NavigationItems}>
                 <NavigationItem link="/" exact>Sign Out</NavigationItem>
-                <NavigationItem link="/profile" exact>My Profile</NavigationItem>
+                <NavigationItem link="/profile">My Profile</NavigationItem>
             </ul>
         );
     }

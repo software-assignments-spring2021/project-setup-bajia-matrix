@@ -10,3 +10,11 @@
     width: 100%;
 }
 
+@media (max-width: 459px) {
+    .NavigationItems {
+        flex-flow: column;
+        text-align: center;
+        margin: 0;
+    }
+}
+
