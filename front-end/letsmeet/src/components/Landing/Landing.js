@@ -1,40 +1,54 @@
 import React from 'react';
 import classes from './Landing.module.css';
 import Logo from '../../assets/Logo.png';
+import image1 from '../../assets/LandingImages/calendar-colour-800px.png';
+import image2 from '../../assets/LandingImages/holding-phone-colour-800px.png';
+import image3 from '../../assets/LandingImages/reading-corner-colour-800px.png';
+import image4 from '../../assets/LandingImages/drawkit-list-app-colour-800px.png';
 
-const landing =  (props) => {
+// The template for the app walkthrough containing image, header, paragraph
+const Step = (props) => {
+    return (
+      <article>
+        <img src={props.img} className={classes.Images}/>
+        <h3>{props.title}</h3>
+        <p>
+          {props.lead}
+        </p>
+      </article>
+    )
+}
+
+const landing = () => {
     return (
         <div>
             <img className={classes.LandingLogo} src={Logo}></img>
-            <div className={classes.Text}>
-                <h2 style={{display: 'flex', justifyContent:'center'}}>Who We Are</h2>
-                <p><b>Imagine this:</b> You want to plan a beautiful picnic in Central Park for you and your 
-                    friends. You ask Olivia when she's free and she says Friday's and Saturday's but only
-                    before five. You go ask Charlie and she says she has work. Matt has to study for finals. 
-                    Okay, let's try again. You ask everyone to share their calendars with you. Now you have 
-                    to put together everyone's schedules to figure out the best day and time for you to meet. 
-                    You also have to think about who needs to bring what. Your nice, relaxing day in the 
-                    park doesn't seem so relaxing anymore. You're thinking of canceling the picnic all 
-                    together because organizing it is becoming an impossible task.
-                </p>
-                <p>That's where we come in. Let's Meet is an application designed to help people like you 
-                    easily coordinate and plan out events. With Let's Meet, you can create an event, fill 
-                    out event details, put in your availability, send out invitations to friends so they 
-                    can put in their availabilities, and we will handle the rest. We'll suggest specific 
-                    dates and times that work best for you and your friends. All you have you to do is check 
-                    a bubble and your event is finalized.
-                </p>
-                
-            </div>  
+            <h1 className={classes.TagLine} style={{paddingTop: '50px'}}>Planning a hangout shouldn't take more than 10 minutes.</h1>
+            <h1 className={classes.TagLine} style={{color: '#939cf1', paddingBottom: '20px'}}>Let us help.</h1>
+            
+            <section>
+                <Step title="Skip the back-and-forth texts" img={image1} lead="Want to schedule a picnic with your friends?
+                Create a new event, fill out some details, and select your availability using the calendar."/>
+
+                <Step title="Send out invitations with one click" img={image2} lead="Select the friends you want to invite.
+                We'll email them a link and they can fill in their availabilities too."/>
+
+                <Step title="Sit back and relax" img={image3} lead="We'll calculate and suggest specific dates and times 
+                that work best for you and your friends based on the availabilites you gave us."/>
+
+                <Step title="Manage the little things" img={image4} lead="Manage your events, see who's attending, and who's
+                bringing what. We'll even help you split costs after your event is over."/>
+            </section>
+
+            <a href="/SignUp" style={{textDecoration:'none'}}><button className={classes.Button} ><b>
+                Get Started - Create An Account
+            </b></button></a>
 
             <div className={classes.Text}>
-                <h2 style={{display: 'flex', justifyContent:'center'}}>Features</h2>
-                <p>Need a little more help figuring out the small details? We can help with that too! Let's 
-                    Meet has built in features to help you manage your event, from who's attending to who
-                    is bringing what. We can even help you split costs after your event is over!
-                </p>
+                <h2>FEATURES</h2>
                 <div style={{display: 'flex', justifyContent:'center'}}>
-                    <p style={{padding: '20px', border: 'solid #939cf1'}}>With an account, you can: 
+                    <p style={{padding: '20px 70px', paddingBottom: '5px', border: 'solid #939cf1'}}>
+                        <b>With an account, you can:</b>
                         <ul>
                             <li>Select your availability so we can suggest best meeting times</li>
                             <li>Automatically send invitation links to friends</li>
@@ -44,18 +58,84 @@ const landing =  (props) => {
                             <li>Track supplies and costs and split expenses</li>
                             <li>Manage a friends list for easy invitations</li>
                         </ul>
-                        Without an account, you can: 
+                        <b>Without an account, you can: </b>
                         <ul>
                             <li>Create new events with a specified time</li>
                             <li>Send invitations to friends via a shareable link</li>
+                            <li>Accept an event by manually adding your name to list of attendees</li>
+                            <li>Access event details with event link</li>
                             <li>See who is attending an event</li>
                         </ul>
                     </p>
                 </div>
-            </div> 
 
-            <div className={classes.Text}>
-                <h2 style={{display: 'flex', justifyContent:'center'}}>The People Behind the Product</h2>
+                <table>
+                    <tr>
+                        <th>Highlighted Features</th>
+                        <th>With an account</th>
+                        <th>Without an account</th>
+                    </tr>
+                    <tr>
+                        <td>Create and schedule events</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Select your availability so we can calculate best meeting times</td>
+                        <td>Yes</td>
+                        <td>No, event creater must provide specific date and time</td>
+                    </tr>
+                    <tr>
+                        <td>Send invitations to friends with shareable link</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Automatically send event invitations to friends</td>
+                        <td>Yes</td>
+                        <td>No, you must manually send the link to your friend</td>
+                    </tr>
+                    <tr>
+                        <td>Access event details</td>
+                        <td>Yes</td>
+                        <td>Yes, only with event link</td>
+                    </tr>
+                    <tr>
+                        <td>See who is attending an event</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Manage events you've created</td>
+                        <td>Yes</td>
+                        <td>No, once an event link is generated, you no longer have creator privileges</td>
+                    </tr>
+                    <tr>
+                        <td>Keep track of upcoming events you're attending</td>
+                        <td>Yes</td>
+                        <td>No, you must keep track of event links you've created or received</td>
+                    </tr>
+                    <tr>
+                        <td>See your pending invitations</td>
+                        <td>Yes</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Accept an invitiation</td>
+                        <td>Yes</td>
+                        <td>Yes, by manually adding your name to the attendees list</td>
+                    </tr>
+                    <tr>
+                        <td>Track supplies and costs and split expenses</td>
+                        <td>Yes</td>
+                        <td>No</td>
+                    </tr>
+                </table>
+
+                <a href="/NewEvent" style={{textDecoration:'none'}}><button className={classes.Button} ><b>
+                    Get Started Without An Account: Create New Event
+                </b></button></a>
+                
             </div>       
         </div>
     )
