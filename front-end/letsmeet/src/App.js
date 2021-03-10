@@ -5,9 +5,14 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './App.module.css';
 import Layout from './hoc/Layout/Layout';
+<<<<<<< HEAD
 import SignIn from '../src/containers/Auth/SignIn/SignIn'
 import SignUp from '../src/containers/Auth/SignUp/SignUp'
 
+=======
+import Landing from './components/Landing/Landing';
+import Profile from './containers/Profile/Profile';
+>>>>>>> c67a72024b55f26f157e2261a8ce53939f08488a
 //import Landing from './components/Landing/Landing';
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
@@ -35,28 +40,31 @@ const App = (props) => {
     // <Route path="/" exact component={Landing} />
     let routes = (
         <Switch>
+<<<<<<< HEAD
             <Route path="/signin" component={SignIn} />]
             <Route path="/signup" component={SignUp} />]
+=======
+            <Route path="/" exact component={Landing} />
+>>>>>>> c67a72024b55f26f157e2261a8ce53939f08488a
             <Redirect to="/" />
         </Switch>
     )
 
     // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible only with an account
     // it should sit above the <Route path="/" exact component={Landing} />
-    // if (this.state.isAuthenticated) {
-    //     routes = (
-    //         <Switch>
-    //                 <Route path="/" exact component={Landing} />
-    //                 <Redirect to="/" />
-    //         </Switch>
-    //     )
-    // }
+    if (state.isAuthenticated) {
+        routes = (
+            <Switch>
+                    <Route path="/profile" exact component={Profile} />
+                    <Redirect to="/" />
+            </Switch>
+        );
+    }
     return (
         <div className="App">
             <Layout isAuthenticated={state.isAuthenticated}>
                 {routes}
             </Layout>
-            <button className={classes.Button}>Hello World!</button>
         </div>
     );
 }
