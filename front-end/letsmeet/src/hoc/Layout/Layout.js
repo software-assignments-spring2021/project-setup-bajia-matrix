@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import classes from './Layout.module.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
-
+import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 /*
     This component accepts the isAuthenticated prop from App.js
     to render the entire page, including:
@@ -11,7 +11,7 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
         the contents of the page, depending on which route is active
 */
 
-const layout = (props) => {
+const Layout = (props) => {
     /* 
         Toolbar is the Navbar
         props.children will render different components depending on which route is active,
@@ -42,9 +42,29 @@ const layout = (props) => {
     //     default:
     //         title = "";
     // }
+
+    const [show, setShow] = useState({
+        showSideDrawer: false
+    });
+
+    let sideDrawerClosedHandler = () => {
+        setShow({showSideDrawer: false});
+    };
+
+    let sideDrawerToggleHandler = () => {
+        setShow((prevState) => {
+            return {showSideDrawer: !prevState.showSideDrawer};
+        });
+    };
+
     return ( 
         <div> 
-            <Toolbar isAuth={props.isAuthenticated} />
+            <Toolbar 
+                isAuth={props.isAuthenticated}
+                drawerToggleClicked={sideDrawerToggleHandler} />
+            <SideDrawer
+                isAuth={props.isAuthenticated}
+                open={show.showSideDrawer} closed={sideDrawerClosedHandler} />
             <main className={classes.Content}>
                 {props.children}
             </main>
@@ -52,4 +72,4 @@ const layout = (props) => {
     );
 };
 
-export default layout;
+export default Layout;

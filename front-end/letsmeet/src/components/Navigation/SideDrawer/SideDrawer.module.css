@@ -1,0 +1,44 @@
+.SideDrawer {
+    position: fixed;
+    width: 280px;
+    max-width: 70%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 210;
+    background-color: white;
+    transition: transform 0.3s ease-out;
+    text-align: center;
+}
+
+@media (min-width: 460px) {
+    .SideDrawer {
+        display: none;
+    }
+}
+
+.Open {
+    transform: translateX(0);
+}
+
+.Close {
+    transform: translateX(-100%);
+}
+
+.TopBar {
+    height: 72px;
+    width: 100%;
+    background-color: #1d38ed;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.Logo {
+    height: 100%;
+    width: 200px;
+}
+
+.Nav {
+    width: 100%;
+    text-align: center;
+}

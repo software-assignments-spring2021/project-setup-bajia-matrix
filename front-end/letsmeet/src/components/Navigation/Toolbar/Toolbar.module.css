@@ -21,3 +21,9 @@
     display: block;
     box-sizing: border-box;
 }
+
+@media (max-width: 459px) {
+    .Medium {
+        display: none;
+    }
+}
