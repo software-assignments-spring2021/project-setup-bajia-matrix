@@ -10,6 +10,8 @@ import SignIn from '../src/containers/Auth/SignIn/SignIn'
 import SignUp from '../src/containers/Auth/SignUp/SignUp'
 
 
+
+
 import Landing from './components/Landing/Landing';
 import Profile from './containers/Profile/Profile';
 //import Landing from './components/Landing/Landing';
@@ -44,6 +46,8 @@ const App = (props) => {
             <Route path="/signup" component={SignUp} />]
 
             <Route path="/" exact component={Landing} />
+
+
             <Redirect to="/" />
         </Switch>
     )

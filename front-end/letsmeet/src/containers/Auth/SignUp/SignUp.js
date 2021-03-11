@@ -42,12 +42,12 @@ export default class SignUp extends Component {
         console.log("it worked");
         
       };
-        
+        //yuh
     render() {
         return (
             <div className="row justify-content-center">
 
-            <form>
+            <form className={classes.Authform}>
 
                 <h3>Sign Up</h3>
 
