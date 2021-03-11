@@ -9,10 +9,9 @@ import Layout from './hoc/Layout/Layout';
 import SignIn from '../src/containers/Auth/SignIn/SignIn'
 import SignUp from '../src/containers/Auth/SignUp/SignUp'
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 8b5fc9cde6f9766dbd00280907074ce46ca70f44
+
+
 import Landing from './components/Landing/Landing';
 import Profile from './containers/Profile/Profile';
 //import Landing from './components/Landing/Landing';
@@ -47,10 +46,8 @@ const App = (props) => {
             <Route path="/signup" component={SignUp} />]
 
             <Route path="/" exact component={Landing} />
-<<<<<<< HEAD
 
-=======
->>>>>>> 8b5fc9cde6f9766dbd00280907074ce46ca70f44
+
             <Redirect to="/" />
         </Switch>
     )
