@@ -6,7 +6,7 @@
     width: 70%;
 }
 
-.landingH2 {
+.LandingH2 {
     display: flex;
     justify-content: center;
     letter-spacing: 2px;
@@ -22,7 +22,7 @@
     border: transparent;
 }
 
-.landingTable, th, td {
+.LandingTable, th, td {
     border: 2px solid #939cf1;
     border-collapse: collapse;
     padding: 10px 20px;
