@@ -8,6 +8,7 @@ import SignUp from '../src/containers/Auth/SignUp/SignUp'
 import Landing from './components/Landing/Landing';
 import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar';
+import EditProfile from './containers/Profile/EditProfile';
 
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
@@ -49,6 +50,7 @@ const App = (props) => {
             <Switch>
                     <Route path="/profile" exact component={Profile} />
                     <Route path="/editavatar" exact component={EditAvatar} />
+                    <Route path="/editprofile" exact component={EditProfile} />
                     <Redirect to="/" />
             </Switch>
         );
