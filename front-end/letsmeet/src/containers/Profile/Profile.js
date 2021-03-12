@@ -35,7 +35,6 @@ const Profile = (props) => {
         <p key={friend.id}>{friend.name}</p>
     ))
     
-    // TODO: change to /editprofile when available
     let editProfileHandler = () => {
         props.history.push("/editprofile");
     }
