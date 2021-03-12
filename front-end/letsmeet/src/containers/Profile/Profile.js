@@ -37,7 +37,7 @@ const Profile = (props) => {
     
     // TODO: change to /editprofile when available
     let editProfileHandler = () => {
-        props.history.push("/");
+        props.history.push("/editprofile");
     }
 
     return (
