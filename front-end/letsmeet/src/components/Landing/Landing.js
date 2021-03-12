@@ -27,11 +27,11 @@ const Step = (props) => {
 const landing = () => {
     return (
         <div>
-            <img className={classes.LandingLogo} src={Logo}></img>
-            <h1 className={classes.TagLine} style={{paddingTop: '50px'}}>Planning a hangout shouldn't take more than 10 minutes.</h1>
-            <h1 className={classes.TagLine} style={{color: '#939cf1', paddingBottom: '20px'}}>Let us help.</h1>
+            <img className={classes.LandingLogo} src={Logo} alt="Logo"></img>
+            <h1 class={classes.TagLine}>Planning a hangout shouldn't take more than 10 minutes.</h1>
+            <h1 class={classes.SecondLine}>Let us help.</h1>
             
-            <CardDeck>
+            <CardDeck style={{padding: '50px 20px'}}>
                 <Step title="Skip the back-and-forth texts" img={image1} lead="Want to schedule a picnic with your friends?
                 Create a new event, fill out some details, and select your availability using the calendar."/>
 
@@ -45,12 +45,12 @@ const landing = () => {
                 bringing what. We'll even help you split costs after your event is over."/>
             </CardDeck>
 
-            <a href="/SignUp" style={{textDecoration:'none'}}><button className={classes.Button} ><b>
+            <a href="/signup" className={classes.a}><button className={classes.Button} ><b>
                 Get Started - Create An Account
             </b></button></a>
 
             <div className={classes.Text}>
-                <h2>FEATURES</h2>
+                <h2 className={classes.h2}>FEATURES</h2>
                 <table>
                     <tr>
                         <th>Highlighted Features</th>
@@ -114,7 +114,7 @@ const landing = () => {
                     </tr>
                 </table>
 
-                <a href="/newevent" style={{textDecoration:'none'}}><button className={classes.Button} ><b>
+                <a href="/newevent" className={classes.a}><button className={classes.Button} ><b>
                     Get Started Without An Account: Create New Event
                 </b></button></a>
                 
