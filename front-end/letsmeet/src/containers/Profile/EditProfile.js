@@ -44,7 +44,8 @@ const EditProfile = (props) => {
         <p key={friend.id}>{friend.name}</p>
     ))
 
-    //https://reactjs.org/docs/hooks-state.html
+    //update state to reflect changes made to the name and/or location fields
+    //gotta use callback functions to update objects for state hooks apparently https://reactjs.org/docs/hooks-state.html
     let handleChange = (e) => {
         if (e.target.name === "editLocation") {
             setProfileState(prevState => ({

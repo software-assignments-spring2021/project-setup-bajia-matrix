@@ -63,7 +63,7 @@ const EditAvatar = (props) => {
             <Row>
                 <Col className="md-12">
                     <Navbar>
-                        <Link to="/profile" exact>
+                        <Link to="/editprofile" exact>
                             <Navbar.Text>Cancel</Navbar.Text>
                         </Link>
                         
