@@ -4,6 +4,7 @@ import classes from '../NewEvent/NewEvent.module.css'
 import { Form, Input, Button, Divider } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { EnvironmentOutlined } from '@ant-design/icons';
+import ScheduleSelector from 'react-schedule-selector'
 
 const NewEvent = () => {
   const [form] = Form.useForm();
@@ -46,8 +47,14 @@ const NewEvent = () => {
             <Form.Item name="invite" label="Invite">
                 <Input placeholder="..." />
             </Form.Item>
-            <Form.Item>
-                <Button type="primary">Submit</Button>
+            <Divider orientation="left" className="first">Availability</Divider>
+            <ScheduleSelector
+                hourlyChunks={2}
+                dateFormat={'ddd'}
+            />
+            <br></br>
+            <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
+                <Button type="primary" className="form-button">Submit</Button>
             </Form.Item>
         </Form>
     </div>
