@@ -8,7 +8,7 @@
   * Responding quickly to team messages
   * Getting things done on time
   * Communicating our problems
-  * Zoom Meeting Times: Fridays 8 pm eastern
+  * Zoom Meeting Link: https://nyu.zoom.us/j/4173645108?pwd=ZThZdTJvSWRmbkJJMnRyUEhacW1KZz09#success 
   * Daily Standup: Tues, Fri, Sun 4 pm eastern
 
 ## Git Workflow
