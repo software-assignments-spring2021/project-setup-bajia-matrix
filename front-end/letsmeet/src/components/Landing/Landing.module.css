@@ -58,7 +58,7 @@
     padding: 0px 20px 10px;
 }
 
-.LandingTable, th, td {
+.LandingTable, .LandingTH, .LandingTD {
     border: 2px solid #939cf1;
     border-collapse: collapse;
     padding: 10px 20px;

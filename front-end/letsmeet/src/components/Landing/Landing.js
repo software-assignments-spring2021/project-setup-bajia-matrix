@@ -24,6 +24,17 @@ const Step = (props) => {
     )
 }
 
+// Function for the table format
+const Row = (props) => {
+    return (
+        <tr>
+            <td className={classes.LandingTD}>{props.feature}</td>
+            <td className={classes.LandingTD}>{props.with}</td>
+            <td className={classes.LandingTD}>{props.without}</td>
+        </tr>
+    )
+}
+
 const landing = () => {
     return (
         <div>
@@ -53,65 +64,26 @@ const landing = () => {
                 <h2 className={classes.LandingH2}>FEATURES</h2>
                 <table className={classes.LandingTable}>
                     <tr>
-                        <th>Highlighted Features</th>
-                        <th>With an account</th>
-                        <th>Without an account</th>
+                        <th className={classes.LandingTH}>Highlighted Features</th>
+                        <th className={classes.LandingTH}>With an account</th>
+                        <th className={classes.LandingTH}>Without an account</th>
                     </tr>
-                    <tr>
-                        <td>Create and schedule events</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Select your availability so we can calculate best meeting times</td>
-                        <td>Yes</td>
-                        <td>No, event creater must provide specific date and time</td>
-                    </tr>
-                    <tr>
-                        <td>Send invitations to friends with shareable link</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Automatically send event invitations to friends</td>
-                        <td>Yes</td>
-                        <td>No, you must manually send the link to your friend</td>
-                    </tr>
-                    <tr>
-                        <td>Access event details</td>
-                        <td>Yes</td>
-                        <td>Yes, only with event link</td>
-                    </tr>
-                    <tr>
-                        <td>See who is attending an event</td>
-                        <td>Yes</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Manage events you've created</td>
-                        <td>Yes</td>
-                        <td>No, once an event link is generated, you no longer have creator privileges</td>
-                    </tr>
-                    <tr>
-                        <td>Keep track of upcoming events you're attending</td>
-                        <td>Yes</td>
-                        <td>No, you must keep track of event links you've created or received</td>
-                    </tr>
-                    <tr>
-                        <td>See your pending invitations</td>
-                        <td>Yes</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td>Accept an invitiation</td>
-                        <td>Yes</td>
-                        <td>Yes, by manually adding your name to the attendees list</td>
-                    </tr>
-                    <tr>
-                        <td>Track supplies and costs and split expenses</td>
-                        <td>Yes</td>
-                        <td>No</td>
-                    </tr>
+                    <Row feature="Create and schedule events" with="Yes" without="Yes"/>
+                    <Row feature="Select your availability so we can calculate best meeting times" with="Yes" 
+                    without="No, event creater must provide specific date and time"/>
+                    <Row feature="Send invitations to friends with shareable link" with="Yes" without="Yes"/>
+                    <Row feature="Automatically send event invitations to friends" with="Yes" 
+                    without="No, you must manually send the link to your friend"/>
+                    <Row feature="Access event details" with="Yes" without="Yes, only with event link"/>
+                    <Row feature="See who is attending an event" with="Yes" without="Yes"/>
+                    <Row feature="Manage events you've created" with="Yes" 
+                    without="No, once an event link is generated, you no longer have creator privileges"/>
+                    <Row feature="Keep track of upcoming events you're attending" with="Yes" 
+                    without="No, you must keep track of event links you've created or received"/>
+                    <Row feature="See your pending invitations" with="Yes" without="No"/>
+                    <Row feature="Accept an invitiation" with="Yes" 
+                    without="Yes, by manually adding your name to the attendees list"/>
+                    <Row feature="Track supplies and costs and split expenses" with="Yes" without="No"/>
                 </table>
 
                 <a href="/newevent" className={classes.a}><button className={classes.Button}><b>
