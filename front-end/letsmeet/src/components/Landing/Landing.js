@@ -50,8 +50,8 @@ const landing = () => {
             </b></button></a>
 
             <div className={classes.Text}>
-                <h2 className={classes.h2}>FEATURES</h2>
-                <table>
+                <h2 className={classes.LandingH2}>FEATURES</h2>
+                <table className={classes.LandingTable}>
                     <tr>
                         <th>Highlighted Features</th>
                         <th>With an account</th>

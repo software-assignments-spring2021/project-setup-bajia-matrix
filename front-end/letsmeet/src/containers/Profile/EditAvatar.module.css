@@ -1,3 +1,19 @@
-.Card {
-    background-color: pink;
+.CardImg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border-radius: 10%;
+    background-color: #dce5e2;
+}
+
+.Button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.Col {
+   border: 1px solid black;
 }

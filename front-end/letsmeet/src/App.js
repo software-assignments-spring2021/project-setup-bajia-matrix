@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
-
+import { Route, Switch, withRouter, Redirect,Link } from 'react-router-dom';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import classes from './App.module.css';
 import Layout from './hoc/Layout/Layout';
+import SignIn from '../src/containers/Auth/SignIn/SignIn'
+import SignUp from '../src/containers/Auth/SignUp/SignUp'
 import Landing from './components/Landing/Landing';
 import NewEvent from './containers/NewEvent/NewEvent';
 import Profile from './containers/Profile/Profile';
-//import Landing from './components/Landing/Landing';
+import EditAvatar from './containers/Profile/EditAvatar';
+import EditProfile from './containers/Profile/EditProfile';
+
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
     then add a <Route> component to the let routes variable depending on whether
@@ -22,7 +26,7 @@ const App = (props) => {
     // HOW TO ADD ROUTING TO YOUR COMPONENT: to test between authenticated and not,
     // change this boolean variable. Later we will have to add real authentication
     const [state, setState] = useState({
-        isAuthenticated: false
+        isAuthenticated: true
     });
 
     // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible without an account
@@ -33,6 +37,8 @@ const App = (props) => {
     // <Route path="/" exact component={Landing} />
     let routes = (
         <Switch>
+            <Route path="/signin" component={SignIn} />]
+            <Route path="/signup" component={SignUp} />]
             <Route path="/" exact component={Landing} />
             <Route path="/newevent" component={NewEvent}/>
         </Switch>
@@ -44,6 +50,8 @@ const App = (props) => {
         routes = (
             <Switch>
                     <Route path="/profile" exact component={Profile} />
+                    <Route path="/editavatar" exact component={EditAvatar} />
+                    <Route path="/editprofile" exact component={EditProfile} />
                     <Redirect to="/" />
             </Switch>
         );

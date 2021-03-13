@@ -47,12 +47,18 @@
     padding-top: 20px;
 }
 
+.LandingH2 {
+    display: flex;
+    justify-content: center;
+    letter-spacing: 2px;
+}
+
 .section {
     display: flex;
     padding: 0px 20px 10px;
 }
 
-table, th, td {
+.LandingTable, th, td {
     border: 2px solid #939cf1;
     border-collapse: collapse;
     padding: 10px 20px;
@@ -81,5 +87,10 @@ table, th, td {
     margin-bottom: 20px;
     padding: 10px 25px;
     background: #dce5e238;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.TagLine {
+    text-align: center;
     font-family: 'Montserrat', sans-serif;
 }
