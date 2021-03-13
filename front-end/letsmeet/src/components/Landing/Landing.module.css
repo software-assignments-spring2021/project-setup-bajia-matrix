@@ -1,35 +1,31 @@
-.LandingLogo {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 10px;
-    width: 70%;
+.a {
+    text-decoration: none;
 }
 
-h2 {
-    display: flex;
-    justify-content: center;
-    letter-spacing: 2px;
-}
-
-.section {
-    display: flex;
-    padding: 0px 20px 10px;
-}
-  
 .article {
     font-family: 'Montserrat', sans-serif;
     border: transparent;
 }
 
-table, th, td {
-    border: 2px solid #939cf1;
-    border-collapse: collapse;
-    padding: 10px 20px;
-    margin-left: auto; 
-    margin-right: auto;
-    margin-bottom: 40px;
-    font-size: 13px;
+.Button {
+    background-color: #939cf1;
+    color: white;
+    padding: 20px;
+    margin: 0px auto 50px;
+    border: transparent;
+    width: 325px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.h2 {
+    display: flex;
+    justify-content: center;
+    letter-spacing: 2px;
+    padding: 40px 0px 30px;
 }
 
 .Images {
@@ -40,6 +36,48 @@ table, th, td {
     margin-left: auto;
     margin-right: auto;
     padding: 15px;
+}
+
+.LandingLogo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    width: 70%;
+    padding-top: 20px;
+}
+
+.LandingH2 {
+    display: flex;
+    justify-content: center;
+    letter-spacing: 2px;
+}
+
+.section {
+    display: flex;
+    padding: 0px 20px 10px;
+}
+
+.LandingTable, th, td {
+    border: 2px solid #939cf1;
+    border-collapse: collapse;
+    padding: 10px 20px;
+    margin-left: auto; 
+    margin-right: auto;
+    margin-bottom: 40px;
+    font-size: 13px;
+}
+
+.TagLine {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    padding: 60px 10px 0px;
+}
+
+.SecondLine {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    color: #939cf1;
 }
 
 .Text {
@@ -55,18 +93,4 @@ table, th, td {
 .TagLine {
     text-align: center;
     font-family: 'Montserrat', sans-serif;
-}
-
-.Button {
-    background-color: #939cf1;
-    color: white;
-    padding: 20px;
-    margin: 0px auto 50px;
-    border: transparent;
-    width: 325px;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
 }
