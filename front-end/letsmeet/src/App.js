@@ -44,7 +44,7 @@ const App = (props) => {
         routes = (
             <Switch>
                     <Route path="/profile" exact component={Profile} />
-                    <Redirect to="/" />
+                    <Redirect to="/user/newevent" component={NewEvent}/>
             </Switch>
         );
     }
