@@ -28,8 +28,8 @@ const landing = () => {
     return (
         <div>
             <img className={classes.LandingLogo} src={Logo} alt="Logo"></img>
-            <h1 class={classes.TagLine}>Planning a hangout shouldn't take more than 10 minutes.</h1>
-            <h1 class={classes.SecondLine}>Let us help.</h1>
+            <h1 className={classes.TagLine}>Planning a hangout shouldn't take more than 10 minutes.</h1>
+            <h1 className={classes.SecondLine}>Let us help.</h1>
             
             <CardDeck style={{padding: '50px 20px'}}>
                 <Step title="Skip the back-and-forth texts" img={image1} lead="Want to schedule a picnic with your friends?
@@ -114,7 +114,7 @@ const landing = () => {
                     </tr>
                 </table>
 
-                <a href="/newevent" className={classes.a}><button className={classes.Button} ><b>
+                <a href="/newevent" className={classes.a}><button className={classes.Button}><b>
                     Get Started Without An Account: Create New Event
                 </b></button></a>
                 
