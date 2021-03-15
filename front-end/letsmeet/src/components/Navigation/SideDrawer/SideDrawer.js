@@ -8,7 +8,15 @@ import Backdrop from '../../UI/Backdrop/Backdrop';
 /*
     This component replaces the navbar on a smaller screen.
     Instead, it will show the hamburger menu and the logo.
+    It will also display the list of navigationItems vertically
+    and display a backdrop when it is open.
+
+    Props:
+        - open: whether or not the SideDrawer is open
+        - closed: function to run to close the SideDrawer
+        - isAuth: whether or not the user is signed in
 */
+
 const sideDrawer = (props) => {
     let attachedClasses = [classes.SideDrawer, classes.Close];
 

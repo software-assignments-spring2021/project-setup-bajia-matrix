@@ -1,3 +1,21 @@
+.Close {
+    transform: translateX(-100%);
+}
+
+.Logo {
+    height: 100%;
+    width: 200px;
+}
+
+.Nav {
+    width: 100%;
+    text-align: center;
+}
+
+.Open {
+    transform: translateX(0);
+}
+
 .SideDrawer {
     position: fixed;
     width: 280px;
@@ -11,20 +29,6 @@
     text-align: center;
 }
 
-@media (min-width: 460px) {
-    .SideDrawer {
-        display: none;
-    }
-}
-
-.Open {
-    transform: translateX(0);
-}
-
-.Close {
-    transform: translateX(-100%);
-}
-
 .TopBar {
     height: 72px;
     width: 100%;
@@ -33,12 +37,8 @@
     margin-bottom: 32px;
 }
 
-.Logo {
-    height: 100%;
-    width: 200px;
-}
-
-.Nav {
-    width: 100%;
-    text-align: center;
+@media (min-width: 460px) {
+    .SideDrawer {
+        display: none;
+    }
 }

@@ -10,7 +10,7 @@ export default class SignUp extends Component {
         password: '',
         Verified_Passwowrd: '',
         errormessage: ''
-      };
+    };
     
     
     

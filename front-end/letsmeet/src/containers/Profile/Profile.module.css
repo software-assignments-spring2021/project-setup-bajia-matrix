@@ -1,18 +1,3 @@
-.Profile {
-    margin: auto;
-    display: flex;
-    width: 100%;
-    overflow: scroll; /* enable scrolling if too long */
-    align-items: center;
-    flex-flow: column;
-    padding: 20px 0; /* top and bottom, left and right */
-    
-}
-
-.Profile::-webkit-scrollbar {
-    background-color: transparent;
-}
-
 .Card {
     text-align: center;
     background-color: #dce5e2;
@@ -23,22 +8,17 @@
     flex-flow: column;
     align-items: center;
     margin: 20px; /* space b/t each card */
-}  
-
-.CardImg {
-    height: 75%;
-    width: 75%;
-}
-
-.FriendsTitle {
-    margin: 20px 0 0 0;
-    width: 100%;
-}
+} 
 
 .CardBody {
     width: 100%;
     padding: 20px 0;
     margin: -30px 0 0 0;
+}
+
+.CardImg {
+    height: 75%;
+    width: 75%;
 }
 
 .FriendsBody {
@@ -69,3 +49,33 @@
     background-color: rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
 }
+
+.FriendsTitle {
+    margin: 20px 0 0 0;
+    width: 100%;
+}
+
+.Profile {
+    margin: auto;
+    display: flex;
+    width: 100%;
+    overflow: scroll; /* enable scrolling if too long */
+    align-items: center;
+    flex-flow: column;
+    padding: 20px 0; /* top and bottom, left and right */
+}
+
+.Profile::-webkit-scrollbar {
+    background-color: transparent;
+}
+
+ 
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,12 @@
+.Logo {
+    width: 200px;
+    height: 56px;
+    padding: 0;
+    margin: 0 20px 0 0;
+    display: block;
+    box-sizing: border-box;
+}
+
 .Toolbar {
     height: 56px;
     width: 100%;
@@ -11,15 +20,6 @@
     padding: 0 30px;
     box-sizing: border-box; /* makes total height 56, including padding and border*/
     z-index: 100;
-}
-
-.Logo {
-    width: 200px;
-    height: 56px;
-    padding: 0;
-    margin: 0 20px 0 0;
-    display: block;
-    box-sizing: border-box;
 }
 
 @media (max-width: 459px) {

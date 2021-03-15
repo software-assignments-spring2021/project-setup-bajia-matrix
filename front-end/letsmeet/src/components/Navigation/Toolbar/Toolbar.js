@@ -7,9 +7,13 @@ import Logo from '../../../assets/NavbarLogo.png';
 import Hamburger from '../SideDrawer/Hamburger/Hamburger';
 
 /*
-    This component accepts the isAuth prop from the Layout component
-    to display NavigationItems depending on whether the user is authenticated
-    or not
+    This component is the navbar on larger screens. It will
+    shift to a format that includes a hamburger menu and moving
+    the navigationItems to the hamburger menu when it is on a smaller screen.
+    
+    Props: 
+        - drawerToggleClicked: function to handle what happens when the user clicks the hamburger menu
+        - isAuth: whether or not the user is signed in
 */
 const toolbar = (props) => (
     <header className={classes.Toolbar}>
