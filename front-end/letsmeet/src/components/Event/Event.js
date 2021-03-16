@@ -34,7 +34,7 @@ const event = (props) => {
             <Card className={classes.Card} onClick={manageEventHandler}>
                 <Card.Title className={classes.CardTitle}>{props.title}: {props.day}, {props.date} @ {props.time}</Card.Title>
                 <Card.Body className={classes.CardBody}>
-                    <Text numberOfLines={4} ellipsis={true} text={props.description} />
+                    <Text numberOfLines={2} ellipsis={true} text={props.description} />
                     <Text numberOfLines={2} ellipsis={true} text={"Friends who are attending: " + attendeesList} />
                     {!props.myCreatedEvent ? <Text numberOfLines={1} ellipses={false} text={"Event created by: " + props.creator} /> : null}
                 </Card.Body>
