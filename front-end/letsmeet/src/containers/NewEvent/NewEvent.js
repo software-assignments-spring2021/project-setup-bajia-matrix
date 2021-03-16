@@ -27,15 +27,20 @@ const NewEvent = (props) => {
     const dateFormat = "MM/DD"
     const [selectedDates, setSelectedDates] = useState([]);
     const [disabled, setDisabled] = useState(false);
+    const [schedule, setSchedule] = useState();
 
     function onChange(date, dateString) {
         setDate(dateString)
         console.log(date, dateString);
     }
 
-    const [key, setKey] = useState('weekly');
+    function handleChange(e) {
+        setSchedule(e);
+        console.log(schedule);
+    }
 
-    console.log("selected dates", selectedDates);
+    // Used for tab display
+    const [key, setKey] = useState('weekly');
 
     return (
         <div className={classes.container}>
@@ -126,6 +131,9 @@ const NewEvent = (props) => {
                             <ScheduleSelector
                                 hourlyChunks={1}
                                 startDate={startDate}
+                                onChange={handleChange}
+                                selectedColor={"#3D41D8"}
+                                selection={schedule}
                             />
                         </Tab>
                         <Tab eventKey="month" title="Month">
