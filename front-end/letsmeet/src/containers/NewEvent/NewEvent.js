@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
-import { Form, Input, Button, Divider, DatePicker, Select } from 'antd';
+import { Form, Input, Button, Divider, DatePicker, TimePicker, Select } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import ScheduleSelector  from 'react-schedule-selector';
 
-const NewEvent = () => {
-
-    // temporary until authentication is implemented
-    const [state, setState] = useState({
-        isAuthenticated: true
-    });
-
+const NewEvent = (props) => {
     // Form
     const [form] = Form.useForm();
     const [requiredMark, setRequiredMarkType] = useState('*');
@@ -20,7 +14,7 @@ const NewEvent = () => {
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
     };
-    // date selction related
+    // Date selction related
     const [startDate, setDate] = useState("01/01");
     const dateFormat = "MM/DD";
 
@@ -31,54 +25,64 @@ const NewEvent = () => {
 
     const { Option } = Select;
 
-    if (state.isAuthenticated) {
-        return (
-            <div className={classes.container}>
-                <Form
-                    form={form}
-                    layout="vertical"
-                    initialValues={{
-                        requiredMark,
+    return (
+        <div className={classes.container}>
+            <Form
+                form={form}
+                layout="vertical"
+                initialValues={{
+                    requiredMark,
+                }}
+                onValuesChange={onRequiredTypeChange}
+                requiredMark={requiredMark}
+            >
+                <Divider orientation="center" className="first">Create New Event</Divider>
+
+                <Form.Item 
+                    label="Event Title" 
+                    required tooltip={{
+                        title: "This is a required field.", 
+                        icon: <InfoCircleOutlined />,
                     }}
-                    onValuesChange={onRequiredTypeChange}
-                    requiredMark={requiredMark}
-                    
                 >
-                    <Divider orientation="center" className="first">Create New Event</Divider>
+                    <Input.TextArea placeholder="ex. Birthday Party" autoSize maxLength={50} showCount={true}/>
+                </Form.Item>
 
-                    <Form.Item 
-                        label="Event Title" 
-                        required tooltip={{
-                            title: "This is a required field.", 
-                            icon: <InfoCircleOutlined />,
-                        }}
-                    >
-                        <Input.TextArea placeholder="ex. Birthday Party" autoSize maxLength={50} showCount={true}/>
-                    </Form.Item>
+                <Form.Item
+                    label="Event Description"
+                    required tooltip={{
+                        title: "Write the event details here.",
+                        icon: <InfoCircleOutlined />,
+                    }}
+                >
+                    <Input.TextArea autoSize maxLength={300} showCount={true} placeholder="Write event details here"/>
+                </Form.Item>
 
-                    <Form.Item
-                        label="Event Description"
-                        required tooltip={{
-                            title: "Write the event details here. This can be changed later.",
-                            icon: <InfoCircleOutlined />,
-                        }}
-                    >
-                        <Input.TextArea autoSize maxLength={300} showCount={true}/>
-                    </Form.Item>
+                <Form.Item 
+                    label="Location"
+                    required tooltip={{
+                        title: "Where is your event being held?",
+                        icon: <InfoCircleOutlined />,
+                    }}
+                >
+                    <Input
+                    prefix={<EnvironmentOutlined className="site-form-item-icon" />}
+                    placeholder="Add event location"
+                    />
+                </Form.Item>
 
-                    <Form.Item 
-                        label="Location"
-                        tooltip={{
-                            title: "Where is your event being held? This can be changed later.",
-                            icon: <InfoCircleOutlined />,
-                        }}
-                    >
-                        <Input
-                        prefix={<EnvironmentOutlined className="site-form-item-icon" />}
-                        placeholder="Add event location"
-                        />
-                    </Form.Item>
+                <Form.Item
+                    label="Date & Time"
+                    required tooltip={{
+                        title: "When is your event being held?",
+                        icon: <InfoCircleOutlined />,
+                    }}
+                >
+                    <DatePicker onChange={onChange} format="MM/DD/YYYY"/>
+                    <TimePicker.RangePicker format="h:mm A" use12Hours/>
+                </Form.Item>
 
+                {props.isAuthenticated && <>
                     <Form.Item label="Invite Friends">
                         <Select
                             showSearch
@@ -94,7 +98,6 @@ const NewEvent = () => {
                             <Option value="tom">Tom</Option>
                         </Select>
                     </Form.Item>
-                    
 
                     <Divider orientation="center" className="first">Availability</Divider>
 
@@ -104,13 +107,13 @@ const NewEvent = () => {
                         hourlyChunks={1}
                         startDate={startDate}
                     />
-
-                    <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
-                        <Button type="primary" className={classes.formButton}>Submit</Button>
-                    </Form.Item>
-                </Form>
-            </div>
-        );
-    };
+                </>}
+                <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
+                    <Button type="primary" className={classes.formButton}>Submit</Button>
+                </Form.Item>
+            </Form>
+        </div>
+    );
 };
+
 export default NewEvent;
