@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
-import { Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
+import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
 import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Row, Col, Tab, Tabs } from 'react-bootstrap'
 import ScheduleSelector  from 'react-schedule-selector';
@@ -177,10 +177,17 @@ const NewEvent = (props) => {
                 </>}
                     
                 <Button type="primary" htmlType="submit" className={classes.formButton} onClick={showModal}>Submit</Button>
-                <Modal title="Event successfully created!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title="Event successfully created!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                     <h2>{form.getFieldValue('Event Title')}</h2>
                     <p>Event Date: {getSelectedDates(schedule)}</p>
                     <Tag icon={<CopyOutlined/>} onClick={copy({})}>link to be copied</Tag>
+                    <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
+                    <Alert
+                    message="Want to unlock all features? Create an account now!"
+                    type="info"
+                    showIcon
+                    action={<Button size="small" type="primary">Go</Button>} {/* TO-DO: update altogether to add path */}
+                    />
                 </Modal>
             </Form>
         </div>
