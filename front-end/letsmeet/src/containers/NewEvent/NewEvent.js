@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
 import { Form, Input, Button, Divider, DatePicker, TimePicker, Select } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, SecurityScanTwoTone } from '@ant-design/icons';
 import { EnvironmentOutlined } from '@ant-design/icons';
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 import ScheduleSelector  from 'react-schedule-selector';
+import SelectCalendar from './SelectCalendar';
 
 const NewEvent = (props) => {
 
@@ -15,18 +18,24 @@ const NewEvent = (props) => {
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
     };
+    
+    // Used to select friends
+    const { Option } = Select;
 
     // Used to select date on availability calendar
-    const [startDate, setDate] = useState("01/01");
-    const dateFormat = "MM/DD";
+    const [startDate, setDate] = useState(Date());
+    const dateFormat = "MM/DD"
+    const [selectedDates, setSelectedDates] = useState([]);
+    const [disabled, setDisabled] = useState(false);
 
     function onChange(date, dateString) {
         setDate(dateString)
         console.log(date, dateString);
     }
 
-    // Used to select friends
-    const { Option } = Select;
+    const [key, setKey] = useState('weekly');
+
+    console.log("selected dates", selectedDates);
 
     return (
         <div className={classes.container}>
@@ -108,15 +117,24 @@ const NewEvent = (props) => {
 
                     <Divider orientation="center" className="first">Availability</Divider>
 
-                    <Form.Item className={classes.dateSelect}
-                        label="Select start date for availability calendar:">
-                        <DatePicker format="DD/MM/YYYY" onChange={onChange}/>
-                    </Form.Item>
-
-                    <ScheduleSelector
-                        hourlyChunks={1}
-                        startDate={startDate}
-                    />
+                    <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
+                        <Tab eventKey="weekly" title="Weekly">
+                            <Form.Item className={classes.dateSelect}
+                            label="Select start date for availability calendar:">
+                                <DatePicker format={dateFormat} onChange={onChange}/>
+                            </Form.Item>
+                            <ScheduleSelector
+                                hourlyChunks={1}
+                                startDate={startDate}
+                            />
+                        </Tab>
+                        <Tab eventKey="month" title="Month">
+                            <SelectCalendar
+                                selectedDates={selectedDates}
+                                setSelectedDates={setSelectedDates}
+                            />
+                        </Tab>
+                    </Tabs>
                 </>}
                     
                 <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
