@@ -7,14 +7,16 @@ import { EnvironmentOutlined } from '@ant-design/icons';
 import ScheduleSelector  from 'react-schedule-selector';
 
 const NewEvent = (props) => {
-    // Form
+
+    // Variables for the form
     const [form] = Form.useForm();
     const [requiredMark, setRequiredMarkType] = useState('*');
 
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
     };
-    // Date selction related
+
+    // Used to select date on availability calendar
     const [startDate, setDate] = useState("01/01");
     const dateFormat = "MM/DD";
 
@@ -23,6 +25,7 @@ const NewEvent = (props) => {
         console.log(date, dateString);
     }
 
+    // Used to select friends
     const { Option } = Select;
 
     return (
@@ -85,13 +88,10 @@ const NewEvent = (props) => {
                 {props.isAuthenticated && <>
                     <Form.Item label="Invite Friends">
                         <Select
-                            showSearch
-                            style={{ width: 200 }}
-                            placeholder="Search friends list"
-                            optionFilterProp="children"
-                            filterOption={(input, option) =>
-                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                            }
+                            mode="multiple"
+                            placeholder="Select from Friends List"
+                            defaultValue={['a10', 'c12']}
+                            style={{ width: '100%' }}
                         >
                             <Option value="jack">Jack</Option>
                             <Option value="lucy">Lucy</Option>
