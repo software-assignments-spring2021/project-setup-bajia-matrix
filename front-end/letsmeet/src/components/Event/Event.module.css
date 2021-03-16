@@ -1,0 +1,31 @@
+.Card {
+    text-align: center;
+    background-color: #dce5e2;
+    width: 75%;
+    border: thin solid #d2dad9; /* width, style, color */
+    margin: 20px; /* space b/t each card */
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+} 
+
+.CardBody {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px; /* space between each Text item */
+    flex-wrap: nowrap;
+} 
+
+.CardTitle {
+    margin: 20px 0 0 0;
+    width: 100%;
+}
+
+.Event {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-flow: column;
+    margin: -20px 0;
+}

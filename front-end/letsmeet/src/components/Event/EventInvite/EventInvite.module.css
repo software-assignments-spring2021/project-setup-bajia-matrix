@@ -1,0 +1,33 @@
+.Button {
+    margin: 20px;
+}
+
+.Card {
+    text-align: center;
+    background-color: #c5c9f7;
+    width: 75%;
+    border: thin solid #d2dad9; /* width, style, color */
+    margin: 20px; /* space b/t each card */
+} 
+
+.CardBody {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px; /* space between each Text item */
+    flex-wrap: nowrap;
+} 
+
+.CardTitle {
+    margin: 20px 0 0 0;
+    width: 100%;
+}
+
+.Event {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-flow: column;
+    margin: -20px 0;
+}
