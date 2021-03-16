@@ -1,1 +1,6 @@
-{}
+{
+  "dependencies": {
+    "clipboard-copy": "^4.0.1",
+    "react-toggle-display": "^2.2.1"
+  }
+}

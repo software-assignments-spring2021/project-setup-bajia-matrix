@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
-import { Form, Input, Button, Divider, DatePicker, TimePicker, Select } from 'antd';
-import { InfoCircleOutlined, SecurityScanTwoTone } from '@ant-design/icons';
-import { EnvironmentOutlined } from '@ant-design/icons';
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
+import { Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
+import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Row, Col, Tab, Tabs } from 'react-bootstrap'
 import ScheduleSelector  from 'react-schedule-selector';
 import SelectCalendar from './SelectCalendar';
 
@@ -18,7 +16,6 @@ const NewEvent = (props) => {
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
     };
-    
     // Used to select friends
     const { Option } = Select;
 
@@ -26,22 +23,45 @@ const NewEvent = (props) => {
     const [startDate, setDate] = useState(Date());
     const dateFormat = "MM/DD"
     const [selectedDates, setSelectedDates] = useState([]);
-    const [disabled, setDisabled] = useState(false);
     const [schedule, setSchedule] = useState();
 
     function onChange(date, dateString) {
         setDate(dateString)
-        console.log(date, dateString);
     }
 
-    function handleChange(e) {
-        setSchedule(e);
-        console.log(schedule);
+    function handleChangeSchedule(e) {
+        setSchedule(e)
+    }
+
+    function getSelectedDates(schedule) {
+        // TO-DO: isolate the dates selected to display in the modal
+        console.log(schedule)
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
     }
 
     // Used for tab display
     const [key, setKey] = useState('weekly');
 
+    // Event pop-up after pressing submit
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const copy = require('clipboard-copy')
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+        // TO-DO: Add path
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+    
     return (
         <div className={classes.container}>
             <Form
@@ -52,21 +72,25 @@ const NewEvent = (props) => {
                 }}
                 onValuesChange={onRequiredTypeChange}
                 requiredMark={requiredMark}
+                submit={handleSubmit}
             >
                 <Divider orientation="center" className="first">Create New Event</Divider>
 
                 <Form.Item 
                     label="Event Title" 
+                    name="Event Title"
                     required tooltip={{
                         title: "This is a required field.", 
                         icon: <InfoCircleOutlined />,
                     }}
+                    rules={[{required:true}]}
                 >
                     <Input.TextArea placeholder="ex. Birthday Party" autoSize maxLength={50} showCount={true}/>
                 </Form.Item>
 
                 <Form.Item
                     label="Event Description"
+                    name="Event Description"
                     required tooltip={{
                         title: "Write the event details here.",
                         icon: <InfoCircleOutlined />,
@@ -125,28 +149,39 @@ const NewEvent = (props) => {
                     <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
                         <Tab eventKey="weekly" title="Weekly">
                             <Form.Item className={classes.dateSelect}
-                            label="Select start date for availability calendar:">
+                            label="Select start date for availability calendar">
                                 <DatePicker format={dateFormat} onChange={onChange}/>
                             </Form.Item>
                             <ScheduleSelector
                                 hourlyChunks={1}
                                 startDate={startDate}
-                                onChange={handleChange}
+                                onChange={handleChangeSchedule}
                                 selectedColor={"#3D41D8"}
                                 selection={schedule}
                             />
                         </Tab>
                         <Tab eventKey="month" title="Month">
-                            <SelectCalendar
-                                selectedDates={selectedDates}
-                                setSelectedDates={setSelectedDates}
-                            />
+                            <Row>
+                            <Col>
+                                <SelectCalendar
+                                    selectedDates={selectedDates}
+                                    setSelectedDates={setSelectedDates}
+                                />
+                            </Col>
+                            <Col>
+                                <TimePicker.RangePicker format="h:mm A" use12Hours/>
+                            </Col>
+                            </Row>
                         </Tab>
                     </Tabs>
                 </>}
                     
-                <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
-
+                <Button type="primary" htmlType="submit" className={classes.formButton} onClick={showModal}>Submit</Button>
+                <Modal title="Event successfully created!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                    <h2>{form.getFieldValue('Event Title')}</h2>
+                    <p>Event Date: {getSelectedDates(schedule)}</p>
+                    <Tag icon={<CopyOutlined/>} onClick={copy({})}>link to be copied</Tag>
+                </Modal>
             </Form>
         </div>
     );
