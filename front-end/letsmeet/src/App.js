@@ -49,11 +49,11 @@ const App = (props) => {
     if (state.isAuthenticated) {
         routes = (
             <Switch>
-                    <Route path="/profile" exact component={Profile} />
-                    <Redirect to="/user/newevent" component={NewEvent}/>
-                    <Route path="/editavatar" exact component={EditAvatar} />
-                    <Route path="/editprofile" exact component={EditProfile} />
-                    <Redirect to="/" />
+                <Route path="/profile" exact component={Profile} />
+                <Redirect path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/editavatar" exact component={EditAvatar} />
+                <Route path="/editprofile" exact component={EditProfile} />
+                <Redirect to="/" />
             </Switch>
         );
     }
