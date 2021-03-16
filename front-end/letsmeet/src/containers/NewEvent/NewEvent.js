@@ -108,9 +108,9 @@ const NewEvent = (props) => {
                         startDate={startDate}
                     />
                 </>}
-                <Form.Item wrapperCol={{ span: 12, offset: 11 }}>
-                    <Button type="primary" className={classes.formButton}>Submit</Button>
-                </Form.Item>
+                    
+                <Button type="primary" className={classes.formButton}>Submit</Button>
+
             </Form>
         </div>
     );
