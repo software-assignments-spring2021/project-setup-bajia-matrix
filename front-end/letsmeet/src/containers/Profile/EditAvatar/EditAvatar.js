@@ -10,12 +10,12 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 
-import red from '../../assets/Avatars/redavi.png';
-import blue from '../../assets/Avatars/blueavi.png';
-import green from '../../assets/Avatars/greenavi.png';
-import orange from '../../assets/Avatars/orangeavi.png';
-import purple from '../../assets/Avatars/purpleavi.png';
-import yellow from '../../assets/Avatars/yellowavi.png';
+import red from '../../../assets/Avatars/redavi.png';
+import blue from '../../../assets/Avatars/blueavi.png';
+import green from '../../../assets/Avatars/greenavi.png';
+import orange from '../../../assets/Avatars/orangeavi.png';
+import purple from '../../../assets/Avatars/purpleavi.png';
+import yellow from '../../../assets/Avatars/yellowavi.png';
 
 const EditAvatar = (props) => {
 

@@ -5,6 +5,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './Profile.module.css';
 import avi from '../../assets/Avatars/redavi.png';
 
+/* 
+    This component displays the profile page based on the information
+    of the user that is signed in. The user can also navigate
+    to the edit profile page from here.
+
+    Props:
+        This component does not except any custom props
+*/
+
 const Profile = (props) => {
     const [profileState, setProfileState] = useState({
         avatar: avi,

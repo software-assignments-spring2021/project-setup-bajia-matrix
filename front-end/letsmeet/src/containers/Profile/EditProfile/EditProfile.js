@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './EditProfile.module.css';
-import avi from '../../assets/Avatars/redavi.png';
+import avi from '../../../assets/Avatars/redavi.png';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

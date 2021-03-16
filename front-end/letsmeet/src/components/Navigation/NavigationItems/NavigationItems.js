@@ -4,9 +4,13 @@ import classes from './NavigationItems.module.css';
 import NavigationItem from './NavigationItem/NavigationItem';
 
 /* 
-    This component accepts the isAuthenticated prop from the Toolbar component 
-    to display navigable links depending on whether the user is authenticated or not
+    This component displays a list of navigationItem, the contents of which,
+    depends on whether the user is authenticated or not.
+
+    Props:
+        - isAuthenticated: whether or not the user is signed in
 */
+
 const navigationItems = (props) => {
     // TODO: signout should do something to log the person out then go to landing page or sign in page
     // maybe there is a separate /signout route that does this

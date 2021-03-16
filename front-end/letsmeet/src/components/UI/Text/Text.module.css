@@ -1,0 +1,7 @@
+.Text {
+    margin: 10px; /* space between each Text component */
+}
+
+.Text p {
+    margin: 0 0 0 0; /* get rid of space between lines to look like 1 paragraph */
+}

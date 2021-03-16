@@ -8,8 +8,10 @@ import SignUp from '../src/containers/Auth/SignUp/SignUp'
 import Landing from './components/Landing/Landing';
 import NewEvent from './containers/NewEvent/NewEvent';
 import Profile from './containers/Profile/Profile';
-import EditAvatar from './containers/Profile/EditAvatar';
-import EditProfile from './containers/Profile/EditProfile';
+import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
+import EditProfile from './containers/Profile/EditProfile/EditProfile';
+import Home from './containers/Home/Home';
+import EditSupplies from './containers/EditSupplies/EditSupplies';
 
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above

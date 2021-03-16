@@ -1,0 +1,21 @@
+.Button {
+    margin: 40px 0 20px 0;
+    width: 50%;
+    height: 75px;
+}
+.Event {
+    width: 100%;
+}
+
+.Home {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-flow: column;
+    padding: 20px;
+}
+
+.Home h5 {
+    margin: 20px 0 20px 0;
+    font-weight: 700;
+}
