@@ -4,6 +4,12 @@
     width: 75%;
 }
 
+.dateSelect {
+    display: block;
+    margin: 20px auto 30px;
+    text-align: center;
+}
+
 .formButton {
     display: block;
     margin: 20px auto;

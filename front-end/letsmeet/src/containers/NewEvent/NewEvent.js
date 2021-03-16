@@ -74,23 +74,30 @@ const NewEvent = (props) => {
                     />
                 </Form.Item>
 
-                <Form.Item
-                    label="Date & Time"
-                    required tooltip={{
-                        title: "When is your event being held?",
-                        icon: <InfoCircleOutlined />,
-                    }}
-                >
-                    <DatePicker onChange={onChange} format="MM/DD/YYYY"/>
-                    <TimePicker.RangePicker format="h:mm A" use12Hours/>
-                </Form.Item>
+                {!props.isAuthenticated && <>
+                    <Form.Item
+                        label="Date & Time"
+                        required tooltip={{
+                            title: "When is your event being held?",
+                            icon: <InfoCircleOutlined />,
+                        }}
+                    >
+                        <DatePicker onChange={onChange} format="MM/DD/YYYY"/>
+                        <TimePicker.RangePicker format="h:mm A" use12Hours/>
+                    </Form.Item>
+                </>}
 
                 {props.isAuthenticated && <>
-                    <Form.Item label="Invite Friends">
+                    <Form.Item 
+                        label="Invite Friends" 
+                        tooltip={{
+                            title: "Invite people from your friends list. You can add more friends later.",
+                            icon: <InfoCircleOutlined />,
+                        }}
+                    >
                         <Select
                             mode="multiple"
                             placeholder="Select from Friends List"
-                            defaultValue={['a10', 'c12']}
                             style={{ width: '100%' }}
                         >
                             <Option value="jack">Jack</Option>
@@ -101,7 +108,10 @@ const NewEvent = (props) => {
 
                     <Divider orientation="center" className="first">Availability</Divider>
 
-                    <DatePicker format={dateFormat} onChange={onChange}/><br/>
+                    <Form.Item className={classes.dateSelect}
+                        label="Select start date for availability calendar:">
+                        <DatePicker format="DD/MM/YYYY" onChange={onChange}/>
+                    </Form.Item>
 
                     <ScheduleSelector
                         hourlyChunks={1}
@@ -109,7 +119,7 @@ const NewEvent = (props) => {
                     />
                 </>}
                     
-                <Button type="primary" className={classes.formButton}>Submit</Button>
+                <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
 
             </Form>
         </div>
