@@ -16,6 +16,9 @@ import EventInvite from '../../components/Event/EventInvite/EventInvite';
         This component does not accept any custom props
 */
 
+// TODO: display myEvents and upcomingEvents and pendingInvites using custom sorter
+// sort by earliest date to latest. Better to do this in front-end or do it in back-end
+// and pass a sorted array to front-end? I think back-end is best
 const Home = (props) => {
     const [state, setState] = useState({
         eventsList: [
@@ -141,7 +144,7 @@ const Home = (props) => {
     });
 
     let newEventHandler = () => {
-        props.history.push("/profile");
+        props.history.push("/editsupplies");
     }
 
     return (
