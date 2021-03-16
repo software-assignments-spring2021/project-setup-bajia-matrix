@@ -10,6 +10,7 @@ import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import Home from './containers/Home/Home';
+import EditSupplies from './containers/EditSupplies/EditSupplies';
 
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
@@ -49,10 +50,11 @@ const App = (props) => {
     if (state.isAuthenticated) {
         routes = (
             <Switch>
-                    <Route path="/" exact component={Home} />
+                    <Route path="/editsupplies" exact component={EditSupplies} />
                     <Route path="/profile" exact component={Profile} />
                     <Route path="/editavatar" exact component={EditAvatar} />
                     <Route path="/editprofile" exact component={EditProfile} />
+                    <Route path="/" exact component={Home} />
                     <Redirect to="/" />
             </Switch>
         );
