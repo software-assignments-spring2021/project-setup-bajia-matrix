@@ -1,9 +1,9 @@
 .container {
     display: block;
     margin: 0 auto;
-    width: 50%;
+    width: 75%;
 }
 
 .formButton {
-    margin-top: 20px;
+    margin: 20px;
 }
