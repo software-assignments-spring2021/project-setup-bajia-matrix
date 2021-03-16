@@ -6,6 +6,8 @@ import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined } from '@ant-desi
 import { Row, Col, Tab, Tabs } from 'react-bootstrap'
 import ScheduleSelector  from 'react-schedule-selector';
 import SelectCalendar from './SelectCalendar';
+import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
+import moment from 'moment';
 
 const NewEvent = (props) => {
 
@@ -20,11 +22,11 @@ const NewEvent = (props) => {
     const { Option } = Select;
 
     // Used to select date on availability calendar
-    const [startDate, setDate] = useState(Date());
+    const [startDate, setDate] = useState(Date())
     const dateFormat = "MM/DD"
-    const [selectedDates, setSelectedDates] = useState([]);
-    const [schedule, setSchedule] = useState();
-
+    const [selectedDates, setSelectedDates] = useState([])
+    const [schedule, setSchedule] = useState()
+    
     function onChange(date, dateString) {
         setDate(dateString)
     }
@@ -33,10 +35,17 @@ const NewEvent = (props) => {
         setSchedule(e)
     }
 
-    function getSelectedDates(schedule) {
-        // TO-DO: isolate the dates selected to display in the modal
-        console.log(schedule)
-    }
+    // function getDates(e) {
+    //     let sortedDates = e.sort((a,b) => a.valueOf() - b.valueOf())
+    //     var eventDates = new Set()
+    //     for(let i=0; i < e.length; i++) {
+    //         let dates = moment(sortedDates[i]).format('MMMM Do YYYY')
+    //         eventDates.add(dates)
+    //     }
+    //     console.log(eventDates)
+    // }
+
+    // getDates(schedule)
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -61,7 +70,7 @@ const NewEvent = (props) => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-    
+
     return (
         <div className={classes.container}>
             <Form
@@ -178,15 +187,14 @@ const NewEvent = (props) => {
                     
                 <Button type="primary" htmlType="submit" className={classes.formButton} onClick={showModal}>Submit</Button>
                 <Modal title="Event successfully created!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
-                    <h2>{form.getFieldValue('Event Title')}</h2>
-                    <p>Event Date: {getSelectedDates(schedule)}</p>
+                    <EventTitle title={form.getFieldValue('Event Title')} ></EventTitle>
                     <Tag icon={<CopyOutlined/>} onClick={copy({})}>link to be copied</Tag>
                     <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
                     <Alert
                     message="Want to unlock all features? Create an account now!"
                     type="info"
                     showIcon
-                    action={<Button size="small" type="primary">Go</Button>} {/* TO-DO: update altogether to add path */}
+                    action={<Button size="small" type="primary">Go</Button>}
                     />
                 </Modal>
             </Form>

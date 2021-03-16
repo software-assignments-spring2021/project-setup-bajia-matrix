@@ -12,11 +12,11 @@ import classes from './EventTitle.module.css';
         - date: Month and day of the year
         - time: time range from start to end
 */
-const eventTitle = (props) => (
+const EventTitle = (props) => (
     <div>
         <h1>{props.title}</h1>
         <p>{props.day}, {props.date} @ {props.time}</p>
     </div>
 );
 
-export default eventTitle;
+export default EventTitle;
