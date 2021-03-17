@@ -1,20 +1,22 @@
 import { Calendar, DateObject } from 'react-multi-date-picker';
 import { DatePanel } from 'react-multi-date-picker/plugins';
-import { Button } from 'antd';
+import { Button, TimePicker } from 'antd';
 
 
 export default function SelectCalendar({selectedDates, setSelectedDates}) {
+
   function handleToday() {
     const today = new DateObject();
     setSelectedDates([...selectedDates, today]);
   }
+
   return (
     <Calendar
       onlyShowInRangeDates={true}
       minDate={new Date()}
       value={selectedDates}
       onChange={setSelectedDates}
-      plugins={[<DatePanel />]}
+      plugins={[<DatePanel />, <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>]}
       multiple
       sort
     >

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Route, Switch, withRouter, Redirect,Link } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
 import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
@@ -52,7 +53,7 @@ const NewEvent = (props) => {
     }
 
     // Used for tab display
-    const [key, setKey] = useState('weekly');
+    const [key, setKey] = useState('week');
 
     // Event pop-up after pressing submit
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -168,7 +169,7 @@ const NewEvent = (props) => {
                     <Divider orientation="center" className="first">Availability</Divider>
 
                     <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
-                        <Tab eventKey="weekly" title="Weekly">
+                        <Tab eventKey="week" title="Week">
                             <Form.Item className={classes.dateSelect}
                             label="Select start date for availability calendar.">
                                 <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
@@ -194,7 +195,7 @@ const NewEvent = (props) => {
                                 {fields.map((field, idx) => {
                                     return (
                                     <div key={`${field}-${idx}`}>
-                                        <DatePicker onChange={onChange} format="MM/DD/YYYY" allowClear={false}/>
+                                        <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
                                         <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
                                     </div>
                                     );
@@ -206,15 +207,17 @@ const NewEvent = (props) => {
                 </>}
                     
                 <Button type="primary" htmlType="submit" className={classes.formButton} onClick={showModal}>Submit</Button>
+                {/* why doesn't this button have a  bottom margin */}
+
                 <Modal title="Event successfully created!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                     <EventTitle title={form.getFieldValue('Event Title')} ></EventTitle>
                     <Tag icon={<CopyOutlined/>} /* onClick={copy({})} */>link to be copied</Tag>
                     <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
                     <Alert
-                    message="Want to unlock all features? Create an account now!"
-                    type="info"
-                    showIcon
-                    action={<Button size="small" type="primary">Go</Button>}
+                        message="Want to unlock all features? Create an account now!"
+                        type="info"
+                        showIcon
+                        action={<a href="/signup"><Button size="small" type="primary" >Go</Button></a>}
                     />
                 </Modal>
             </Form>
