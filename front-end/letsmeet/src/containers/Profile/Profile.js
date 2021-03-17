@@ -42,6 +42,7 @@ const Profile = (props) => {
             {id: 16, name: "Matthew Fishman"},
             {id: 17, name: "Matthew Fishman"}
         ]
+        // friends: []
     });
 
     useEffect(() => {
