@@ -174,7 +174,7 @@ const NewEvent = (props) => {
                     <Divider orientation="center">Availability</Divider>
 
                     <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
-                        <Tab eventKey="week" title="Week">
+                        <Tab eventKey="week" title="Week View">
                             <Form.Item className={classes.dateSelect}
                             label="Select start date for availability calendar.">
                                 <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
@@ -187,76 +187,66 @@ const NewEvent = (props) => {
                                 selection={schedule}
                             />
                         </Tab>
-                        <Tab eventKey="month" title="Month">
-                            <Row>
-                            <Col>
-                                <SelectCalendar
-                                    selectedDates={selectedDates}
-                                    setSelectedDates={setSelectedDates}
-                                />
-                            </Col>
-                            <Col>
-                                <Form.List
-                                    name="dates_and_times"
-                                    rules={[
-                                    {
-                                        validator: async (_, names) => {
-                                        if (!names || names.length < 1) {
-                                            return Promise.reject(new Error('Must include at least one availability slot!'));
-                                        }
-                                        },
+                        <Tab eventKey="list" title="List View">
+                            <Form.List
+                                name="dates_and_times"
+                                rules={[
+                                {
+                                    validator: async (_, names) => {
+                                    if (!names || names.length < 1) {
+                                        return Promise.reject(new Error('Must include at least one availability slot!'));
+                                    }
                                     },
-                                    ]}
-                                    {...formItemLayoutWithOutLabel}
-                                >
-                                    {(fields, { add, remove }, { errors }) => (
-                                    <>
-                                        {fields.map((field, index) => (
+                                },
+                                ]}
+                                {...formItemLayoutWithOutLabel}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
+                                <>
+                                    {fields.map((field, index) => (
+                                    <Form.Item
+                                        {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                        label={index === 0 ? 'Date and Time Slot Availability' : ''}
+                                        required={true}
+                                        key={field.key}
+                                    >
                                         <Form.Item
-                                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                            label={index === 0 ? 'Date and Time Slot Availability' : ''}
-                                            required={true}
-                                            key={field.key}
+                                        {...field}
+                                        validateTrigger={['onChange', 'onBlur']}
+                                        rules={[
+                                            {
+                                            required: true,
+                                            whitespace: true,
+                                            message: "Please input a date and time range or delete this field.",
+                                            },
+                                        ]}
+                                        noStyle
                                         >
-                                            <Form.Item
-                                            {...field}
-                                            validateTrigger={['onChange', 'onBlur']}
-                                            rules={[
-                                                {
-                                                required: true,
-                                                whitespace: true,
-                                                message: "Please input a date and time range or delete this field.",
-                                                },
-                                            ]}
-                                            noStyle
-                                            >
-                                                <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
-                                                <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
-                                            </Form.Item>
-                                            {fields.length > 1 ? (
-                                                <MinusCircleOutlined
-                                                    className={classes.dynamicDeleteButton}
-                                                    onClick={() => remove(field.name)}
-                                                />
-                                            ) : null}
+                                            <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
+                                            <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
                                         </Form.Item>
-                                        ))}
-                                        <Form.Item>
+                                        {fields.length > 1 ? (
+                                            <MinusCircleOutlined
+                                                className={classes.dynamicDeleteButton}
+                                                onClick={() => remove(field.name)}
+                                            />
+                                        ) : null}
+                                    </Form.Item>
+                                    ))}
+                                    <Form.Item>
                                         <Button
                                             type="dashed"
                                             onClick={() => add()}
-                                            style={{ width: '60%' }}
+                                            style={{ width: '30%' }}
                                             icon={<PlusOutlined />}
                                         >
                                             Add field
                                         </Button>
                                         <Form.ErrorList errors={errors} />
-                                        </Form.Item>
-                                    </>
-                                    )}
-                                </Form.List>
-                            </Col>
-                            </Row>
+                                    </Form.Item>
+                                </>
+                                )}
+                            </Form.List>
                         </Tab>
                     </Tabs>
                 </>}
