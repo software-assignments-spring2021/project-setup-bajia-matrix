@@ -209,16 +209,18 @@ const NewEvent = (props) => {
                 <Button type="primary" htmlType="submit" className={classes.formButton} onClick={showModal}>Submit</Button>
                 {/* why doesn't this button have a  bottom margin */}
 
-                <Modal title="Event successfully created!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
+                <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                     <EventTitle title={form.getFieldValue('Event Title')} ></EventTitle>
                     <Tag icon={<CopyOutlined/>} /* onClick={copy({})} */>link to be copied</Tag>
                     <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
-                    <Alert
-                        message="Want to unlock all features? Create an account now!"
-                        type="info"
-                        showIcon
-                        action={<a href="/signup"><Button size="small" type="primary" >Go</Button></a>}
-                    />
+                    {!props.isAuthenticated && <>
+                        <Alert
+                            message="Want to unlock all features? Create an account now!"
+                            type="info"
+                            showIcon
+                            action={<a href="/signup"><Button size="small" type="primary" >Go</Button></a>}
+                        />
+                    </>}
                 </Modal>
             </Form>
         </div>
