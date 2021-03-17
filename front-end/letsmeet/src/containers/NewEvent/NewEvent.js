@@ -56,7 +56,7 @@ const NewEvent = (props) => {
 
     // Event pop-up after pressing submit
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const copy = require('clipboard-copy')
+    //const copy = require('clipboard-copy')
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -70,6 +70,15 @@ const NewEvent = (props) => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
+    // To add more fields for date and time
+    const [fields, setFields] = useState([{ value: null }]);
+
+    function handleAdd() {
+        const values = [...fields];
+        values.push({ value: null });
+        setFields(values);
+    }
 
     return (
         <div className={classes.container}>
@@ -104,16 +113,19 @@ const NewEvent = (props) => {
                         title: "Write the event details here.",
                         icon: <InfoCircleOutlined />,
                     }}
+                    rules={[{required:true}]}
                 >
                     <Input.TextArea autoSize maxLength={300} showCount={true} placeholder="Write event details here"/>
                 </Form.Item>
 
                 <Form.Item 
                     label="Location"
+                    name="Location"
                     required tooltip={{
                         title: "Where is your event being held?",
                         icon: <InfoCircleOutlined />,
                     }}
+                    rules={[{required:true}]}
                 >
                     <Input
                     prefix={<EnvironmentOutlined className="site-form-item-icon" />}
@@ -129,8 +141,8 @@ const NewEvent = (props) => {
                             icon: <InfoCircleOutlined />,
                         }}
                     >
-                        <DatePicker onChange={onChange} format="MM/DD/YYYY"/>
-                        <TimePicker.RangePicker format="h:mm A" use12Hours/>
+                        <DatePicker onChange={onChange} format="MM/DD/YYYY" allowClear={false}/>
+                        <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
                     </Form.Item>
                 </>}
 
@@ -158,8 +170,8 @@ const NewEvent = (props) => {
                     <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
                         <Tab eventKey="weekly" title="Weekly">
                             <Form.Item className={classes.dateSelect}
-                            label="Select start date for availability calendar">
-                                <DatePicker format={dateFormat} onChange={onChange}/>
+                            label="Select start date for availability calendar.">
+                                <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
                             </Form.Item>
                             <ScheduleSelector
                                 hourlyChunks={1}
@@ -178,7 +190,15 @@ const NewEvent = (props) => {
                                 />
                             </Col>
                             <Col>
-                                <TimePicker.RangePicker format="h:mm A" use12Hours/>
+                                <Button className={classes.formButton} type="button" onClick={() => handleAdd()}>Add another</Button>
+                                {fields.map((field, idx) => {
+                                    return (
+                                    <div key={`${field}-${idx}`}>
+                                        <DatePicker onChange={onChange} format="MM/DD/YYYY" allowClear={false}/>
+                                        <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
+                                    </div>
+                                    );
+                                })}
                             </Col>
                             </Row>
                         </Tab>
@@ -188,7 +208,7 @@ const NewEvent = (props) => {
                 <Button type="primary" htmlType="submit" className={classes.formButton} onClick={showModal}>Submit</Button>
                 <Modal title="Event successfully created!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                     <EventTitle title={form.getFieldValue('Event Title')} ></EventTitle>
-                    <Tag icon={<CopyOutlined/>} onClick={copy({})}>link to be copied</Tag>
+                    <Tag icon={<CopyOutlined/>} /* onClick={copy({})} */>link to be copied</Tag>
                     <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
                     <Alert
                     message="Want to unlock all features? Create an account now!"
