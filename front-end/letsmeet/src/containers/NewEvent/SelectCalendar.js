@@ -16,7 +16,7 @@ export default function SelectCalendar({selectedDates, setSelectedDates}) {
       minDate={new Date()}
       value={selectedDates}
       onChange={setSelectedDates}
-      plugins={[<DatePanel />, <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>]}
+      plugins={[<DatePanel />]}
       multiple
       sort
     >

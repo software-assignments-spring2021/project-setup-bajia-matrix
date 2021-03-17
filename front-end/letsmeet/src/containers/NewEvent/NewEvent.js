@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Route, Switch, withRouter, Redirect,Link } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
 import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
-import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Row, Col, Tab, Tabs } from 'react-bootstrap'
 import ScheduleSelector  from 'react-schedule-selector';
 import SelectCalendar from './SelectCalendar';
@@ -58,28 +57,34 @@ const NewEvent = (props) => {
     // Event pop-up after pressing submit
     const [isModalVisible, setIsModalVisible] = useState(false);
     //const copy = require('clipboard-copy')
-
     const showModal = () => {
         setIsModalVisible(true);
     };
-
     const handleOk = () => {
         setIsModalVisible(false);
         // TO-DO: Add path
     };
-
     const handleCancel = () => {
         setIsModalVisible(false);
     };
 
     // To add more fields for date and time
-    const [fields, setFields] = useState([{ value: null }]);
-
-    function handleAdd() {
-        const values = [...fields];
-        values.push({ value: null });
-        setFields(values);
-    }
+    const formItemLayout = {
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 20 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 20 },
+        },
+    };
+    const formItemLayoutWithOutLabel = {
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 20 },
+        },
+    };
 
     return (
         <div className={classes.container}>
@@ -93,7 +98,7 @@ const NewEvent = (props) => {
                 requiredMark={requiredMark}
                 submit={handleSubmit}
             >
-                <Divider orientation="center" className="first">Create New Event</Divider>
+                <Divider orientation="center">Create New Event</Divider>
 
                 <Form.Item 
                     label="Event Title" 
@@ -102,7 +107,7 @@ const NewEvent = (props) => {
                         title: "This is a required field.", 
                         icon: <InfoCircleOutlined />,
                     }}
-                    rules={[{required:true}]}
+                    rules={[{required:true, message: 'Please include event title!'}]}
                 >
                     <Input.TextArea placeholder="ex. Birthday Party" autoSize maxLength={50} showCount={true}/>
                 </Form.Item>
@@ -114,7 +119,7 @@ const NewEvent = (props) => {
                         title: "Write the event details here.",
                         icon: <InfoCircleOutlined />,
                     }}
-                    rules={[{required:true}]}
+                    rules={[{required: true, message: 'Please include event description!'}]}
                 >
                     <Input.TextArea autoSize maxLength={300} showCount={true} placeholder="Write event details here"/>
                 </Form.Item>
@@ -126,11 +131,11 @@ const NewEvent = (props) => {
                         title: "Where is your event being held?",
                         icon: <InfoCircleOutlined />,
                     }}
-                    rules={[{required:true}]}
+                    rules={[{required:true, message: 'Please include event location!'}]}
                 >
                     <Input
-                    prefix={<EnvironmentOutlined className="site-form-item-icon" />}
-                    placeholder="Add event location"
+                        prefix={<EnvironmentOutlined/>}
+                        placeholder="Add event location"
                     />
                 </Form.Item>
 
@@ -166,7 +171,7 @@ const NewEvent = (props) => {
                         </Select>
                     </Form.Item>
 
-                    <Divider orientation="center" className="first">Availability</Divider>
+                    <Divider orientation="center">Availability</Divider>
 
                     <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
                         <Tab eventKey="week" title="Week">
@@ -191,15 +196,65 @@ const NewEvent = (props) => {
                                 />
                             </Col>
                             <Col>
-                                <Button className={classes.formButton} type="button" onClick={() => handleAdd()}>Add another</Button>
-                                {fields.map((field, idx) => {
-                                    return (
-                                    <div key={`${field}-${idx}`}>
-                                        <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
-                                        <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
-                                    </div>
-                                    );
-                                })}
+                                <Form.List
+                                    name="dates_and_times"
+                                    rules={[
+                                    {
+                                        validator: async (_, names) => {
+                                        if (!names || names.length < 1) {
+                                            return Promise.reject(new Error('Must include at least one availability slot!'));
+                                        }
+                                        },
+                                    },
+                                    ]}
+                                    {...formItemLayoutWithOutLabel}
+                                >
+                                    {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        {fields.map((field, index) => (
+                                        <Form.Item
+                                            {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                            label={index === 0 ? 'Date and Time Slot Availability' : ''}
+                                            required={true}
+                                            key={field.key}
+                                        >
+                                            <Form.Item
+                                            {...field}
+                                            validateTrigger={['onChange', 'onBlur']}
+                                            rules={[
+                                                {
+                                                required: true,
+                                                whitespace: true,
+                                                message: "Please input a date and time range or delete this field.",
+                                                },
+                                            ]}
+                                            noStyle
+                                            >
+                                                <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
+                                                <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
+                                            </Form.Item>
+                                            {fields.length > 1 ? (
+                                                <MinusCircleOutlined
+                                                    className={classes.dynamicDeleteButton}
+                                                    onClick={() => remove(field.name)}
+                                                />
+                                            ) : null}
+                                        </Form.Item>
+                                        ))}
+                                        <Form.Item>
+                                        <Button
+                                            type="dashed"
+                                            onClick={() => add()}
+                                            style={{ width: '60%' }}
+                                            icon={<PlusOutlined />}
+                                        >
+                                            Add field
+                                        </Button>
+                                        <Form.ErrorList errors={errors} />
+                                        </Form.Item>
+                                    </>
+                                    )}
+                                </Form.List>
                             </Col>
                             </Row>
                         </Tab>
