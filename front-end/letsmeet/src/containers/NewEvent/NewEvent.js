@@ -21,11 +21,28 @@ const NewEvent = (props) => {
     // Used to select friends
     const { Option } = Select;
 
-    // Used to select date on availability calendar
+    // Used to select date on weekly calendar
     const [startDate, setDate] = useState(Date())
     const dateFormat = "MM/DD"
     const [selectedDates, setSelectedDates] = useState([])
     const [schedule, setSchedule] = useState()
+
+    //Used to select date for non-users
+    const [finalDate, setFinalDate] = useState(Date())
+    const [finalStartTime, setFinalStartTime] = useState(Date())
+    const [finalEndTime, setFinalEndTime] = useState(Date())
+    const [finalDay, setFinalDay] = useState(Date())
+
+    function handleFinalDate(date, dateString) {
+        setFinalDate(dateString)
+        setFinalDay(moment(dateString).format('dddd'))
+        console.log(finalDate)
+    }
+
+    function handleFinalTime(date, dateString) {
+        setFinalStartTime(date[0].format('LT'))
+        setFinalEndTime(date[1].format('LT'))
+    }
     
     function onChange(date, dateString) {
         setDate(dateString)
@@ -85,7 +102,6 @@ const NewEvent = (props) => {
           sm: { span: 20 },
         },
     };
-
     return (
         <div className={classes.container}>
             <Form
@@ -147,8 +163,15 @@ const NewEvent = (props) => {
                             icon: <InfoCircleOutlined />,
                         }}
                     >
-                        <DatePicker onChange={onChange} format="MM/DD/YYYY" allowClear={false}/>
-                        <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
+                        <DatePicker 
+                            onChange={handleFinalDate} 
+                            format="MM/DD/YYYY" 
+                            allowClear={false}
+                        />
+                        <TimePicker.RangePicker 
+                            onChange={handleFinalTime}
+                            format="h:mm A" use12Hours 
+                            allowClear={false}/>
                     </Form.Item>
                 </>}
 
@@ -255,7 +278,7 @@ const NewEvent = (props) => {
                 {/* why doesn't this button have a  bottom margin */}
 
                 <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
-                    <EventTitle title={form.getFieldValue('Event Title')} ></EventTitle>
+                    <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} ></EventTitle>
                     <Tag icon={<CopyOutlined/>} /* onClick={copy({})} */>link to be copied</Tag>
                     <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
                     {!props.isAuthenticated && <>
