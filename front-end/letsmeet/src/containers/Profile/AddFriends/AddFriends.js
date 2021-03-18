@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import classes from './EditFriends.module.css';
+import React, { useState } from 'react';
+import classes from './AddFriends.module.css';
+import 'antd/dist/antd.css';
+import { Alert, Button} from 'antd';
 
-const EditFriends = (props) => {
+const AddFriends = (props) => {
 
     const dataList = [
-        {id: 1, name: "Alexa Taylor", email: "alexa@gmail.com"},
-        {id: 2, name: "Timothy Sanders", email: "timothy@gmail.com"},
-        {id: 3, name: "Sam Peter", email: "sam@gmail.com"},
-        {id: 4, name: "Matthew Fishman", email: "matt@gmail.com"},
-        {id: 5, name: "Matthew Fishman", email: "matt2@gmail.com"},
-        {id: 6, name: "Matthew Fishman", email: "matt3@gmail.com"},
-        {id: 7, name: "Matt Fish", email: "mattf@gmail.com"},
-        {id: 8, name: "Matt Fishman", email: "fishmanm@gmail.com"},
-        {id: 9, name: "Matt Fishman", email: "fishman1@gmail.com"},
-        {id: 10, name: "Matt Fishman", email: "fishmanmatt@gmail.com"},
-        {id: 11, name: "Matthew Fishman", email: "matt@gmail.com"},
-        {id: 12, name: "Matthew Fishman", email: "matt@gmail.com"},
-        {id: 13, name: "Matthew Fishman", email: "matt@gmail.com"},
-        {id: 14, name: "Matthew Fishman", email: "matt@gmail.com"},
-        {id: 15, name: "Matthew Fishman", email: "matt@gmail.com"},
-        {id: 16, name: "Matthew Fishman", email: "matt@gmail.com"},
-        {id: 17, name: "Matthew Fishman", email: "matt@gmail.com"}
+        {id: 1, name: "Alexa Taylor", email: "alexa@gmail.com", friend: "false"},
+        {id: 2, name: "Timothy Sanders", email: "timothy@gmail.com", friend: "true"},
+        {id: 3, name: "Sam Peter", email: "sam@gmail.com", friend: "false"},
+        {id: 4, name: "Matthew Fishman", email: "matt@gmail.com", friend: "false"},
+        {id: 5, name: "Matthew Fishman", email: "matt2@gmail.com", friend: "false"},
+        {id: 6, name: "Matthew Fishman", email: "matt3@gmail.com", friend: "false"},
+        {id: 7, name: "Matt Fish", email: "mattf@gmail.com", friend: "false"},
+        {id: 8, name: "Matt Fishman", email: "fishmanm@gmail.com", friend: "false"},
+        {id: 9, name: "Matt Fishman", email: "fishman1@gmail.com", friend: "true"},
+        {id: 10, name: "Matt Fishman", email: "fishmanmatt@gmail.com", friend: "true"}
     ]
 
     const [searchTerm, setSearchTerm] = useState("")
@@ -50,7 +45,7 @@ const EditFriends = (props) => {
     
     return (        
         <div className={classes.container}>
-            <h1>Add a friend</h1>
+            <h1>Add friends</h1>
             <p>Search for a friend by email address</p>
             <input
                 placeholder="Add user by email"
@@ -59,9 +54,10 @@ const EditFriends = (props) => {
             />
             <div>
                 {data.map((d, i) => {
-                    return <div key={i}>
-                        <b>Name: </b>{d.name}<br />
-                        <b>Email: </b>{d.email}<br />
+                    return <div key={i} className={classes.nameDisplay}>
+                        {d.name}<br/> <Button size="small" type="primary" className={classes.button}>add</Button>
+                        <div>{d.email}</div>
+                        <br/>
                     </div>
                 })}
                 <div className="clearboth"></div>
@@ -77,4 +73,4 @@ const EditFriends = (props) => {
     )
 }
 
-export default EditFriends;
+export default AddFriends;
