@@ -113,6 +113,7 @@ const NewEvent = (props) => {
                 onValuesChange={onRequiredTypeChange}
                 requiredMark={requiredMark}
                 submit={handleSubmit}
+                onFinish={showModal}
             >
                 <Divider orientation="center">Create New Event</Divider>
 
@@ -143,7 +144,8 @@ const NewEvent = (props) => {
                 <Form.Item 
                     label="Location"
                     name="Location"
-                    required tooltip={{
+                    required 
+                    tooltip={{
                         title: "Where is your event being held?",
                         icon: <InfoCircleOutlined />,
                     }}
@@ -155,13 +157,15 @@ const NewEvent = (props) => {
                     />
                 </Form.Item>
 
-                {!props.isAuthenticated && <>
+                {!props.isAuthenticated && 
                     <Form.Item
                         label="Date & Time"
-                        required tooltip={{
+                        required 
+                        tooltip={{
                             title: "When is your event being held?",
                             icon: <InfoCircleOutlined />,
                         }}
+                        // TO-DO: add validation
                     >
                         <DatePicker 
                             onChange={handleFinalDate} 
@@ -171,9 +175,10 @@ const NewEvent = (props) => {
                         <TimePicker.RangePicker 
                             onChange={handleFinalTime}
                             format="h:mm A" use12Hours 
-                            allowClear={false}/>
+                            allowClear={false}
+                        />
                     </Form.Item>
-                </>}
+                }
 
                 {props.isAuthenticated && <>
                     <Form.Item 
@@ -274,7 +279,7 @@ const NewEvent = (props) => {
                     </Tabs>
                 </>}
                     
-                <Button type="primary" htmlType="submit" className={classes.formButton} onClick={showModal}>Submit</Button>
+                <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
                 {/* why doesn't this button have a  bottom margin */}
 
                 <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
