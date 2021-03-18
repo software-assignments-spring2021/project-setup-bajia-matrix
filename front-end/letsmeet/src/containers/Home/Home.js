@@ -23,50 +23,50 @@ import EventInvite from '../../components/Event/EventInvite/EventInvite';
 const Home = (props) => {
     // TODO: comment out eventsList items when mockaroo runs out of requests
     const [eventsState, setEventsState] = useState([
-        // {
-        //     id: 1,
-        //     title: "Study Date",
-        //     day: "Wed",
-        //     date: "Mar 10",
-        //     time: "5:00 pm",
-        //     description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-        //     attendees: [
-        //         "Angela"
-        //     ],
-        //     myCreatedEvent: true,
-        //     creator: "Angela"
-        // },
-        // {
-        //     id: 2,
-        //     title: "Brunch",
-        //     day: "Sat",
-        //     date: "Mar 6",
-        //     time: "11:00 am",
-        //     description: "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. ",
-        //     attendees: [
-        //         "Jessica",
-        //         "James",
-        //         "Ethan",
-        //         "Kai"
-        //     ],
-        //     myCreatedEvent: false,
-        //     creator: "Jessica"
-        // },
-        // {
-        //     id: 3,
-        //     title: "Alex's Birthday",
-        //     day: "Wed",
-        //     date: "Mar 24",
-        //     time: "7:30 pm",
-        //     description: "The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler text can be very useful when the focus is meant to be on design, not content.",
-        //     attendees: [
-        //         "Alex",
-        //         "Tom",
-        //         "Alice"
-        //     ],
-        //     myCreatedEvent: false,
-        //     creator: "Alex"
-        // }
+        {
+            id: 1,
+            title: "Study Date",
+            day: "Wed",
+            date: "Mar 10",
+            time: "5:00 pm",
+            description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
+            attendees: [
+                "Angela"
+            ],
+            myCreatedEvent: true,
+            creator: "Angela"
+        },
+        {
+            id: 2,
+            title: "Brunch",
+            day: "Sat",
+            date: "Mar 6",
+            time: "11:00 am",
+            description: "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. ",
+            attendees: [
+                "Jessica",
+                "James",
+                "Ethan",
+                "Kai"
+            ],
+            myCreatedEvent: false,
+            creator: "Jessica"
+        },
+        {
+            id: 3,
+            title: "Alex's Birthday",
+            day: "Wed",
+            date: "Mar 24",
+            time: "7:30 pm",
+            description: "The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler text can be very useful when the focus is meant to be on design, not content.",
+            attendees: [
+                "Alex",
+                "Tom",
+                "Alice"
+            ],
+            myCreatedEvent: false,
+            creator: "Alex"
+        }
     ]);
 
     useEffect(() => {
@@ -171,7 +171,7 @@ const Home = (props) => {
             <div className={classes.Event}>
                 {pendingInvites}
             </div>
-            <Button className={classes.Button} variant="outline-dark" onClick={newEventHandler}>Create New Event</Button>
+            <a href="/user/newevent" ><Button variant="outline-dark" className={classes.createEventButton} onClick={newEventHandler}>Create New Event</Button></a>
             <h5>Your Events</h5>
             <div className={classes.Event}>
                 {myEvents}
