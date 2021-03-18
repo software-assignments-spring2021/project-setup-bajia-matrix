@@ -80,7 +80,7 @@ const Home = (props) => {
             .catch(error => {
                 console.log(error);
             });
-    });
+    }, []);
 
     // TODO: comment out invites list when mockaroo runs out of requests
     const [invitesState, setInvitesState] = useState([

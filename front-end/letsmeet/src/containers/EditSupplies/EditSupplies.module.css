@@ -1,32 +1,59 @@
+.Button {
+    margin: 10px;
+    width: 100%;
+}
+
 .Card {
     text-align: center;
     background-color: #dce5e2;
-    width: 50%;
+    width: 75%;
     border: thin solid #d2dad9; /* width, style, color */
-    border-radius: 25px; /* rounded borders */
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    margin: 20px; /* space b/t each card */
 }  
 
 .CardBody {
     width: 100%;
-    padding: 20px 0;
-    margin: -30px 0 0 0;
-    position: relative;
 }
 
 .EditSupplies {
     margin: auto;
     display: flex;
     width: 100%;
-    overflow: scroll; /* enable scrolling if too long */
+    overflow: scroll; 
     align-items: center;
     flex-flow: column;
-    padding: 0 0 20px 0; /* top and bottom, left and right */
+}
+
+.EditSupplies h5 {
+    margin: 20px 0 20px 0;
+    font-weight: 700;
+}
+
+.Form {
+    width: 100%;
+    text-align: center;
+}
+
+.Input {
+    margin: 0 10px;
+    width: 42%;
+    height: 40px;
+}
+
+.Submit {
+    display: flex;
+    justify-content: center;
+    flex-flow: row nowrap; /* flex-direction, wrap */
+    margin: 10px;
+    align-items: baseline;
 }
 
 .Supplies {
-
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-flow: column;
+    flex-direction: column; 
+    margin: 0 0 20px 0;
 }
+
+

@@ -12,37 +12,37 @@ import avi from '../../assets/Avatars/redavi.png';
     to the edit profile page from here.
 
     Props:
-        This component does not except any custom props
+        This component does not accept any custom props
 */
 
 const Profile = (props) => {
     // TODO: comment out data when mockaroo request cap resets
     const [profileState, setProfileState] = useState({
-        id: "1",
-        avatar: avi,
-        name: "Angela Tim",
-        city: "New York City",
-        state: "NY",
-        friends: [
-            {id: 1, name: "Alexa Taylor"},
-            {id: 2, name: "Timothy Sanders"},
-            {id: 3, name: "Matthew Fishman"},
-            {id: 4, name: "Matthew Fishman"},
-            {id: 5, name: "Matthew Fishman"},
-            {id: 6, name: "Matthew Fishman"},
-            {id: 7, name: "Matthew Fishman"},
-            {id: 8, name: "Matthew Fishman"},
-            {id: 9, name: "Matthew Fishman"},
-            {id: 10, name: "Matthew Fishman"},
-            {id: 11, name: "Matthew Fishman"},
-            {id: 12, name: "Matthew Fishman"},
-            {id: 13, name: "Matthew Fishman"},
-            {id: 14, name: "Matthew Fishman"},
-            {id: 15, name: "Matthew Fishman"},
-            {id: 16, name: "Matthew Fishman"},
-            {id: 17, name: "Matthew Fishman"}
-        ]
-        // friends: []
+        // id: "1",
+        // avatar: avi,
+        // name: "Angela Tim",
+        // city: "New York City",
+        // state: "NY",
+        // friends: [
+        //     {id: 1, name: "Alexa Taylor"},
+        //     {id: 2, name: "Timothy Sanders"},
+        //     {id: 3, name: "Matthew Fishman"},
+        //     {id: 4, name: "Matthew Fishman"},
+        //     {id: 5, name: "Matthew Fishman"},
+        //     {id: 6, name: "Matthew Fishman"},
+        //     {id: 7, name: "Matthew Fishman"},
+        //     {id: 8, name: "Matthew Fishman"},
+        //     {id: 9, name: "Matthew Fishman"},
+        //     {id: 10, name: "Matthew Fishman"},
+        //     {id: 11, name: "Matthew Fishman"},
+        //     {id: 12, name: "Matthew Fishman"},
+        //     {id: 13, name: "Matthew Fishman"},
+        //     {id: 14, name: "Matthew Fishman"},
+        //     {id: 15, name: "Matthew Fishman"},
+        //     {id: 16, name: "Matthew Fishman"},
+        //     {id: 17, name: "Matthew Fishman"}
+        // ]
+        friends: []
     });
 
     useEffect(() => {
