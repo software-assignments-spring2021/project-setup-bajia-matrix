@@ -9,6 +9,7 @@ import Landing from './components/Landing/Landing';
 import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
+import EditFriends from './containers/Profile/EditFriends/EditFriends';
 import Home from './containers/Home/Home';
 import EditSupplies from './containers/EditSupplies/EditSupplies';
 
@@ -54,6 +55,7 @@ const App = (props) => {
                     <Route path="/profile" exact component={Profile} />
                     <Route path="/editavatar" exact component={EditAvatar} />
                     <Route path="/editprofile" exact component={EditProfile} />
+                    <Route path="/editfriends" exact component={EditFriends} />
                     <Route path="/" exact component={Home} />
                     <Redirect to="/" />
             </Switch>
