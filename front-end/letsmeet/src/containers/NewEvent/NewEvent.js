@@ -3,17 +3,17 @@ import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
 import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
 import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Row, Col, Tab, Tabs } from 'react-bootstrap'
+import { Tab, Tabs } from 'react-bootstrap'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ScheduleSelector  from 'react-schedule-selector';
-import SelectCalendar from './SelectCalendar';
 import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 import moment from 'moment';
 
 const NewEvent = (props) => {
 
     // Variables for the form
-    const [form] = Form.useForm();
-    const [requiredMark, setRequiredMarkType] = useState('*');
+    const [form] = Form.useForm()
+    const [requiredMark, setRequiredMarkType] = useState('*')
 
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
@@ -52,39 +52,26 @@ const NewEvent = (props) => {
         setSchedule(e)
     }
 
-    // function getDates(e) {
-    //     let sortedDates = e.sort((a,b) => a.valueOf() - b.valueOf())
-    //     var eventDates = new Set()
-    //     for(let i=0; i < e.length; i++) {
-    //         let dates = moment(sortedDates[i]).format('MMMM Do YYYY')
-    //         eventDates.add(dates)
-    //     }
-    //     console.log(eventDates)
-    // }
-
-    // getDates(schedule)
-
     function handleSubmit(e) {
         e.preventDefault();
     }
 
     // Used for tab display
-    const [key, setKey] = useState('week');
+    const [key, setKey] = useState('week')
 
     // Event pop-up after pressing submit
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false)
     //const copy = require('clipboard-copy')
     const showModal = () => {
-        setIsModalVisible(true);
+        setIsModalVisible(true)
     };
     const handleOk = () => {
-        setIsModalVisible(false);
+        setIsModalVisible(false)
         // TO-DO: Add path
     };
     const handleCancel = () => {
-        setIsModalVisible(false);
+        setIsModalVisible(false)
     };
-
     // To add more fields for date and time
     const formItemLayout = {
         labelCol: {
@@ -102,6 +89,7 @@ const NewEvent = (props) => {
           sm: { span: 20 },
         },
     };
+
     return (
         <div className={classes.container}>
             <Form
@@ -157,28 +145,30 @@ const NewEvent = (props) => {
                     />
                 </Form.Item>
 
-                {!props.isAuthenticated && 
+                {!props.isAuthenticated && <>
                     <Form.Item
+                        name="Date"
                         label="Date & Time"
                         required 
-                        tooltip={{
-                            title: "When is your event being held?",
-                            icon: <InfoCircleOutlined />,
-                        }}
-                        // TO-DO: add validation
+                        rules={[{required:true, message: 'Please include event date!'}]}
                     >
                         <DatePicker 
                             onChange={handleFinalDate} 
                             format="MM/DD/YYYY" 
                             allowClear={false}
                         />
+                    </Form.Item>
+                    <Form.Item
+                        name="Time"
+                        rules={[{required:true, message: 'Please include event time!'}]}
+                    >
                         <TimePicker.RangePicker 
                             onChange={handleFinalTime}
                             format="h:mm A" use12Hours 
                             allowClear={false}
                         />
                     </Form.Item>
-                }
+                </>}
 
                 {props.isAuthenticated && <>
                     <Form.Item 
@@ -241,13 +231,6 @@ const NewEvent = (props) => {
                                         <Form.Item
                                         {...field}
                                         validateTrigger={['onChange', 'onBlur']}
-                                        rules={[
-                                            {
-                                            required: true,
-                                            whitespace: true,
-                                            message: "Please input a date and time range or delete this field.",
-                                            },
-                                        ]}
                                         noStyle
                                         >
                                             <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
@@ -284,7 +267,9 @@ const NewEvent = (props) => {
 
                 <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                     <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} ></EventTitle>
-                    <Tag icon={<CopyOutlined/>} /* onClick={copy({})} */>link to be copied</Tag>
+                    <CopyToClipboard text='link generated w/ event id'>
+                        <Tag icon={<CopyOutlined/>}>link generated w/ event id</Tag>
+                    </CopyToClipboard>
                     <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
                     {!props.isAuthenticated && <>
                         <Alert
