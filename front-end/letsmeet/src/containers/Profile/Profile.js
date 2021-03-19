@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './Profile.module.css';
 import axios from '../../axios';
 import avi from '../../assets/Avatars/redavi.png';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 /* 
     This component displays the profile page based on the information
@@ -16,6 +17,8 @@ import avi from '../../assets/Avatars/redavi.png';
 */
 
 const Profile = (props) => {
+    const [loading, setLoading] = useState(true);
+    
     // TODO: comment out data when mockaroo request cap resets
     const [profileState, setProfileState] = useState({
         // id: "1",
@@ -49,41 +52,54 @@ const Profile = (props) => {
         axios.get('/users.json?key=fe6891f0')
             .then(response => {
                 setProfileState(response.data);
+                setLoading(false);
             })
             .catch(error => {
                 console.log(error);
+                setLoading(false);
             })
     }, []);
 
     let friendsList = profileState.friends.map(friend => (
-        <p key={friend.id}>{friend.name}</p>
+        <p key={friend.id.$oid}>{friend.name}</p>
     ))
     
     let editProfileHandler = () => {
         props.history.push("/editprofile");
     }
 
+    // render
     // TODO: logic to check the name of user's avatar and display the image associated with it
     // maybe store avatar as an id
+    let profilePage = <Spinner />;
+    if (!loading) {
+        profilePage = (
+            <div className={classes.Profile}>
+                <Card className={classes.Card}>
+                    {/* TODO: replace src to actual avatar for current user */}
+                    <Card.Img className={classes.CardImg} src={avi} />
+                    <Card.Body className={classes.CardBody}>
+                        <hr />
+                        <Card.Title as="h2">{profileState.name}</Card.Title>
+                        <Card.Text>{profileState.city}, {profileState.state}</Card.Text>
+                        <Button variant="outline-primary" onClick={editProfileHandler}>Edit Profile</Button>
+                    </Card.Body>
+                </Card>
+
+                <Card className={classes.Card}>
+                    <Card.Title className={classes.FriendsTitle} as="h2">
+                        Your Friends
+                        <hr />    
+                    </Card.Title>
+                    <Card.Body className={classes.FriendsBody}>{friendsList}</Card.Body>
+                </Card>
+            </div>
+        );
+    }
+
     return (
-        <div className={classes.Profile}>
-            <Card className={classes.Card}>
-                {/* TODO: replace src to actual avatar for current user */}
-                <Card.Img className={classes.CardImg} src={avi} />
-                <Card.Body className={classes.CardBody}>
-                    <hr />
-                    <Card.Title as="h2">{profileState.name}</Card.Title>
-                    <Card.Text>{profileState.city}, {profileState.state}</Card.Text>
-                    <Button variant="outline-primary" onClick={editProfileHandler}>Edit Profile</Button>
-                </Card.Body>
-            </Card>
-            <Card className={classes.Card}>
-                <Card.Title className={classes.FriendsTitle} as="h2">
-                    Your Friends
-                    <hr />    
-                </Card.Title>
-                <Card.Body className={classes.FriendsBody}>{friendsList}</Card.Body>
-            </Card>
+        <div>
+            {profilePage}
         </div>
     );
 };

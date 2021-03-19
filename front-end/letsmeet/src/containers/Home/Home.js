@@ -6,6 +6,7 @@ import classes from './Home.module.css';
 import axios from '../../axios';
 import Event from '../../components/Event/Event';
 import EventInvite from '../../components/Event/EventInvite/EventInvite';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 /*
     This component displays the home page with a signed in user.
@@ -21,6 +22,11 @@ import EventInvite from '../../components/Event/EventInvite/EventInvite';
 // sort by earliest date to latest. Better to do this in front-end or do it in back-end
 // and pass a sorted array to front-end? I think back-end is best
 const Home = (props) => {
+    const [loading, setLoading] = useState({
+        invites: true,
+        events: true
+    });
+
     // TODO: comment out eventsList items when mockaroo runs out of requests
     const [eventsState, setEventsState] = useState([
         // {
@@ -76,9 +82,11 @@ const Home = (props) => {
                 const list = response.data.events;
                 // setEventsState({ eventsList: list });
                 setEventsState(list);
+                setLoading({ events: false });
             })
             .catch(error => {
                 console.log(error);
+                setLoading({ events: false });
             });
     }, []);
 
@@ -97,20 +105,22 @@ const Home = (props) => {
         // TODO: should be /invites/:userId.json
         // should only get pending invites for current user
         axios.get("/invites.json?key=fe6891f0")
-        .then(response => {
-            const list = response.data.invites;
-            // setInvitesState({ invites: list });
-            setInvitesState(list);
-        })
-        .catch(error => {
-            console.log(error);
-        });
+            .then(response => {
+                const list = response.data.invites;
+                // setInvitesState({ invites: list });
+                setInvitesState(list);
+                setLoading({ invites: false });
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading({ invites: false });
+            });
     }, []);
 
     let pendingInvites = invitesState.map((e) => {
         return (
             <EventInvite
-                key={e.id}
+                key={e.id.$oid}
                 title={e.title}
                 range={e.range}
                 description={e.description}
@@ -123,7 +133,7 @@ const Home = (props) => {
         if (e.myCreatedEvent) {
             return (
                 <Event
-                    key={e.id}
+                    key={e.id.$oid}
                     title={e.title}
                     day={e.day}
                     date={e.date}
@@ -144,7 +154,7 @@ const Home = (props) => {
         if (!e.myCreatedEvent) {
             return (
                 <Event
-                    key={e.id}
+                    key={e.id.$oid}
                     title={e.title}
                     day={e.day}
                     date={e.date}
@@ -165,21 +175,31 @@ const Home = (props) => {
         props.history.push("/editsupplies");
     }
 
+    // render
+    let homePage = <Spinner />;
+    if (!loading.invites && !loading.events) {
+        homePage = (
+            <div className={classes.Home}>
+                {invitesState.length > 0 ? <h5>Pending Invitations</h5> : null}
+                <div className={classes.Event}>
+                    {pendingInvites}
+                </div>
+                <Button className={classes.Button} variant="outline-dark" onClick={newEventHandler}>Create New Event</Button>
+                <h5>Your Events</h5>
+                <div className={classes.Event}>
+                    {myEvents}
+                </div>
+                <h5>Other Upcoming Events</h5>
+                <div className={classes.Event}>
+                    {upcomingEvents}    
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className={classes.Home}>
-            {invitesState.length > 0 ? <h5>Pending Invitations</h5> : null}
-            <div className={classes.Event}>
-                {pendingInvites}
-            </div>
-            <Button className={classes.Button} variant="outline-dark" onClick={newEventHandler}>Create New Event</Button>
-            <h5>Your Events</h5>
-            <div className={classes.Event}>
-                {myEvents}
-            </div>
-            <h5>Other Upcoming Events</h5>
-            <div className={classes.Event}>
-                {upcomingEvents}    
-            </div>
+        <div>
+            {homePage}
         </div>
     );
 };

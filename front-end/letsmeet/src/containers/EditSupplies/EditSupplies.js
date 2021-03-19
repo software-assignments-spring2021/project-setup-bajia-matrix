@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './EditSupplies.module.css';
 import axios from '../../axios';
 import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 /*
     This component renders the EditSupplies page by fetching information
@@ -20,6 +21,8 @@ import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 */
 
 const EditSupplies = (props) => {
+    const [loading, setLoading] = useState(true);
+
     const [suppliesState, setSuppliesState] = useState({
         // title: "Study Date",
         // day: "Wednesday",
@@ -39,9 +42,11 @@ const EditSupplies = (props) => {
             .then(response => {
                 const list = response.data.events;
                 setSuppliesState(list[0]);
+                setLoading(false);
             })
             .catch(error => {
                 console.log(error);
+                setLoading(false);
             });
     }, []);
 
@@ -56,7 +61,7 @@ const EditSupplies = (props) => {
     const [formData, setFormData] = useReducer(formReducer, {});
     
     let suppliesList = suppliesState.supplies.map(sup => {
-        return <li key={sup.id}>{sup.supply} (${sup.amount}) - {sup.name}</li>;
+        return <li key={sup.id.$oid}>{sup.supply} (${sup.amount}) - {sup.name}</li>;
     });
 
     let inputChangedHandler = (event) => {
@@ -105,78 +110,87 @@ const EditSupplies = (props) => {
         // }, 3000);
     };
 
-    return (
-        <Container fluid>
-            <Row>
-                <Col className="md-12">
-                    <Navbar>
-                        {/* TODO: update link to myevent */}
-                        <Link to="/" exact>
-                            <Navbar.Text>Cancel</Navbar.Text>
-                        </Link>
-                        
-                        <Navbar.Collapse className="justify-content-center">
-                            <Navbar.Brand>
-                            <h4>Edit Event Supplies</h4>
-                            </Navbar.Brand>
-                        </Navbar.Collapse>
-                    </Navbar>
-                    <hr />
-                </Col>
-            </Row>
+    let editSuppliesPage = <Spinner />;
+    if (!loading) {
+        editSuppliesPage = (
+            <Container fluid>
+                <Row>
+                    <Col className="md-12">
+                        <Navbar>
+                            {/* TODO: update link to myevent */}
+                            <Link to="/" exact>
+                                <Navbar.Text>Cancel</Navbar.Text>
+                            </Link>
+                            
+                            <Navbar.Collapse className="justify-content-center">
+                                <Navbar.Brand>
+                                <h4>Edit Event Supplies</h4>
+                                </Navbar.Brand>
+                            </Navbar.Collapse>
+                        </Navbar>
+                        <hr />
+                    </Col>
+                </Row>
 
-            <Row>
-                <div className={classes.EditSupplies}>
-                    <EventTitle 
-                        title={suppliesState.title}
-                        day={suppliesState.day}
-                        date={suppliesState.date}
-                        time={suppliesState.time} />
+                <Row>
+                    <div className={classes.EditSupplies}>
+                        <EventTitle 
+                            title={suppliesState.title}
+                            day={suppliesState.day}
+                            date={suppliesState.date}
+                            time={suppliesState.time} />
 
-                    <h5>Current Supplies</h5>
-                    <div className={classes.Supplies}>
-                        <Card className={classes.Card} >
-                            <Card.Body className={classes.CardBody}>
-                                <ul>
-                                    {suppliesList}
-                                </ul>
-                            </Card.Body>
-                        </Card>
+                        <h5>Current Supplies</h5>
+                        <div className={classes.Supplies}>
+                            <Card className={classes.Card} >
+                                <Card.Body className={classes.CardBody}>
+                                    <ul>
+                                        {suppliesList}
+                                    </ul>
+                                </Card.Body>
+                            </Card>
+                        </div>
+
+                        <form onSubmit={submitHandler}>
+                            <h5>Enter a new supply and the amount spent on it</h5>
+                            <div className={classes.Form}>
+                                <fieldset>
+                                    <input 
+                                        className={classes.Input} 
+                                        type="text" 
+                                        name="addSupply" 
+                                        placeholder="Supply" 
+                                        required 
+                                        onChange={(event) => inputChangedHandler(event)} 
+                                    />
+                                    <input 
+                                        className={classes.Input} 
+                                        type="number" 
+                                        name="amount" 
+                                        placeholder="Amount"
+                                        required
+                                        min="0.00" 
+                                        max="1000.00" 
+                                        step="0.01" 
+                                        onChange={(event) => inputChangedHandler(event)} 
+                                    />
+                                </fieldset>
+                            </div>
+                            <div className={classes.Submit}>
+                                <Button className={classes.Button} variant="secondary" type="submit">Add</Button>
+                                {submitting ? <p>Adding...</p> : null}
+                            </div>
+                        </form>
                     </div>
+                </Row>
+            </Container>
+        );
+    }
 
-                    <form onSubmit={submitHandler}>
-                        <h5>Enter a new supply and the amount spent on it</h5>
-                        <div className={classes.Form}>
-                            <fieldset>
-                                <input 
-                                    className={classes.Input} 
-                                    type="text" 
-                                    name="addSupply" 
-                                    placeholder="Supply" 
-                                    required 
-                                    onChange={(event) => inputChangedHandler(event)} 
-                                />
-                                <input 
-                                    className={classes.Input} 
-                                    type="number" 
-                                    name="amount" 
-                                    placeholder="Amount"
-                                    required
-                                    min="0.00" 
-                                    max="1000.00" 
-                                    step="0.01" 
-                                    onChange={(event) => inputChangedHandler(event)} 
-                                />
-                            </fieldset>
-                        </div>
-                        <div className={classes.Submit}>
-                            <Button className={classes.Button} variant="secondary" type="submit">Add</Button>
-                            {submitting ? <p>Adding...</p> : null}
-                        </div>
-                    </form>
-                </div>
-            </Row>
-        </Container>
+    return (
+        <div>
+            {editSuppliesPage}
+        </div>
     );
 };
 
