@@ -23,7 +23,7 @@ const NewEvent = (props) => {
 
     // Used to select date for verified users
     // Week view
-    const [startDate, setDate] = useState(Date())
+    const [startDate, setDate] = useState()
     const dateFormat = "MM/DD"
     const [schedule, setSchedule] = useState()
     // List view
@@ -66,10 +66,11 @@ const NewEvent = (props) => {
 
     function handleChangeSchedule(e) {
         setSchedule(e)
+        console.log(schedule)
     }
 
     function handleSubmit(e) {
-        e.preventDefault();
+        e.preventDefault()
     }
 
     // Used for tab display
@@ -200,20 +201,50 @@ const NewEvent = (props) => {
                     >
                         <span className="ant-form-text">Select your availability using the calendar in "Week View", or manually select dates and time slots using "List View".</span>
                     </Form.Item>
+
+                    {/* Availability for verified users*/}
                     <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
+
                         <Tab eventKey="week" title="Week View">
-                            <Form.Item className={classes.dateSelect}
-                            label="Select start date for availability calendar.">
+                            <Form.Item 
+                                className={classes.dateSelect}
+                                label="Select start date for availability calendar."
+                                name="Calendar Start Date"
+                                required
+                                rules={[
+                                    {
+                                        validator: async () => {
+                                        if (key === "week" && !startDate) {
+                                            return Promise.reject(new Error('Please select a start date for the availability calendar!'));
+                                        }
+                                        },
+                                    },
+                                ]}
+                            >
                                 <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
                             </Form.Item>
-                            <ScheduleSelector
-                                hourlyChunks={1}
-                                startDate={startDate}
-                                onChange={handleChangeSchedule}
-                                selectedColor={"#3D41D8"}
-                                selection={schedule}
-                            />
+                            <Form.Item
+                                name="calendar select"
+                                rules={[
+                                    {
+                                        validator: async () => {
+                                        if (key === "week" && schedule.length === 0) {
+                                            return Promise.reject(new Error('Please select at least one availability slot!'));
+                                        }
+                                        },
+                                    },
+                                ]}
+                            >
+                                <ScheduleSelector
+                                    hourlyChunks={1}
+                                    startDate={startDate}
+                                    onChange={handleChangeSchedule}
+                                    selectedColor={"#3D41D8"}
+                                    selection={schedule}
+                                />
+                            </Form.Item>
                         </Tab>
+
                         <Tab eventKey="list" title="List View">
                             <Form.Item>
                                 <span className="ant-form-text"><b>Date and Time Slot Availability:</b> Please add at least one date and time slot. The more the merrier!</span>
@@ -235,18 +266,18 @@ const NewEvent = (props) => {
                                     {fields.map((field, index) => (
                                     <Space key={field.key} style= {{display: 'flex', alignContent: 'center'}} align="end">
                                         <Form.Item
-                                        {...field}
-                                        name={[field.name, 'dates']}
-                                        fieldKey={[field.fieldKey, 'dates']}
-                                        rules={[{ required: true, message: 'Missing date' }]}
+                                            {...field}
+                                            name={[field.name, 'dates']}
+                                            fieldKey={[field.fieldKey, 'dates']}
+                                            rules={[{ required: true, message: 'Missing date' }]}
                                         >
                                             <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
                                         </Form.Item>
                                         <Form.Item
-                                        {...field}
-                                        name={[field.name, 'times']}
-                                        fieldKey={[field.fieldKey, 'times']}
-                                        rules={[{ required: true, message: 'Missing time slot' }]}
+                                            {...field}
+                                            name={[field.name, 'times']}
+                                            fieldKey={[field.fieldKey, 'times']}
+                                            rules={[{ required: true, message: 'Missing time slot' }]}
                                         >
                                             <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
                                         </Form.Item>
@@ -267,7 +298,6 @@ const NewEvent = (props) => {
                 </>}
                     
                 <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
-                {/* why doesn't this button have a  bottom margin */}
 
                 <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                     {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
@@ -275,7 +305,7 @@ const NewEvent = (props) => {
                     <CopyToClipboard text='link generated w/ event id'>
                         <Tag icon={<CopyOutlined/>}>link generated w/ event id</Tag>
                     </CopyToClipboard>
-                    <div style={{height: "20px"}}></div> {/* TO-DO: figure out how to add padding */}
+                    <div style={{height: "20px"}}></div>
                     {!props.isAuthenticated && <>
                         <Alert
                             message="Want to unlock all features? Create an account now!"
