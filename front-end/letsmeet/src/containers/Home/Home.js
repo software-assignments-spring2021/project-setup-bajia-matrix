@@ -172,7 +172,7 @@ const Home = (props) => {
     });
 
     let newEventHandler = () => {
-        props.history.push("/editsupplies");
+        props.history.push("/user/newevent");
     }
 
     // render
