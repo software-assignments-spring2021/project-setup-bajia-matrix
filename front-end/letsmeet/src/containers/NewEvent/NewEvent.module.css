@@ -1,3 +1,9 @@
+.cancelButton {
+    margin-top: -27px;
+    float: left;
+    width: 15%;
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -38,4 +44,17 @@
 .formButton {
     display: block;
     margin: 20px auto;
+}
+
+.subheader {
+    display: block;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid #777;
+    margin-top: -17px;
+    padding: 10px;
+}
+
+.subheader h6 {
+    padding-top: 5px;
 }

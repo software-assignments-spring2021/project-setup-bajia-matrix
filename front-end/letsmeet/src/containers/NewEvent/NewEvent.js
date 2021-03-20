@@ -91,231 +91,237 @@ const NewEvent = (props) => {
     };
 
     return (
-        <div className={classes.container}>
-            <Form
-                form={form}
-                layout="vertical"
-                initialValues={{
-                    requiredMark,
-                }}
-                onValuesChange={onRequiredTypeChange}
-                requiredMark={requiredMark}
-                submit={handleSubmit}
-                onFinish={showModal}
-            >
-                <Divider orientation="center">Create New Event</Divider>
-
-                <Form.Item 
-                    label="Event Title" 
-                    name="Event Title"
-                    required tooltip={{
-                        title: "This is a required field.", 
-                        icon: <InfoCircleOutlined />,
+        <div>
+            <div className={classes.subheader}>
+                <center><h6>Create a New Event</h6></center>
+                <div className={classes.cancelButton}>
+                    <a href="/">Cancel</a>
+                </div>
+            </div>
+            <div className={classes.container}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    initialValues={{
+                        requiredMark,
                     }}
-                    rules={[{required:true, message: 'Please include event title!'}]}
+                    onValuesChange={onRequiredTypeChange}
+                    requiredMark={requiredMark}
+                    submit={handleSubmit}
+                    onFinish={showModal}
                 >
-                    <Input.TextArea placeholder="ex. Birthday Party" autoSize maxLength={50} showCount={true}/>
-                </Form.Item>
-
-                <Form.Item
-                    label="Event Description"
-                    name="Event Description"
-                    required tooltip={{
-                        title: "Write the event details here.",
-                        icon: <InfoCircleOutlined />,
-                    }}
-                    rules={[{required: true, message: 'Please include event description!'}]}
-                >
-                    <Input.TextArea autoSize maxLength={300} showCount={true} placeholder="Write event details here"/>
-                </Form.Item>
-
-                <Form.Item 
-                    label="Location"
-                    name="Location"
-                    required 
-                    tooltip={{
-                        title: "Where is your event being held?",
-                        icon: <InfoCircleOutlined />,
-                    }}
-                    rules={[{required:true, message: 'Please include event location!'}]}
-                >
-                    <Input
-                        prefix={<EnvironmentOutlined/>}
-                        placeholder="Add event location"
-                    />
-                </Form.Item>
-
-                {!props.isAuthenticated && <>
-                    <Form.Item
-                        name="Date"
-                        label="Date & Time"
-                        required 
-                        rules={[{required:true, message: 'Please include event date!'}]}
-                    >
-                        <DatePicker 
-                            onChange={handleFinalDate} 
-                            format="MM/DD/YYYY" 
-                            allowClear={false}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name="Time"
-                        rules={[{required:true, message: 'Please include event time!'}]}
-                    >
-                        <TimePicker.RangePicker 
-                            onChange={handleFinalTime}
-                            format="h:mm A" use12Hours 
-                            allowClear={false}
-                        />
-                    </Form.Item>
-                </>}
-
-                {props.isAuthenticated && <>
                     <Form.Item 
-                        label="Invite Friends" 
-                        tooltip={{
-                            title: "Invite people from your friends list. You can add more friends later.",
+                        label="Event Title" 
+                        name="Event Title"
+                        required tooltip={{
+                            title: "This is a required field.", 
                             icon: <InfoCircleOutlined />,
                         }}
+                        rules={[{required:true, message: 'Please include event title!'}]}
                     >
-                        <Select
-                            mode="multiple"
-                            placeholder="Select from Friends List"
-                            style={{ width: '100%' }}
-                        >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
-                        </Select>
+                        <Input.TextArea placeholder="ex. Birthday Party" autoSize maxLength={50} showCount={true}/>
                     </Form.Item>
 
-                    <Divider orientation="center">Availability</Divider>
                     <Form.Item
-                        label="Your Availability for this Event"
-                        name="Availability"
-                        required
-                        tooltip={{
-                            title: 'Please include as many availability slots as possible. We use this to calculate best possible times for your event.',
+                        label="Event Description"
+                        name="Event Description"
+                        required tooltip={{
+                            title: "Write the event details here.",
                             icon: <InfoCircleOutlined />,
                         }}
+                        rules={[{required: true, message: 'Please include event description!'}]}
                     >
-                        <span className="ant-form-text">Select your availability using the calendar in "Week View", or manually select dates and time slots using "List View".</span>
+                        <Input.TextArea autoSize maxLength={300} showCount={true} placeholder="Write event details here"/>
                     </Form.Item>
 
-                    {/* Availability for verified users*/}
-                    <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
-
-                        <Tab eventKey="week" title="Week View">
-                            <Form.Item 
-                                className={classes.dateSelect}
-                                label="Select start date for availability calendar."
-                                name="Calendar Start Date"
-                                required
-                                rules={[
-                                    {
-                                        validator: async () => {
-                                        if (key === "week" && !startDate) {
-                                            return Promise.reject(new Error('Please select a start date for the availability calendar!'));
-                                        }
-                                        },
-                                    },
-                                ]}
-                            >
-                                <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
-                            </Form.Item>
-                            <Form.Item
-                                name="calendar select"
-                                rules={[
-                                    {
-                                        validator: async () => {
-                                        if (key === "week" && schedule.length === 0) {
-                                            return Promise.reject(new Error('Please select at least one availability slot!'));
-                                        }
-                                        },
-                                    },
-                                ]}
-                            >
-                                <ScheduleSelector
-                                    hourlyChunks={1}
-                                    startDate={startDate}
-                                    onChange={handleChangeSchedule}
-                                    selectedColor={"#3D41D8"}
-                                    selection={schedule}
-                                />
-                            </Form.Item>
-                        </Tab>
-
-                        <Tab eventKey="list" title="List View">
-                            <Form.Item>
-                                <span className="ant-form-text"><b>Date and Time Slot Availability:</b> Please add at least one date and time slot. The more the merrier!</span>
-                            </Form.Item>
-                            <Form.List 
-                                name="slots"
-                                rules={[
-                                    {
-                                        validator: async (_, names) => {
-                                        if ((!names || names.length < 1) && key === "list") {
-                                            return Promise.reject(new Error('Must include at least one availability slot!'));
-                                        }
-                                        },
-                                    },
-                                ]}
-                            >
-                                {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    {fields.map((field, index) => (
-                                    <Space key={field.key} style= {{display: 'flex', alignContent: 'center'}} align="end">
-                                        <Form.Item
-                                            {...field}
-                                            name={[field.name, 'dates']}
-                                            fieldKey={[field.fieldKey, 'dates']}
-                                            rules={[{ required: true, message: 'Missing date' }]}
-                                        >
-                                            <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
-                                        </Form.Item>
-                                        <Form.Item
-                                            {...field}
-                                            name={[field.name, 'times']}
-                                            fieldKey={[field.fieldKey, 'times']}
-                                            rules={[{ required: true, message: 'Missing time slot' }]}
-                                        >
-                                            <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
-                                        </Form.Item>
-                                        <MinusCircleOutlined onClick={() => remove(field.name)} style={{marginBottom: '32px'}}/>
-                                    </Space>
-                                    ))}
-                                    <Form.Item>
-                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add field
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                                )}
-                            </Form.List>
-                        </Tab>
-                    </Tabs>
-                </>}
-                    
-                <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
-
-                <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
-                    {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
-                    {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
-                    <CopyToClipboard text='[event id link]' className={classes.copyLink}>
-                        <Tag icon={<CopyOutlined/>} className={classes.copyButton}>[event id link] (Click to copy to clipboard)</Tag>
-                    </CopyToClipboard>
-                    <div style={{height: "20px"}}></div>
-                    {!props.isAuthenticated && <>
-                        <Alert
-                            message="Want to unlock all features? Create an account now!"
-                            type="info"
-                            showIcon
-                            action={<a href="/signup"><Button size="small" type="primary" >Go</Button></a>}
+                    <Form.Item 
+                        label="Location"
+                        name="Location"
+                        required 
+                        tooltip={{
+                            title: "Where is your event being held?",
+                            icon: <InfoCircleOutlined />,
+                        }}
+                        rules={[{required:true, message: 'Please include event location!'}]}
+                    >
+                        <Input
+                            prefix={<EnvironmentOutlined/>}
+                            placeholder="Add event location"
                         />
+                    </Form.Item>
+
+                    {!props.isAuthenticated && <>
+                        <Form.Item
+                            name="Date"
+                            label="Date & Time"
+                            required 
+                            rules={[{required:true, message: 'Please include event date!'}]}
+                        >
+                            <DatePicker 
+                                onChange={handleFinalDate} 
+                                format="MM/DD/YYYY" 
+                                allowClear={false}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name="Time"
+                            rules={[{required:true, message: 'Please include event time!'}]}
+                        >
+                            <TimePicker.RangePicker 
+                                onChange={handleFinalTime}
+                                format="h:mm A" use12Hours 
+                                allowClear={false}
+                            />
+                        </Form.Item>
                     </>}
-                </Modal>
-            </Form>
+
+                    {props.isAuthenticated && <>
+                        <Form.Item 
+                            label="Invite Friends" 
+                            tooltip={{
+                                title: "Invite people from your friends list. You can add more friends later.",
+                                icon: <InfoCircleOutlined />,
+                            }}
+                        >
+                            <Select
+                                mode="multiple"
+                                placeholder="Select from Friends List"
+                                style={{ width: '100%' }}
+                            >
+                                <Option value="jack">Jack</Option>
+                                <Option value="lucy">Lucy</Option>
+                                <Option value="tom">Tom</Option>
+                            </Select>
+                        </Form.Item>
+
+                        <Divider orientation="center">Availability</Divider>
+                        <Form.Item
+                            label="Your Availability for this Event"
+                            name="Availability"
+                            required
+                            tooltip={{
+                                title: 'Please include as many availability slots as possible. We use this to calculate best possible times for your event.',
+                                icon: <InfoCircleOutlined />,
+                            }}
+                        >
+                            <span className="ant-form-text">Select your availability using the calendar in "Week View", or manually select dates and time slots using "List View".</span>
+                        </Form.Item>
+
+                        {/* Availability for verified users*/}
+                        <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
+
+                            <Tab eventKey="week" title="Week View">
+                                <Form.Item 
+                                    className={classes.dateSelect}
+                                    label="Select start date for availability calendar."
+                                    name="Calendar Start Date"
+                                    required
+                                    rules={[
+                                        {
+                                            validator: async () => {
+                                            if (key === "week" && !startDate) {
+                                                return Promise.reject(new Error('Please select a start date for the availability calendar!'));
+                                            }
+                                            },
+                                        },
+                                    ]}
+                                >
+                                    <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
+                                </Form.Item>
+                                <Form.Item
+                                    name="calendar select"
+                                    rules={[
+                                        {
+                                            validator: async () => {
+                                            if (key === "week" && schedule.length === 0) {
+                                                return Promise.reject(new Error('Please select at least one availability slot!'));
+                                            }
+                                            },
+                                        },
+                                    ]}
+                                >
+                                    <ScheduleSelector
+                                        hourlyChunks={1}
+                                        startDate={startDate}
+                                        onChange={handleChangeSchedule}
+                                        selectedColor={"#3D41D8"}
+                                        selection={schedule}
+                                    />
+                                </Form.Item>
+                            </Tab>
+
+                            <Tab eventKey="list" title="List View">
+                                <Form.Item>
+                                    <span className="ant-form-text"><b>Date and Time Slot Availability:</b> Please add at least one date and time slot. The more the merrier!</span>
+                                </Form.Item>
+                                <Form.List 
+                                    name="slots"
+                                    rules={[
+                                        {
+                                            validator: async (_, names) => {
+                                            if ((!names || names.length < 1) && key === "list") {
+                                                return Promise.reject(new Error('Must include at least one availability slot!'));
+                                            }
+                                            },
+                                        },
+                                    ]}
+                                >
+                                    {(fields, { add, remove }, { errors }) => (
+                                    <>
+                                        {fields.map((field, index) => (
+                                        <Space key={field.key} style= {{display: 'flex', alignContent: 'center'}} align="end">
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, 'dates']}
+                                                fieldKey={[field.fieldKey, 'dates']}
+                                                rules={[{ required: true, message: 'Missing date' }]}
+                                            >
+                                                <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
+                                            </Form.Item>
+                                            <Form.Item
+                                                {...field}
+                                                name={[field.name, 'times']}
+                                                fieldKey={[field.fieldKey, 'times']}
+                                                rules={[{ required: true, message: 'Missing time slot' }]}
+                                            >
+                                                <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
+                                            </Form.Item>
+                                            <MinusCircleOutlined onClick={() => remove(field.name)} style={{marginBottom: '32px'}}/>
+                                        </Space>
+                                        ))}
+                                        <Form.Item>
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                Add field
+                                            </Button>
+                                            <Form.ErrorList errors={errors} />
+                                        </Form.Item>
+                                    </>
+                                    )}
+                                </Form.List>
+                            </Tab>
+                        </Tabs>
+                    </>}
+                        
+                    <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
+
+                    <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
+                        {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
+                        {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
+                        <CopyToClipboard text='[event id link]' className={classes.copyLink}>
+                            <Tag icon={<CopyOutlined/>} className={classes.copyButton}>[event id link] (Click to copy to clipboard)</Tag>
+                        </CopyToClipboard>
+                        <div style={{height: "20px"}}></div>
+                        {!props.isAuthenticated && <>
+                            <Alert
+                                message="Want to unlock all features? Create an account now!"
+                                type="info"
+                                showIcon
+                                action={<a href="/signup"><Button size="small" type="primary" >Go</Button></a>}
+                            />
+                        </>}
+                    </Modal>
+                </Form>
+            </div>
         </div>
     );
 };
