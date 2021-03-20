@@ -1,5 +1,4 @@
 import React from 'react';
-
 import classes from './EventTitle.module.css';
 
 /*
@@ -15,7 +14,7 @@ import classes from './EventTitle.module.css';
 const EventTitle = (props) => (
     <div>
         <h1>{props.title}</h1>
-        <p>{props.day}, {props.date} @ {props.time}</p>
+        {!props.newEventAuthentication && <p>{props.day}, {props.date} @ {props.time}</p>}
     </div>
 );
 

@@ -25,6 +25,7 @@ const NewEvent = (props) => {
     const [startDate, setDate] = useState(Date())
     const dateFormat = "MM/DD"
     const [selectedDates, setSelectedDates] = useState([])
+    const [selectedTimes, setSelectedTimes] = useState([])
     const [schedule, setSchedule] = useState()
 
     //Used to select date for non-users
@@ -211,7 +212,7 @@ const NewEvent = (props) => {
                                 rules={[
                                 {
                                     validator: async (_, names) => {
-                                    if (!names || names.length < 1) {
+                                    if ((!names || names.length < 1) && key=="list") {
                                         return Promise.reject(new Error('Must include at least one availability slot!'));
                                     }
                                     },
@@ -229,12 +230,14 @@ const NewEvent = (props) => {
                                         key={field.key}
                                     >
                                         <Form.Item
-                                        {...field}
-                                        validateTrigger={['onChange', 'onBlur']}
-                                        noStyle
+                                            {...field}
+                                            validateTrigger={['onChange', 'onBlur']}
+                                            noStyle
+                                            name="Date and Time 2"
+                                            rules={[{required:true, message: 'Please include event date and time!'}]}
                                         >
                                             <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
-                                            <TimePicker.RangePicker format="h:mm A" use12Hours allowClear={false}/>
+                                            <TimePicker.RangePicker onChange={setSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
                                         </Form.Item>
                                         {fields.length > 1 ? (
                                             <MinusCircleOutlined
@@ -248,7 +251,7 @@ const NewEvent = (props) => {
                                         <Button
                                             type="dashed"
                                             onClick={() => add()}
-                                            style={{ width: '30%' }}
+                                            style={{ width: '200px' }}
                                             icon={<PlusOutlined />}
                                         >
                                             Add field
@@ -266,7 +269,8 @@ const NewEvent = (props) => {
                 {/* why doesn't this button have a  bottom margin */}
 
                 <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
-                    <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} ></EventTitle>
+                    {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true}/>}
+                    {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day ={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime}></EventTitle>}
                     <CopyToClipboard text='link generated w/ event id'>
                         <Tag icon={<CopyOutlined/>}>link generated w/ event id</Tag>
                     </CopyToClipboard>
