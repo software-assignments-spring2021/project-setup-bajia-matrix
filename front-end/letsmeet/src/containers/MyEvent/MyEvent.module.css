@@ -1,0 +1,97 @@
+.Container {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid transparent;
+  width: 80%;
+  margin-top: 100px;
+}
+
+.Div {
+  width: 50%;
+  text-align: center;
+}
+
+.Card {
+  width: 100%;
+  text-align: center;
+}
+
+.Header {
+  border: transparent;
+  background-color: #1d38ed;
+  color: white;
+}
+
+.Footer {
+  border: transparent;
+}
+
+.Row {
+  position:absolute;
+  width: 20%;
+  margin-left: 55%;
+  margin-top: 10px;
+}
+
+.Button {
+  margin: 3px;
+  width: 100%;
+}
+
+.EventTitle {
+  width: 70%;
+  overflow-wrap: anywhere;
+}
+
+.CardDetail {
+  width: 60%;
+  border-right: 1px solid lightgray;
+}
+
+.CardTime {
+  width: 40%;
+  float: left;
+}
+
+.CardTimes {
+  height: 100px;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: auto;
+}
+
+.CardTimes::-webkit-scrollbar {
+  width: 8px;
+  height: 16px;
+}
+
+.CardTimes::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.CardTimes::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.CardTimes::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+}
+
+.CardInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border: transparent;
+}
+
+.Edit {
+  float: right;
+}
+
+.Modal {
+  margin-top: 100px;
+}

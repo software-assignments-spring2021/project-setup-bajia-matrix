@@ -12,6 +12,7 @@ import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import Home from './containers/Home/Home';
 import EditSupplies from './containers/EditSupplies/EditSupplies';
+import MyEvent from './containers/MyEvent/MyEvent';
 
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
@@ -52,6 +53,7 @@ const App = (props) => {
         routes = (
             <Switch>
                 <Route path="/profile" exact component={Profile} />
+                <Route path="/myevent" exact component={MyEvent} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editavatar" exact component={EditAvatar} />
