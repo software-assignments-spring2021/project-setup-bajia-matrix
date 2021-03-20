@@ -186,7 +186,7 @@ const NewEvent = (props) => {
                             <Select
                                 mode="multiple"
                                 placeholder="Select from Friends List"
-                                style={{ width: '100%' }}
+                                className={classes.dropdown}
                             >
                                 <Option value="jack">Jack</Option>
                                 <Option value="lucy">Lucy</Option>
@@ -269,7 +269,7 @@ const NewEvent = (props) => {
                                     {(fields, { add, remove }, { errors }) => (
                                     <>
                                         {fields.map((field, index) => (
-                                        <Space key={field.key} style= {{display: 'flex', alignContent: 'center'}} align="end">
+                                        <Space key={field.key} className={classes.space} align="end">
                                             <Form.Item
                                                 {...field}
                                                 name={[field.name, 'dates']}
@@ -286,7 +286,7 @@ const NewEvent = (props) => {
                                             >
                                                 <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
                                             </Form.Item>
-                                            <MinusCircleOutlined onClick={() => remove(field.name)} style={{marginBottom: '32px'}}/>
+                                            <MinusCircleOutlined onClick={() => remove(field.name)} className={classes.deleteField} />
                                         </Space>
                                         ))}
                                         <Form.Item>
@@ -310,7 +310,7 @@ const NewEvent = (props) => {
                         <CopyToClipboard text='[event id link]' className={classes.copyLink}>
                             <Tag icon={<CopyOutlined/>} className={classes.copyButton}>[event id link] (Click to copy to clipboard)</Tag>
                         </CopyToClipboard>
-                        <div style={{height: "20px"}}></div>
+                        <div className={classes.spacing}></div>
                         {!props.isAuthenticated && <>
                             <Alert
                                 message="Want to unlock all features? Create an account now!"

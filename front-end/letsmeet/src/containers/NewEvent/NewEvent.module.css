@@ -28,6 +28,14 @@
     text-align: center;
 }
 
+.deleteField {
+    margin-bottom: 32px;
+}
+
+.dropdown {
+    width: 100%;
+}
+
 .dynamicDeleteButton {
     position: relative;
     margin: 0 8px;
@@ -44,6 +52,15 @@
 .formButton {
     display: block;
     margin: 20px auto;
+}
+
+.space {
+    display: flex;
+    align-content: center;
+}
+
+.spacing {
+    height: 20px;
 }
 
 .subheader {
