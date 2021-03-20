@@ -28,7 +28,7 @@ const App = (props) => {
     // HOW TO ADD ROUTING TO YOUR COMPONENT: to test between authenticated and not,
     // change this boolean variable. Later we will have to add real authentication
     const [state, setState] = useState({
-        isAuthenticated: true
+        isAuthenticated: false
     });
 
     // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible without an account

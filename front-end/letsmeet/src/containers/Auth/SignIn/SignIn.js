@@ -1,38 +1,45 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import classes from './SignIn.module.css';
 
 
 
-
-export default class SignIn extends Component {
-    state = {
+const SignIn = (props) => {
+    const [authState, setauthState] = useState({
        
         email: '',
         password: '',
         Verified_Passwowrd: '',
 
-      };
-      myChangeHandler = (event) => {
+      });
+      let myChangeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
-       
+        let err = '';
+        if (nam === "verifiedPassword") {
+            if (val !== authState.password) {
+              err = <strong>Your passwords do not match!</strong>;
+            }
+          }
     
-        this.setState({[nam]: val});
-        console.log("it worked");
-        console.log(this.state.password);
+        setauthState({errorMessage: err});
+        setauthState({[nam]: val});
+        console.log(authState.password);
+
+        //console.log("it worked");
       }
-      onSubmit = e => {
+      let onSubmit = e => {
         e.preventDefault();
-        let password = this.state.password;
-        
-        // this.props.onSubmit(this.state);
-        //const newTodo = API.graphql(graphqlOperation(mutations.createTodo, {input: this.state}));
-        console.log("it worked");
-        
+        let password = authState.password;
+        if (authState.verifiedPassword !== password) {
+           
+              alert("Your passwords do not match!");
+      
+    }
+            console.log("it worked");
+
       };
-//yuh
-    render() {
+
         return (
             <div class="row justify-content-center">
             <form className={classes.Authform}>
@@ -43,8 +50,8 @@ export default class SignIn extends Component {
                 <label>Email address</label>
                 <input type="email" className="form-control" placeholder="Enter email" 
                 name = "email"
-                value={this.state.email} 
-                onChange={this.myChangeHandler}
+                value={authState.email} 
+                onChange={myChangeHandler}
                 required/>
             </div>
 
@@ -52,8 +59,8 @@ export default class SignIn extends Component {
                 <label>Password</label>
                 <input type="password" className="form-control" placeholder="Enter password" 
                 name = "password"
-                value={this.state.password} 
-                onChange={this.myChangeHandler}
+                value={authState.password} 
+                onChange={myChangeHandler}
                  required/>
             </div>
 
@@ -72,5 +79,6 @@ export default class SignIn extends Component {
         </form>
         </div>
         );
-    }
+    
 }
+export default SignIn;
