@@ -232,8 +232,22 @@ const NewEvent = (props) => {
                             />
                         </Tab>
                         <Tab eventKey="list" title="List View">
-                            <Form.List name="users">
-                                {(fields, { add, remove }) => (
+                            <Form.Item>
+                                <span className="ant-form-text"><b>Date and Time Slot Availability:</b> Please add at least one date and time slot. The more the merrier!</span>
+                            </Form.Item>
+                            <Form.List 
+                                name="slots"
+                                rules={[
+                                    {
+                                        validator: async (_, names) => {
+                                        if ((!names || names.length < 1) && key=="list") {
+                                            return Promise.reject(new Error('Must include at least one availability slot!'));
+                                        }
+                                        },
+                                    },
+                                ]}
+                            >
+                                {(fields, { add, remove }, { errors }) => (
                                 <>
                                     {fields.map((field, index) => (
                                     <Space key={field.key} style= {{display: 'flex', alignContent: 'center'}} align="end">
@@ -242,8 +256,6 @@ const NewEvent = (props) => {
                                         name={[field.name, 'dates']}
                                         fieldKey={[field.fieldKey, 'dates']}
                                         rules={[{ required: true, message: 'Missing date' }]}
-                                        {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                        label={index === 0 ? 'Date & Time Slot' : ''}
                                         >
                                             <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
                                         </Form.Item>
@@ -262,66 +274,11 @@ const NewEvent = (props) => {
                                         <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
                                             Add field
                                         </Button>
+                                        <Form.ErrorList errors={errors} />
                                     </Form.Item>
                                 </>
                                 )}
                             </Form.List>
-                            {/*
-                            <Form.List
-                                name="dates_and_times"
-                                rules={[
-                                {
-                                    validator: async (_, names) => {
-                                    if ((!names || names.length < 1) && key=="list") {
-                                        return Promise.reject(new Error('Must include at least one availability slot!'));
-                                    }
-                                    },
-                                },
-                                ]}
-                                {...formItemLayoutWithOutLabel}
-                            >
-                                {(fields, { add, remove }, { errors }) => (
-                                <>
-                                    {fields.map((field, index) => (
-                                    <Form.Item
-                                        {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                        label={index === 0 ? 'Date and Time Slot Availability' : ''}
-                                        required={true}
-                                        key={field.key}
-                                    >
-                                        <Form.Item
-                                            {...field}
-                                            validateTrigger={['onChange', 'onBlur']}
-                                            noStyle
-                                            name="Date and Time 2"
-                                            rules={[{required:true, message: 'Please include event date and time!'}]}
-                                        >
-                                            <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
-                                            <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
-                                        </Form.Item>
-                                        {fields.length > 1 ? (
-                                            <MinusCircleOutlined
-                                                className={classes.dynamicDeleteButton}
-                                                onClick={() => remove(field.name)}
-                                            />
-                                        ) : null}
-                                    </Form.Item>
-                                    ))}
-                                    <Form.Item>
-                                        <Button
-                                            type="dashed"
-                                            onClick={() => add()}
-                                            style={{ width: '200px' }}
-                                            icon={<PlusOutlined />}
-                                        >
-                                            Add field
-                                        </Button>
-                                        <Form.ErrorList errors={errors} />
-                                    </Form.Item>
-                                </>
-                                )} 
-                            </Form.List>
-                        */}
                         </Tab>
                     </Tabs>
                 </>}
