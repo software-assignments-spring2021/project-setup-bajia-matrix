@@ -1,5 +1,4 @@
 import React from 'react';
-
 import classes from './EventTitle.module.css';
 
 /*
@@ -12,11 +11,13 @@ import classes from './EventTitle.module.css';
         - date: Month and day of the year
         - time: time range from start to end
 */
-const eventTitle = (props) => (
-    <div>
+const EventTitle = (props) => (
+    <div className={classes.EventTitle}>
         <h1>{props.title}</h1>
-        <p>{props.day}, {props.date} @ {props.time}</p>
+        {!props.newEventAuthentication && <h5>{props.day}, {props.date} @ {props.time}</h5>}
+        <p><b>{props.location}</b></p>
+        <p>{props.description}</p>
     </div>
 );
 
-export default eventTitle;
+export default EventTitle;

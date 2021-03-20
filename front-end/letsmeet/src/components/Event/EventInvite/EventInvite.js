@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './EventInvite.module.css';
+import axios from '../../../axios';
 import Text from '../../UI/Text/Text';
 
 /*
@@ -12,6 +13,7 @@ import Text from '../../UI/Text/Text';
     page. Declining will remove the invite from the user's list in the database.
 
     Props: 
+        - key: the id of the event
         - title: the event title
         - range: the date-and-time range of the event
         - description: a description of the event
@@ -29,6 +31,11 @@ const eventInvite = (props) => {
         console.log("decline event");
         // TODO: backend: delete a pending invitation from a user's pending invitations list
         // Will this rerender the page? Would like so
+        axios.delete("/invites/" + props.key + ".json?key=fe6891f0")
+            .then(response => {
+                console.log(response);
+            })
+        // TODO: remove .then(response)
     }
 
     return (

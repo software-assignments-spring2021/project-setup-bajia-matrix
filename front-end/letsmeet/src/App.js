@@ -6,6 +6,7 @@ import Layout from './hoc/Layout/Layout';
 import SignIn from '../src/containers/Auth/SignIn/SignIn'
 import SignUp from '../src/containers/Auth/SignUp/SignUp'
 import Landing from './components/Landing/Landing';
+import NewEvent from './containers/NewEvent/NewEvent';
 import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
@@ -41,7 +42,7 @@ const App = (props) => {
             <Route path="/signin" component={SignIn} />]
             <Route path="/signup" component={SignUp} />]
             <Route path="/" exact component={Landing} />
-            <Redirect to="/" />
+            <Route path="/newevent" component={NewEvent}/>
         </Switch>
     )
 
@@ -50,12 +51,13 @@ const App = (props) => {
     if (state.isAuthenticated) {
         routes = (
             <Switch>
-                    <Route path="/editsupplies" exact component={EditSupplies} />
-                    <Route path="/profile" exact component={Profile} />
-                    <Route path="/editavatar" exact component={EditAvatar} />
-                    <Route path="/editprofile" exact component={EditProfile} />
-                    <Route path="/" exact component={Home} />
-                    <Redirect to="/" />
+                <Route path="/profile" exact component={Profile} />
+                <Route path="/editsupplies" exact component={EditSupplies} />
+                <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/editavatar" exact component={EditAvatar} />
+                <Route path="/editprofile" exact component={EditProfile} />
+                <Route path="/" exact component={Home} />
+                <Redirect to="/" />
             </Switch>
         );
     }
