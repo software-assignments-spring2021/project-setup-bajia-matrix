@@ -184,6 +184,7 @@ const Home = (props) => {
                 <div className={classes.Event}>
                     {pendingInvites}
                 </div>
+                <br />
                 <Button className={classes.Button} variant="outline-dark" onClick={newEventHandler}>Create New Event</Button>
                 <h5>Your Events</h5>
                 <div className={classes.Event}>
