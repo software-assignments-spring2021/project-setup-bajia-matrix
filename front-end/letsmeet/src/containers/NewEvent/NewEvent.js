@@ -84,7 +84,7 @@ const NewEvent = (props) => {
     };
     const handleOk = () => {
         setIsModalVisible(false)
-        // TO-DO: Add path
+        window.location.assign('/')
     };
     const handleCancel = () => {
         setIsModalVisible(false)
@@ -302,8 +302,8 @@ const NewEvent = (props) => {
                 <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                     {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
                     {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
-                    <CopyToClipboard text='link generated w/ event id'>
-                        <Tag icon={<CopyOutlined/>}>link generated w/ event id</Tag>
+                    <CopyToClipboard text='[event id link]' className={classes.copyLink}>
+                        <Tag icon={<CopyOutlined/>} className={classes.copyButton}>[event id link] (Click to copy to clipboard)</Tag>
                     </CopyToClipboard>
                     <div style={{height: "20px"}}></div>
                     {!props.isAuthenticated && <>

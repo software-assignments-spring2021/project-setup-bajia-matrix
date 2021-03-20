@@ -6,6 +6,16 @@
     padding: 10px;
 }
 
+.copyButton {
+    display: block;
+    margin: 20px auto 0;
+    justify-content: center;
+}
+
+.copyLink {
+    cursor: pointer;
+}
+
 .dateSelect {
     display: block;
     margin: 20px auto 30px;
