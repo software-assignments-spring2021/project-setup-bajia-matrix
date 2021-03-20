@@ -92,17 +92,17 @@ const NewEvent = (props) => {
     const formItemLayout = {
         labelCol: {
           xs: { span: 24 },
-          sm: { span: 20 },
+          sm: { span: 25 },
         },
         wrapperCol: {
           xs: { span: 24 },
-          sm: { span: 20 },
+          sm: { span: 25 },
         },
     };
     const formItemLayoutWithOutLabel = {
         wrapperCol: {
           xs: { span: 24 },
-          sm: { span: 20 },
+          sm: { span: 25 },
         },
     };
 
@@ -206,7 +206,17 @@ const NewEvent = (props) => {
                     </Form.Item>
 
                     <Divider orientation="center">Availability</Divider>
-
+                    <Form.Item
+                        label="Your Availability for this Event"
+                        name="Availability"
+                        required
+                        tooltip={{
+                            title: 'Please include as many availability slots as possible. We use this to calculate best possible times for your event.',
+                            icon: <InfoCircleOutlined />,
+                        }}
+                    >
+                        <span className="ant-form-text">Select your availability using the calendar in "Week View", or manually select dates and time slots using "List View".</span>
+                    </Form.Item>
                     <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
                         <Tab eventKey="week" title="Week View">
                             <Form.Item className={classes.dateSelect}
@@ -226,14 +236,14 @@ const NewEvent = (props) => {
                                 {(fields, { add, remove }) => (
                                 <>
                                     {fields.map((field, index) => (
-                                    <Space key={field.key} style={{ display: 'block', marginBottom: 8 }} align="baseline">
+                                    <Space key={field.key} style= {{display: 'flex', alignContent: 'center'}} align="end">
                                         <Form.Item
                                         {...field}
                                         name={[field.name, 'dates']}
                                         fieldKey={[field.fieldKey, 'dates']}
                                         rules={[{ required: true, message: 'Missing date' }]}
                                         {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                        label={index === 0 ? 'Date and Time Slot Availability' : ''}
+                                        label={index === 0 ? 'Date & Time Slot' : ''}
                                         >
                                             <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
                                         </Form.Item>
@@ -241,17 +251,17 @@ const NewEvent = (props) => {
                                         {...field}
                                         name={[field.name, 'times']}
                                         fieldKey={[field.fieldKey, 'times']}
-                                        rules={[{ required: true, message: 'Missing time' }]}
+                                        rules={[{ required: true, message: 'Missing time slot' }]}
                                         >
                                             <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
                                         </Form.Item>
-                                        <MinusCircleOutlined onClick={() => remove(field.name)} />
+                                        <MinusCircleOutlined onClick={() => remove(field.name)} style={{marginBottom: '32px'}}/>
                                     </Space>
                                     ))}
                                     <Form.Item>
-                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                        Add field
-                                    </Button>
+                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                            Add field
+                                        </Button>
                                     </Form.Item>
                                 </>
                                 )}
@@ -320,8 +330,8 @@ const NewEvent = (props) => {
                 {/* why doesn't this button have a  bottom margin */}
 
                 <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
-                    {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true}/>}
-                    {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day ={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime}></EventTitle>}
+                    {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
+                    {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
                     <CopyToClipboard text='link generated w/ event id'>
                         <Tag icon={<CopyOutlined/>}>link generated w/ event id</Tag>
                     </CopyToClipboard>
