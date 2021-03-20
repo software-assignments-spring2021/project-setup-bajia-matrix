@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import classes from '../NewEvent/NewEvent.module.css'
-import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
+import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, Space, TimePicker, Tag} from 'antd';
 import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Tab, Tabs } from 'react-bootstrap'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -21,12 +21,27 @@ const NewEvent = (props) => {
     // Used to select friends
     const { Option } = Select;
 
-    // Used to select date on weekly calendar
+    // Used to select date for verified users
+    // Week view
     const [startDate, setDate] = useState(Date())
     const dateFormat = "MM/DD"
-    const [selectedDates, setSelectedDates] = useState([])
-    const [selectedTimes, setSelectedTimes] = useState([])
     const [schedule, setSchedule] = useState()
+    // List view
+    // let selectedDates = []
+    let selectedStartTimes = []
+    let selectedEndTimes = []
+    const [selectedDates, setSelectedDates] = useState([])
+    // const [selectedStartTimes, setSelectedStartTimes] = useState([]) 
+    // const [selectedEndTimes, setSelectedEndTimes] = useState([])
+   
+    function handleSelectedTimes(date, dateString) {
+        // setSelectedStartTimes(date[0].format('LT'))
+        // setSelectedEndTimes(date[1].format('LT'))
+        selectedStartTimes.push(date[0].format('LT'))
+        selectedEndTimes.push(date[1].format('LT'))
+        console.log(selectedStartTimes)
+        console.log(selectedEndTimes)
+    }
 
     //Used to select date for non-users
     const [finalDate, setFinalDate] = useState(Date())
@@ -207,6 +222,41 @@ const NewEvent = (props) => {
                             />
                         </Tab>
                         <Tab eventKey="list" title="List View">
+                            <Form.List name="users">
+                                {(fields, { add, remove }) => (
+                                <>
+                                    {fields.map((field, index) => (
+                                    <Space key={field.key} style={{ display: 'block', marginBottom: 8 }} align="baseline">
+                                        <Form.Item
+                                        {...field}
+                                        name={[field.name, 'dates']}
+                                        fieldKey={[field.fieldKey, 'dates']}
+                                        rules={[{ required: true, message: 'Missing date' }]}
+                                        {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+                                        label={index === 0 ? 'Date and Time Slot Availability' : ''}
+                                        >
+                                            <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
+                                        </Form.Item>
+                                        <Form.Item
+                                        {...field}
+                                        name={[field.name, 'times']}
+                                        fieldKey={[field.fieldKey, 'times']}
+                                        rules={[{ required: true, message: 'Missing time' }]}
+                                        >
+                                            <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
+                                        </Form.Item>
+                                        <MinusCircleOutlined onClick={() => remove(field.name)} />
+                                    </Space>
+                                    ))}
+                                    <Form.Item>
+                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                        Add field
+                                    </Button>
+                                    </Form.Item>
+                                </>
+                                )}
+                            </Form.List>
+                            {/*
                             <Form.List
                                 name="dates_and_times"
                                 rules={[
@@ -237,7 +287,7 @@ const NewEvent = (props) => {
                                             rules={[{required:true, message: 'Please include event date and time!'}]}
                                         >
                                             <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
-                                            <TimePicker.RangePicker onChange={setSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
+                                            <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
                                         </Form.Item>
                                         {fields.length > 1 ? (
                                             <MinusCircleOutlined
@@ -259,8 +309,9 @@ const NewEvent = (props) => {
                                         <Form.ErrorList errors={errors} />
                                     </Form.Item>
                                 </>
-                                )}
+                                )} 
                             </Form.List>
+                        */}
                         </Tab>
                     </Tabs>
                 </>}
