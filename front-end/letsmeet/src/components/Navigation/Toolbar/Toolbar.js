@@ -15,6 +15,7 @@ import Hamburger from '../SideDrawer/Hamburger/Hamburger';
         - drawerToggleClicked: function to handle what happens when the user clicks the hamburger menu
         - isAuth: whether or not the user is signed in
 */
+
 const toolbar = (props) => (
     <header className={classes.Toolbar}>
         <Hamburger clicked={props.drawerToggleClicked} />

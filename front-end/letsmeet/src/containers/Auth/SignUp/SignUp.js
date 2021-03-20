@@ -1,49 +1,49 @@
-import React, { Component } from "react";
+
+
+
+import React, { useEffect, useState } from 'react';
 import classes from '../SignIn/SignIn.module.css';
 
 
-export default class SignUp extends Component {
-    state = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        Verified_Passwowrd: '',
-        errormessage: ''
-    };
+const SignUp = (props) => {
+    const [authState, setauthState] = useState({
+        firstName: 'a',
+        lastName: 'a',
+        email: 'a',
+        password: 'a',
+        verifiedPassword: 'a',
+        errorMessage: 'a'
+      });
     
     
     
-      myChangeHandler = (event) => {
+      let myChangeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
         let err = '';
-        if (nam === "Verified_Passwowrd") {
-            if (val != this.state.password) {
+        if (nam === "verifiedPassword") {
+            if (val !== authState.password) {
               err = <strong>Your passwords do not match!</strong>;
             }
           }
     
-        this.setState({errormessage: err});
-        this.setState({[nam]: val});
-        console.log("it worked");
-        console.log(this.state.password);
+        setauthState({errorMessage: err});
+        setauthState({[nam]: val});
+        console.log(authState.password);
+
+        //console.log("it worked");
       }
-      onSubmit = e => {
+      let onSubmit = e => {
         e.preventDefault();
-        let password = this.state.password;
-        if (this.state.Verified_Passwowrd != password) {
+        let password = authState.password;
+        if (authState.verifiedPassword !== password) {
            
-                alert("Your passwords do not match!");
+              alert("Your passwords do not match!");
       
     }
-        // this.props.onSubmit(this.state);
-        //const newTodo = API.graphql(graphqlOperation(mutations.createTodo, {input: this.state}));
-        console.log("it worked");
-        
+            console.log("it worked");
+
       };
-        //yuh
-    render() {
         return (
             <div className="row justify-content-center">
 
@@ -54,10 +54,9 @@ export default class SignUp extends Component {
                 <div className="form-group">
                     <label>First name</label>
                     <input type="text" className="form-control" placeholder="First name" 
-                    //value={this.state.firstName}
                     name = "firstName"
-                    value={this.state.firstName} 
-                    onChange={this.myChangeHandler}
+                    value={authState.firstName} 
+                    onChange={myChangeHandler}
                     required/>
                     
                     
@@ -67,8 +66,8 @@ export default class SignUp extends Component {
                     <label>Last name</label>
                     <input type="text" className="form-control" placeholder="Last name" 
                     name = "lastName"
-                    value={this.state.lastName} 
-                    onChange={this.myChangeHandler}
+                    value={authState.lastName} 
+                    onChange={myChangeHandler}
                     required/>
                     
                 </div>
@@ -77,8 +76,8 @@ export default class SignUp extends Component {
                     <label>Email address</label>
                     <input type="email" id="exampleInputEmail1"  className="form-control" placeholder="Enter email" 
                     name = "email"
-                    value={this.state.email} 
-                    onChange={this.myChangeHandler}
+                    value={authState.email} 
+                    onChange={myChangeHandler}
                     required/>
 
                 </div>
@@ -87,19 +86,21 @@ export default class SignUp extends Component {
                     <label>Password</label>
                     <input type="password" className="form-control" placeholder="Enter password"
                     name = "password"
-                    value={this.state.password} 
-                    onChange={this.myChangeHandler}
+                    value={authState.password} 
+                    onChange={myChangeHandler}
                      required/>
                     
                 </div>
                 <div className="form-group">
-                    <label for="password2">Confirm password:</label>
+                    <label for="password">Confirm password</label>
                     <input type="password" className="form-control" placeholder="Enter password" 
-                    name = "Verified_Passwowrd"
-                    value={this.state.Verified_Passwowrd} 
-                    onChange={this.myChangeHandler}
+                    name = "verifiedPassword"
+                    value={authState.verifiedPassword} 
+                    onChange={myChangeHandler}
+
                     required/>
-                     {this.state.errormessage}
+                     {authState.verifiedPassword}
+
                     
                 </div>
 
@@ -114,7 +115,7 @@ export default class SignUp extends Component {
            
 
         );
-        console.log(this.state.password);
-    }
+    
     
 }
+export default SignUp;
