@@ -12,7 +12,7 @@ import classes from './EventTitle.module.css';
         - time: time range from start to end
 */
 const EventTitle = (props) => (
-    <div>
+    <div className={classes.EventTitle}>
         <h1>{props.title}</h1>
         {!props.newEventAuthentication && <h5>{props.day}, {props.date} @ {props.time}</h5>}
         <p><b>{props.location}</b></p>
