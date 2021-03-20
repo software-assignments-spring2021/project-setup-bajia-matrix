@@ -223,7 +223,7 @@ const NewEvent = (props) => {
                                 rules={[
                                     {
                                         validator: async (_, names) => {
-                                        if ((!names || names.length < 1) && key=="list") {
+                                        if ((!names || names.length < 1) && key === "list") {
                                             return Promise.reject(new Error('Must include at least one availability slot!'));
                                         }
                                         },
