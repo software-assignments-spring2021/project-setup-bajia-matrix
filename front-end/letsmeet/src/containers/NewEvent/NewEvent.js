@@ -39,8 +39,8 @@ const NewEvent = (props) => {
         // setSelectedEndTimes(date[1].format('LT'))
         selectedStartTimes.push(date[0].format('LT'))
         selectedEndTimes.push(date[1].format('LT'))
-        console.log(selectedStartTimes)
-        console.log(selectedEndTimes)
+        //console.log(selectedStartTimes)
+        //console.log(selectedEndTimes)
     }
 
     //Used to select date for non-users
@@ -87,23 +87,6 @@ const NewEvent = (props) => {
     };
     const handleCancel = () => {
         setIsModalVisible(false)
-    };
-    // To add more fields for date and time
-    const formItemLayout = {
-        labelCol: {
-          xs: { span: 24 },
-          sm: { span: 25 },
-        },
-        wrapperCol: {
-          xs: { span: 24 },
-          sm: { span: 25 },
-        },
-    };
-    const formItemLayoutWithOutLabel = {
-        wrapperCol: {
-          xs: { span: 24 },
-          sm: { span: 25 },
-        },
     };
 
     return (
