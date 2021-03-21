@@ -13,6 +13,9 @@ import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import Home from './containers/Home/Home';
 import EditSupplies from './containers/EditSupplies/EditSupplies';
 import Event from './containers/Event/Event';
+import UpcomingEvents from './containers/UpcomingEvents/UpcomingEvents'
+import EditDescription from './components/EventParts/EditDescription/EditDescription'
+import EditS from './components/EventParts/EditSupplies/EditSupplies'
 
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
@@ -50,6 +53,9 @@ const App = (props) => {
 
     // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible only with an account
     // it should sit above the <Route path="/" exact component={Landing} />
+
+
+    //the 'edits' has an edit and routes to the edit supplies made by bing i think.
     if (state.isAuthenticated) {
         routes = (
             <Switch>
@@ -59,6 +65,12 @@ const App = (props) => {
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editavatar" exact component={EditAvatar} />
                 <Route path="/editprofile" exact component={EditProfile} />
+                <Route path="/upcomingevents" exact component={UpcomingEvents} />
+                <Route path="/editdescription" exact component={EditDescription} />
+
+        
+                <Route path="/edits" exact component={EditS} />
+
                 <Route path="/" exact component={Home} />
                 <Redirect to="/" />
             </Switch>
