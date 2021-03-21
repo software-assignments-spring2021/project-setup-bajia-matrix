@@ -19,7 +19,7 @@ import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import { AutoComplete } from "antd";
 
-const MyEvent = (props) => {
+const Event = (props) => {
   const [event, setEvent] = useState({
     id: "1-i-am-random-event-id",
     title: "Study Dateeeeeeeeeeeeeeeeeeeeee",
@@ -49,7 +49,7 @@ const MyEvent = (props) => {
   });
 
   /////////////////////////////////////////////////////////
-  //for user name & user friends
+  //for current user name & current user friends
   const [state, setState] = useState({
     textInput: React.createRef(),
     name: "name",
@@ -58,7 +58,7 @@ const MyEvent = (props) => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      name: "Angela Tim",
+      name: "Matthew Fishman",
       friends: [
         { value: "friend_first1 friend_last1" },
         { value: "friend_first2 friend_last2" },
@@ -118,23 +118,84 @@ const MyEvent = (props) => {
   const handleShow = () => setShow(true);
 
   if (props.isAuthenticated) {
-    return (
-      <EventAttendees
-        attendees={event.attendees}
-        roles={event.roles}
-      ></EventAttendees>
-    );
+    if (state.name === event.creator) {
+      return (
+        <EventAttendees
+          attendees={event.attendees}
+          roles={event.roles}
+        ></EventAttendees>
+      );
+    } else {
+      return (
+        <Container fluid className={classes.Container}>
+          <Row className={classes.EventTitle}>
+            <EventTitle
+              title={event.title}
+              day={event.day}
+              date={event.date}
+              time={event.time}
+            />
+          </Row>
+          <hr />
+          <br />
+
+          <Row className="justify-content-center">
+            <Card className={classes.CardInfo}>
+              <Card.Body>
+                <Card.Title>Event Details</Card.Title>
+                <Card.Text>{event.description}</Card.Text>
+              </Card.Body>
+            </Card>
+          </Row>
+          <br />
+          <hr />
+          <br />
+
+          <EventAttendees
+            attendees={event.attendees}
+            roles={event.roles}
+            isAuthenticated={state.isAuthenticated}
+          ></EventAttendees>
+          <br />
+          <hr />
+          <br />
+
+          <Row className="justify-content-center">
+            <Button variant="danger" onClick={handleShow}>
+              Withdraw from Event
+            </Button>
+          </Row>
+          <br />
+
+          <Modal show={show} onHide={handleClose} className={classes.Modal}>
+            <Modal.Header className={classes.Header}>
+              <Modal.Title className="pl-4">Withdraw from Event</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="pl-5 pt-4">
+              Are you sure you want to withdraw from this event? <br /> You
+              can't undo this action.
+            </Modal.Body>
+            <Modal.Footer className={classes.Footer}>
+              <Button variant="secondary" onClick={handleClose}>
+                Go Back
+              </Button>
+              <Button variant="danger" onClick={handleDelete}>
+                Withdraw from Event
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Container>
+      );
+    }
   } else {
     return (
-      <Container fluid className={classes.Container}>
-        <Row className={classes.EventTitle}>
+      <Container className={classes.Container}>
+        <Row>
           <EventTitle
-            align={"left"}
             title={event.title}
             day={event.day}
             date={event.date}
             time={event.time}
-            textAlign="left"
           />
         </Row>
         <hr />
@@ -155,37 +216,46 @@ const MyEvent = (props) => {
         <EventAttendees
           attendees={event.attendees}
           roles={event.roles}
+          isAuthenticated={state.isAuthenticated}
         ></EventAttendees>
+        <br />
+
+        <Row className="justify-content-center">
+          <div className={classes.Div}>
+            <InputGroup className={classes.Input}>
+              <FormControl
+                ref={state.textInput}
+                aria-label="Large"
+                aria-describedby="inputGroup-sizing-sm"
+                placeholder="Enter Your Name"
+              />
+              <Button className="ml-3" onClick={addAttendee}>
+                Join Event
+              </Button>
+            </InputGroup>
+          </div>
+        </Row>
         <br />
         <hr />
         <br />
 
         <Row className="justify-content-center">
-          <Button variant="danger" onClick={handleShow}>
-            Withdraw from Event
-          </Button>
+          <Card className={classes.Card}>
+            <Card.Header></Card.Header>
+            <Card.Body>
+              <Card.Title>Want to unlock all features?</Card.Title>
+              <Card.Text>Create an account now!</Card.Text>
+              <Button href="/signup" variant="primary">
+                Create Account
+              </Button>
+            </Card.Body>
+            <Card.Footer className="text-muted"></Card.Footer>
+          </Card>
         </Row>
         <br />
-        <Modal show={show} onHide={handleClose} className={classes.Modal}>
-          <Modal.Header className={classes.Header}>
-            <Modal.Title className="pl-4">Withdraw from Event</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="pl-5 pt-4">
-            Are you sure you want to withdraw from this event? <br /> You can't
-            undo this action.
-          </Modal.Body>
-          <Modal.Footer className={classes.Footer}>
-            <Button variant="secondary" onClick={handleClose}>
-              Go Back
-            </Button>
-            <Button variant="danger" onClick={handleDelete}>
-              Withdraw from Event
-            </Button>
-          </Modal.Footer>
-        </Modal>
       </Container>
     );
   }
 };
 
-export default MyEvent;
+export default Event;
