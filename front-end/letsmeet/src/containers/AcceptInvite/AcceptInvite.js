@@ -10,6 +10,16 @@ import moment from 'moment';
 
 const AcceptInvite = (props) => {
 
+    // Event Details
+    const [event, setEvent] = useState({
+        id: "1-i-am-random-event-id",
+        title: "Study Date",
+        description:
+          "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
+        creator: "Angela Tim",
+        location: "Angela's House",
+    });
+
     // Variables for the form
     const [form] = Form.useForm()
     const [requiredMark, setRequiredMarkType] = useState('*')
@@ -70,6 +80,17 @@ const AcceptInvite = (props) => {
                 >
                 
                     {/* TODO: import and display event details */}
+                    <Form.Item className={classes.eventDetails}>
+                        <EventTitle
+                            title={event.title}
+                            description={event.description}
+                            creator={event.creator}
+                            showCreator={true}
+                            // Set newEventAuthentication to true for this page
+                            newEventAuthentication={true}
+                            location={event.location}
+                        />
+                    </Form.Item>
 
                     <Divider orientation="center">Availability</Divider>
 
