@@ -44,7 +44,7 @@ const App = (props) => {
             <Route path="/signup" component={SignUp} />]
             <Route path="/" exact component={Landing} />
             <Route path="/newevent" component={NewEvent}/>
-            <Route path="/event" exact component={Event} />
+            <Route path="/event" exact component={() => <Event isAuthenticated={state.isAuthenticated} />} />
         </Switch>
     )
 
@@ -54,7 +54,7 @@ const App = (props) => {
         routes = (
             <Switch>
                 <Route path="/profile" exact component={Profile} />
-                <Route path="/event" exact component={Event} />
+                <Route path="/event" exact component={() => <Event isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editavatar" exact component={EditAvatar} />
