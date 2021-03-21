@@ -16,6 +16,11 @@
     margin-bottom: 32px;
 }
 
+.eventDetails {
+    display: block;
+    max-width: 750px;
+}
+
 .formButton {
     display: block;
     margin: 20px auto;
