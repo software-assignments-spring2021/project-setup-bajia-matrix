@@ -52,7 +52,7 @@ const AcceptInvite = (props) => {
     return (
         <div>
             <div className={classes.subheader}>
-                <center><h6>Accept Event</h6></center>
+                <center><h6>Accept Event Invitation</h6></center>
                 <div className={classes.cancelButton}>
                     <a href="/">Cancel</a>
                 </div>
