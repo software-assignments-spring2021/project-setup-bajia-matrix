@@ -10,8 +10,6 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 
 const EditProfile = (props) => {
 
@@ -96,11 +94,11 @@ const EditProfile = (props) => {
                         <hr />
                         <Card.Title as="h2" >
                             <label for="editName" className={classes.Label}>Name</label>
-                            <input className={classes.Input} placeholder={profileState.name} name="editName" value={profileState.name} onChange={handleChange}/>    
+                            <textarea name="editName" rows={1} cols={10} wrap="soft" defaultValue={profileState.name} onChange={handleChange}/>   
                         </Card.Title>
                         <Card.Text>
                             <label for="editLocation" className={classes.Label}>Location</label>
-                            <input className={classes.Input} placeholder={profileState.location} name="editLocation" value={profileState.location} onChange={handleChange} />
+                            <textarea name="editLocation" rows={1} cols={15} wrap="soft" defaultValue={profileState.location} onChange={handleChange}/>
                         </Card.Text>
                         <Button variant="outline-primary" onClick={saveProfile}>Save Profile</Button>
                     </Card.Body>

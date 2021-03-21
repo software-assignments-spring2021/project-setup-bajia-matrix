@@ -6,12 +6,14 @@ import Layout from './hoc/Layout/Layout';
 import SignIn from '../src/containers/Auth/SignIn/SignIn'
 import SignUp from '../src/containers/Auth/SignUp/SignUp'
 import Landing from './components/Landing/Landing';
+import NewEvent from './containers/NewEvent/NewEvent';
 import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import AddFriends from './containers/Profile/AddFriends/AddFriends';
 import Home from './containers/Home/Home';
 import EditSupplies from './containers/EditSupplies/EditSupplies';
+import Event from './containers/Event/Event';
 
 /* HOW TO ADD ROUTING TO YOUR COMPONENT:
     import your component like the landing page example above
@@ -28,7 +30,7 @@ const App = (props) => {
     // HOW TO ADD ROUTING TO YOUR COMPONENT: to test between authenticated and not,
     // change this boolean variable. Later we will have to add real authentication
     const [state, setState] = useState({
-        isAuthenticated: false
+        isAuthenticated: true
     });
 
     // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible without an account
@@ -42,7 +44,8 @@ const App = (props) => {
             <Route path="/signin" component={SignIn} />]
             <Route path="/signup" component={SignUp} />]
             <Route path="/" exact component={Landing} />
-            <Redirect to="/" />
+            <Route path="/newevent" component={NewEvent}/>
+            <Route path="/event" exact component={Event} />
         </Switch>
     )
 
@@ -51,13 +54,14 @@ const App = (props) => {
     if (state.isAuthenticated) {
         routes = (
             <Switch>
-                    <Route path="/editsupplies" exact component={EditSupplies} />
-                    <Route path="/profile" exact component={Profile} />
-                    <Route path="/editavatar" exact component={EditAvatar} />
-                    <Route path="/editprofile" exact component={EditProfile} />
-                    <Route path="/addfriends" exact component={AddFriends} />
-                    <Route path="/" exact component={Home} />
-                    <Redirect to="/" />
+                <Route path="/profile" exact component={Profile} />
+                <Route path="/event" exact component={Event} />
+                <Route path="/editsupplies" exact component={EditSupplies} />
+                <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/editavatar" exact component={EditAvatar} />
+                <Route path="/editprofile" exact component={EditProfile} />
+                <Route path="/" exact component={Home} />
+                <Redirect to="/" />
             </Switch>
         );
     }

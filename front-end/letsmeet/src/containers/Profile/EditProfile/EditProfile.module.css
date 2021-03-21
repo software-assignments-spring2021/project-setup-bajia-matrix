@@ -28,6 +28,7 @@
 .FriendsTitle {
     margin: 20px 0 0 0;
     width: 100%;
+    padding-top: 10px;
 }
 
 .CardBody {
@@ -35,6 +36,8 @@
     padding: 20px 0;
     margin: -30px 0 0 0;
     position: relative;
+    display: block;
+    margin-top: -20px;
 }
 
 .FriendsBody {
@@ -87,4 +90,5 @@
 .Edit {
     float: right;
     margin-right: 50px;
+    margin-top: -20px;
 }
