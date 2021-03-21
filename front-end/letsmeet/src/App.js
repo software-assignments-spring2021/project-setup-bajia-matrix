@@ -58,6 +58,7 @@ const App = (props) => {
                 <Route path="/event" exact component={Event} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/editfriends" exact component={AddFriends} />
                 <Route path="/editavatar" exact component={EditAvatar} />
                 <Route path="/editprofile" exact component={EditProfile} />
                 <Route path="/" exact component={Home} />

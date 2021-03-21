@@ -15,7 +15,8 @@ const AddFriends = (props) => {
             "friends": [
                 {
                 "id": 2,
-                "name": "Timothy Sanders"
+                "name": "Timothy Sanders",
+                "email": "timothy@gmail.com"
                 }
             ]
         },
@@ -23,7 +24,8 @@ const AddFriends = (props) => {
             "friends": [
                 {
                 "id": 1,
-                "name": "Alexa Taylor"
+                "name": "Alexa Taylor",
+                "email": "alexa@gmail.com"
                 }
             ]
         },
@@ -40,7 +42,7 @@ const AddFriends = (props) => {
     const { Search } = Input;
 
     const [searchTerm, setSearchTerm] = useState("")
-    const [data, setData] = useState(dataList) // change to props.friends
+    const [data, setData] = useState(dataList) // change to props.users
 
     // Exclude these cols when searching term
     const excludeColumns = ["id", "name"];
@@ -65,35 +67,15 @@ const AddFriends = (props) => {
     const handleChange = e => {
         setSearchTerm(e)
         validateFriend(e)
+        checkFriendship()
     }
 
-    const me = [
-        { 
-            "id": 11, 
-            "name": "Test", 
-            "email": "me@gmail.com", 
-            "avatar": {avi}, 
-            "friends": [
-                {
-                    "id": 2,
-                    "name": "Timothy Sanders"
-                },
-                {
-                    "id": 3,
-                    "name": "Sam Peters"
-                }
-            ]
-        }
-    ]
-
-    let isValid = true;
     const [error, setError] = useState()
 
     const validateFriend = (e) => {
         const lowercaseSearch = e.toLowerCase().trim()
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         if (!pattern.test(e)) {
-            isValid = false;
             setError("Please enter valid email address")
         } else {
             setError()
@@ -107,10 +89,44 @@ const AddFriends = (props) => {
                 )
             })
             setData(filteredData)
-            console.log(filteredData)
         }
     }
-    
+
+    const me = [
+        { 
+            "id": 11, 
+            "name": "Test", 
+            "email": "me@gmail.com", 
+            "avatar": {avi}, 
+            "friends": [
+                {
+                    "id": 2,
+                    "name": "Timothy Sanders",
+                    "email": "timothy@gmail.com"
+                },
+                {
+                    "id": 3,
+                    "name": "Sam Peters",
+                    "email": "sam@gmail.com"
+                }
+            ]
+        }
+    ]
+    let isFriend = false;
+    function checkFriendship() {
+        // if the search term is already a friend's email don't display add button: return false
+        console.log(searchTerm)
+        for (var friend in me[0].friends) {
+            console.log(friend.email)           
+        }
+        me[0].friends.filter(item => {
+            return Object.keys(item).some(searchTerm =>
+                excludeColumns.includes(searchTerm) ? isFriend = true : isFriend = false
+            )
+        })
+        console.log(isFriend)
+    }
+
     return (        
         <div className={classes.container}>
             <h1>Add friends</h1>
@@ -128,11 +144,16 @@ const AddFriends = (props) => {
             {(searchTerm && !error) &&
                 <div>
                     {data.map((d, i) => {
-                        return <div key={i} className={classes.nameDisplay}>
-                            {d.name}<br/> <Button size="small" type="primary" className={classes.button}>add</Button>
-                            <div>{d.email}</div>
-                            <br/>
-                        </div>
+                        return (
+                            <div key={i} className={classes.nameDisplay}>
+                                {d.name} <br/> 
+                                {!isFriend && 
+                                    <Button size="small" type="primary" className={classes.button}>add</Button>
+                                }
+                                <div>{d.email}</div>
+                                <br/>
+                            </div>
+                        )
                     })}
                     <div className="clearboth"></div>
                     {data.length === 0 && 
