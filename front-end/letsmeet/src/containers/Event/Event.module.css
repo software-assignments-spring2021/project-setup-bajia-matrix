@@ -42,7 +42,6 @@
 .EventTitle {
   width: 70%;
   overflow-wrap: anywhere;
-  align-content:flex-start;
 }
 
 .CardDetail {
