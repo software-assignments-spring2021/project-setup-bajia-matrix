@@ -53,7 +53,7 @@ const Profile = (props) => {
            setLoading(false);
         } else {
             console.log('bye');
-            axios.get('/users.json?key=5942cd70')
+            axios.get('/users.json?key=fe6891f0')
                    .then(response => {
                        setProfileState(response.data);
                        setLoading(false);
