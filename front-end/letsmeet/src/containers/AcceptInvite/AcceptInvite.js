@@ -49,8 +49,7 @@ const AcceptInvite = (props) => {
 
     // Used to select availability
     // Week view
-    const [startDate, setDate] = useState()
-    const dateFormat = "MM/DD"
+    const [startDate, setDate] = useState("3/28")
     const [schedule, setSchedule] = useState()
     // List view
     let selectedStartTimes = []
@@ -61,10 +60,6 @@ const AcceptInvite = (props) => {
         selectedStartTimes.push(date[0].format('LT'))
         selectedEndTimes.push(date[1].format('LT'))
     }
-    
-    function onChange(date, dateString) {
-        setDate(dateString)
-    }
 
     function handleChangeSchedule(e) {
         setSchedule(e)
@@ -73,6 +68,7 @@ const AcceptInvite = (props) => {
 
     function handleSubmit(e) {
         e.preventDefault()
+        // Delete event from pending invitations on home screen
     }
 
     // Used for tab display
@@ -134,7 +130,7 @@ const AcceptInvite = (props) => {
                                     icon: <InfoCircleOutlined />,
                                 }}
                             >
-                                <span className="ant-form-text">The event creator wants this event to take place the week of [start date]
+                                <span className="ant-form-text">The event creator wants this event to take place the week of {startDate}
                                 {/* TODO: start date indicated by creator */}. Please put in your availability for that week.</span>
                             </Form.Item>
                             <Form.Item
