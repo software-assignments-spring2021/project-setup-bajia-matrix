@@ -11,6 +11,7 @@ import AcceptInvite from './containers/AcceptInvite/AcceptInvite'
 import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
+import AddFriends from './containers/Profile/AddFriends/AddFriends';
 import Home from './containers/Home/Home';
 import EditSupplies from './containers/EditSupplies/EditSupplies';
 import Event from './containers/Event/Event';
@@ -63,6 +64,7 @@ const App = (props) => {
                 <Route path="/event" exact component={() => <Event isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/editfriends" exact component={AddFriends} />
                 <Route path="/user/acceptinvite" exact component={AcceptInvite}/>
                 <Route path="/editavatar" exact component={EditAvatar} />
                 <Route path="/editprofile" exact component={EditProfile} />
