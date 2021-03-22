@@ -64,7 +64,7 @@ const EditSupplies = (props) => {
             console.log(profileState.supplies[index].owed);
 
         } 
-        alert(finalAmount);
+        alert("This is the final split amount: " + finalAmount);
 
     }
 
