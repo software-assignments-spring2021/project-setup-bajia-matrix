@@ -15,11 +15,11 @@ const EditSupplies = (props) => {
         title: "Lunch Date",
         description: "dATE",
         supplies: [
-            {id: 1, name: "bread"},
-            {id: 2, name: "bread"},
-            {id: 3, name: "bread"},
-            {id: 4, name: "bread"},
-            {id: 5, name: "bread"}
+            {id: 1, name: "bread", price: 5, person: "rAHUL", owed: 0},
+            {id: 2, name: "bread", price: 5, person: "rAHUL", owed: 0}, 
+            {id: 3, name: "bread", price: 5, person: "rAHUL", owed: 0},
+            {id: 4, name: "bread", price: 5, person: "rAHUL", owed: 0},
+            {id: 5, name: "bread", price: 5, person: "rAHUL", owed: 0}
            
         ]
         
@@ -37,12 +37,35 @@ const EditSupplies = (props) => {
         } 
     }
     let suppliesList = profileState.supplies.map(supplies => (
-        <p key={supplies.id}>{supplies.name}</p>
+        <>
+    <p key={supplies.id}>{supplies.name} {supplies.price} {supplies.person}</p>
+    
+    </>
     ))
 
     //TODO: handle updating user's information in backend
     let saveProfile = (e) => {
         console.log(profileState);
+    }
+    let splitCosts = (e) => {
+        var total = 0;
+
+        for (var index = 0; index < profileState.supplies.length; index++) { 
+            total += profileState.supplies[index].price;
+
+
+        } 
+        //alert(total);
+
+        var finalAmount = total/  profileState.supplies.length;
+        for (var index = 0; index < profileState.supplies.length; index++) { 
+            var owe =  finalAmount -profileState.supplies[index].price;
+            profileState.supplies[index].owed = owe;
+            console.log(profileState.supplies[index].owed);
+
+        } 
+        alert(finalAmount);
+
     }
 
     return (
@@ -64,6 +87,8 @@ const EditSupplies = (props) => {
                   
                 </Card>
                 <a href="/editsupplies" className={classes.Edit}>Edit</a>
+                
+                <Button variant="outline-primary" onClick={splitCosts}>Split Costs</Button>
 
 
             </div>
