@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './EditProfile.module.css';
 import axios from '../../../axios';
-import avi from '../../../assets/Avatars/redavi.png';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import Container from 'react-bootstrap/Container';
@@ -13,6 +12,13 @@ import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+
+import red from '../../../assets/Avatars/redavi.png';
+import blue from '../../../assets/Avatars/blueavi.png';
+import green from '../../../assets/Avatars/greenavi.png';
+import orange from '../../../assets/Avatars/orangeavi.png';
+import purple from '../../../assets/Avatars/purpleavi.png';
+import yellow from '../../../assets/Avatars/yellowavi.png';
 
 const EditProfile = (props) => {
     const [loading, setLoading] = useState(true);
@@ -45,7 +51,24 @@ const EditProfile = (props) => {
 
     //set up axios
     const [editProfile, setEditProfile] = useState({});
+    const [avatar, setAvatar] = useState(red);
+
     useEffect(() => {
+        console.log(props.location.state.profileState);
+        let profileState = props.location.state.profileState;
+        if (profileState.avatar === 'red') {
+            setAvatar(red)
+        } else if (profileState.avatar === 'orange') {
+             setAvatar(orange)
+        } else if (profileState.avatar === 'yellow') {
+             setAvatar(yellow)
+        } else if (profileState.avatar === 'green') {
+             setAvatar(green)
+        } else if (profileState.avatar === 'blue') {
+             setAvatar(blue)
+        } else if (profileState.avatar === 'purple') {
+             setAvatar(purple)
+        }
         setEditProfile(props.location.state.profileState);
         setLoading(false);
     }, []);
@@ -73,10 +96,6 @@ const EditProfile = (props) => {
 
     //TODO: handle updating user's information in backend
     let saveProfile = (e) => {
-        props.history.push({
-            pathname: "/profile",
-            state: {editState: editProfile}
-        });
         // axios.post("/users/" + editProfile.id + ".json?key=5942cd70", editProfile)
         // .then(response => {
         //     console.log(response);
@@ -84,6 +103,18 @@ const EditProfile = (props) => {
         // .catch(error => {
         //     console.log(error);
         // })
+        console.log(editProfile);
+        props.history.push({
+            pathname: "/profile",
+            state: {editState: editProfile}
+        });
+    }
+
+    let editAvatar = () => {
+        props.history.push({
+            pathname: "/editavatar",
+            state: {profileState: editProfile}
+        });
     }
 
     let editProfilePage = <Spinner />;
@@ -116,21 +147,21 @@ const EditProfile = (props) => {
                     
                     <Card.Body className={classes.CardBody}>
                         <Card.Title className={classes.Title}>
-                            <a href="/editavatar" className={classes.Edit}>Edit</a>
+                            <a href="" onClick={editAvatar} className={classes.Edit}>Edit</a>
                         </Card.Title>
-                        <Card.Img className={classes.CardImg} src={avi} />
+                        <Card.Img className={classes.CardImg} src={avatar} />
                         <hr />
                         <Card.Title as="h2" >
-                            <label for="editName" className={classes.Label}>Name</label>
+                            <label htmlFor="editName" className={classes.Label}>Name</label>
                             <textarea name="editName" className={classes.Input} rows={1} cols={10} wrap="soft" defaultValue={editProfile.name} onChange={handleChange}/>
                         </Card.Title>
                         <Card.Text className={classes.Location}>
                             <p className="mr-3">
-                            <label for="editCity" className={classes.Label}>City</label>
+                            <label htmlFor="editCity" className={classes.Label}>City</label>
                             <textarea name="editCity" rows={1} cols={10} wrap="soft" defaultValue={editProfile.city} onChange={handleChange}/>
                             </p>
                             <p>
-                            <label for="editState" className={classes.Label}>State</label>
+                            <label htmlFor="editState" className={classes.Label}>State</label>
                             <textarea name="editState" rows={1} cols={10} wrap="soft" defaultValue={editProfile.state} onChange={handleChange}/>
                             </p>
                         </Card.Text>

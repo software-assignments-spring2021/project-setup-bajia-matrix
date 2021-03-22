@@ -7,6 +7,13 @@ import axios from '../../axios';
 import avi from '../../assets/Avatars/redavi.png';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
+import red from '../../assets/Avatars/redavi.png';
+import blue from '../../assets/Avatars/blueavi.png';
+import green from '../../assets/Avatars/greenavi.png';
+import orange from '../../assets/Avatars/orangeavi.png';
+import purple from '../../assets/Avatars/purpleavi.png';
+import yellow from '../../assets/Avatars/yellowavi.png';
+
 /* 
     This component displays the profile page based on the information
     of the user that is signed in. The user can also navigate
@@ -47,21 +54,37 @@ const Profile = (props) => {
         friends: []
     });
 
+    const [avatar, setAvatar] = useState(red);
+
     useEffect(() => {
         if (props.location.state) {
+           let editState = props.location.state.editState;
+           if (editState.avatar === 'red') {
+               setAvatar(red)
+           } else if (editState.avatar === 'orange') {
+                setAvatar(orange)
+           } else if (editState.avatar === 'yellow') {
+                setAvatar(yellow)
+           } else if (editState.avatar === 'green') {
+                setAvatar(green)
+           } else if (editState.avatar === 'blue') {
+                setAvatar(blue)
+           } else if (editState.avatar === 'purple') {
+                setAvatar(purple)
+           }
            setProfileState(props.location.state.editState);
            setLoading(false);
         } else {
             console.log('bye');
             axios.get('/users.json?key=fe6891f0')
-                   .then(response => {
-                       setProfileState(response.data);
-                       setLoading(false);
-                   })
-                   .catch(error => {
-                       console.log(error);
-                       setLoading(false);
-                   })
+                .then(response => {
+                    setProfileState(response.data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.log(error);
+                    setLoading(false);
+                })
         }
       }, []);
 
@@ -85,7 +108,7 @@ const Profile = (props) => {
             <div className={classes.Profile}>
                 <Card className={classes.Card}>
                     {/* TODO: replace src to actual avatar for current user */}
-                    <Card.Img className={classes.CardImg} src={avi} />
+                    <Card.Img className={classes.CardImg} src={avatar} />
                     <Card.Body className={classes.CardBody}>
                         <hr />
                         <Card.Title as="h2">{profileState.name}</Card.Title>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from '../../../axios';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './EditAvatar.module.css';
@@ -16,12 +17,16 @@ import green from '../../../assets/Avatars/greenavi.png';
 import orange from '../../../assets/Avatars/orangeavi.png';
 import purple from '../../../assets/Avatars/purpleavi.png';
 import yellow from '../../../assets/Avatars/yellowavi.png';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 
 const EditAvatar = (props) => {
+    const [loading, setLoading] = useState(true);
 
-    const [avatar, setAvatar] = useState({
-        avatar: null
-    });
+    const [editAvatar, setEditAvatar] = useState({});
+    useEffect(() => {
+        setEditAvatar(props.location.state.profileState);
+        setLoading(false);
+    }, []);
 
     //go through all avis and remove highlighted border
     function unselectAll(parent) {
@@ -47,23 +52,38 @@ const EditAvatar = (props) => {
 
     //apply highlighted border around avi so that user knows that avi is currently selected
     function selectAvi(e) {
-        setAvatar({ avatar: e.target.dataset.avi });
+        setEditAvatar(prevState => ({
+            ...prevState,
+            avatar: e.target.dataset.avi
+        }));
         unselectAll(e.target.parentNode.parentNode.parentNode);
         e.target.style.border = '1px solid #1d38ed';
     }
 
     //TODO: handle updating user's avi with currently selected avi 
     function updateAvi() {
-        console.log(avatar); //this outputs the relative file path of the currently selected avi
-        //props.history.push("/profile");
+        // axios.post("/users/" + editAvatar.id + ".json?key=5942cd70", editAvatar)
+        //     .then(response => {
+        //         console.log(response);
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
+        console.log(editAvatar); //this outputs the color of the selected avatar
+        props.history.push({
+            pathname: "/profile",
+            state: {editState: editAvatar}
+        });
     }
 
-    return (
+    let editAvatarPage = <Spinner />;
+    if (!loading) {
+        editAvatarPage = (
         <Container fluid>
             <Row>
                 <Col className="md-12">
                     <Navbar>
-                        <Link to="/editprofile" exact>
+                        <Link to="/profile" exact>
                             <Navbar.Text>Cancel</Navbar.Text>
                         </Link>
                         
@@ -79,25 +99,25 @@ const EditAvatar = (props) => {
 
             <Row className="text-center">
                 <Col sm className="mt-1">
-                    <img src={red} data-avi='../../assets/Avatars/redavi.png' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
+                    <img src={red} data-avi='red' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={orange} data-avi='../../assets/Avatars/orangeavi.png' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={orange} data-avi='orange' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={yellow} data-avi='../../assets/Avatars/yellowavi.png' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={yellow} data-avi='yellow' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
             </Row>
 
             <Row className="text-center mt-5">
                 <Col sm className="mt-1">
-                    <img src={green} data-avi='../../assets/Avatars/greenavi.png' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
+                    <img src={green} data-avi='green' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={blue} data-avi='../../assets/Avatars/blueavi.png' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={blue} data-avi='blue' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={purple} data-avi='../../assets/Avatars/purpleavi.png' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={purple} data-avi='purple' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
             </Row>
 
@@ -105,7 +125,14 @@ const EditAvatar = (props) => {
                 <Button size="lg" onClick={updateAvi}>Update Avatar</Button>
             </Row>
         </Container>
-    )
+        )
+    }
+
+    return (
+        <div>
+            {editAvatarPage}
+        </div>
+    );
 }
 
 export default EditAvatar;
