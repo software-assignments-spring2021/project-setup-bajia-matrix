@@ -1,0 +1,46 @@
+.cancelButton {
+    margin-top: -27px;
+    float: left;
+    width: 15%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 200px;
+    padding: 10px;
+}
+
+.deleteField {
+    margin-bottom: 32px;
+}
+
+.eventDetails {
+    display: block;
+    max-width: 750px;
+}
+
+.formButton {
+    display: block;
+    margin: 20px auto;
+}
+
+.space {
+    display: flex;
+    align-content: center;
+}
+
+.subheader {
+    display: block;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid #777;
+    margin-top: -17px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.subheader h6 {
+    padding-top: 5px;
+}

@@ -24,7 +24,7 @@ const eventInvite = (props) => {
     let acceptEventHandler = () => {
         console.log("accept event");
         // TODO: change route to acceptInvite page
-        props.history.push("/profile");
+        props.history.push("/user/acceptinvite");
     };
 
     let declineEventHandler = () => {
