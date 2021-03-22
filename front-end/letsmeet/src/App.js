@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route, Switch, withRouter, Redirect,Link } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect, Link} from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import classes from './App.module.css';
 import Layout from './hoc/Layout/Layout';
@@ -48,7 +48,7 @@ const App = (props) => {
             <Route path="/signup" component={SignUp} />]
             <Route path="/" exact component={Landing} />
             <Route path="/newevent" component={NewEvent}/>
-            <Route path="/event" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} />} />
+            <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} history={props.history} />} />
         </Switch>
     )
 
@@ -61,7 +61,7 @@ const App = (props) => {
         routes = (
             <Switch>
                 <Route path="/profile" exact component={Profile} />
-                <Route path="/event" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editfriends" exact component={AddFriends} />
