@@ -123,6 +123,9 @@ const AddFriends = (props) => {
         }
     }
 
+    const [buttonText, setButtonText] = useState("Add Friend")
+    const changeText = (text) => setButtonText(text)
+
     return (        
         <div className={classes.container}>
             <h1 className={classes.subtitle}>Edit Friends</h1>
@@ -144,8 +147,11 @@ const AddFriends = (props) => {
                             return (
                                 <div key={i} className={classes.nameContainer}>
                                     <div className={classes.nameDisplay}> {d.name} <br/>
+                                        {!isFriend &&
+                                            <button size="small" type="primary" className={classes.button} onClick={() => changeText("Added")} >{buttonText}</button>
+                                        }
                                         <div>{d.email}</div>
-                                        <br/>
+                                        <br/>                      
                                     </div>
                                 </div>
                             )
