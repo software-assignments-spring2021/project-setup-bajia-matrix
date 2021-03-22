@@ -6,25 +6,14 @@ import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
 
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./Event.module.css";
+import classes from "./EventPage.module.css";
 
 import {
-  Alert,
-  DatePicker,
-  Divider,
   Form,
-  Input,
   Select,
-  Space,
-  TimePicker,
-  Tag,
 } from "antd";
 import {
-  CopyOutlined,
-  EnvironmentOutlined,
   InfoCircleOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
 } from "@ant-design/icons";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";

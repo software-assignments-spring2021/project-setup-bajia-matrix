@@ -97,7 +97,7 @@ const EditSupplies = (props) => {
         setSuppliesState(copySupplies);
 
         // send to database
-        axios.post("/events/" + suppliesState.id + ".json?key=fe6891f0", suppliesState)
+        axios.post("/events/" + suppliesState.id.$oid + ".json?key=fe6891f0", suppliesState)
             .then(response => {
                 console.log(response);
                 setSubmitting(false);

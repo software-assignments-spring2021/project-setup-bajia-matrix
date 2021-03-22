@@ -11,7 +11,6 @@ import Spinner from '../../components/UI/Spinner/Spinner';
     This component displays the profile page based on the information
     of the user that is signed in. The user can also navigate
     to the edit profile page from here.
-
     Props:
         This component does not accept any custom props
 */
@@ -49,23 +48,32 @@ const Profile = (props) => {
     });
 
     useEffect(() => {
-        axios.get('/users.json?key=fe6891f0')
-            .then(response => {
-                setProfileState(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading(false);
-            })
-    }, []);
+        if (props.location.state) {
+           setProfileState(props.location.state.editState);
+           setLoading(false);
+        } else {
+            console.log('bye');
+            axios.get('/users.json?key=fe6891f0')
+                   .then(response => {
+                       setProfileState(response.data);
+                       setLoading(false);
+                   })
+                   .catch(error => {
+                       console.log(error);
+                       setLoading(false);
+                   })
+        }
+      }, []);
 
     let friendsList = profileState.friends.map(friend => (
         <p key={friend.id.$oid}>{friend.name}</p>
     ))
     
     let editProfileHandler = () => {
-        props.history.push("/editprofile");
+        props.history.push({
+            pathname: "/editprofile",
+            state: {profileState: profileState}
+        });
     }
 
     // render

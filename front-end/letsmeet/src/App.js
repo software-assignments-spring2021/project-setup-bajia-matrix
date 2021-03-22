@@ -14,7 +14,7 @@ import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import AddFriends from './containers/Profile/AddFriends/AddFriends';
 import Home from './containers/Home/Home';
 import EditSupplies from './containers/EditSupplies/EditSupplies';
-import Event from './containers/Event/Event';
+import EventPage from './containers/EventPage/EventPage';
 import EditDescription from './components/EventParts/EditDescription/EditDescription'
 import EditS from './components/EventParts/EditSupplies/EditSupplies'
 
@@ -48,7 +48,7 @@ const App = (props) => {
             <Route path="/signup" component={SignUp} />]
             <Route path="/" exact component={Landing} />
             <Route path="/newevent" component={NewEvent}/>
-            <Route path="/event" exact component={() => <Event isAuthenticated={state.isAuthenticated} />} />
+            <Route path="/event" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} />} />
         </Switch>
     )
 
@@ -61,7 +61,7 @@ const App = (props) => {
         routes = (
             <Switch>
                 <Route path="/profile" exact component={Profile} />
-                <Route path="/event" exact component={() => <Event isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/event" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editfriends" exact component={AddFriends} />
