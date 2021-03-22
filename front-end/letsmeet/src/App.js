@@ -7,13 +7,14 @@ import SignIn from '../src/containers/Auth/SignIn/SignIn'
 import SignUp from '../src/containers/Auth/SignUp/SignUp'
 import Landing from './components/Landing/Landing';
 import NewEvent from './containers/NewEvent/NewEvent';
+import AcceptInvite from './containers/AcceptInvite/AcceptInvite'
 import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
+import AddFriends from './containers/Profile/AddFriends/AddFriends';
 import Home from './containers/Home/Home';
 import EditSupplies from './containers/EditSupplies/EditSupplies';
 import Event from './containers/Event/Event';
-import UpcomingEvents from './containers/UpcomingEvents/UpcomingEvents'
 import EditDescription from './components/EventParts/EditDescription/EditDescription'
 import EditS from './components/EventParts/EditSupplies/EditSupplies'
 
@@ -63,14 +64,12 @@ const App = (props) => {
                 <Route path="/event" exact component={() => <Event isAuthenticated={state.isAuthenticated} />} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/editfriends" exact component={AddFriends} />
+                <Route path="/user/acceptinvite" exact component={AcceptInvite}/>
                 <Route path="/editavatar" exact component={EditAvatar} />
                 <Route path="/editprofile" exact component={EditProfile} />
-                <Route path="/upcomingevents" exact component={UpcomingEvents} />
                 <Route path="/editdescription" exact component={EditDescription} />
-
-        
                 <Route path="/edits" exact component={EditS} />
-
                 <Route path="/" exact component={Home} />
                 <Redirect to="/" />
             </Switch>
