@@ -26,7 +26,7 @@ const event = (props) => {
 
     // TODO: take to specific event page when clicked on
     let manageEventHandler = () => {
-        props.history.push("/profile");
+        props.history.push("/event");
     };
 
     return (

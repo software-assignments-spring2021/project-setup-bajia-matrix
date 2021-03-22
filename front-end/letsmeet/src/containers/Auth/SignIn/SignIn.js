@@ -1,84 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import classes from './SignIn.module.css';
-
-
+import axios from '../../../axios';
 
 const SignIn = (props) => {
     const [authState, setauthState] = useState({
-       
-        email: '',
-        password: '',
-        Verified_Passwowrd: '',
+        email: "",
+        password: "",
+    });
 
-      });
-      let myChangeHandler = (event) => {
+    const [errorMessage, setErrorMessage] = useState("");
+
+    let myChangeHandler = (event) => {
+        // update authState immutably
+        const updatedAuthState = {
+          ...authState
+        }
+
         let nam = event.target.name;
         let val = event.target.value;
-        let err = '';
-        if (nam === "verifiedPassword") {
-            if (val !== authState.password) {
-              err = <strong>Your passwords do not match!</strong>;
-            }
-          }
-    
-        setauthState({errorMessage: err});
-        setauthState({[nam]: val});
-        console.log(authState.password);
 
-        //console.log("it worked");
-      }
-      let onSubmit = e => {
-        e.preventDefault();
-        let password = authState.password;
-        if (authState.verifiedPassword !== password) {
-           
-              alert("Your passwords do not match!");
-      
+        updatedAuthState[nam] = val;
+        setauthState(updatedAuthState);
     }
-            console.log("it worked");
 
-      };
+    let onSubmit = (e) => {
+        //e.preventDefault();
 
-        return (
-            <div class="row justify-content-center">
+        axios.get("/users/" + authState.email + ".json?key=fe6891f0")
+            .then(response => {
+                if (response.password !== authState.password) {
+                    // TODO: if auth failed, should change so page reloads and displays this message 
+                    setErrorMessage(<strong>Either your email is incorrect or your password does not match!</strong>);
+                }
+                else {
+                    console.log("signed in!");
+                    // authenticated
+                }
+            })
+            .catch(error => {
+              console.log(error);
+            });      
+    }
+
+    return (
+        <div class="row justify-content-center">
             <form className={classes.Authform}>
-            
-            <h3>Sign In</h3>
+                <h3>Sign In</h3>
 
-            <div className="form-group">
-                <label>Email address</label>
-                <input type="email" className="form-control" placeholder="Enter email" 
-                name = "email"
-                value={authState.email} 
-                onChange={myChangeHandler}
-                required/>
-            </div>
-
-            <div className="form-group">
-                <label>Password</label>
-                <input type="password" className="form-control" placeholder="Enter password" 
-                name = "password"
-                value={authState.password} 
-                onChange={myChangeHandler}
-                 required/>
-            </div>
-
-            <div className="form-group">
-                <div className="custom-control custom-checkbox">
-                    <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                    <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                <div className="form-group">
+                    <label>Email address</label>
+                    <input 
+                        type="email" 
+                        className="form-control" 
+                        placeholder="Enter email" 
+                        name = "email"
+                        value={authState.email} 
+                        onChange={myChangeHandler}
+                        required />
                 </div>
-            </div>
 
-            <button type="submit" className="btn btn-primary btn-block">Submit</button>
-            <p className="Create Account">
-                    Need an Account?
+                <div className="form-group">
+                    <label>Password</label>
+                    <input 
+                        type="password" 
+                        className="form-control" 
+                        placeholder="Enter password" 
+                        name = "password"
+                        value={authState.password} 
+                        onChange={myChangeHandler}
+                        required />
+                </div>
+
+                <div className="form-group">
+                    <div className="custom-control custom-checkbox">
+                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                    </div>
+                </div>
+
+                <button type="submit" onClick={onSubmit} className="btn btn-primary btn-block">Submit</button>
+                <p className="Create Account">
+                        Need an Account?
                 <a href="/signup"> Create Account</a>
                 </p>
-        </form>
+            </form>
         </div>
-        );
-    
-}
+    ); 
+};
+
 export default SignIn;
