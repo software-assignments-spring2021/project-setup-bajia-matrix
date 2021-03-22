@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classes from './AddFriends.module.css';
 import 'antd/dist/antd.css';
-import { Button, Input, Space } from 'antd';
+import { Input } from 'antd';
 import avi from '../../../assets/Avatars/redavi.png';
 
 const AddFriends = (props) => {
@@ -81,7 +81,6 @@ const AddFriends = (props) => {
         }
     ]
 
-      
     const handleChange = e => {
         setSearchTerm(e)
         validateFriend(e)
@@ -117,7 +116,7 @@ const AddFriends = (props) => {
 
     function checkFriendship(e) {
         for (var friend of me[0].friends) {
-            if(friend.email == e) {
+            if(friend.email === e) {
                 setIsFriend(true)
                 break
             }
@@ -126,41 +125,45 @@ const AddFriends = (props) => {
 
     return (        
         <div className={classes.container}>
-            <h1>Add friends</h1>
-            <p>Search for a friend by email address</p>
-            <Search
-                name="search"
-                placeholder="Add user by email"
-                onSearch={handleChange}
-                enterButton
-            />
-            {(searchTerm && error) &&
-                <p className={classes.errorMessage}>Enter a valid email address!</p>
-            }
-            {(searchTerm && !error) &&
-                <div>
-                    {data.map((d, i) => {
-                        return (
-                            <div key={i} className={classes.nameDisplay}>
-                                {d.name} <br/>
-                                {!isFriend && 
-                                    <Button size="small" type="primary" className={classes.button}>add</Button>
-                                }
-                                <div>{d.email}</div>
-                                <br/>
-                            </div>
-                        )
-                    })}
-                    <div className="clearboth"></div>
-                    {data.length === 0 && 
-                        <span> 
-                            No user with the email provided was found. <br/> 
-                            Would you like to invite a friend? <br/> 
-                            <button>Invite</button>
-                        </span>
-                    }
-                </div>
-            }
+            <h1 className={classes.subtitle}>Edit Friends</h1>
+            <div className={classes.addFriend}>
+                <h5>Add Friend</h5>
+                <p>Search for a user by email address</p>
+                <Search
+                    name="search"
+                    placeholder="Add user by email"
+                    onSearch={handleChange}
+                    enterButton
+                />
+                {(searchTerm && error) &&
+                    <p className={classes.errorMessage}>Enter a valid email address!</p>
+                }
+                {(searchTerm && !error) &&
+                    <div>
+                        {data.map((d, i) => {
+                            return (
+                                <div key={i} className={classes.nameContainer}>
+                                    <div className={classes.nameDisplay}> {d.name} <br/>
+                                        <div>{d.email}</div>
+                                        <br/>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                        <div className="clearboth"></div>
+                        {data.length === 0 && 
+                            <span> 
+                                No user with the email provided was found. <br/> 
+                                Would you like to invite a friend? <br/> 
+                                <button>Invite</button>
+                            </span>
+                        }
+                    </div>
+                }
+            </div>
+            <div className={classes.friendsList}>
+                <h5>Friends List</h5>
+            </div>
         </div>
     )
 }
