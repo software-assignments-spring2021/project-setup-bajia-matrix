@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import classes from '../AcceptInvite/AcceptInvite.module.css'
+import axios from '../../axios';
 import { Button, DatePicker, Divider, Form, Space, TimePicker} from 'antd';
 import { InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Tab, Tabs } from 'react-bootstrap'
@@ -9,6 +10,8 @@ import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 import moment from 'moment';
 
 const AcceptInvite = (props) => {
+
+    const [loading, setLoading] = useState(true);
 
     // Event Details
     const [event, setEvent] = useState({
@@ -20,6 +23,22 @@ const AcceptInvite = (props) => {
         location: "Angela's House",
     });
 
+    // Used to populate event details with event details in mdatabase
+    useEffect(() => {
+        // TODO: should only get events with current user listed in attendees list
+        axios.get("/events.json?key=c66d8800")
+            .then(response => {
+                const list = response.data.events;
+                // setEvent({ eventsList: list });
+                setEvent(list[0]);
+                setLoading({ events: false });
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading({ events: false });
+            });
+    }, []);
+
     // Variables for the form
     const [form] = Form.useForm()
     const [requiredMark, setRequiredMarkType] = useState('*')
@@ -30,8 +49,7 @@ const AcceptInvite = (props) => {
 
     // Used to select availability
     // Week view
-    const [startDate, setDate] = useState()
-    const dateFormat = "MM/DD"
+    const [startDate, setDate] = useState("3/28")
     const [schedule, setSchedule] = useState()
     // List view
     let selectedStartTimes = []
@@ -42,10 +60,6 @@ const AcceptInvite = (props) => {
         selectedStartTimes.push(date[0].format('LT'))
         selectedEndTimes.push(date[1].format('LT'))
     }
-    
-    function onChange(date, dateString) {
-        setDate(dateString)
-    }
 
     function handleChangeSchedule(e) {
         setSchedule(e)
@@ -54,10 +68,16 @@ const AcceptInvite = (props) => {
 
     function handleSubmit(e) {
         e.preventDefault()
+        // Delete event from pending invitations on home screen
     }
 
     // Used for tab display
     const [key, setKey] = useState('week')
+
+    // After clicking submit, reroute back to home page
+    const goHome = () => {
+        window.location.assign('/')
+    }
 
     return (
         <div>
@@ -77,6 +97,7 @@ const AcceptInvite = (props) => {
                     onValuesChange={onRequiredTypeChange}
                     requiredMark={requiredMark}
                     submit={handleSubmit}
+                    onFinish={goHome}
                 >
                 
                     {/* TODO: import and display event details */}
@@ -109,7 +130,7 @@ const AcceptInvite = (props) => {
                                     icon: <InfoCircleOutlined />,
                                 }}
                             >
-                                <span className="ant-form-text">The event creator wants this event to take place the week of [start date]
+                                <span className="ant-form-text">The event creator wants this event to take place the week of {startDate}
                                 {/* TODO: start date indicated by creator */}. Please put in your availability for that week.</span>
                             </Form.Item>
                             <Form.Item
