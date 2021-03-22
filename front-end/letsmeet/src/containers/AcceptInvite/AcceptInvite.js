@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import classes from '../AcceptInvite/AcceptInvite.module.css'
+import axios from '../../axios';
 import { Button, DatePicker, Divider, Form, Space, TimePicker} from 'antd';
 import { InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Tab, Tabs } from 'react-bootstrap'
@@ -9,6 +10,8 @@ import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 import moment from 'moment';
 
 const AcceptInvite = (props) => {
+
+    const [loading, setLoading] = useState(true);
 
     // Event Details
     const [event, setEvent] = useState({
@@ -19,6 +22,22 @@ const AcceptInvite = (props) => {
         creator: "Angela Tim",
         location: "Angela's House",
     });
+
+    // Used to populate event details with event details in mdatabase
+    useEffect(() => {
+        // TODO: should only get events with current user listed in attendees list
+        axios.get("/events.json?key=c66d8800")
+            .then(response => {
+                const list = response.data.events;
+                // setEvent({ eventsList: list });
+                setEvent(list[0]);
+                setLoading({ events: false });
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading({ events: false });
+            });
+    }, []);
 
     // Variables for the form
     const [form] = Form.useForm()
@@ -59,6 +78,11 @@ const AcceptInvite = (props) => {
     // Used for tab display
     const [key, setKey] = useState('week')
 
+    // After clicking submit, reroute back to home page
+    const goHome = () => {
+        window.location.assign('/')
+    }
+
     return (
         <div>
             <div className={classes.subheader}>
@@ -77,6 +101,7 @@ const AcceptInvite = (props) => {
                     onValuesChange={onRequiredTypeChange}
                     requiredMark={requiredMark}
                     submit={handleSubmit}
+                    onFinish={goHome}
                 >
                 
                     {/* TODO: import and display event details */}
