@@ -70,7 +70,7 @@
 }
 
 .Input {
-    width: 50%;
+    width: 60%;
     text-align: center;
 }
 
@@ -91,4 +91,16 @@
     float: right;
     margin-right: 50px;
     margin-top: -20px;
+}
+
+.Location {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 3;
+}
+
+.Textarea {
+    overflow: hidden;
+    resize: both;
+    height: 100%;
 }
