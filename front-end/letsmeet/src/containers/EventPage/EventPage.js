@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import { Redirect} from 'react-router-dom';
 import axios from "../../axios";
 
 import EventAttendees from "../../components/EventParts/EventAttendees/EventAttendees";
 import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
+import EventModalTimes from "../../components/EventParts/EventModalTimes/EventModalTimes";
 import Spinner from "../../components/UI/Spinner/Spinner";
 
 import "antd/dist/antd.css";
@@ -64,27 +66,34 @@ const Event = (props) => {
 
   //for general state of current event page 
   const [state, setState] = useState({
-    textInput: React.createRef(), //used to reference to name input by unverified user
+    unverifiedInput: React.createRef(), //used to reference to name input by unverified user
+    descriptionInput: React.createRef(),
     creator: false,
     attendee: false,
-    unverified: false
+    unverified: false,
+    redirect: false //if true, page will redirect back to home
   })
 
   //for suggested times & final time
   const [chosenTime, setChosenTime] = useState({
-    day: "",
-    date: "",
-    time: "",
-    show: true,
+    day: "test",
+    date: "test",
+    time: "test"
   });
 
   //for inviting friends
   const { Option } = Select;
   const [invitees, setInvitees] = useState();
 
+  //for edit description
+  const [description, setDescription] = useState({
+    edit: true,
+    description: ""
+  });
+
   useEffect(() => {
     let eventQueryID = window.location.pathname.split("id:")[1];
-    axios.get(`/event/${eventQueryID}.json?key=52632390`)
+    axios.get(`/event/${eventQueryID}.json?key=5f0a7ae0`)
       .then((response) => {
         console.log(response.data);
         setEvent(response.data);
@@ -115,7 +124,7 @@ const Event = (props) => {
         if (event.creator === attendee) {
           event.roles.push("Creator");
         } else {
-          event.roles.push("Attendee" + index);
+          event.roles.push("Attendee");
         }
       });
       console.log(event.roles);
@@ -139,62 +148,31 @@ const Event = (props) => {
   let suggestedTimes;
   let suggestedModal;
   let onChecked = (e) => {
-    let chosenTime = e.target.nextElementSibling.children[0].innerText;
-    let finalDay = chosenTime.split(",")[0];
-    let finalDate = chosenTime.split(",")[1].split("@")[0];
-    let finalTime = chosenTime.split(",")[1].split("@")[1];
     setChosenTime((prevState) => ({
       ...prevState,
-      day: finalDay,
-      date: finalDate,
-      time: finalTime,
+      day: e.target.getAttribute('day'),
+      date: e.target.getAttribute('date'),
+      time: e.target.getAttribute('time')
     }));
   };
   const [showSuggested, setShowSuggested] = useState(false);
   const handleShowSuggested = () => setShowSuggested(true);
   const handleCloseSuggested = (e) => setShowSuggested(false);
   const handleFinal = () => {
+    console.log('chosenn time: ', chosenTime);
     setEvent((prevState) => ({
       ...prevState,
       finalDay: chosenTime.day,
       finalDate: chosenTime.date,
-      finalTime: chosenTime.time,
+      finalTime: chosenTime.time
     }));
     setShowSuggested(false);
+    //axios post call to update event
+    axios.post("/events/" + event.id.$oid + ".json?key=5f0a7ae0", event)
+      .then(response => {
+        console.log(response);
+      });
   };
-  useEffect(() => {
-    if (event.suggestedTimes) {
-      //for suggested times
-      suggestedTimes = event.suggestedTimes.map((time) => (
-        <h5>
-          <Badge className="text-wrap" variant="primary">
-            {time}
-          </Badge>
-        </h5>
-      ));
-
-      //for suggested modal
-      suggestedModal = event.suggestedTimes.map((time) => (
-        <div className="form-check mt-1">
-          <input
-            className="form-check-input mt-2"
-            type="radio"
-            name="exampleRadios"
-            id="exampleRadios1"
-            defaultValue="option1"
-            onClick={onChecked}
-          />
-          <label className="form-check-label" htmlFor="exampleRadios1">
-            <h5>
-              <Badge className="text-wrap" variant="primary">
-                {time}
-              </Badge>
-            </h5>
-          </label>
-        </div>
-      ));
-    }
-  }, [event.suggestedTimes]);
 
   useEffect(() => {
     if (event.finalDay) {
@@ -241,7 +219,7 @@ const Event = (props) => {
     //   ],
     // }));
     // setLoading({ user: false });
-    axios.get("/users.json?key=52632390")
+    axios.get("/users.json?key=5f0a7ae0")
       .then(response => {
         setUser(prevState => ({
           ...prevState,
@@ -254,31 +232,83 @@ const Event = (props) => {
       });
   }, []);
 
+  //for canceling event
+  const [show, setShow] = useState(false);
+  const handleDelete = () => {
+    axios
+      .delete(`/event/${event.id}.json?key=5f0a7ae0`)
+      .then((response) => {
+        console.log('deleted');
+        console.log(response);
+        setShow(false);
+        setState(prevState => ({
+          ...prevState,
+          redirect: true
+        }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  //for editing description
+  let editDescription = () => {
+    setDescription(prevState => ({
+      ...prevState,
+      edit: true
+    }))
+  }
+  let handleDescription = () => {
+    setEvent(prevState => ({
+      ...prevState,
+      description: description.description
+    }))
+    setDescription(prevState => ({
+      ...prevState,
+      edit: false
+    }))
+  }
+  let descriptionChange = (e) => {
+    console.log(e.target);
+    setDescription(prevState => ({
+      ...prevState,
+      description: e.target.value
+    }))
+  }
+
   useEffect(() => {
     if (user.name !== "" && event.creator) {
-      console.log(user.name);
-      console.log(event.creator);
-      if (user.name === event.creator) {
-        setState(prevState => ({
-          ...prevState,
-          creator: true
-        }));
-      } else {
-        setState(prevState => ({
-          ...prevState,
-          attendee: true
-        }));
-      }
-    } else {
       setState(prevState => ({
         ...prevState,
-        unverified: true
-      }));
+        creator: true
+      }))
     }
+    // if (user.name !== "" && event.creator) {
+    //   console.log(user.name);
+    //   console.log(event.creator);
+    //   if (user.name === event.creator) {
+    //     setState(prevState => ({
+    //       ...prevState,
+    //       creator: true
+    //     }));
+    //   } else {
+    //     setState(prevState => ({
+    //       ...prevState,
+    //       attendee: true
+    //     }));
+    //   }
+    // } else {
+    //   setState(prevState => ({
+    //     ...prevState,
+    //     unverified: true
+    //   }));
+    // }
   }, [event, user]);
 
   useEffect(() => {
-    console.log(state);
+    console.log(event);
     if (state.creator === true || state.attendee === true || state.unverified === true) {
       setLoading(prevState => ({
         event: false,
@@ -287,16 +317,258 @@ const Event = (props) => {
     }
   }, [state]);
 
+  if (state.redirect === true) {
+    return (<Redirect to="/" />);
+  }
   let eventPage = <Spinner />;
   if (!loading.event && !loading.user) {
-    eventPage = (
-      <div>
-        <EventAttendees
-          attendees={event.attendees}
-          roles={event.roles}
-        ></EventAttendees>
-      </div>
-    )
+    if (state.attendee === true) {
+      eventPage = (
+      <Container fluid className={classes.Container}>
+            <Row className={classes.EventTitle}>
+              <EventTitle
+                title={event.title}
+                day={event.day}
+                date={event.date}
+                time={event.time}
+                location={event.location}
+              />
+            </Row>
+            <hr />
+            <br />
+
+            <Row className="justify-content-center">
+              <Card className={classes.CardInfo}>
+                <Card.Body>
+                  <Card.Title>Event Details</Card.Title>
+                  <Card.Text>{event.description}</Card.Text>
+                </Card.Body>
+              </Card>
+            </Row>
+            <br />
+            <hr />
+            <br />
+
+            <EventAttendees
+              attendees={event.attendees}
+              roles={event.roles}
+              isAuthenticated={state.isAuthenticated}
+            ></EventAttendees>
+            <br />
+            <hr />
+            <br />
+
+            <Row className="justify-content-center">
+              <Button variant="danger" onClick={handleShow}>
+                Withdraw from Event
+              </Button>
+            </Row>
+            <br />
+
+            <Modal show={show} onHide={handleClose} className={classes.Modal}>
+              <Modal.Header className={classes.Header}>
+                <Modal.Title className="pl-4">Withdraw from Event</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="pl-5 pt-4">
+                Are you sure you want to withdraw from this event? <br /> You
+                can't undo this action.
+              </Modal.Body>
+              <Modal.Footer className={classes.Footer}>
+                <Button variant="secondary" onClick={handleClose}>
+                  Go Back
+                </Button>
+                <Button variant="danger" onClick={handleDelete}>
+                  Withdraw from Event
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Container>
+      )
+    } else if (state.creator === true) {
+      console.log('hewwo');
+      eventPage = (
+        <Container fluid className={classes.Container}>
+            <Row className={classes.Row}>
+              <Button
+                variant="outline-primary"
+                className={classes.LinkBtn}
+                onClick={handleShowLink}
+              >
+                Generate Event Link
+              </Button>
+              <Button
+                variant="outline-primary"
+                className={classes.SuggestedBtn}
+                onClick={handleShowSuggested}
+              >
+                Choose Final Time
+              </Button>
+            </Row>
+
+            <Row className={classes.EventTitle}>
+              <EventTitle
+                title={event.title}
+                day={event.day}
+                date={event.date}
+                time={event.time}
+                location={event.location}
+              />
+            </Row>
+            <hr />
+            <br />
+
+            <Row className="justify-content-center">
+              <Card className={classes.CardInfo}>
+                <Card.Body className={classes.CardDetail}>
+                { description.edit === false ? 
+                  <div><Card.Title>
+                    Event Details
+                      <a className={classes.Edit} onClick={editDescription}>Edit</a>
+                  </Card.Title>
+                  <Card.Text>{event.description}</Card.Text></div>
+                  : <div><Card.Title>
+                  Event Details
+                </Card.Title>
+                <Card.Text><FormB.Group>
+                  <FormB.Control as="textarea" rows={3} placeholder={event.description} value={description.description} onChange={descriptionChange}/>
+                </FormB.Group></Card.Text>
+                <Row className="justify-content-end pr-3"><Button onClick={handleDescription}>Save Changes</Button></Row>
+                
+                </div>
+              }
+                </Card.Body>
+              </Card>
+            </Row>
+            <br />
+            <hr />
+            <br />
+
+            <EventAttendees
+              attendees={event.attendees}
+              roles={event.roles}
+              isAuthenticated={state.isAuthenticated}
+            ></EventAttendees>
+            <br />
+
+            <Row className="justify-content-center">
+              <div className={classes.Div}>
+                <Form.Item
+                  label="Invite Friends"
+                  tooltip={{
+                    title:
+                      "Invite people from your friends list. You can add more friends later.",
+                    icon: <InfoCircleOutlined />,
+                  }}
+                >
+                  <Select
+                    mode="multiple"
+                    placeholder="Select from Friends List"
+                    className={classes.dropdown}
+                    onChange={(value) => setInvitees(value)}
+                    value={invitees}
+                  >
+                    <Option value="jack">Jack</Option>
+                    <Option value="lucy">Lucy</Option>
+                    <Option value="tom">Tom</Option>
+                  </Select>
+                  <Button
+                    className="ml-3"
+                    onClick={addVerified}
+                    className={classes.AddVerified}
+                  >
+                    Invite Friend
+                  </Button>
+                </Form.Item>
+              </div>
+            </Row>
+            <br />
+            <hr />
+            <br />
+
+            <Row className="justify-content-center">
+              <Button variant="danger" onClick={handleShow}>
+                Cancel Event
+              </Button>
+            </Row>
+            <br />
+
+            <Modal
+              show={showLink}
+              onHide={handleCloseLink}
+              className={classes.Modal}
+            >
+              <Modal.Header className={classes.Header}>
+                <Modal.Title className="pl-4">Generate Event URL</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="px-5 pt-4">
+                Copy and paste the link below to share this event:
+                <InputGroup className="my-3">
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>📋</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormB.Control
+                    plaintext
+                    readOnly
+                    defaultValue={event.url}
+                    className="border pl-3"
+                  />
+                </InputGroup>
+              </Modal.Body>
+              <Modal.Footer className={classes.Footer}>
+                <Button variant="secondary" onClick={handleCloseLink}>
+                  Go Back
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal
+              show={showSuggested}
+              onHide={handleCloseSuggested}
+              className={classes.Modal}
+            >
+              <Modal.Header className={classes.Header}>
+                <Modal.Title className="pl-4">
+                  Choose Final Event Time
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="px-5 pt-4">
+                The following are the most popular suggested times. <br />
+                <p>Please select a finalized time for your event:</p>
+                <EventModalTimes
+                  suggestedTimes={event.suggestedTimes}
+                  onChecked={onChecked}
+                />
+              </Modal.Body>
+              <Modal.Footer className={classes.Footer}>
+                <Button variant="secondary" onClick={handleCloseSuggested}>
+                  Go Back
+                </Button>
+                <Button variant="primary" onClick={handleFinal}>
+                  Choose Final Time
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            <Modal show={show} onHide={handleClose} className={classes.Modal}>
+              <Modal.Header className={classes.Header}>
+                <Modal.Title className="pl-4">Cancel Event</Modal.Title>
+              </Modal.Header>
+              <Modal.Body className="pl-5 pt-4">
+                Are you sure you want to cancel this event? <br /> You can't
+                undo this action.
+              </Modal.Body>
+              <Modal.Footer className={classes.Footer}>
+                <Button variant="secondary" onClick={handleClose}>
+                  Go Back
+                </Button>
+                <Button variant="danger" onClick={handleDelete}>
+                  Cancel Event
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Container>
+      )
+    }
   }
 
   return <div>{eventPage}</div>;

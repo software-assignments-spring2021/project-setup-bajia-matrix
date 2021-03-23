@@ -34,9 +34,14 @@
   margin-top: 10px;
 }
 
-.Button {
-  margin: 3px;
+.LinkBtn {
+  margin-top: -9px;
   width: 100%;
+}
+
+.SuggestedBtn {
+  width: 100%;
+  margin-top: 5px;
 }
 
 .EventTitle {
@@ -46,7 +51,6 @@
 
 .CardDetail {
   width: 60%;
-  border-right: 1px solid lightgray;
 }
 
 .CardTime {

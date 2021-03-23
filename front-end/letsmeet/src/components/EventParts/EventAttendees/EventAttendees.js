@@ -22,7 +22,6 @@ import red from '../../../assets/Avatars/redavi.png';
 */
 
 const eventAttendees = (props) => {
-  console.log(props.roles);
 
   let attendeesList = props.attendees.map((attendee, index) =>
     <ListGroup.Item className={classes.Border}>
