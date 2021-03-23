@@ -78,8 +78,13 @@ const AddFriends = (props) => {
 
     return (        
         <div className={classes.container}>
+            <div className={classes.cancelButton}>
+                <a href="/profile">Cancel</a>
+            </div>
+            <br/>
+            <br/>
             <h1 className={classes.subtitle}>Edit Friends</h1>
-            <div className={classes.addFriend}>
+            <div className>
                 <h5>Add Friend</h5>
                 <p>Search for a user by email address</p>
                 <Search
