@@ -1,93 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './AddFriends.module.css';
 import 'antd/dist/antd.css';
-import { Input } from 'antd';
-import avi from '../../../assets/Avatars/redavi.png';
+import { Input, Table } from 'antd';
+import axios from '../../../axios';
 
 const AddFriends = (props) => {
+    const [data, setData] = useState()
+    const [user, setUser] = useState({
+        name: "",
+        friends: new Array(),
+        email: ""
+    });
 
-    const dataList = [
-        {
-            "id": 1, 
-            "name": "Alexa Taylor", 
-            "email": "alexa@gmail.com", 
-            "avatar": {avi}, 
-            "friends": [
-                {
-                "id": 2,
-                "name": "Timothy Sanders",
-                "email": "timothy@gmail.com"
-                }
-            ]
-        },
-        {"id": 2, "name": "Timothy Sanders", "email": "timothy@gmail.com",
-            "friends": [
-                {
-                    "id": 1,
-                    "name": "Alexa Taylor",
-                    "email": "alexa@gmail.com"
-                },
-                {
-                    "id": 11,
-                    "name": "Test", 
-                    "email": "me@gmail.com", 
-                }
-            ]
-        },
-        {
-            "id": 3, 
-            "name": "Sam Peter", 
-            "email": "sam@gmail.com", 
-            "friend": [
-                {
-                    "id": 11,
-                    "name": "Test", 
-                    "email": "me@gmail.com", 
-                }
-            ]
-        },
-        {"id": 4, "name": "Matthew Fishman", "email": "matt@gmail.com"},
-        {id: 5, name: "Matthew Fishman", email: "matt2@gmail.com"},
-        {id: 6, name: "Matthew Fishman", email: "matt3@gmail.com"},
-        {id: 7, name: "Matt Fish", email: "mattf@gmail.com"},
-        {id: 8, name: "Matt Fishman", email: "fishmanm@gmail.com"},
-        {id: 9, name: "Matt Fishman", email: "fishman1@gmail.com"},
-        {id: 10, name: "Matt Fishman", email: "fishmanmatt@gmail.com"}
-    ]
+    useEffect(() => {
+        axios.get(`/users/123.json?key=4ca99a60`)
+            .then((response) => {
+                console.log(response.data);
+                setData(response.data);
+                setUser(prevState => ({
+                    ...prevState,
+                    name: response.data.name,
+                    friends: response.data.friends,
+                    email: response.data.email
+                }));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
     const { Search } = Input;
-
     const [searchTerm, setSearchTerm] = useState("")
-    const [data, setData] = useState(dataList) // change to props.users
-
-    const me = [
-        { 
-            "id": 11, 
-            "name": "Test", 
-            "email": "me@gmail.com", 
-            "avatar": {avi}, 
-            "friends": [
-                {
-                    "id": 2,
-                    "name": "Timothy Sanders",
-                    "email": "timothy@gmail.com"
-                },
-                {
-                    "id": 3,
-                    "name": "Sam Peters",
-                    "email": "sam@gmail.com"
-                }
-            ]
-        }
-    ]
+    const [error, setError] = useState()
 
     const handleChange = e => {
         setSearchTerm(e)
         validateFriend(e)
         checkFriendship(e)
     }
-
-    const [error, setError] = useState()
 
     // Exclude these cols when searching term
     const excludeColumns = ["id", "name"];
@@ -103,7 +53,7 @@ const AddFriends = (props) => {
         if(lowercaseSearch === "") {
             setData()
         } else {
-            const filteredData = dataList.filter(item => {
+            const filteredData = data.filter(item => {
                 return Object.keys(item).some(e =>
                     excludeColumns.includes(e) ? false : item[e].toString().toLowerCase().includes(lowercaseSearch)
                 )
@@ -115,7 +65,7 @@ const AddFriends = (props) => {
     const [isFriend, setIsFriend] = useState(false)
 
     function checkFriendship(e) {
-        for (var friend of me[0].friends) {
+        for (var friend of user.friends) {
             if(friend.email === e) {
                 setIsFriend(true)
                 break
@@ -169,6 +119,7 @@ const AddFriends = (props) => {
             </div>
             <div className={classes.friendsList}>
                 <h5>Friends List</h5>
+                {user.friends.map(i => <div> {i.name} </div>)}
             </div>
         </div>
     )
