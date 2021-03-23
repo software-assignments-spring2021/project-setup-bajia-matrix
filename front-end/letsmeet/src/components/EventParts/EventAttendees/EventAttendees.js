@@ -23,22 +23,25 @@ import red from '../../../assets/Avatars/redavi.png';
 
 const eventAttendees = (props) => {
 
-  let attendeesList = props.attendees.map((attendee, index) =>
-    <ListGroup.Item className={classes.Border}>
-      <Card className={classes.CardHeader}>
-        <Card.Img src={red} className={classes.Avatar} />
-        <Card.Body className={classes.Name}><p>{attendee}</p></Card.Body>
-        <Card.Body className={classes.Role}><p>{props.roles[index]}</p></Card.Body>
-      </Card>
-    </ListGroup.Item>
-  );
+  let attendeesList;
+  if(props.attendees) {
+    attendeesList = props.attendees.map((attendee, index) =>
+        <ListGroup.Item className={classes.Border}>
+          <Card className={classes.CardHeader}>
+            <Card.Img src={red} className={classes.Avatar} />
+            <Card.Body className={classes.Name}><p>{attendee}</p></Card.Body>
+            <Card.Body className={classes.Role}><p>{props.roles[index]}</p></Card.Body>
+          </Card>
+        </ListGroup.Item>
+    );
+  } else {
+    <ListGroup.Item className={classes.Border}>no attendees</ListGroup.Item>
+  }
 
   return (
-    <Row className="justify-content-center">
-      <ListGroup className={classes.Group}>
-        {attendeesList}
-      </ListGroup>
-    </Row>
+    <ListGroup className={classes.Group}>
+      {attendeesList}
+    </ListGroup>
   );
   
 };

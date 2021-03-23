@@ -8,7 +8,7 @@
 }
 
 .Div {
-  width: 50%;
+  width: 90%;
   text-align: center;
 }
 
@@ -34,9 +34,14 @@
   margin-top: 10px;
 }
 
-.Button {
-  margin: 3px;
+.LinkBtn {
+  margin-top: -9px;
   width: 100%;
+}
+
+.SuggestedBtn {
+  width: 100%;
+  margin-top: 5px;
 }
 
 .EventTitle {
@@ -46,7 +51,6 @@
 
 .CardDetail {
   width: 60%;
-  border-right: 1px solid lightgray;
 }
 
 .CardTime {
@@ -103,4 +107,63 @@
 
 .FinalTime {
   width: 100%;
+}
+
+.CardBorder {
+  border: transparent;
+}
+
+.Profile {
+  margin: auto;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+  padding: 0 0 20px 0; /* top and bottom, left and right */
+  border-right: thin solid lightgray;
+}
+
+.CardAttendee {
+  text-align: center;
+    width: 90%;
+    border: transparent;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    margin: 20px; /* space b/t each card */
+}
+
+.AttendeeTitle {
+  margin: 20px 0 0 0;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.AttendeesBody {
+  width: 90%;
+  display: flex;
+  flex-flow: column;
+  overflow: scroll;
+  height: 200px;
+  overflow-x: hidden;
+}
+
+.AttendeesBody::-webkit-scrollbar {
+  width: 8px;
+  height: 16px;
+}
+
+.AttendeesBody::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.AttendeesBody::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.AttendeesBody::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
 }

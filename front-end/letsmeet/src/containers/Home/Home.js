@@ -30,7 +30,9 @@ const Home = (props) => {
     // TODO: comment out eventsList items when mockaroo runs out of requests
     const [eventsState, setEventsState] = useState([
         {
-            id: 1,
+            id: {
+                $oid: "1"
+            },
             title: "Study Date",
             day: "Wed",
             date: "Mar 10",
@@ -43,7 +45,9 @@ const Home = (props) => {
             creator: "Angela"
         },
         {
-            id: 2,
+            id: {
+                $oid: "2"
+            },
             title: "Brunch",
             day: "Sat",
             date: "Mar 6",
@@ -59,7 +63,9 @@ const Home = (props) => {
             creator: "Jessica"
         },
         {
-            id: 3,
+            id: {
+                $oid: "3"
+            },
             title: "Alex's Birthday",
             day: "Wed",
             date: "Mar 24",
@@ -77,7 +83,7 @@ const Home = (props) => {
 
     useEffect(() => {
         // TODO: should only get events with current user listed in attendees list
-        axios.get("/events.json?key=fe6891f0")
+        axios.get("/events.json?key=5942cd70")
             .then(response => {
                 const list = response.data.events;
                 // setEventsState({ eventsList: list });
@@ -133,7 +139,7 @@ const Home = (props) => {
         if (e.myCreatedEvent) {
             return (
                 <Event
-                    key={e.id.$oid}
+                    id={e.id.$oid}
                     title={e.title}
                     day={e.day}
                     date={e.date}
@@ -154,7 +160,7 @@ const Home = (props) => {
         if (!e.myCreatedEvent) {
             return (
                 <Event
-                    key={e.id.$oid}
+                    id={e.id.$oid}
                     title={e.title}
                     day={e.day}
                     date={e.date}

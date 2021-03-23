@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-//import axios from '../../../axios';
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { Redirect } from "react-router-dom";
+import axios from "../../axios";
 
 import EventAttendees from "../../components/EventParts/EventAttendees/EventAttendees";
 import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
+import EventModalTimes from "../../components/EventParts/EventModalTimes/EventModalTimes";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
+import EditSupplies from "../../components/EventParts/EditSupplies/EditSupplies";
 
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./EventPage.module.css";
 
-import {
-  Form,
-  Select,
-} from "antd";
-import {
-  InfoCircleOutlined,
-} from "@ant-design/icons";
+import { Form, Select } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -24,82 +24,94 @@ import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Badge from "react-bootstrap/Badge";
 import FormB from "react-bootstrap/Form";
+import { CardGroup } from "react-bootstrap";
 
 const Event = (props) => {
+  const key = "57a7ac80";
+
+  const [loading, setLoading] = useState({
+    event: true,
+    user: true,
+  });
+
+  //for event
   const [event, setEvent] = useState({
-    id: "1-i-am-random-event-id",
-    title: "Study Dateeeeeeeeeeeeeeeeeeeeee",
-    day: "Wed",
-    date: "Mar 10",
-    time: "5:00 pm",
-    description:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-    attendees: [
-      "Angela Tim",
-      "Matthew Fishman",
-      "Timothy Sanders",
-      "Spike Spiegel",
-      "Faye Valentine",
-    ],
-    myCreatedEvent: true,
-    creator: "Angela Tim",
-    roles: new Array(),
-    suggestedTimes: [
-      "Wed, Mar 10 @ 6:00 pm",
-      "Wed, Mar 10 @ 7:00 pm",
-      "Wed, Mar 10 @ 8:00 pm",
-    ],
-    finalDay: null,
-    finalDate: null,
-    finalTime: null,
+    // id: "1-i-am-random-event-id",
+    // title: "Study Dateeeeeeeeeeeeeeeeeeeeee",
+    // day: "Wed",
+    // date: "Mar 10",
+    // time: "5:00 pm",
+    // location: "New York, NY",
+    // description:
+    //   "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
+    // attendees: [
+    //   "Angela Tim",
+    //   "Matthew Fishman",
+    //   "Timothy Sanders",
+    //   "Spike Spiegel",
+    //   "Faye Valentine",
+    // ],
+    // creator: "Angela Tim",
+    // roles: new Array(),
+    // suggestedTimes: [
+    //   "Wed, Mar 10 @ 6:00 pm",
+    //   "Wed, Mar 10 @ 7:00 pm",
+    //   "Wed, Mar 10 @ 8:00 pm",
+    // ],
+    // finalDay: null,
+    // finalDate: null,
+    // finalTime: null,
   });
 
-  /////////////////////////////////////////////////////////
-  //for current user name & current user friends
-  const [state, setState] = useState({
-    textInput: React.createRef(),
+  //for current user info
+  const [user, setUser] = useState({
     name: "",
+    friends: new Array(),
+  });
+
+  //for general state of current event page
+  const [state, setState] = useState({
+    unverifiedInput: React.createRef(), //used to reference to name input by unverified user
+    descriptionInput: React.createRef(),
+    creator: false,
+    attendee: false,
+    unverified: false,
+    redirect: false, //if true, page will redirect back to home
+  });
+
+  //for suggested times & final time
+  const [chosenTime, setChosenTime] = useState({
+    day: "test",
+    date: "test",
+    time: "test",
+  });
+
+  //for inviting friends
+  const { Option } = Select;
+  const [invitees, setInvitees] = useState();
+
+  //for edit description
+  const [description, setDescription] = useState({
+    edit: false,
+    description: "",
   });
 
   useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      name: "Angela Tim",
-      friends: [
-        { value: "friend_first1 friend_last1" },
-        { value: "friend_first2 friend_last2" },
-        { value: "friend_first3 friend_last3" },
-        { value: "friend_first4 friend_last4" },
-        { value: "friend_first5 friend_last5" },
-      ],
-    }));
-    // axios.get("/url-to-get-current-user-name")
-    //   .then(response => {
-    //     setState(prevState => ({
-    //       ...prevState,
-    //       name: response.name
-    //     }));
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-  }, []);
-
-  /////////////////////////////////////////////////////////
-  //for event attendees & avis
-  useEffect(() => {
-    event.attendees.map((attendee) => {
-      if (event.creator === attendee) {
-        event.roles.push("Creator");
-      } else {
-        event.roles.push("Attendee");
-      }
-    });
+    let eventQueryID = window.location.pathname.split("id:")[1];
+    axios
+      .get(`/event/${eventQueryID}.json?key=${key}`)
+      .then((response) => {
+        console.log(response.data);
+        setEvent(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   let addUnverified = (e) => {
     console.log(e.target.previousElementSibling.inputValue);
-    let newAttendee = state.textInput.current.value;
+    let newAttendee = state.unverifiedInput.current.value;
     let newAttendees = [...event.attendees]; //make a shallow copy first
     newAttendees.splice(1, 0, newAttendee);
     let newRoles = [...event.roles];
@@ -111,72 +123,49 @@ const Event = (props) => {
       roles: newRoles,
     }));
   };
+  useEffect(() => {
+    //for attendees list & attendee roles
+    if (event.attendees) {
+      event.attendees.map((attendee, index) => {
+        if (event.creator === attendee) {
+          event.roles.push("Creator");
+        } else {
+          event.roles.push("Attendee");
+        }
+      });
+      console.log(event.roles);
+    }
+  }, [event.attendees]);
 
-  /////////////////////////////////////////////////////////
-  //for canceling event
-  const [show, setShow] = useState(false);
-  const handleDelete = () => {
-    //delete axios call here
-    setShow(false);
-    props.history.push("/home");
-  };
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showLink, setShowLink] = useState(false);
+  const handleShowLink = () => setShowLink(true);
+  const handleCloseLink = () => setShowLink(false);
+  useEffect(() => {
+    //for generating event url
+    if (event.id) {
+      let eventURL = window.location.origin + "/event/id:" + event.id.$oid;
+      setEvent((prevState) => ({
+        ...prevState,
+        url: eventURL,
+      }));
+    }
+  }, [event.id]);
 
-  /////////////////////////////////////////////////////////
-  //for suggested times & final time
-  const [chosenTime, setChosenTime] = useState({
-    day: "",
-    date: "",
-    time: "",
-    show: true,
-  });
-
-  let suggestedTimes = event.suggestedTimes.map((time) => (
-    <h5>
-      <Badge className="text-wrap" variant="primary">
-        {time}
-      </Badge>
-    </h5>
-  ));
-
+  let suggestedTimes;
+  let suggestedModal;
   let onChecked = (e) => {
-    let chosenTime = e.target.nextElementSibling.children[0].innerText;
-    let finalDay = chosenTime.split(",")[0];
-    let finalDate = chosenTime.split(",")[1].split("@")[0];
-    let finalTime = chosenTime.split(",")[1].split("@")[1];
     setChosenTime((prevState) => ({
       ...prevState,
-      day: finalDay,
-      date: finalDate,
-      time: finalTime,
+      day: e.target.getAttribute("day"),
+      date: e.target.getAttribute("date"),
+      time: e.target.getAttribute("time"),
     }));
   };
-
-  let suggestedModal = event.suggestedTimes.map((time) => (
-    <div className="form-check mt-1">
-      <input
-        className="form-check-input mt-2"
-        type="radio"
-        name="exampleRadios"
-        id="exampleRadios1"
-        defaultValue="option1"
-        onClick={onChecked}
-      />
-      <label className="form-check-label" htmlFor="exampleRadios1">
-        <h5>
-          <Badge className="text-wrap" variant="primary">
-            {time}
-          </Badge>
-        </h5>
-      </label>
-    </div>
-  ));
-
   const [showSuggested, setShowSuggested] = useState(false);
   const handleShowSuggested = () => setShowSuggested(true);
   const handleCloseSuggested = (e) => setShowSuggested(false);
   const handleFinal = () => {
+    console.log("chosenn time: ", chosenTime);
     setEvent((prevState) => ({
       ...prevState,
       finalDay: chosenTime.day,
@@ -184,6 +173,12 @@ const Event = (props) => {
       finalTime: chosenTime.time,
     }));
     setShowSuggested(false);
+    //axios post call to update event
+    axios
+      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   useEffect(() => {
@@ -202,53 +197,274 @@ const Event = (props) => {
     }
   }, [event.finalDay]);
 
-  /////////////////////////////////////////////////////////
-  //for generating event link
-  useEffect(() => {
-    let eventURL = window.location.origin + "/event/" + event.id;
-    setEvent((prevState) => ({
-      ...prevState,
-      url: eventURL,
-    }));
-  }, []);
-
-  const [showLink, setShowLink] = useState(false);
-  const handleShowLink = () => setShowLink(true);
-  const handleCloseLink = () => setShowLink(false);
-
-  /////////////////////////////////////////////////////////
-  //for inviting friends
-  const { Option } = Select;
-  const [invitees, setInvitees] = useState();
-
   let addVerified = (e) => {
     let attendeesCopy = [...event.attendees]; //make a shallow copy first
     let rolesCopy = [...event.roles];
-    for (let i = 0; i < invitees.length; i++) {
-      attendeesCopy.splice(1, 0, invitees[i]);
-      rolesCopy.splice(1, 0, "Attendee");
+    if (invitees.length > 0) {
+      for (let i = 0; i < invitees.length; i++) {
+        attendeesCopy.splice(1, 0, invitees[i]);
+        rolesCopy.splice(1, 0, "Attendee");
+      }
+      console.log(invitees);
+      setInvitees(null);
+      setEvent((prevState) => ({
+        ...prevState,
+        attendees: attendeesCopy,
+        roles: rolesCopy,
+      }));
     }
+  };
+  useEffect(() => {
+    // setState((prevState) => ({
+    //   ...prevState,
+    //   name: "Angela Tim",
+    //   friends: [
+    //     { value: "friend_first1 friend_last1" },
+    //     { value: "friend_first2 friend_last2" },
+    //     { value: "friend_first3 friend_last3" },
+    //     { value: "friend_first4 friend_last4" },
+    //     { value: "friend_first5 friend_last5" },
+    //   ],
+    // }));
+    // setLoading({ user: false });
+    axios
+      .get(`/users/123.json?key=${key}`)
+      .then((response) => {
+        setUser((prevState) => ({
+          ...prevState,
+          name: response.data.name,
+        }));
+        let friendsNames = new Array();
+        response.data.friends.map((friend, index) => {
+          friendsNames.push(friend.name);
+        });
+        setUser((prevState) => ({
+          ...prevState,
+          name: response.data.name,
+          friends: friendsNames,
+        }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-    setEvent((prevState) => ({
+  useEffect(() => {
+    console.log(user.friends);
+  }, [user.friends]);
+
+  //for canceling event
+  const [show, setShow] = useState(false);
+  const handleDelete = () => {
+    axios
+      .delete(`/event/${event.id}.json?key=${key}`)
+      .then((response) => {
+        console.log("deleted");
+        console.log(response);
+        setShow(false);
+        setState((prevState) => ({
+          ...prevState,
+          redirect: true,
+        }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  //for editing description
+  let editDescription = () => {
+    setDescription((prevState) => ({
       ...prevState,
-      attendees: attendeesCopy,
-      roles: rolesCopy,
+      edit: true,
+      description: event.description,
     }));
-
-    setInvitees([]);
+  };
+  let handleDescription = () => {
+    if (description.description !== "") {
+      setEvent((prevState) => ({
+        ...prevState,
+        description: description.description,
+      }));
+    }
+    setDescription((prevState) => ({
+      ...prevState,
+      edit: false,
+    }));
+    //axios post to update event
+    axios
+      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
+      .then((response) => {
+        console.log(response);
+      });
+  };
+  let descriptionChange = (e) => {
+    setDescription((prevState) => ({
+      ...prevState,
+      description: e.target.value,
+    }));
+  };
+  let cancelDescription = () => {
+    setDescription((prevState) => ({
+      ...prevState,
+      edit: false,
+    }));
   };
 
-  if (props.isAuthenticated) {
-    if (state.name === event.creator) {
-      return (
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      unverified: true,
+    }));
+    // if (user.name !== "" && event.creator) {
+    //   console.log(user.name);
+    //   console.log(event.creator);
+    //   if (user.name === event.creator) {
+    //     setState(prevState => ({
+    //       ...prevState,
+    //       creator: true
+    //     }));
+    //   } else {
+    //     setState(prevState => ({
+    //       ...prevState,
+    //       attendee: true
+    //     }));
+    //   }
+    // } else {
+    //   setState(prevState => ({
+    //     ...prevState,
+    //     unverified: true
+    //   }));
+    // }
+  }, [event, user]);
+
+  useEffect(() => {
+    console.log(event);
+    console.log(state);
+    if (
+      state.creator === true ||
+      state.attendee === true ||
+      state.unverified === true
+    ) {
+      setLoading((prevState) => ({
+        ...prevState,
+        event: false,
+        user: false,
+      }));
+    }
+  }, [state]);
+
+  if (state.redirect === true) {
+    return <Redirect to="/" />;
+  }
+  let eventPage = <Spinner />;
+  if (!loading.event && !loading.user) {
+    if (state.attendee === true) {
+      eventPage = (
+        <Container fluid className={classes.Container}>
+          <Row className={classes.EventTitle}>
+            <EventTitle
+              title={event.title}
+              day={event.day}
+              date={event.date}
+              time={event.time}
+              location={event.location}
+            />
+          </Row>
+          <hr />
+          <br />
+
+          <Row className="justify-content-center">
+            <Card className={classes.CardInfo}>
+              <Card.Body>
+                <Card.Title>Event Details</Card.Title>
+                <Card.Text>{event.description}</Card.Text>
+              </Card.Body>
+            </Card>
+          </Row>
+          <br />
+          <hr />
+          <br />
+
+          <CardGroup>
+            <Card className={classes.CardBorder}>
+              <Container fluid>
+                <Row>
+                  <div className={classes.Profile}>
+                    <Card className={classes.CardAttendee}>
+                      <Card.Title
+                        className={classes.TitleAttendee}
+                      ></Card.Title>
+                      <Card.Title className={classes.AttendeeTitle}>
+                        <h5>Event Attendees</h5>
+                        <hr />
+                      </Card.Title>
+                      <Card.Body className={classes.AttendeesBody}>
+                        <EventAttendees
+                          attendees={event.attendees}
+                          roles={event.roles}
+                          isAuthenticated={state.isAuthenticated}
+                        ></EventAttendees>
+                      </Card.Body>
+                      <Card.Body>
+                        <br />
+                      </Card.Body>
+                    </Card>
+                  </div>
+                </Row>
+              </Container>
+            </Card>
+            <Card className={classes.CardBorder}>
+              <EditSupplies />
+            </Card>
+          </CardGroup>
+
+          <Row className="justify-content-center">
+            <Button variant="danger" onClick={handleShow}>
+              Withdraw from Event
+            </Button>
+          </Row>
+          <br />
+
+          <Modal show={show} onHide={handleClose} className={classes.Modal}>
+            <Modal.Header className={classes.Header}>
+              <Modal.Title className="pl-4">Withdraw from Event</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="pl-5 pt-4">
+              Are you sure you want to withdraw from this event? <br /> You
+              can't undo this action.
+            </Modal.Body>
+            <Modal.Footer className={classes.Footer}>
+              <Button variant="secondary" onClick={handleClose}>
+                Go Back
+              </Button>
+              <Button variant="danger" onClick={handleDelete}>
+                Withdraw from Event
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Container>
+      );
+    } else if (state.creator === true) {
+      console.log("hewwo");
+      eventPage = (
         <Container fluid className={classes.Container}>
           <Row className={classes.Row}>
             <Button
               variant="outline-primary"
-              className={classes.Button}
+              className={classes.LinkBtn}
               onClick={handleShowLink}
             >
               Generate Event Link
+            </Button>
+            <Button
+              variant="outline-primary"
+              className={classes.SuggestedBtn}
+              onClick={handleShowSuggested}
+            >
+              Choose Final Time
             </Button>
           </Row>
 
@@ -258,6 +474,7 @@ const Event = (props) => {
               day={event.day}
               date={event.date}
               time={event.time}
+              location={event.location}
             />
           </Row>
           <hr />
@@ -266,37 +483,38 @@ const Event = (props) => {
           <Row className="justify-content-center">
             <Card className={classes.CardInfo}>
               <Card.Body className={classes.CardDetail}>
-                <Card.Title>
-                  Event Details
-                  <a className={classes.Edit}>Edit</a>
-                </Card.Title>
-                <Card.Text>{event.description}</Card.Text>
-              </Card.Body>
-              <Card.Body className={classes.CardTime}>
-                {chosenTime.show ? (
+                {description.edit === false ? (
                   <div>
-                    <Card.Title>Suggested Time(s)</Card.Title>
-                    <Card.Text className={classes.CardTimes}>
-                      {suggestedTimes}
-                    </Card.Text>
-                    <Button
-                      onClick={handleShowSuggested}
-                      className={classes.FinalTime}
-                    >
-                      Choose Final Time
-                    </Button>
+                    <Card.Title>
+                      Event Details
+                      <a className={classes.Edit} onClick={editDescription}>
+                        Edit
+                      </a>
+                    </Card.Title>
+                    <Card.Text>{event.description}</Card.Text>
                   </div>
                 ) : (
                   <div>
-                    <Card.Title>Final Event Time</Card.Title>
-                    <Card.Text className={classes.CardTimes}>
-                      <h5>
-                        <Badge className="text-wrap" variant="primary">
-                          {event.finalDay}, {event.finalDate} @{" "}
-                          {event.finalTime}
-                        </Badge>
-                      </h5>
+                    <Card.Title>Event Details</Card.Title>
+                    <Card.Text>
+                      <FormB.Group>
+                        <FormB.Control
+                          as="textarea"
+                          rows={3}
+                          defaultValue={description.description}
+                          value={description.description}
+                          onChange={descriptionChange}
+                        />
+                      </FormB.Group>
                     </Card.Text>
+                    <Row className="justify-content-end pr-3">
+                      <Button variant="danger" onClick={cancelDescription}>
+                        Cancel
+                      </Button>
+                      <Button className="ml-2" onClick={handleDescription}>
+                        Save Changes
+                      </Button>
+                    </Row>
                   </div>
                 )}
               </Card.Body>
@@ -306,49 +524,70 @@ const Event = (props) => {
           <hr />
           <br />
 
-          <EventAttendees
-            attendees={event.attendees}
-            roles={event.roles}
-            isAuthenticated={state.isAuthenticated}
-          ></EventAttendees>
-          <br />
+          <CardGroup>
+            <Card className={classes.CardBorder}>
+              <Container fluid>
+                <Row>
+                  <div className={classes.Profile}>
+                    <Card className={classes.CardAttendee}>
+                      <Card.Title
+                        className={classes.TitleAttendee}
+                      ></Card.Title>
+                      <Card.Title className={classes.AttendeeTitle}>
+                        <h5>Event Attendees</h5>
+                        <hr />
+                      </Card.Title>
+                      <Card.Body className={classes.AttendeesBody}>
+                        <EventAttendees
+                          attendees={event.attendees}
+                          roles={event.roles}
+                          isAuthenticated={state.isAuthenticated}
+                        ></EventAttendees>
+                      </Card.Body>
+                      <Card.Body>
+                        <Row className="justify-content-center">
+                          <div className={classes.Div}>
+                            <Form.Item
+                              label="Invite Friends"
+                              tooltip={{
+                                title:
+                                  "Invite people from your friends list. You can add more friends later.",
+                                icon: <InfoCircleOutlined />,
+                              }}
+                            >
+                              <Select
+                                mode="multiple"
+                                placeholder="Select from Friends List"
+                                className={classes.dropdown}
+                                onChange={(value) => setInvitees(value)}
+                                value={event.invitees}
+                              >
+                                <Option value="jack">Jack</Option>
+                                <Option value="lucy">Lucy</Option>
+                                <Option value="tom">Tom</Option>
+                              </Select>
+                              <Button
+                                className="ml-3"
+                                onClick={addVerified}
+                                className={classes.AddVerified}
+                              >
+                                Invite Friend
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                </Row>
+              </Container>
+            </Card>
+            <Card className={classes.CardBorder}>
+              <EditSupplies />
+            </Card>
+          </CardGroup>
 
-          <Row className="justify-content-center">
-            <div className={classes.Div}>
-              <Form.Item
-                label="Invite Friends"
-                tooltip={{
-                  title:
-                    "Invite people from your friends list. You can add more friends later.",
-                  icon: <InfoCircleOutlined />,
-                }}
-              >
-                <Select
-                  mode="multiple"
-                  placeholder="Select from Friends List"
-                  className={classes.dropdown}
-                  onChange={(value) => setInvitees(value)}
-                  value={invitees}
-                >
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="tom">Tom</Option>
-                </Select>
-                <Button
-                  className="ml-3"
-                  onClick={addVerified}
-                  className={classes.AddVerified}
-                >
-                  Invite Friend
-                </Button>
-              </Form.Item>
-            </div>
-          </Row>
-          <br />
-          <hr />
-          <br />
-
-          <Row className="justify-content-center">
+          <Row className="justify-content-center mt-3">
             <Button variant="danger" onClick={handleShow}>
               Cancel Event
             </Button>
@@ -397,7 +636,10 @@ const Event = (props) => {
             <Modal.Body className="px-5 pt-4">
               The following are the most popular suggested times. <br />
               <p>Please select a finalized time for your event:</p>
-              {suggestedModal}
+              <EventModalTimes
+                suggestedTimes={event.suggestedTimes}
+                onChecked={onChecked}
+              />
             </Modal.Body>
             <Modal.Footer className={classes.Footer}>
               <Button variant="secondary" onClick={handleCloseSuggested}>
@@ -429,14 +671,15 @@ const Event = (props) => {
         </Container>
       );
     } else {
-      return (
-        <Container fluid className={classes.Container}>
-          <Row className={classes.EventTitle}>
+      eventPage = (
+        <Container className={classes.Container}>
+          <Row>
             <EventTitle
               title={event.title}
               day={event.day}
               date={event.date}
               time={event.time}
+              location={event.location}
             />
           </Row>
           <hr />
@@ -454,111 +697,55 @@ const Event = (props) => {
           <hr />
           <br />
 
-          <EventAttendees
-            attendees={event.attendees}
-            roles={event.roles}
-            isAuthenticated={state.isAuthenticated}
-          ></EventAttendees>
+          <h5 className="ml-2">Event Attendees</h5>
+          <div className={classes.AttendeesBody}>
+            <EventAttendees
+              attendees={event.attendees}
+              roles={event.roles}
+              isAuthenticated={state.isAuthenticated}
+            ></EventAttendees>
+          </div>
+          <br />
+
+          <Row className="justify-content-center">
+            <div className={classes.Div}>
+              <InputGroup className={classes.Input}>
+                <FormControl
+                  ref={state.unverifiedInput}
+                  aria-label="Large"
+                  aria-describedby="inputGroup-sizing-sm"
+                  placeholder="Enter Your Name"
+                />
+                <Button className="ml-3" onClick={addUnverified}>
+                  Join Event
+                </Button>
+              </InputGroup>
+            </div>
+          </Row>
           <br />
           <hr />
           <br />
 
           <Row className="justify-content-center">
-            <Button variant="danger" onClick={handleShow}>
-              Withdraw from Event
-            </Button>
+            <Card className={classes.Card}>
+              <Card.Header></Card.Header>
+              <Card.Body>
+                <Card.Title>Want to unlock all features?</Card.Title>
+                <Card.Text>Create an account now!</Card.Text>
+                <Button href="/signup" variant="primary">
+                  Create Account
+                </Button>
+              </Card.Body>
+              <Card.Footer className="text-muted"></Card.Footer>
+            </Card>
           </Row>
           <br />
-
-          <Modal show={show} onHide={handleClose} className={classes.Modal}>
-            <Modal.Header className={classes.Header}>
-              <Modal.Title className="pl-4">Withdraw from Event</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="pl-5 pt-4">
-              Are you sure you want to withdraw from this event? <br /> You
-              can't undo this action.
-            </Modal.Body>
-            <Modal.Footer className={classes.Footer}>
-              <Button variant="secondary" onClick={handleClose}>
-                Go Back
-              </Button>
-              <Button variant="danger" onClick={handleDelete}>
-                Withdraw from Event
-              </Button>
-            </Modal.Footer>
-          </Modal>
         </Container>
       );
     }
-  } else {
-    return (
-      <Container className={classes.Container}>
-        <Row>
-          <EventTitle
-            title={event.title}
-            day={event.day}
-            date={event.date}
-            time={event.time}
-          />
-        </Row>
-        <hr />
-        <br />
-
-        <Row className="justify-content-center">
-          <Card className={classes.CardInfo}>
-            <Card.Body>
-              <Card.Title>Event Details</Card.Title>
-              <Card.Text>{event.description}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Row>
-        <br />
-        <hr />
-        <br />
-
-        <EventAttendees
-          attendees={event.attendees}
-          roles={event.roles}
-          isAuthenticated={state.isAuthenticated}
-        ></EventAttendees>
-        <br />
-
-        <Row className="justify-content-center">
-          <div className={classes.Div}>
-            <InputGroup className={classes.Input}>
-              <FormControl
-                ref={state.textInput}
-                aria-label="Large"
-                aria-describedby="inputGroup-sizing-sm"
-                placeholder="Enter Your Name"
-              />
-              <Button className="ml-3" onClick={addUnverified}>
-                Join Event
-              </Button>
-            </InputGroup>
-          </div>
-        </Row>
-        <br />
-        <hr />
-        <br />
-
-        <Row className="justify-content-center">
-          <Card className={classes.Card}>
-            <Card.Header></Card.Header>
-            <Card.Body>
-              <Card.Title>Want to unlock all features?</Card.Title>
-              <Card.Text>Create an account now!</Card.Text>
-              <Button href="/signup" variant="primary">
-                Create Account
-              </Button>
-            </Card.Body>
-            <Card.Footer className="text-muted"></Card.Footer>
-          </Card>
-        </Row>
-        <br />
-      </Container>
-    );
   }
+
+  return <div>{eventPage}</div>;
 };
 
 export default Event;
