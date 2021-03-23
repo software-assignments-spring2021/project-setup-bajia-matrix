@@ -107,7 +107,7 @@ const Event = (props) => {
 
   let addUnverified = (e) => {
     console.log(e.target.previousElementSibling.inputValue);
-    let newAttendee = state.textInput.current.value;
+    let newAttendee = state.unverifiedInput.current.value;
     let newAttendees = [...event.attendees]; //make a shallow copy first
     newAttendees.splice(1, 0, newAttendee);
     let newRoles = [...event.roles];
@@ -196,16 +196,19 @@ const Event = (props) => {
   let addVerified = (e) => {
     let attendeesCopy = [...event.attendees]; //make a shallow copy first
     let rolesCopy = [...event.roles];
-    for (let i = 0; i < invitees.length; i++) {
-      attendeesCopy.splice(1, 0, invitees[i]);
-      rolesCopy.splice(1, 0, "Attendee");
+    if (invitees.length > 0) {
+      for (let i = 0; i < invitees.length; i++) {
+        attendeesCopy.splice(1, 0, invitees[i]);
+        rolesCopy.splice(1, 0, "Attendee");
+      }
+      console.log(invitees);
+      setInvitees(null);
+      setEvent((prevState) => ({
+        ...prevState,
+        attendees: attendeesCopy,
+        roles: rolesCopy,
+      }));
     }
-    setInvitees({ invitees: [] });
-    setEvent((prevState) => ({
-      ...prevState,
-      attendees: attendeesCopy,
-      roles: rolesCopy,
-    }));
   };
   useEffect(() => {
     // setState((prevState) => ({
@@ -307,12 +310,10 @@ const Event = (props) => {
   };
 
   useEffect(() => {
-    if (user.name !== "" && event.creator) {
-      setState((prevState) => ({
-        ...prevState,
-        creator: true,
-      }));
-    }
+    setState((prevState) => ({
+      ...prevState,
+      creator: true,
+    }));
     // if (user.name !== "" && event.creator) {
     //   console.log(user.name);
     //   console.log(event.creator);
@@ -337,6 +338,7 @@ const Event = (props) => {
 
   useEffect(() => {
     console.log(event);
+    console.log(state);
     if (
       state.creator === true ||
       state.attendee === true ||
@@ -617,6 +619,75 @@ const Event = (props) => {
               </Button>
             </Modal.Footer>
           </Modal>
+        </Container>
+      );
+    } else {
+      eventPage = (
+        <Container className={classes.Container}>
+          <Row>
+            <EventTitle
+              title={event.title}
+              day={event.day}
+              date={event.date}
+              time={event.time}
+              location={event.location}
+            />
+          </Row>
+          <hr />
+          <br />
+
+          <Row className="justify-content-center">
+            <Card className={classes.CardInfo}>
+              <Card.Body>
+                <Card.Title>Event Details</Card.Title>
+                <Card.Text>{event.description}</Card.Text>
+              </Card.Body>
+            </Card>
+          </Row>
+          <br />
+          <hr />
+          <br />
+
+          <EventAttendees
+            attendees={event.attendees}
+            roles={event.roles}
+            isAuthenticated={state.isAuthenticated}
+          ></EventAttendees>
+          <br />
+
+          <Row className="justify-content-center">
+            <div className={classes.Div}>
+              <InputGroup className={classes.Input}>
+                <FormControl
+                  ref={state.unverifiedInput}
+                  aria-label="Large"
+                  aria-describedby="inputGroup-sizing-sm"
+                  placeholder="Enter Your Name"
+                />
+                <Button className="ml-3" onClick={addUnverified}>
+                  Join Event
+                </Button>
+              </InputGroup>
+            </div>
+          </Row>
+          <br />
+          <hr />
+          <br />
+
+          <Row className="justify-content-center">
+            <Card className={classes.Card}>
+              <Card.Header></Card.Header>
+              <Card.Body>
+                <Card.Title>Want to unlock all features?</Card.Title>
+                <Card.Text>Create an account now!</Card.Text>
+                <Button href="/signup" variant="primary">
+                  Create Account
+                </Button>
+              </Card.Body>
+              <Card.Footer className="text-muted"></Card.Footer>
+            </Card>
+          </Row>
+          <br />
         </Container>
       );
     }
