@@ -87,7 +87,7 @@ const Event = (props) => {
 
   //for edit description
   const [description, setDescription] = useState({
-    edit: true,
+    edit: false,
     description: ""
   });
 
@@ -257,24 +257,37 @@ const Event = (props) => {
   let editDescription = () => {
     setDescription(prevState => ({
       ...prevState,
-      edit: true
+      edit: true, 
+      description: event.description
     }))
   }
   let handleDescription = () => {
-    setEvent(prevState => ({
+    if (description.description !== "") {
+      setEvent(prevState => ({
       ...prevState,
       description: description.description
     }))
+    }
     setDescription(prevState => ({
       ...prevState,
       edit: false
     }))
+    //axios post to update event
+    axios.post("/events/" + event.id.$oid + ".json?key=5f0a7ae0", event)
+      .then(response => {
+        console.log(response);
+      });
   }
   let descriptionChange = (e) => {
-    console.log(e.target);
     setDescription(prevState => ({
       ...prevState,
       description: e.target.value
+    }))
+  }
+  let cancelDescription = () => {
+    setDescription(prevState => ({
+      ...prevState,
+      edit: false
     }))
   }
 
@@ -430,9 +443,9 @@ const Event = (props) => {
                   Event Details
                 </Card.Title>
                 <Card.Text><FormB.Group>
-                  <FormB.Control as="textarea" rows={3} placeholder={event.description} value={description.description} onChange={descriptionChange}/>
+                  <FormB.Control as="textarea" rows={3} defaultValue={description.description} className={classes.Placeholder} value={description.description} onChange={descriptionChange} />
                 </FormB.Group></Card.Text>
-                <Row className="justify-content-end pr-3"><Button onClick={handleDescription}>Save Changes</Button></Row>
+                <Row className="justify-content-end pr-3"><Button variant="danger" onClick={cancelDescription}>Cancel</Button><Button className="ml-3" onClick={handleDescription}>Save Changes</Button></Row>
                 
                 </div>
               }
