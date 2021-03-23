@@ -53,7 +53,7 @@ const AddFriends = (props) => {
         if(lowercaseSearch === "") {
             setData()
         } else {
-            const filteredData = data.filter(item => {
+            const filteredData = user.friends.filter(item => {
                 return Object.keys(item).some(e =>
                     excludeColumns.includes(e) ? false : item[e].toString().toLowerCase().includes(lowercaseSearch)
                 )
