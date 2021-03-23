@@ -39,11 +39,9 @@ const eventAttendees = (props) => {
   }
 
   return (
-    <Row className="justify-content-center">
-      <ListGroup className={classes.Group}>
-        {attendeesList}
-      </ListGroup>
-    </Row>
+    <ListGroup className={classes.Group}>
+      {attendeesList}
+    </ListGroup>
   );
   
 };

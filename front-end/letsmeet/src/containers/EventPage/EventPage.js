@@ -7,6 +7,7 @@ import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
 import EventModalTimes from "../../components/EventParts/EventModalTimes/EventModalTimes";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
+import EditSupplies from "../../components/EventParts/EditSupplies/EditSupplies";
 
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,8 +24,11 @@ import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
 import Badge from "react-bootstrap/Badge";
 import FormB from "react-bootstrap/Form";
+import { CardGroup } from "react-bootstrap";
 
 const Event = (props) => {
+  const key = "57a7ac80";
+
   const [loading, setLoading] = useState({
     event: true,
     user: true,
@@ -95,7 +99,7 @@ const Event = (props) => {
   useEffect(() => {
     let eventQueryID = window.location.pathname.split("id:")[1];
     axios
-      .get(`/event/${eventQueryID}.json?key=5942cd70`)
+      .get(`/event/${eventQueryID}.json?key=${key}`)
       .then((response) => {
         console.log(response.data);
         setEvent(response.data);
@@ -171,7 +175,7 @@ const Event = (props) => {
     setShowSuggested(false);
     //axios post call to update event
     axios
-      .post("/events/" + event.id.$oid + ".json?key=5942cd70", event)
+      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
       .then((response) => {
         console.log(response);
       });
@@ -224,7 +228,7 @@ const Event = (props) => {
     // }));
     // setLoading({ user: false });
     axios
-      .get("/users/123.json?key=5942cd70")
+      .get(`/users/123.json?key=${key}`)
       .then((response) => {
         setUser((prevState) => ({
           ...prevState,
@@ -253,7 +257,7 @@ const Event = (props) => {
   const [show, setShow] = useState(false);
   const handleDelete = () => {
     axios
-      .delete(`/event/${event.id}.json?key=5942cd70`)
+      .delete(`/event/${event.id}.json?key=${key}`)
       .then((response) => {
         console.log("deleted");
         console.log(response);
@@ -291,7 +295,7 @@ const Event = (props) => {
     }));
     //axios post to update event
     axios
-      .post("/events/" + event.id.$oid + ".json?key=5942cd70", event)
+      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
       .then((response) => {
         console.log(response);
       });
@@ -312,7 +316,7 @@ const Event = (props) => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      creator: true,
+      unverified: true,
     }));
     // if (user.name !== "" && event.creator) {
     //   console.log(user.name);
@@ -384,14 +388,38 @@ const Event = (props) => {
           <hr />
           <br />
 
-          <EventAttendees
-            attendees={event.attendees}
-            roles={event.roles}
-            isAuthenticated={state.isAuthenticated}
-          ></EventAttendees>
-          <br />
-          <hr />
-          <br />
+          <CardGroup>
+            <Card className={classes.CardBorder}>
+              <Container fluid>
+                <Row>
+                  <div className={classes.Profile}>
+                    <Card className={classes.CardAttendee}>
+                      <Card.Title
+                        className={classes.TitleAttendee}
+                      ></Card.Title>
+                      <Card.Title className={classes.AttendeeTitle}>
+                        <h5>Event Attendees</h5>
+                        <hr />
+                      </Card.Title>
+                      <Card.Body className={classes.AttendeesBody}>
+                        <EventAttendees
+                          attendees={event.attendees}
+                          roles={event.roles}
+                          isAuthenticated={state.isAuthenticated}
+                        ></EventAttendees>
+                      </Card.Body>
+                      <Card.Body>
+                        <br />
+                      </Card.Body>
+                    </Card>
+                  </div>
+                </Row>
+              </Container>
+            </Card>
+            <Card className={classes.CardBorder}>
+              <EditSupplies />
+            </Card>
+          </CardGroup>
 
           <Row className="justify-content-center">
             <Button variant="danger" onClick={handleShow}>
@@ -496,49 +524,70 @@ const Event = (props) => {
           <hr />
           <br />
 
-          <EventAttendees
-            attendees={event.attendees}
-            roles={event.roles}
-            isAuthenticated={state.isAuthenticated}
-          ></EventAttendees>
-          <br />
+          <CardGroup>
+            <Card className={classes.CardBorder}>
+              <Container fluid>
+                <Row>
+                  <div className={classes.Profile}>
+                    <Card className={classes.CardAttendee}>
+                      <Card.Title
+                        className={classes.TitleAttendee}
+                      ></Card.Title>
+                      <Card.Title className={classes.AttendeeTitle}>
+                        <h5>Event Attendees</h5>
+                        <hr />
+                      </Card.Title>
+                      <Card.Body className={classes.AttendeesBody}>
+                        <EventAttendees
+                          attendees={event.attendees}
+                          roles={event.roles}
+                          isAuthenticated={state.isAuthenticated}
+                        ></EventAttendees>
+                      </Card.Body>
+                      <Card.Body>
+                        <Row className="justify-content-center">
+                          <div className={classes.Div}>
+                            <Form.Item
+                              label="Invite Friends"
+                              tooltip={{
+                                title:
+                                  "Invite people from your friends list. You can add more friends later.",
+                                icon: <InfoCircleOutlined />,
+                              }}
+                            >
+                              <Select
+                                mode="multiple"
+                                placeholder="Select from Friends List"
+                                className={classes.dropdown}
+                                onChange={(value) => setInvitees(value)}
+                                value={event.invitees}
+                              >
+                                <Option value="jack">Jack</Option>
+                                <Option value="lucy">Lucy</Option>
+                                <Option value="tom">Tom</Option>
+                              </Select>
+                              <Button
+                                className="ml-3"
+                                onClick={addVerified}
+                                className={classes.AddVerified}
+                              >
+                                Invite Friend
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                </Row>
+              </Container>
+            </Card>
+            <Card className={classes.CardBorder}>
+              <EditSupplies />
+            </Card>
+          </CardGroup>
 
-          <Row className="justify-content-center">
-            <div className={classes.Div}>
-              <Form.Item
-                label="Invite Friends"
-                tooltip={{
-                  title:
-                    "Invite people from your friends list. You can add more friends later.",
-                  icon: <InfoCircleOutlined />,
-                }}
-              >
-                <Select
-                  mode="multiple"
-                  placeholder="Select from Friends List"
-                  className={classes.dropdown}
-                  onChange={(value) => setInvitees(value)}
-                  value={event.invitees}
-                >
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="tom">Tom</Option>
-                </Select>
-                <Button
-                  className="ml-3"
-                  onClick={addVerified}
-                  className={classes.AddVerified}
-                >
-                  Invite Friend
-                </Button>
-              </Form.Item>
-            </div>
-          </Row>
-          <br />
-          <hr />
-          <br />
-
-          <Row className="justify-content-center">
+          <Row className="justify-content-center mt-3">
             <Button variant="danger" onClick={handleShow}>
               Cancel Event
             </Button>
@@ -648,11 +697,14 @@ const Event = (props) => {
           <hr />
           <br />
 
-          <EventAttendees
-            attendees={event.attendees}
-            roles={event.roles}
-            isAuthenticated={state.isAuthenticated}
-          ></EventAttendees>
+          <h5 className="ml-2">Event Attendees</h5>
+          <div className={classes.AttendeesBody}>
+            <EventAttendees
+              attendees={event.attendees}
+              roles={event.roles}
+              isAuthenticated={state.isAuthenticated}
+            ></EventAttendees>
+          </div>
           <br />
 
           <Row className="justify-content-center">

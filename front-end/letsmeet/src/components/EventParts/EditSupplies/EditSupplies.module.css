@@ -2,7 +2,6 @@
     margin: auto;
     display: flex;
     width: 100%;
-    overflow: scroll; /* enable scrolling if too long */
     align-items: center;
     flex-flow: column;
     padding: 0 0 20px 0; /* top and bottom, left and right */
@@ -10,14 +9,12 @@
 
 .Card {
     text-align: center;
-    background-color: #dce5e2;
-    width: 50%;
-    border: thin solid #d2dad9; /* width, style, color */
-    border-radius: 25px; /* rounded borders */
+    width: 90%;
     display: flex;
     flex-flow: column;
     align-items: center;
     margin: 20px; /* space b/t each card */
+    border: transparent;
 }  
 
 
@@ -77,8 +74,6 @@
     font-weight: bold;
     margin-bottom: -3px;
 }
-
-
 
 .Edit {
     float: center;
