@@ -40,9 +40,19 @@ We wanted to develop an app that would not only make our lives much more conveni
 Run the following commands in the command line:
 ```
 git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git
+```
+To start the server
+```
+cd back-end/letsmeet
+npm install
+npm start
+```
+To start the application
+```
 cd front-end/letsmeet
 npm install
 npm start
+
 ```
 
 
