@@ -14,11 +14,11 @@ const EditSupplies = (props) => {
     title: "Lunch Date",
     description: "dATE",
     supplies: [
-      { id: 1, name: "supply1", price: 5, person: "attendee1", owed: 0 },
+      { id: 1, name: "supply1", price: 12, person: "attendee1", owed: 0 },
       { id: 2, name: "supply2", price: 5, person: "attendee2", owed: 0 },
-      { id: 3, name: "supply3", price: 5, person: "attendee3", owed: 0 },
-      { id: 4, name: "supply4", price: 5, person: "attendee4", owed: 0 },
-      { id: 5, name: "supply5", price: 5, person: "attendee5", owed: 0 },
+      { id: 3, name: "supply3", price: 9, person: "attendee3", owed: 0 },
+      { id: 4, name: "supply4", price: 1, person: "attendee4", owed: 0 },
+      { id: 5, name: "supply5", price: 0, person: "attendee5", owed: 0 },
     ],
   });
 
@@ -35,7 +35,11 @@ const EditSupplies = (props) => {
   let suppliesList = profileState.supplies.map((supplies) => (
     <>
       <p key={supplies.id}>
-        {supplies.name} {supplies.price} {supplies.person}
+        Supply: {supplies.name}  &nbsp;
+        Price: {supplies.price}  &nbsp;
+        Person: {supplies.person}  &nbsp;
+        Amount Owed: {supplies.owed} 
+
       </p>
     </>
   ));
@@ -50,14 +54,22 @@ const EditSupplies = (props) => {
     for (var index = 0; index < profileState.supplies.length; index++) {
       total += profileState.supplies[index].price;
     }
-    //alert(total);
 
-    var finalAmount = total / profileState.supplies.length;
+    var finalAmount = (total / profileState.supplies.length);
+
+    let suppliesCopy = [...profileState.supplies];
+//negative owed values mean that the person is owed something and doesnt have to pay more
+//positive values means that teh person owes an amount
     for (var index = 0; index < profileState.supplies.length; index++) {
       var owe = finalAmount - profileState.supplies[index].price;
-      profileState.supplies[index].owed = owe;
       console.log(profileState.supplies[index].owed);
+      suppliesCopy[index].owed = owe.toFixed(2);
     }
+    setProfileState((prevState) => ({
+      ...prevState,
+      supplies: suppliesCopy,
+    }));
+
     alert("This is the final split amount: " + finalAmount);
   };
 
