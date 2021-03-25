@@ -5,7 +5,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Badge from 'react-bootstrap/Badge';
 
-const EventModalTimes = (props) => {
+/*
+  TODO: comment what this component is
+
+  Props: 
+    - suggestedTimes: TODO
+    - onChecked: TODO
+*/
+
+const eventModalTimes = (props) => {
 
   let badge = props.suggestedTimes.map((time, index) =>
       <div className="form-check mt-1">
@@ -36,4 +44,4 @@ const EventModalTimes = (props) => {
   )
 };
 
-export default EventModalTimes;
+export default eventModalTimes;

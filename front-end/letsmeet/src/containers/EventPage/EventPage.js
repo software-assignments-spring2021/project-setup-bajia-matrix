@@ -1,17 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import axios from "../../axios";
-
-import EventAttendees from "../../components/EventParts/EventAttendees/EventAttendees";
-import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
-import EventModalTimes from "../../components/EventParts/EventModalTimes/EventModalTimes";
-import Spinner from "../../components/UI/Spinner/Spinner";
-import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
-import EditSupplies from "../../components/EventParts/EditSupplies/EditSupplies";
-
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./EventPage.module.css";
 
 import { Form, Select } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
@@ -22,11 +12,28 @@ import FormControl from "react-bootstrap/FormControl";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import Modal from "react-bootstrap/Modal";
-import Badge from "react-bootstrap/Badge";
+// import Badge from "react-bootstrap/Badge";
 import FormB from "react-bootstrap/Form";
 import { CardGroup } from "react-bootstrap";
 
-const Event = (props) => {
+import classes from "./EventPage.module.css";
+import axios from "../../axios";
+
+import EventAttendees from "../../components/EventParts/EventAttendees/EventAttendees";
+import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
+import EventModalTimes from "../../components/EventParts/EventModalTimes/EventModalTimes";
+import Spinner from "../../components/UI/Spinner/Spinner";
+// import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
+import EventSupplies from "./EventSupplies/EventSupplies";
+
+/*
+  TODO: comment
+
+  Props:
+    This component does not accept any custom props
+*/
+
+const EventPage = () => {
   const key = "57a7ac80";
 
   const [loading, setLoading] = useState({
@@ -66,7 +73,7 @@ const Event = (props) => {
   //for current user info
   const [user, setUser] = useState({
     name: "",
-    friends: new Array(),
+    friends: [],
   });
 
   //for general state of current event page
@@ -132,10 +139,11 @@ const Event = (props) => {
         } else {
           event.roles.push("Attendee");
         }
+        // TODO: should return something from map function
       });
       console.log(event.roles);
     }
-  }, [event.attendees]);
+  }, [event.attendees]); // TODO: check warnings
 
   const [showLink, setShowLink] = useState(false);
   const handleShowLink = () => setShowLink(true);
@@ -152,7 +160,7 @@ const Event = (props) => {
   }, [event.id]);
 
   let suggestedTimes;
-  let suggestedModal;
+  // let suggestedModal;
   let onChecked = (e) => {
     setChosenTime((prevState) => ({
       ...prevState,
@@ -195,7 +203,7 @@ const Event = (props) => {
         show: false,
       }));
     }
-  }, [event.finalDay]);
+  }, [event.finalDay]); // TODO: check warnings
 
   let addVerified = (e) => {
     let attendeesCopy = [...event.attendees]; //make a shallow copy first
@@ -234,9 +242,10 @@ const Event = (props) => {
           ...prevState,
           name: response.data.name,
         }));
-        let friendsNames = new Array();
+        let friendsNames = [];
         response.data.friends.map((friend, index) => {
           friendsNames.push(friend.name);
+          // TODO: map function should return something
         });
         setUser((prevState) => ({
           ...prevState,
@@ -355,7 +364,7 @@ const Event = (props) => {
         event: false,
         user: false,
       }));
-    }
+    } // TODO: check warnings
   }, [state]);
 
   if (state.redirect === true) {
@@ -419,7 +428,7 @@ const Event = (props) => {
               </Container>
             </Card>
             <Card className={classes.CardBorder}>
-              <EditSupplies />
+              <EventSupplies />
             </Card>
           </CardGroup>
 
@@ -482,13 +491,14 @@ const Event = (props) => {
           <hr />
           <br />
 
+          {/* TODO: check warnings about href */}
           <Row className="justify-content-center">
             <Card className={classes.CardInfo}>
               <Card.Body className={classes.CardDetail}>
                 {description.edit === false ? (
                   <div>
                     <Card.Title>
-                      Event Details
+                      Event Details 
                       <a className={classes.Edit} onClick={editDescription}>
                         Edit
                       </a>
@@ -585,7 +595,7 @@ const Event = (props) => {
               </Container>
             </Card>
             <Card className={classes.CardBorder}>
-              <EditSupplies />
+              <EventSupplies />
             </Card>
           </CardGroup>
 
@@ -750,4 +760,4 @@ const Event = (props) => {
   return <div>{eventPage}</div>;
 };
 
-export default Event;
+export default EventPage;

@@ -1,15 +1,24 @@
 import React from 'react';
+import CardDeck from 'react-bootstrap/CardDeck';
+import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import classes from './Landing.module.css';
 import Logo from '../../assets/Logo.png';
 import image1 from '../../assets/LandingImages/calendar-colour-800px.png';
 import image2 from '../../assets/LandingImages/holding-phone-colour-800px.png';
 import image3 from '../../assets/LandingImages/reading-corner-colour-800px.png';
 import image4 from '../../assets/LandingImages/drawkit-list-app-colour-800px.png';
-import CardDeck from 'react-bootstrap/CardDeck';
-import Card from 'react-bootstrap/Card';
 
 // The template for the app walkthrough containing image, header, paragraph
+
+/*
+    TODO: comment what this component is
+
+    Props:
+        - TODO
+*/
+
 const Step = (props) => {
     return (
         <Card className={classes.article}>

@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import classes from './AddFriends.module.css';
 import 'antd/dist/antd.css';
-import { Input, Table } from 'antd';
+import { Input } from 'antd';
+
+import classes from './AddFriends.module.css';
 import axios from '../../../axios';
 
-const AddFriends = (props) => {
+/*
+    TODO: comment about component
+
+    Props:
+        This component does not accept any custom props
+*/
+
+const AddFriends = () => {
     const [data, setData] = useState()
     const [user, setUser] = useState({
         name: "",
-        friends: new Array(),
+        friends: [],
         email: ""
     });
 

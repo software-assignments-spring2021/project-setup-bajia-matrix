@@ -27,10 +27,6 @@
     padding-top: 50px;
 }
 
-.subtitle {
-    font-family: 'Karla', sans-serif;
-}
-
 .nameContainer {
     height: inherit;
 }
@@ -60,4 +56,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.subtitle {
+    font-family: 'Karla', sans-serif;
 }

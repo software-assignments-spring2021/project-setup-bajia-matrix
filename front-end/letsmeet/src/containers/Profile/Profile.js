@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './Profile.module.css';
 import axios from '../../axios';
-import avi from '../../assets/Avatars/redavi.png';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 import red from '../../assets/Avatars/redavi.png';
@@ -18,6 +17,7 @@ import yellow from '../../assets/Avatars/yellowavi.png';
     This component displays the profile page based on the information
     of the user that is signed in. The user can also navigate
     to the edit profile page from here.
+
     Props:
         This component does not accept any custom props
 */
@@ -28,7 +28,7 @@ const Profile = (props) => {
     // TODO: comment out data when mockaroo request cap resets
     const [profileState, setProfileState] = useState({
         // id: "1",
-        // avatar: avi,
+        // avatar: red,
         // name: "Angela Tim",
         // city: "New York City",
         // state: "NY",
@@ -74,9 +74,9 @@ const Profile = (props) => {
            }
            setProfileState(props.location.state.editState);
            setLoading(false);
-        } else {
-            console.log('bye');
-            axios.get('/users.json?key=fe6891f0')
+        } 
+        else {
+            axios.get('/profile')
                 .then(response => {
                     setProfileState(response.data);
                     setLoading(false);
@@ -86,7 +86,7 @@ const Profile = (props) => {
                     setLoading(false);
                 })
         }
-      }, []);
+      }, []); // TODO: check warnings
 
     let friendsList = profileState.friends.map(friend => (
         <p key={friend.id.$oid}>{friend.name}</p>

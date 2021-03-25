@@ -1,20 +1,18 @@
 import React from 'react';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import classes from './EventAttendees.module.css';
-
-import Container from 'react-bootstrap/Container';
+// import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+import classes from './EventAttendees.module.css';
 import red from '../../../assets/Avatars/redavi.png';
 
 /*
     This component displays the event attendees list.
-    The list includes the atteendee avatars and names.
+    The list includes the attendee avatars and names.
 
     Props:
       - name: attendee's name
@@ -43,7 +41,6 @@ const eventAttendees = (props) => {
       {attendeesList}
     </ListGroup>
   );
-  
 };
 
 export default eventAttendees;

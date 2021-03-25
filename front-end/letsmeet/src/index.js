@@ -4,6 +4,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
+/*
+  This is the main entry point to our app.
+*/
+
 const app = (
   <BrowserRouter>
     <App />

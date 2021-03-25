@@ -1,13 +1,3 @@
-.Profile {
-    margin: auto;
-    display: flex;
-    width: 100%;
-    overflow: scroll; /* enable scrolling if too long */
-    align-items: center;
-    flex-flow: column;
-    padding: 0 0 20px 0; /* top and bottom, left and right */
-}
-
 .Card {
     text-align: center;
     background-color: #dce5e2;
@@ -20,8 +10,6 @@
     margin: 20px; /* space b/t each card */
 }  
 
-
-
 .CardBody {
     width: 100%;
     padding: 20px 0;
@@ -31,9 +19,15 @@
     margin-top: -20px;
 }
 
-
-
-
+.Description {
+    margin: auto;
+    display: flex;
+    width: 100%;
+    overflow: scroll; /* enable scrolling if too long */
+    align-items: center;
+    flex-flow: column;
+    padding: 0 0 20px 0; /* top and bottom, left and right */
+}
 
 .Label {
     display: block;
@@ -42,9 +36,4 @@
     margin-bottom: -3px;
 }
 
-.Title {
-    margin-top: 30px;
-    position: absolute;
-    width: 100%;
-}
 

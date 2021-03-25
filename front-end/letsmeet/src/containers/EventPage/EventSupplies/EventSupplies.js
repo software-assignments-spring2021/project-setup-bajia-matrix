@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+// import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./EditSupplies.module.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+// import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import Navbar from "react-bootstrap/Navbar";
+// import Navbar from "react-bootstrap/Navbar";
 import Card from "react-bootstrap/Card";
 
-const EditSupplies = (props) => {
-  const [profileState, setProfileState] = useState({
+import classes from "./EventSupplies.module.css";
+
+/*
+  TODO: comment about component
+
+  Props:
+    This component does not accept any custom props
+*/
+
+const EventSupplies = () => {
+  const [suppliesState, setSuppliesState] = useState({
     title: "Lunch Date",
     description: "dATE",
     supplies: [
@@ -26,13 +34,13 @@ const EditSupplies = (props) => {
   //gotta use callback functions to update objects for state hooks apparently https://reactjs.org/docs/hooks-state.html
   let handleChange = (e) => {
     if (e.target.name === "supplies") {
-      setProfileState((prevState) => ({
+      setSuppliesState((prevState) => ({
         ...prevState,
         location: e.target.value,
       }));
     }
   };
-  let suppliesList = profileState.supplies.map((supplies) => (
+  let suppliesList = suppliesState.supplies.map(supplies => (
     <>
       <p key={supplies.id}>
         Supply: {supplies.name}  &nbsp;
@@ -45,27 +53,27 @@ const EditSupplies = (props) => {
   ));
 
   //TODO: handle updating user's information in backend
-  let saveProfile = (e) => {
-    console.log(profileState);
+  let saveSupplies = (e) => {
+    console.log(suppliesState);
   };
   let splitCosts = (e) => {
     var total = 0;
 
-    for (var index = 0; index < profileState.supplies.length; index++) {
-      total += profileState.supplies[index].price;
+    for (var index = 0; index < suppliesState.supplies.length; index++) {
+      total += suppliesState.supplies[index].price;
     }
 
-    var finalAmount = (total / profileState.supplies.length);
+    var finalAmount = (total / suppliesState.supplies.length);
 
-    let suppliesCopy = [...profileState.supplies];
+    let suppliesCopy = [...suppliesState.supplies];
 //negative owed values mean that the person is owed something and doesnt have to pay more
 //positive values means that teh person owes an amount
-    for (var index = 0; index < profileState.supplies.length; index++) {
-      var owe = finalAmount - profileState.supplies[index].price;
-      console.log(profileState.supplies[index].owed);
+    for (var index = 0; index < suppliesState.supplies.length; index++) {
+      var owe = finalAmount - suppliesState.supplies[index].price;
+      console.log(suppliesState.supplies[index].owed);
       suppliesCopy[index].owed = owe.toFixed(2);
     }
-    setProfileState((prevState) => ({
+    setSuppliesState((prevState) => ({
       ...prevState,
       supplies: suppliesCopy,
     }));
@@ -76,7 +84,7 @@ const EditSupplies = (props) => {
   return (
     <Container fluid>
       <Row>
-        <div className={classes.Profile}>
+        <div className={classes.Supplies}>
           <Card className={classes.Card}>
             <Card.Title className={classes.Title}></Card.Title>
             <Card.Title className={classes.SuppliesTitle}>
@@ -106,4 +114,4 @@ const EditSupplies = (props) => {
   );
 };
 
-export default EditSupplies;
+export default EventSupplies;
