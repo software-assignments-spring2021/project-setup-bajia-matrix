@@ -6,6 +6,6 @@ app.use(cors());
 
 // Import your routes here
 app.use("/", require("./routes/home/home"));
-
+app.use("/", require("./routes/profile/profile"));
 
 module.exports = app;

@@ -1,6 +1,7 @@
 import React from 'react';
+import { EnvironmentOutlined } from '@ant-design/icons';
+
 import classes from './EventTitle.module.css';
-import { EnvironmentOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 /*
     This component displays the title of an event page and its associated pages.
@@ -17,14 +18,15 @@ import { EnvironmentOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-des
         - location: location of event
         - description: event description
 */
-const EventTitle = (props) => (
+
+const eventTitle = (props) => (
     <div className={classes.EventTitle}>
         <h1>{props.title}</h1>
         {!props.newEventAuthentication && <h5>{props.day}, {props.date} @ {props.time}</h5>}
         {props.showCreator && <p>Event creator: <b>{props.creator}</b></p>}
-        <p><EnvironmentOutlined className={classes.icon}/> <b>{props.location}</b></p>
+        <p><EnvironmentOutlined className={classes.Icon}/> <b>{props.location}</b></p>
         <p>{props.description}</p>
     </div>
 );
 
-export default EventTitle;
+export default eventTitle;

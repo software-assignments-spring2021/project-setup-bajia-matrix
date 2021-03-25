@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "../SignIn/SignIn.module.css";
 
+import classes from "../SignIn/SignIn.module.css";
 import axios from '../../../axios';
 
-const SignUp = (props) => {
+/* 
+    This component renders the sign up page so
+    a user can create an account and log in
+
+    Props:
+        This component does not accept any custom props
+*/
+
+const SignUp = () => {
     const [validForm, setValidForm] = useState(false);
 
     const [authState, setAuthState] = useState({

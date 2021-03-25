@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from '../../../axios';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-import classes from './EditAvatar.module.css';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
+
+import classes from './EditAvatar.module.css';
+import axios from '../../../axios';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import red from '../../../assets/Avatars/redavi.png';
 import blue from '../../../assets/Avatars/blueavi.png';
@@ -17,16 +17,31 @@ import green from '../../../assets/Avatars/greenavi.png';
 import orange from '../../../assets/Avatars/orangeavi.png';
 import purple from '../../../assets/Avatars/purpleavi.png';
 import yellow from '../../../assets/Avatars/yellowavi.png';
-import Spinner from '../../../components/UI/Spinner/Spinner';
+
+/*
+    This component renders the Edit Avatar page so that a user can update their avatar.
+
+    Props:
+        - profileState
+            * sent over from the EditProfile page
+            * this props contains the 'name', 'city', 'state' and 'avatar' properties
+            * the 'avatar' property will be updated by the edit avatar page
+*/
 
 const EditAvatar = (props) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    const [editAvatar, setEditAvatar] = useState({});
+    const [editAvatarState, setEditAvatarState] = useState({});
+
     useEffect(() => {
-        setEditAvatar(props.location.state.profileState);
-        setLoading(false);
-    }, []);
+        setEditAvatarState(props.location.state.profileState);
+    }, []); // TODO: check warnings
+
+    useEffect(() => {
+        if (editAvatarState.friends) {
+            setLoading(false);
+        }
+    }, [editAvatarState]);
 
     //go through all avis and remove highlighted border
     function unselectAll(parent) {
@@ -52,7 +67,7 @@ const EditAvatar = (props) => {
 
     //apply highlighted border around avi so that user knows that avi is currently selected
     function selectAvi(e) {
-        setEditAvatar(prevState => ({
+        setEditAvatarState(prevState => ({
             ...prevState,
             avatar: e.target.dataset.avi
         }));
@@ -62,17 +77,18 @@ const EditAvatar = (props) => {
 
     //TODO: handle updating user's avi with currently selected avi 
     function updateAvi() {
-        // axios.post("/users/" + editAvatar.id + ".json?key=5942cd70", editAvatar)
-        //     .then(response => {
-        //         console.log(response);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     })
-        console.log(editAvatar); //this outputs the color of the selected avatar
+        axios.post("/profile", editAvatarState)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        console.log(editAvatarState); //this outputs the color of the selected avatar
         props.history.push({
             pathname: "/profile",
-            state: {editState: editAvatar}
+            state: {editState: editAvatarState}
         });
     }
 
@@ -99,25 +115,25 @@ const EditAvatar = (props) => {
 
             <Row className="text-center">
                 <Col sm className="mt-1">
-                    <img src={red} data-avi='red' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
+                    <img src={red} alt="avatar" data-avi='red' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={orange} data-avi='orange' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={orange} alt="avatar" data-avi='orange' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={yellow} data-avi='yellow' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={yellow} alt="avatar" data-avi='yellow' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
             </Row>
 
-            <Row className="text-center mt-5">
+            <Row className="text-center">
                 <Col sm className="mt-1">
-                    <img src={green} data-avi='green' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
+                    <img src={green} alt="avatar" data-avi='green' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={blue} data-avi='blue' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={blue} alt="avatar" data-avi='blue' className={classes.CardImg}onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
                 <Col sm className="mt-1">
-                    <img src={purple} data-avi='purple' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
+                    <img src={purple} alt="avatar" data-avi='purple' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi}/>
                 </Col>
             </Row>
 

@@ -3,7 +3,15 @@ import React, { useState } from 'react';
 import classes from './SignIn.module.css';
 import axios from '../../../axios';
 
-const SignIn = (props) => {
+/*
+    This component renders the sign in page so
+    a user can sign into their account.
+
+    Props:
+        This component does not accept any custom props
+*/
+
+const SignIn = () => {
     const [authState, setauthState] = useState({
         email: "",
         password: "",

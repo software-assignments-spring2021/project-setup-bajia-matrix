@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import classes from './EditProfile.module.css';
-import axios from '../../../axios';
-import Spinner from '../../../components/UI/Spinner/Spinner';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
+// import Form from 'react-bootstrap/Form';
+
+import classes from './EditProfile.module.css';
+import axios from '../../../axios';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import red from '../../../assets/Avatars/redavi.png';
 import blue from '../../../assets/Avatars/blueavi.png';
@@ -19,6 +19,16 @@ import green from '../../../assets/Avatars/greenavi.png';
 import orange from '../../../assets/Avatars/orangeavi.png';
 import purple from '../../../assets/Avatars/purpleavi.png';
 import yellow from '../../../assets/Avatars/yellowavi.png';
+
+/*
+    This component renders the Edit Profile page so that a user can update their user info.
+
+    Props:
+        - profileState
+            * sent over from the Profile page
+            * this props contains the 'name', 'city', 'state' and 'avatar' properties 
+            * the 'name', 'city', and 'state' properties will be updated by the edit profile page
+*/
 
 const EditProfile = (props) => {
     const [loading, setLoading] = useState(true);
@@ -50,7 +60,7 @@ const EditProfile = (props) => {
     // });
 
     //set up axios
-    const [editProfile, setEditProfile] = useState({});
+    const [editProfileState, setEditProfileState] = useState({});
     const [avatar, setAvatar] = useState(red);
 
     useEffect(() => {
@@ -69,25 +79,25 @@ const EditProfile = (props) => {
         } else if (profileState.avatar === 'purple') {
              setAvatar(purple)
         }
-        setEditProfile(props.location.state.profileState);
+        setEditProfileState(props.location.state.profileState);
         setLoading(false);
-    }, []);
+    }, []); // TODO: check warnings about dependencies
 
     //update state to reflect changes made to the name and/or location fields
     //gotta use callback functions to update objects for state hooks apparently https://reactjs.org/docs/hooks-state.html
     let handleChange = (e) => {
         if (e.target.name === "editCity") {
-            setEditProfile(prevState => ({
+            setEditProfileState(prevState => ({
                 ...prevState,
                 city: e.target.value
             }));
         } else if (e.target.name === "editName") {
-            setEditProfile(prevState => ({
+            setEditProfileState(prevState => ({
                 ...prevState,
                 name: e.target.value
             }));
         } else if (e.target.name === "editState") {
-            setEditProfile(prevState => ({
+            setEditProfileState(prevState => ({
                 ...prevState,
                 state: e.target.value
             }));
@@ -96,30 +106,31 @@ const EditProfile = (props) => {
 
     //TODO: handle updating user's information in backend
     let saveProfile = (e) => {
-        // axios.post("/users/" + editProfile.id + ".json?key=5942cd70", editProfile)
-        // .then(response => {
-        //     console.log(response);
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
-        console.log(editProfile);
+        axios.post("/profile", editProfileState)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        console.log(editProfileState);
         props.history.push({
             pathname: "/profile",
-            state: {editState: editProfile}
+            state: {editState: editProfileState}
         });
     }
 
     let editAvatar = () => {
         props.history.push({
             pathname: "/editavatar",
-            state: {profileState: editProfile}
+            state: {profileState: editProfileState}
         });
     }
 
     let editProfilePage = <Spinner />;
     if (!loading) {
-        let friendsList = editProfile.friends.map(friend => (
+        let friendsList = editProfileState.friends.map(friend => (
             <p key={friend.id.$oid}>{friend.name}</p>
         ))
         editProfilePage = (
@@ -153,18 +164,18 @@ const EditProfile = (props) => {
                         <hr />
                         <Card.Title as="h2" >
                             <label htmlFor="editName" className={classes.Label}>Name</label>
-                            <textarea name="editName" className={classes.Input} rows={1} cols={10} wrap="soft" defaultValue={editProfile.name} onChange={handleChange}/>
+                            <textarea name="editName" className={classes.Input} rows={1} cols={10} wrap="soft" defaultValue={editProfileState.name} onChange={handleChange}/>
                         </Card.Title>
-                        <Card.Text className={classes.Location}>
+                        <div className={classes.Location}>
                             <p className="mr-3">
                             <label htmlFor="editCity" className={classes.Label}>City</label>
-                            <textarea name="editCity" rows={1} cols={10} wrap="soft" defaultValue={editProfile.city} onChange={handleChange}/>
+                            <textarea name="editCity" rows={1} cols={10} wrap="soft" defaultValue={editProfileState.city} onChange={handleChange}/>
                             </p>
                             <p>
                             <label htmlFor="editState" className={classes.Label}>State</label>
-                            <textarea name="editState" rows={1} cols={10} wrap="soft" defaultValue={editProfile.state} onChange={handleChange}/>
+                            <textarea name="editState" rows={1} cols={10} wrap="soft" defaultValue={editProfileState.state} onChange={handleChange}/>
                             </p>
-                        </Card.Text>
+                        </div>
                         <Button variant="outline-primary" onClick={saveProfile}>Save Profile</Button>
                     </Card.Body>
                 </Card>

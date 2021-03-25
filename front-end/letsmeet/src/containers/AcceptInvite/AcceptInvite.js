@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
-import classes from '../AcceptInvite/AcceptInvite.module.css'
-import axios from '../../axios';
 import { Button, DatePicker, Divider, Form, Space, TimePicker} from 'antd';
 import { InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Tab, Tabs } from 'react-bootstrap'
 import ScheduleSelector  from 'react-schedule-selector';
-import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
-import moment from 'moment';
+// import moment from 'moment';
 
-const AcceptInvite = (props) => {
+import classes from '../AcceptInvite/AcceptInvite.module.css';
+import axios from '../../axios';
+import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
+
+/*
+    TODO: comment what this component is
+
+    Props:
+        This component does not accept any custom props
+*/
+
+const AcceptInvite = () => {
 
     const [loading, setLoading] = useState(true);
 
