@@ -83,14 +83,16 @@ const Home = (props) => {
 
     useEffect(() => {
         // TODO: should only get events with current user listed in attendees list
-        axios.get("/events.json?key=5942cd70")
+        axios.get("/events")
             .then(response => {
+                console.log(response.data);
                 const list = response.data.events;
                 // setEventsState({ eventsList: list });
                 setEventsState(list);
                 setLoading({ events: false });
             })
             .catch(error => {
+                console.log("There is an error")
                 console.log(error);
                 setLoading({ events: false });
             });
@@ -110,7 +112,7 @@ const Home = (props) => {
     useEffect(() => {
         // TODO: should be /invites/:userId.json
         // should only get pending invites for current user
-        axios.get("/invites.json?key=fe6891f0")
+        axios.get("/invites")
             .then(response => {
                 const list = response.data.invites;
                 // setInvitesState({ invites: list });

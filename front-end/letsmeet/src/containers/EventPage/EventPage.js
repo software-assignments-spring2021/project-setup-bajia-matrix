@@ -317,6 +317,8 @@ const Event = (props) => {
     setState((prevState) => ({
       ...prevState,
       unverified: true,
+      // creator: true,
+      // attendee: true
     }));
     // if (user.name !== "" && event.creator) {
     //   console.log(user.name);

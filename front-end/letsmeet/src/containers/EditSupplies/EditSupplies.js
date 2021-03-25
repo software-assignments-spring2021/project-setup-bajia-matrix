@@ -118,7 +118,7 @@ const EditSupplies = (props) => {
                     <Col className="md-12">
                         <Navbar>
                             {/* TODO: update link to myevent */}
-                            <Link to="/" exact>
+                            <Link to="/event/1" exact>
                                 <Navbar.Text>Cancel</Navbar.Text>
                             </Link>
                             
