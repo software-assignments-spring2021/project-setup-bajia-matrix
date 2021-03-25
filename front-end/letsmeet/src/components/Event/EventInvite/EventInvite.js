@@ -31,7 +31,9 @@ const eventInvite = (props) => {
         console.log("decline event");
         // TODO: backend: delete a pending invitation from a user's pending invitations list
         // Will this rerender the page? Would like so
-        axios.delete("/invites/" + props.key + ".json?key=fe6891f0")
+        const id = props.key;
+        const eventid = 123;
+        axios.delete("/?userid=" + id + "&eventid=" + eventid)
             .then(response => {
                 console.log(response);
             })
