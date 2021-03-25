@@ -19,21 +19,29 @@ import purple from '../../../assets/Avatars/purpleavi.png';
 import yellow from '../../../assets/Avatars/yellowavi.png';
 
 /*
-    TODO: comment
+    This component renders the Edit Avatar page so that a user can update their avatar.
 
     Props:
-        This component does not accept any custom props
+        - profileState
+            * sent over from the EditProfile page
+            * this props contains the 'name', 'city', 'state' and 'avatar' properties
+            * the 'avatar' property will be updated by the edit avatar page
 */
 
 const EditAvatar = (props) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [editAvatarState, setEditAvatarState] = useState({});
 
     useEffect(() => {
         setEditAvatarState(props.location.state.profileState);
-        setLoading(false);
     }, []); // TODO: check warnings
+
+    useEffect(() => {
+        if (editAvatarState.friends) {
+            setLoading(false);
+        }
+    }, [editAvatarState]);
 
     //go through all avis and remove highlighted border
     function unselectAll(parent) {
@@ -117,7 +125,7 @@ const EditAvatar = (props) => {
                 </Col>
             </Row>
 
-            <Row className="text-center mt-5">
+            <Row className="text-center">
                 <Col sm className="mt-1">
                     <img src={green} alt="avatar" data-avi='green' className={classes.CardImg} onMouseEnter={highlight} onMouseLeave={unhighlight} onClick={selectAvi} />
                 </Col>

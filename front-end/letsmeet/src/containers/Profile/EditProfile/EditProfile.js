@@ -21,10 +21,13 @@ import purple from '../../../assets/Avatars/purpleavi.png';
 import yellow from '../../../assets/Avatars/yellowavi.png';
 
 /*
-    TODO: comment
+    This component renders the Edit Profile page so that a user can update their user info.
 
     Props:
-        This component does not accept any custom props
+        - profileState
+            * sent over from the Profile page
+            * this props contains the 'name', 'city', 'state' and 'avatar' properties 
+            * the 'name', 'city', and 'state' properties will be updated by the edit profile page
 */
 
 const EditProfile = (props) => {
