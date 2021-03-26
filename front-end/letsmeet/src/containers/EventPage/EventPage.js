@@ -325,8 +325,8 @@ const EventPage = () => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      unverified: true,
-      // creator: true,
+      // unverified: true,
+      creator: true,
       // attendee: true
     }));
     // if (user.name !== "" && event.creator) {

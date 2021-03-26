@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './EditSupplies.module.css';
-import axios from '../../axios';
-import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import axios from '../../../../axios';
+import EventTitle from '../../../../components/EventParts/EventTitle/EventTitle';
+import Spinner from '../../../../components/UI/Spinner/Spinner';
 
 /*
     This component renders the EditSupplies page by fetching information
@@ -38,10 +38,10 @@ const EditSupplies = (props) => {
     useEffect(() => {
         // fetch event info to display
         // TODO: fetch event that has selected event id
-        axios.get("/events.json?key=fe6891f0")
+        const id = 123;
+        axios.get("/events?eventid=" + id)
             .then(response => {
-                const list = response.data.events;
-                setSuppliesState(list[0]);
+                setSuppliesState(response.data);
                 setLoading(false);
             })
             .catch(error => {
@@ -97,7 +97,7 @@ const EditSupplies = (props) => {
         setSuppliesState(copySupplies);
 
         // send to database
-        axios.post("/events/" + suppliesState.id.$oid + ".json?key=fe6891f0", suppliesState)
+        axios.post("/events", suppliesState)
             .then(response => {
                 console.log(response);
                 setSubmitting(false);

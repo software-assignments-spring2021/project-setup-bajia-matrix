@@ -14,7 +14,7 @@ import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import AddFriends from './containers/Profile/AddFriends/AddFriends';
 import NewEvent from './containers/NewEvent/NewEvent';
 import AcceptInvite from './containers/AcceptInvite/AcceptInvite';
-import EditSupplies from './containers/EditSupplies/EditSupplies';
+import EditSupplies from './containers/EventPage/EventSupplies/EditSupplies/EditSupplies';
 import EventPage from './containers/EventPage/EventPage';
 
 /*
