@@ -2,6 +2,7 @@ import React from 'react';
 import CardDeck from 'react-bootstrap/CardDeck';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Collapse } from 'antd';
 
 import classes from './Landing.module.css';
 import Logo from '../../assets/Logo.png';
@@ -12,13 +13,14 @@ import image4 from '../../assets/LandingImages/drawkit-list-app-colour-800px.png
 
 // The template for the app walkthrough containing image, header, paragraph
 
-/*
-    TODO: comment what this component is
+// This is the landing page
 
+/* Function to display cards with images and short feature descriptions on landing  page
     Props:
-        - TODO
+        - img = picture
+        - title = short header
+        - lead = one or two sentences describing a feature of the app
 */
-
 const Step = (props) => {
     return (
         <Card className={classes.article}>
@@ -33,7 +35,12 @@ const Step = (props) => {
     )
 }
 
-// Function for the table format
+/* Function for the table format
+    Props:
+    - feature = feature description
+    - with = text to put in the with column
+    - without = text to put in the without column
+*/
 const Row = (props) => {
     return (
         <tr>
@@ -44,6 +51,9 @@ const Row = (props) => {
     )
 }
 
+// Clicking on Panel displays feature table
+const { Panel } = Collapse;
+
 const landing = () => {
     return (
         <div>
@@ -51,7 +61,7 @@ const landing = () => {
             <h1 className={classes.TagLine}>Planning a hangout shouldn't take more than 10 minutes.</h1>
             <h1 className={classes.SecondLine}>Let us help.</h1>
             
-            <CardDeck style={{padding: '50px 20px'}}>
+            <CardDeck >
                 <Step title="Skip the back-and-forth texts" img={image1} lead="Want to schedule a picnic with your friends?
                 Create a new event, fill out some details, and select your availability using the calendar."/>
 
@@ -71,29 +81,26 @@ const landing = () => {
 
             <div className={classes.Text}>
                 <h2 className={classes.LandingH2}>FEATURES</h2>
-                <table className={classes.LandingTable}>
-                    <tr>
-                        <th className={classes.LandingTH}>Highlighted Features</th>
-                        <th className={classes.LandingTH}>With an account</th>
-                        <th className={classes.LandingTH}>Without an account</th>
-                    </tr>
-                    <Row feature="Create and schedule events" with="Yes" without="Yes"/>
-                    <Row feature="Select your availability so we can calculate best meeting times" with="Yes" 
-                    without="No, event creater must provide specific date and time"/>
-                    <Row feature="Send invitations to friends with shareable link" with="Yes" without="Yes"/>
-                    <Row feature="Automatically send event invitations to friends" with="Yes" 
-                    without="No, you must manually send the link to your friend"/>
-                    <Row feature="Access event details" with="Yes" without="Yes, only with event link"/>
-                    <Row feature="See who is attending an event" with="Yes" without="Yes"/>
-                    <Row feature="Manage events you've created" with="Yes" 
-                    without="No, once an event link is generated, you no longer have creator privileges"/>
-                    <Row feature="Keep track of upcoming events you're attending" with="Yes" 
-                    without="No, you must keep track of event links you've created or received"/>
-                    <Row feature="See your pending invitations" with="Yes" without="No"/>
-                    <Row feature="Accept an invitiation" with="Yes" 
-                    without="Yes, by manually adding your name to the attendees list"/>
-                    <Row feature="Track supplies and costs and split expenses" with="Yes" without="No"/>
-                </table>
+
+                <div className={classes.collapse}>
+                    <Collapse>
+                        <Panel showArrow={false} header="Don't miss out! Click to discover benefits of having an account." key="1">
+                            <table className={classes.LandingTable}>
+                                <tr>
+                                    <th className={classes.LandingTH}>Highlighted Features</th>
+                                    <th className={classes.LandingTH}>With account</th>
+                                    <th className={classes.LandingTH}>Without account</th>
+                                </tr>
+                                <Row feature="Select your availability so we can calculate best meeting times" with="Yes" without="No"/>
+                                <Row feature="Automatically send event invitations to friends" with="Yes" without="No"/>
+                                <Row feature="Manage events you've created" with="Yes" without="No"/>
+                                <Row feature="Let us keep track of upcoming events you're attending" with="Yes" without="No"/>
+                                <Row feature="See your pending invitations" with="Yes" without="No"/>
+                                <Row feature="Track supplies and costs and split expenses" with="Yes" without="No"/>
+                            </table>
+                        </Panel>
+                    </Collapse>
+                </div>
 
                 <a href="/newevent" className={classes.a}><button className={classes.Button}><b>
                     Get Started Without An Account: Create New Event
