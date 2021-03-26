@@ -1,0 +1,13 @@
+.Modal {
+  margin-top: 100px;
+}
+
+.Header {
+  border: transparent;
+  background-color: #1d38ed;
+  color: white;
+}
+
+.Footer {
+  border: transparent;
+}

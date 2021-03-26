@@ -11,7 +11,6 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
-import Modal from "react-bootstrap/Modal";
 // import Badge from "react-bootstrap/Badge";
 import FormB from "react-bootstrap/Form";
 import { CardGroup } from "react-bootstrap";
@@ -21,10 +20,10 @@ import axios from "../../axios";
 
 import EventAttendees from "../../components/EventParts/EventAttendees/EventAttendees";
 import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
-import EventModalTimes from "../../components/EventParts/EventModalTimes/EventModalTimes";
 import Spinner from "../../components/UI/Spinner/Spinner";
 // import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
 import EventSupplies from "./EventSupplies/EventSupplies";
+import EventModal from "../../components/EventParts/EventModal/EventModal";
 
 /*
   TODO: comment
@@ -43,31 +42,32 @@ const EventPage = () => {
 
   //for event
   const [event, setEvent] = useState({
-    // id: "1-i-am-random-event-id",
-    // title: "Study Dateeeeeeeeeeeeeeeeeeeeee",
-    // day: "Wed",
-    // date: "Mar 10",
-    // time: "5:00 pm",
-    // location: "New York, NY",
-    // description:
-    //   "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-    // attendees: [
-    //   "Angela Tim",
-    //   "Matthew Fishman",
-    //   "Timothy Sanders",
-    //   "Spike Spiegel",
-    //   "Faye Valentine",
-    // ],
-    // creator: "Angela Tim",
-    // roles: new Array(),
-    // suggestedTimes: [
-    //   "Wed, Mar 10 @ 6:00 pm",
-    //   "Wed, Mar 10 @ 7:00 pm",
-    //   "Wed, Mar 10 @ 8:00 pm",
-    // ],
-    // finalDay: null,
-    // finalDate: null,
-    // finalTime: null,
+    id: "1-i-am-random-event-id",
+    title: "Study Dateeeeeeeeeeeeeeeeeeeeee",
+    day: "Wed",
+    date: "Mar 10",
+    time: "5:00 pm",
+    location: "New York, NY",
+    description:
+      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
+    attendees: [
+      "Angela Tim",
+      "Matthew Fishman",
+      "Timothy Sanders",
+      "Spike Spiegel",
+      "Faye Valentine",
+    ],
+    creator: "Angela Tim",
+    roles: new Array(),
+    suggestedTimes: [
+      { "Day": "Saturday", "Date": "10/30/2020", "Time": "2:09 AM" },
+      { "Day": "Saturday", "Date": "04/27/2021", "Time": "7:15 AM" },
+      { "Day": "Saturday", "Date": "09/16/2020", "Time": "4:52 AM" },
+      { "Day": "Saturday", "Date": "01/21/2021", "Time": "3:30 AM" },
+    ],
+    finalDay: null,
+    finalDate: null,
+    finalTime: null,
   });
 
   //for current user info
@@ -103,18 +103,18 @@ const EventPage = () => {
     description: "",
   });
 
-  useEffect(() => {
-    let eventQueryID = window.location.pathname.split("id:")[1];
-    axios
-      .get(`/event/${eventQueryID}.json?key=${key}`)
-      .then((response) => {
-        console.log(response.data);
-        setEvent(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   let eventQueryID = window.location.pathname.split("id:")[1];
+  //   axios
+  //     .get(`/event/${eventQueryID}.json?key=${key}`)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setEvent(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   let addUnverified = (e) => {
     console.log(e.target.previousElementSibling.inputValue);
@@ -222,41 +222,41 @@ const EventPage = () => {
       }));
     }
   };
-  useEffect(() => {
-    // setState((prevState) => ({
-    //   ...prevState,
-    //   name: "Angela Tim",
-    //   friends: [
-    //     { value: "friend_first1 friend_last1" },
-    //     { value: "friend_first2 friend_last2" },
-    //     { value: "friend_first3 friend_last3" },
-    //     { value: "friend_first4 friend_last4" },
-    //     { value: "friend_first5 friend_last5" },
-    //   ],
-    // }));
-    // setLoading({ user: false });
-    axios
-      .get(`/users/123.json?key=${key}`)
-      .then((response) => {
-        setUser((prevState) => ({
-          ...prevState,
-          name: response.data.name,
-        }));
-        let friendsNames = [];
-        response.data.friends.map((friend, index) => {
-          friendsNames.push(friend.name);
-          // TODO: map function should return something
-        });
-        setUser((prevState) => ({
-          ...prevState,
-          name: response.data.name,
-          friends: friendsNames,
-        }));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   // setState((prevState) => ({
+  //   //   ...prevState,
+  //   //   name: "Angela Tim",
+  //   //   friends: [
+  //   //     { value: "friend_first1 friend_last1" },
+  //   //     { value: "friend_first2 friend_last2" },
+  //   //     { value: "friend_first3 friend_last3" },
+  //   //     { value: "friend_first4 friend_last4" },
+  //   //     { value: "friend_first5 friend_last5" },
+  //   //   ],
+  //   // }));
+  //   // setLoading({ user: false });
+  //   axios
+  //     .get(`/users/123.json?key=${key}`)
+  //     .then((response) => {
+  //       setUser((prevState) => ({
+  //         ...prevState,
+  //         name: response.data.name,
+  //       }));
+  //       let friendsNames = [];
+  //       response.data.friends.map((friend, index) => {
+  //         friendsNames.push(friend.name);
+  //         // TODO: map function should return something
+  //       });
+  //       setUser((prevState) => ({
+  //         ...prevState,
+  //         name: response.data.name,
+  //         friends: friendsNames,
+  //       }));
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     console.log(user.friends);
@@ -266,7 +266,7 @@ const EventPage = () => {
   const [show, setShow] = useState(false);
   const handleDelete = () => {
     axios
-      .delete(`/event/${event.id}.json?key=${key}`)
+      .delete(`https://my.api.mockaroo.com/event/${event.id}.json?key=${key}`)
       .then((response) => {
         console.log("deleted");
         console.log(response);
@@ -327,7 +327,7 @@ const EventPage = () => {
       ...prevState,
       // unverified: true,
       creator: true,
-      // attendee: true
+      //attendee: true
     }));
     // if (user.name !== "" && event.creator) {
     //   console.log(user.name);
@@ -439,23 +439,12 @@ const EventPage = () => {
           </Row>
           <br />
 
-          <Modal show={show} onHide={handleClose} className={classes.Modal}>
-            <Modal.Header className={classes.Header}>
-              <Modal.Title className="pl-4">Withdraw from Event</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="pl-5 pt-4">
-              Are you sure you want to withdraw from this event? <br /> You
-              can't undo this action.
-            </Modal.Body>
-            <Modal.Footer className={classes.Footer}>
-              <Button variant="secondary" onClick={handleClose}>
-                Go Back
-              </Button>
-              <Button variant="danger" onClick={handleDelete}>
-                Withdraw from Event
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <EventModal
+            show={show}
+            close={handleClose}
+            delete={handleDelete}
+            role="attendee"
+          />
         </Container>
       );
     } else if (state.creator === true) {
@@ -498,7 +487,7 @@ const EventPage = () => {
                 {description.edit === false ? (
                   <div>
                     <Card.Title>
-                      Event Details 
+                      Event Details
                       <a className={classes.Edit} onClick={editDescription}>
                         Edit
                       </a>
@@ -606,80 +595,31 @@ const EventPage = () => {
           </Row>
           <br />
 
-          <Modal
+          <EventModal
             show={showLink}
-            onHide={handleCloseLink}
-            className={classes.Modal}
-          >
-            <Modal.Header className={classes.Header}>
-              <Modal.Title className="pl-4">Generate Event URL</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="px-5 pt-4">
-              Copy and paste the link below to share this event:
-              <InputGroup className="my-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text>📋</InputGroup.Text>
-                </InputGroup.Prepend>
-                <FormB.Control
-                  plaintext
-                  readOnly
-                  defaultValue={event.url}
-                  className="border pl-3"
-                />
-              </InputGroup>
-            </Modal.Body>
-            <Modal.Footer className={classes.Footer}>
-              <Button variant="secondary" onClick={handleCloseLink}>
-                Go Back
-              </Button>
-            </Modal.Footer>
-          </Modal>
+            close={handleCloseLink}
+            url={event.url}
+            role="creator"
+            type="url"
+          />
 
-          <Modal
+          <EventModal
             show={showSuggested}
-            onHide={handleCloseSuggested}
-            className={classes.Modal}
-          >
-            <Modal.Header className={classes.Header}>
-              <Modal.Title className="pl-4">
-                Choose Final Event Time
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="px-5 pt-4">
-              The following are the most popular suggested times. <br />
-              <p>Please select a finalized time for your event:</p>
-              <EventModalTimes
-                suggestedTimes={event.suggestedTimes}
-                onChecked={onChecked}
-              />
-            </Modal.Body>
-            <Modal.Footer className={classes.Footer}>
-              <Button variant="secondary" onClick={handleCloseSuggested}>
-                Go Back
-              </Button>
-              <Button variant="primary" onClick={handleFinal}>
-                Choose Final Time
-              </Button>
-            </Modal.Footer>
-          </Modal>
+            close={handleCloseSuggested}
+            suggestedTimes={event.suggestedTimes}
+            onChecked={onChecked}
+            handleFinal={handleFinal}
+            role="creator"
+            type="suggestedTimes"
+          />
 
-          <Modal show={show} onHide={handleClose} className={classes.Modal}>
-            <Modal.Header className={classes.Header}>
-              <Modal.Title className="pl-4">Cancel Event</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="pl-5 pt-4">
-              Are you sure you want to cancel this event? <br /> You can't undo
-              this action.
-            </Modal.Body>
-            <Modal.Footer className={classes.Footer}>
-              <Button variant="secondary" onClick={handleClose}>
-                Go Back
-              </Button>
-              <Button variant="danger" onClick={handleDelete}>
-                Cancel Event
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <EventModal
+            show={show}
+            close={handleClose}
+            delete={handleDelete}
+            role="creator"
+            type="delete"
+          />
         </Container>
       );
     } else {
