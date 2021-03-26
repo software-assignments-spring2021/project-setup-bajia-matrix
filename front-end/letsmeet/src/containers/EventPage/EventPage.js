@@ -4,26 +4,16 @@ import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { Form, Select } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
-import Row from "react-bootstrap/Row";
-import Card from "react-bootstrap/Card";
-// import Badge from "react-bootstrap/Badge";
-import FormB from "react-bootstrap/Form";
-import { CardGroup } from "react-bootstrap";
 
 import classes from "./EventPage.module.css";
 import axios from "../../axios";
 
-import EventAttendees from "../../components/EventParts/EventAttendees/EventAttendees";
-import EventTitle from "../../components/EventParts/EventTitle/EventTitle";
 import Spinner from "../../components/UI/Spinner/Spinner";
 // import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
-import EventSupplies from "./EventSupplies/EventSupplies";
-import EventModal from "../../components/EventParts/EventModal/EventModal";
+import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
+import CreatorEvent from "./CreatorEvent/CreatorEvent";
+import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
 
 /*
   TODO: comment
@@ -325,8 +315,8 @@ const EventPage = () => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      //unverified: true,
-      creator: true,
+      unverified: true,
+      //creator: true,
       //attendee: true
     }));
     // if (user.name !== "" && event.creator) {
@@ -375,316 +365,54 @@ const EventPage = () => {
     if (state.attendee === true) {
       eventPage = (
         <Container fluid className={classes.Container}>
-          <Row className={classes.EventTitle}>
-            <EventTitle
-              title={event.title}
-              day={event.day}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-            />
-          </Row>
-          <hr />
-          <br />
-
-          <Row className="justify-content-center">
-            <Card className={classes.CardInfo}>
-              <Card.Body>
-                <Card.Title>Event Details</Card.Title>
-                <Card.Text>{event.description}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Row>
-          <br />
-          <hr />
-          <br />
-
-          <CardGroup>
-            <Card className={classes.CardBorder}>
-              <Container fluid>
-                <Row>
-                  <div className={classes.Profile}>
-                    <Card className={classes.CardAttendee}>
-                      <Card.Title className={classes.AttendeeTitle}>
-                        <h5>Event Attendees</h5>
-                        <hr className={classes.Hr} />
-                      </Card.Title>
-                      <Card.Body className={classes.AttendeesBody}>
-                        <EventAttendees
-                          attendees={event.attendees}
-                          roles={event.roles}
-                          isAuthenticated={state.isAuthenticated}
-                        ></EventAttendees>
-                      </Card.Body>
-                      <Card.Body>
-                        <br />
-                      </Card.Body>
-                    </Card>
-                  </div>
-                </Row>
-              </Container>
-            </Card>
-            <Card className={classes.CardBorder}>
-              <EventSupplies />
-            </Card>
-          </CardGroup>
-
-          <Row className="justify-content-center">
-            <Button variant="danger" onClick={handleShow}>
-              Withdraw from Event
-            </Button>
-          </Row>
-          <br />
-
-          <EventModal
+          <AttendeeEvent
+            event={event}
+            state={state}
+            handleShow={handleShow}
             show={show}
-            close={handleClose}
-            delete={handleDelete}
+            handleClose={handleClose}
+            handleDelete={handleDelete}
             role="attendee"
           />
         </Container>
       );
     } else if (state.creator === true) {
-      console.log("hewwo");
       eventPage = (
         <Container fluid className={classes.Container}>
-          <Row className={classes.EventTitle}>
-            <EventTitle
-              title={event.title}
-              day={event.day}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-            />
-          </Row>
-
-          <Row className={classes.Row}>
-            <Button
-              variant="outline-primary"
-              className={classes.LinkBtn}
-              onClick={handleShowLink}
-            >
-              Generate Event Link
-            </Button>
-            <Button
-              variant="outline-primary"
-              className={classes.SuggestedBtn}
-              onClick={handleShowSuggested}
-            >
-              Choose Final Time
-            </Button>
-          </Row>
-          <hr />
-          <br />
-
-          {/* TODO: check warnings about href */}
-          <Row className="justify-content-center">
-            <Card className={classes.CardInfo}>
-              <Card.Body className={classes.CardDetail}>
-                {description.edit === false ? (
-                  <div>
-                    <Card.Title>
-                      Event Details
-                      <a className={classes.Edit} onClick={editDescription}>
-                        Edit
-                      </a>
-                    </Card.Title>
-                    <Card.Text>{event.description}</Card.Text>
-                  </div>
-                ) : (
-                  <div>
-                    <Card.Title>Event Details</Card.Title>
-                    <Card.Text>
-                      <FormB.Group>
-                        <FormB.Control
-                          as="textarea"
-                          rows={3}
-                          defaultValue={description.description}
-                          value={description.description}
-                          onChange={descriptionChange}
-                        />
-                      </FormB.Group>
-                    </Card.Text>
-                    <Row className="justify-content-end pr-3">
-                      <Button variant="danger" onClick={cancelDescription}>
-                        Cancel
-                      </Button>
-                      <Button className="ml-2" onClick={handleDescription}>
-                        Save Changes
-                      </Button>
-                    </Row>
-                  </div>
-                )}
-              </Card.Body>
-            </Card>
-          </Row>
-          <hr />
-          <br />
-
-          <CardGroup>
-            <Card className={classes.CardBorder}>
-              <Container fluid>
-                <Row>
-                  <div className={classes.Profile}>
-                    <Card className={classes.CardAttendee}>
-                      <Card.Title className={classes.AttendeeTitle}>
-                        <h5>Event Attendees</h5>
-                        <hr className={classes.Hr} />
-                      </Card.Title>
-                      <Card.Body className={classes.AttendeesBody}>
-                        <EventAttendees
-                          attendees={event.attendees}
-                          roles={event.roles}
-                          isAuthenticated={state.isAuthenticated}
-                        ></EventAttendees>
-                      </Card.Body>
-                      <Card.Body>
-                        <Row className="justify-content-center">
-                          <div className={classes.Div}>
-                            <Form.Item
-                              label="Invite Friends"
-                              tooltip={{
-                                title:
-                                  "Invite people from your friends list. You can add more friends later.",
-                                icon: <InfoCircleOutlined />,
-                              }}
-                            >
-                              <Select
-                                mode="multiple"
-                                placeholder="Select from Friends List"
-                                className={classes.dropdown}
-                                onChange={(value) => setInvitees(value)}
-                                value={event.invitees}
-                              >
-                                <Option value="jack">Jack</Option>
-                                <Option value="lucy">Lucy</Option>
-                                <Option value="tom">Tom</Option>
-                              </Select>
-                              <Button
-                                className="ml-3"
-                                onClick={addVerified}
-                                className={classes.AddVerified}
-                              >
-                                Invite Friend
-                              </Button>
-                            </Form.Item>
-                          </div>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  </div>
-                </Row>
-              </Container>
-            </Card>
-            <Card className={classes.CardBorder}>
-              <EventSupplies />
-            </Card>
-          </CardGroup>
-          <hr />
-          <Row className="justify-content-center mt-3">
-            <Button variant="danger" onClick={handleShow}>
-              Cancel Event
-            </Button>
-          </Row>
-          <br />
-
-          <EventModal
-            show={showLink}
-            close={handleCloseLink}
-            url={event.url}
+          <CreatorEvent
+            event={event}
+            state={state}
             role="creator"
-            type="url"
-          />
-
-          <EventModal
-            show={showSuggested}
-            close={handleCloseSuggested}
-            suggestedTimes={event.suggestedTimes}
+            handleShowLink={handleShowLink}
+            handleShowSuggested={handleShowSuggested}
+            description={description}
+            editDescription={editDescription}
+            descriptionChange={descriptionChange}
+            cancelDescription={cancelDescription}
+            handleDescription={handleDescription}
+            setInvitees={setInvitees}
+            addVerified={addVerified}
+            handleShow={handleShow}
+            showLink={showLink}
+            handleCloseLink={handleCloseLink}
+            showSuggested={showSuggested}
+            handleCloseSuggested={handleCloseSuggested}
             onChecked={onChecked}
             handleFinal={handleFinal}
-            role="creator"
-            type="suggestedTimes"
-          />
-
-          <EventModal
             show={show}
-            close={handleClose}
-            delete={handleDelete}
-            role="creator"
-            type="delete"
+            handleClose={handleClose}
+            handleDelete={handleDelete}
           />
         </Container>
       );
     } else {
       eventPage = (
         <Container className={classes.Container}>
-          <Row className={classes.EventTitle}>
-            <EventTitle
-              title={event.title}
-              day={event.day}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-            />
-          </Row>
-          <hr />
-          <br />
-
-          <Row className="justify-content-center">
-            <Card className={classes.CardInfo}>
-              <Card.Body>
-                <Card.Title>Event Details</Card.Title>
-                <Card.Text>{event.description}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Row>
-          <br />
-          <hr />
-          <br />
-
-          <h5 className="ml-2">Event Attendees</h5>
-          <div className={classes.UnverifiedAttendees}>
-            <EventAttendees
-              attendees={event.attendees}
-              roles={event.roles}
-              isAuthenticated={state.isAuthenticated}
-            ></EventAttendees>
-          </div>
-          <br />
-
-          <Row className="justify-content-center">
-            <div className={classes.Div}>
-              <InputGroup className={classes.Input}>
-                <FormControl
-                  ref={state.unverifiedInput}
-                  aria-label="Large"
-                  aria-describedby="inputGroup-sizing-sm"
-                  placeholder="Enter Your Name"
-                />
-                <Button className="ml-3" onClick={addUnverified}>
-                  Join Event
-                </Button>
-              </InputGroup>
-            </div>
-          </Row>
-          <br />
-          <hr />
-          <br />
-
-          <Row className="justify-content-center">
-            <Card className={classes.Card}>
-              <Card.Header></Card.Header>
-              <Card.Body>
-                <Card.Title>Want to unlock all features?</Card.Title>
-                <Card.Text>Create an account now!</Card.Text>
-                <Button href="/signup" variant="primary">
-                  Create Account
-                </Button>
-              </Card.Body>
-              <Card.Footer className="text-muted"></Card.Footer>
-            </Card>
-          </Row>
-          <br />
+          <UnverifiedEvent
+            event={event}
+            state={state}
+            addUnverified={addUnverified}
+          />
         </Container>
       );
     }
