@@ -14,6 +14,19 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import CardGroup from "react-bootstrap/CardGroup";
 
+/*
+  This component displays the event page for the event attendee user.
+
+  Props:
+    - event: contains info about current event
+    - state: contains info about current user
+    - addUnverified: function that adds an unverified user to event attendees list
+    - show: state variable that contains only boolean values to determine if the 'Withdraw from Event' confirmation modal is displayed or hidden
+    - handleShow: function that displays the 'Withdraw from Event' confirmation modal
+    - handleClose: function that closes the 'Withdraw from Event' confirmation modal
+    - handleDelete: function that withdraws the user from the event 
+*/
+
 const AttendeeEvent = (props) => {
   return (
     <div>

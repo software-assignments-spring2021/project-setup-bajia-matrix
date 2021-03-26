@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-import { Form, Select } from "antd";
-import Container from "react-bootstrap/Container";
-
 import classes from "./EventPage.module.css";
+
 import axios from "../../axios";
+import Container from "react-bootstrap/Container";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
 // import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
@@ -16,7 +14,7 @@ import CreatorEvent from "./CreatorEvent/CreatorEvent";
 import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
 
 /*
-  TODO: comment
+  This component displays the event pages for the following users: event creator, event attendee, and unverfied user.
 
   Props:
     This component does not accept any custom props
@@ -84,7 +82,6 @@ const EventPage = () => {
   });
 
   //for inviting friends
-  const { Option } = Select;
   const [invitees, setInvitees] = useState();
 
   //for edit description

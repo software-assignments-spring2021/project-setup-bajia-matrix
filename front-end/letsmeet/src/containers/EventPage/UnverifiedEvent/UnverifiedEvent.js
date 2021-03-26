@@ -13,6 +13,15 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 
+/*
+  This component displays the event page for the unverfied user.
+
+  Props:
+    - event: contains info about current event
+    - state: contains info about current user
+    - addUnverified: function that adds an unverified user to event attendees list
+*/
+
 const UnverifiedEvent = (props) => {
   return (
     <div>

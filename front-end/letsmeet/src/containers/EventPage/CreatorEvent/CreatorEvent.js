@@ -20,6 +20,33 @@ import FormB from "react-bootstrap/Form";
 
 const { Option } = Select;
 
+/*
+  This component displays the event page for the event creator user.
+
+  Props:
+    - event: contains info about current event
+    - state: contains info about current user
+    - role: specifies role of current user (in this case creator)
+    - description: state variable to keep track of description state
+    - editDescription: function that displays edit description panel
+    - descriptionChange: function that changes the description and updates the description state
+    - cancelDescription: function that closes edit description panel
+    - setInvitees: function that sets the invitees state variable which contains all the user's friends that can be invited
+    - addVerified: function that adds a friend to the event
+    - showLink: state variable that contains only boolean values to determine if the 'Generate Event Link' modal is displayed or hidden
+    - handleCloseLink: function that hides the 'Generate Event Link' modal
+    - handleShowLink: function that displays the 'Generate Event Link' modal
+    - showSuggested: state variable that contains only boolean values to determine if the 'Choose Final Time' modal is displayed or hidden
+    - handleCLoseSuggested: function that hides the 'Choose Final Time' modal
+    - handleShowSuggested: funcion that displays the 'Choose Final Time' modal
+    - onChecked: function that captures the specific final time the user selects 
+    - handleFinal: function that updates the event state's final time 
+    - show: state variable that contains only boolean values to determine if the 'Delete Event' confirmation modal is displayed or hidden
+    - handleShow: function that displays the 'Delete Event' confirmation modal
+    - handleClose: function that hides the 'Delete Event' confirmation modal
+    - handleDelete: function that deletes the event
+*/
+
 const CreatorEvent = (props) => {
   return (
     <div>

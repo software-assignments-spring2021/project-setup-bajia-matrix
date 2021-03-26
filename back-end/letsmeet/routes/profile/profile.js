@@ -6,7 +6,7 @@ require("dotenv").config({ silent: true }); // save private data in .env file
 
 router.use(bodyParser.json());
 
-router.get("/profile", (req, res, next) => {
+router.get("/", (req, res, next) => {
     console.log("get request on route /profile");
     
     axios.get(`${process.env.API_BASE_URL}/users.json?key=${process.env.API_SECRET_KEY}`)
@@ -19,7 +19,7 @@ router.get("/profile", (req, res, next) => {
         });
 });
 
-router.post("/profile", (req, res, next) => {
+router.post("/", (req, res, next) => {
     console.log("post request on route /profile");
     console.log(req.body);
     const id = req.body.id.$oid;
