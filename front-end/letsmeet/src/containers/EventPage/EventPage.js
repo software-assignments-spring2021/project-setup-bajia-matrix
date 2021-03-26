@@ -325,7 +325,7 @@ const EventPage = () => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      // unverified: true,
+      //unverified: true,
       creator: true,
       //attendee: true
     }));
@@ -405,12 +405,9 @@ const EventPage = () => {
                 <Row>
                   <div className={classes.Profile}>
                     <Card className={classes.CardAttendee}>
-                      <Card.Title
-                        className={classes.TitleAttendee}
-                      ></Card.Title>
                       <Card.Title className={classes.AttendeeTitle}>
                         <h5>Event Attendees</h5>
-                        <hr />
+                        <hr className={classes.Hr} />
                       </Card.Title>
                       <Card.Body className={classes.AttendeesBody}>
                         <EventAttendees
@@ -451,6 +448,16 @@ const EventPage = () => {
       console.log("hewwo");
       eventPage = (
         <Container fluid className={classes.Container}>
+          <Row className={classes.EventTitle}>
+            <EventTitle
+              title={event.title}
+              day={event.day}
+              date={event.date}
+              time={event.time}
+              location={event.location}
+            />
+          </Row>
+
           <Row className={classes.Row}>
             <Button
               variant="outline-primary"
@@ -466,16 +473,6 @@ const EventPage = () => {
             >
               Choose Final Time
             </Button>
-          </Row>
-
-          <Row className={classes.EventTitle}>
-            <EventTitle
-              title={event.title}
-              day={event.day}
-              date={event.date}
-              time={event.time}
-              location={event.location}
-            />
           </Row>
           <hr />
           <br />
@@ -521,7 +518,6 @@ const EventPage = () => {
               </Card.Body>
             </Card>
           </Row>
-          <br />
           <hr />
           <br />
 
@@ -531,12 +527,9 @@ const EventPage = () => {
                 <Row>
                   <div className={classes.Profile}>
                     <Card className={classes.CardAttendee}>
-                      <Card.Title
-                        className={classes.TitleAttendee}
-                      ></Card.Title>
                       <Card.Title className={classes.AttendeeTitle}>
                         <h5>Event Attendees</h5>
-                        <hr />
+                        <hr className={classes.Hr} />
                       </Card.Title>
                       <Card.Body className={classes.AttendeesBody}>
                         <EventAttendees
@@ -587,7 +580,7 @@ const EventPage = () => {
               <EventSupplies />
             </Card>
           </CardGroup>
-
+          <hr />
           <Row className="justify-content-center mt-3">
             <Button variant="danger" onClick={handleShow}>
               Cancel Event
@@ -625,7 +618,7 @@ const EventPage = () => {
     } else {
       eventPage = (
         <Container className={classes.Container}>
-          <Row>
+          <Row className={classes.EventTitle}>
             <EventTitle
               title={event.title}
               day={event.day}
@@ -650,7 +643,7 @@ const EventPage = () => {
           <br />
 
           <h5 className="ml-2">Event Attendees</h5>
-          <div className={classes.AttendeesBody}>
+          <div className={classes.UnverifiedAttendees}>
             <EventAttendees
               attendees={event.attendees}
               roles={event.roles}
