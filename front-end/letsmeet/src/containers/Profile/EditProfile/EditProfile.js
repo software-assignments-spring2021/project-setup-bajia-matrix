@@ -128,6 +128,13 @@ const EditProfile = (props) => {
         });
     }
 
+    let addFriendsHandler = () => {
+        props.history.push({
+            pathname: "/editfriends",
+            state: {friendState: editProfileState}
+        });
+    }
+
     let editProfilePage = <Spinner />;
     if (!loading) {
         let friendsList = editProfileState.friends.map(friend => (
@@ -181,7 +188,7 @@ const EditProfile = (props) => {
                 </Card>
                 <Card className={classes.Card}>
                     <Card.Title className={classes.Title}>
-                            <a href="/editfriends" className={classes.Edit}>Edit</a>
+                            <a href="/editfriends" className={classes.Edit} onClick={addFriendsHandler}>Edit</a>
                     </Card.Title>
                     <Card.Title className={classes.FriendsTitle} as="h2">
                         Your Friends

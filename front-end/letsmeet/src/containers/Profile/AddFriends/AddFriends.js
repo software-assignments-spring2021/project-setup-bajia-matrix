@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-import { Input } from 'antd';
+import { Alert, Button, Divider, Input } from 'antd';
 
 import classes from './AddFriends.module.css';
 import axios from '../../../axios';
@@ -12,7 +12,7 @@ import axios from '../../../axios';
         This component does not accept any custom props
 */
 
-const AddFriends = () => {
+const AddFriends = (props) => {
     const [data, setData] = useState()
     const [user, setUser] = useState({
         name: "",
@@ -21,7 +21,10 @@ const AddFriends = () => {
     });
 
     useEffect(() => {
-        axios.get(`/users/123.json?key=4ca99a60`)
+        setUser(props.location.state.friendState);
+        console.log(props.location.state.friendState);
+        /*
+        axios.get('/profile')
             .then((response) => {
                 console.log(response.data);
                 setData(response.data);
@@ -35,6 +38,7 @@ const AddFriends = () => {
             .catch((error) => {
                 console.log(error);
             });
+        */
     }, []);
 
     const { Search } = Input;
@@ -43,6 +47,7 @@ const AddFriends = () => {
 
     const handleChange = e => {
         setSearchTerm(e)
+        console.log(searchTerm)
         validateFriend(e)
         checkFriendship(e)
     }
@@ -84,57 +89,68 @@ const AddFriends = () => {
     const [buttonText, setButtonText] = useState("Add Friend")
     const changeText = (text) => setButtonText(text)
 
-    return (        
-        <div className={classes.container}>
-            <div className={classes.cancelButton}>
-                <a href="/profile">Cancel</a>
-            </div>
-            <br/>
-            <br/>
-            <h1 className={classes.subtitle}>Edit Friends</h1>
-            <div className>
-                <h5>Add Friend</h5>
-                <p>Search for a user by email address</p>
-                <Search
-                    name="search"
-                    placeholder="Add user by email"
-                    onSearch={handleChange}
-                    enterButton
-                />
-                {(searchTerm && error) &&
-                    <p className={classes.errorMessage}>Enter a valid email address!</p>
-                }
-                {(searchTerm && !error) &&
-                    <div>
-                        {data.map((d, i) => {
-                            return (
-                                <div key={i} className={classes.nameContainer}>
-                                    <div className={classes.nameDisplay}> {d.name} <br/>
-                                        {!isFriend &&
-                                            <button size="small" type="primary" className={classes.button} onClick={() => changeText("Added")} >{buttonText}</button>
-                                        }
-                                        <div>{d.email}</div>
-                                        <br/>                      
-                                    </div>
-                                </div>
-                            )
-                        })}
-                        <div className="clearboth"></div>
-                        {data.length === 0 && 
-                            <span> 
-                                No user with the email provided was found. <br/> 
-                                Would you like to invite a friend? <br/> 
-                                <button>Invite</button>
-                            </span>
-                        }
+    // Line for alert
+    let description = "Would you like to invite " + searchTerm + "?"
+
+    return (   
+        <>
+            <div className={classes.subheader}>
+                    <center><h6>Edit Friends</h6></center>
+                    <div className={classes.cancelButton}>
+                        <a href="/profile">Cancel</a>
                     </div>
-                }
+            </div>     
+            <div className={classes.container}>
+                <div className>
+                    <Divider orientation="center">Add Friends</Divider>
+                    <p>Search for a user by email address</p>
+                    <Search
+                        name="search"
+                        placeholder="Add user by email"
+                        onSearch={handleChange}
+                        enterButton
+                    />
+                    {(searchTerm && error) &&
+                        <p className={classes.errorMessage}>Enter a valid email address!</p>
+                    }
+                    {(searchTerm && !error) &&
+                        <div>
+                            {data.map((d, i) => {
+                                return (
+                                    <div key={i} className={classes.nameContainer}>
+                                        <div className={classes.nameDisplay}> {d.name} <br/>
+                                            {!isFriend &&
+                                                <button size="small" type="primary" className={classes.button} onClick={() => changeText("Added")} >{buttonText}</button>
+                                            }
+                                            <div>{d.email}</div>
+                                            <br/>                      
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                            <div className="clearboth"></div>
+                            {data.length === 0 && <>
+                                <Alert
+                                    message="Sorry, no user found."
+                                    description={description}
+                                    type="error"
+                                    action={
+                                        <Button size="small" danger>
+                                          Invite
+                                        </Button>
+                                    }
+                                />
+                            </>}
+                        </div>
+                    }
+                </div>
+                <br />
+                <Divider orientation="center">Current Friends List</Divider>
+                <div className={classes.friendsList}>
+                    {user.friends.map(i => <div> {i.name} </div>)}
+                </div>
             </div>
-            <div className={classes.friendsList}>
-                <h5>Friends List</h5>
-                {user.friends.map(i => <div> {i.name} </div>)}
-            </div>
-        </div>
+        </>
     )
 }
 
