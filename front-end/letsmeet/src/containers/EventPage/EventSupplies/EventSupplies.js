@@ -89,16 +89,15 @@ const EventSupplies = () => {
             <Card.Title className={classes.Title}></Card.Title>
             <Card.Title className={classes.SuppliesTitle}>
               <h5>Event Supplies</h5>
-
-              <hr />
+              <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
               {suppliesList}
             </Card.Body>
-            <Card.Body>
+            <Card.Body className={classes.Buttons}>
               <Button
                 variant="outline-primary"
-                className="mr-3"
+                className={classes.Button}
                 href="/editsupplies"
               >
                 Edit Supplies

@@ -52,5 +52,37 @@
     padding-top: 10px;
 }
 
+.Button {
+    margin-right: 20px;
+}
 
+@media (max-width: 460px) {
+    .Supplies {
+        border-top: thin solid lightgray;
+        margin-top: -60px;
+    }
 
+    .Hr {
+        width: 50%;
+        border: 1px solid blue;
+    }
+
+    .SuppliesBody {
+        width: 140%;
+        text-align: left;
+    }
+
+    .Button {
+        margin-right: 0px;
+        float: left;
+    }
+    
+    .Buttons {
+        margin-left: 20px;
+        width: 120%;
+    }
+
+    .Card {
+        margin: 0px;
+    }
+}
