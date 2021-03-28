@@ -13,7 +13,7 @@ router.get("/", (req, res, next) => {
     
     axios.get(`${process.env.API_BASE_URL}/event/${id}.json?key=${process.env.API_SECRET_KEY}`)
         .then(response => {
-            // console.log(response.data);
+            console.log(response.data);
             res.json(response.data);
         })
         .catch(error => {

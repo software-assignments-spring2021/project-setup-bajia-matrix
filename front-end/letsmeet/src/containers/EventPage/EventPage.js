@@ -90,18 +90,18 @@ const EventPage = () => {
     description: "",
   });
 
-  // useEffect(() => {
-  //   let eventQueryID = window.location.pathname.split("id:")[1];
-  //   axios
-  //     .get(`/event/${eventQueryID}.json?key=${key}`)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setEvent(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+   useEffect(() => {
+     let eventQueryID = window.location.pathname.split("id:")[1];
+     const id = 123;
+      axios.get("/events?eventid=" + id)
+        .then((response) => {
+        //console.log(response.data);
+        setEvent(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   let addUnverified = (e) => {
     console.log(e.target.previousElementSibling.inputValue);
@@ -116,6 +116,18 @@ const EventPage = () => {
       attendees: newAttendees,
       roles: newRoles,
     }));
+    const id = 222;
+
+    axios.post("/events?eventid=" + event.id.$oid, event)
+        .then((response) => {
+        console.log(response);
+        //setEvent(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
   };
   useEffect(() => {
     //for attendees list & attendee roles
