@@ -54,7 +54,7 @@ const SignIn = () => {
 
     return (
         <div class="row justify-content-center">
-            <form className={classes.Authform} method="POST" action="/login">
+            <form className={classes.Authform}>
                 <h3>Sign In</h3>
 
                 <div className="form-group">

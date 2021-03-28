@@ -129,6 +129,8 @@ router.get("/", async (req, res, next) => {
     const id = 123;
     axios.get(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}`)
         .then(response => {
+            //console.log("it worked");
+
             console.log(response.data);
             res.json(response.data);
         })
