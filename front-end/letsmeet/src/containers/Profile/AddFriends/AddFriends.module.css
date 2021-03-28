@@ -1,3 +1,14 @@
+.addButton {
+    float: right;
+    font-size: 12px;
+    margin-top: -12px;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: #1D38ED;
+    color: #1D38ED;
+    background-color: #fff;
+}
+
 .cancelButton {
     margin-top: -27px;
     float: left;
