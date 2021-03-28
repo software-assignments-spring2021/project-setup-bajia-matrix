@@ -1,6 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+//const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const router = express.Router();
@@ -35,20 +35,23 @@ router.post("/register", async (req, res, next) => {
     });
   }
   */
-    axios.post(`https://www.mockaroo.com/522eb5e0`, req.body)
+    const id = 123;
+    console.log(req.body);
+
+    axios.post(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
         .then(response => {
             console.log(response.data);
             res.send("200 OK");
-    })
+        })
         .catch(error => {
             next(error);
-    });
+        });
 });
 
 // Login
 // Create token and return to user (httpOnly cookies)
-router.post("/login", async (req, res, next) => {
-  const { email, password } = req.body;
+router.get("/login", async (req, res, next) => {
+  //const { email, password } = req.body;
 
   // Make a inquiry of the user through email
   /*try {
@@ -114,7 +117,8 @@ router.post("/login", async (req, res, next) => {
     });
   }
   */
-    axios.get(`https://www.mockaroo.com/522eb5e0`)
+    const id = 123;
+    axios.get(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`)
         .then(response => {
             // console.log(response.data);
             res.json(response.data);
