@@ -151,15 +151,15 @@ const SignUp = () => {
         e.preventDefault();
         console.log("submitting");
         const userID = 123;
-        let url = '/auth/register';
+        let url = '/auth';
         // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
         axios.post(url , authState)
           .then(response => {
             console.log(response);
           })
-          .catch(error => {
+          .catch(function (error) {
             console.log(error);
-          });
+          });;
 
 
     };

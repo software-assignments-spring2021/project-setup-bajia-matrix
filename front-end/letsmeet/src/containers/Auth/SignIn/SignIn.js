@@ -35,7 +35,7 @@ const SignIn = () => {
     let onSubmit = (e) => {
         //e.preventDefault();
 
-        axios.get("/auth/login")
+        axios.get("/auth")
             .then(response => {
                 if (response.password !== authState.password) {
                     // TODO: if auth failed, should change so page reloads and displays this message 

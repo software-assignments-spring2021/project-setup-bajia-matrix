@@ -1,11 +1,14 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-//const bcrypt = require("bcrypt");
-require("dotenv").config();
-
 const router = express.Router();
+const axios = require("axios");
+const bodyParser = require("body-parser");
+require("dotenv").config({ silent: true }); // save private data in .env file
 
-router.post("/register", async (req, res, next) => {
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
+
+
+router.post("/", async (req, res, next) => {
   /*const { email, password, first_name, last_name } = req.body;
   try {
     // Check if the email is duplicating
@@ -36,21 +39,27 @@ router.post("/register", async (req, res, next) => {
   }
   */
     const id = 123;
+    console.log("post request on route /auth");
+
     console.log(req.body);
+
 
     axios.post(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
         .then(response => {
             console.log(response.data);
+                console.log("post request on route /events for event with id " + id);
+
             res.send("200 OK");
         })
         .catch(error => {
+
             next(error);
         });
 });
 
 // Login
 // Create token and return to user (httpOnly cookies)
-router.get("/login", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   //const { email, password } = req.body;
 
   // Make a inquiry of the user through email
@@ -118,9 +127,9 @@ router.get("/login", async (req, res, next) => {
   }
   */
     const id = 123;
-    axios.get(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`)
+    axios.get(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}`)
         .then(response => {
-            // console.log(response.data);
+            console.log(response.data);
             res.json(response.data);
         })
         .catch(error => {
