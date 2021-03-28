@@ -7,6 +7,7 @@ import axios from '../../axios';
 import Event from '../../components/Event/Event';
 import EventInvite from '../../components/Event/EventInvite/EventInvite';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { LeftCircleFilled } from '@ant-design/icons';
 
 /*
     This component displays the home page with a signed in user.
@@ -22,10 +23,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 // sort by earliest date to latest. Better to do this in front-end or do it in back-end
 // and pass a sorted array to front-end? I think back-end is best
 const Home = (props) => {
-    const [loading, setLoading] = useState({
-        invites: true,
-        events: true
-    });
+    const [loading, setLoading] = useState(true);
 
     // TODO: comment out eventsList items when mockaroo runs out of requests
     const [eventsState, setEventsState] = useState([
@@ -81,21 +79,6 @@ const Home = (props) => {
         }
     ]);
 
-    useEffect(() => {
-        // TODO: should only get events with current user listed in attendees list
-        axios.get("/events.json?key=5942cd70")
-            .then(response => {
-                const list = response.data.events;
-                // setEventsState({ eventsList: list });
-                setEventsState(list);
-                setLoading({ events: false });
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading({ events: false });
-            });
-    }, []);
-
     // TODO: comment out invites list when mockaroo runs out of requests
     const [invitesState, setInvitesState] = useState([
         {
@@ -108,18 +91,22 @@ const Home = (props) => {
     ]);
 
     useEffect(() => {
-        // TODO: should be /invites/:userId.json
-        // should only get pending invites for current user
-        axios.get("/invites.json?key=fe6891f0")
+        const userID = 123;
+        // TODO: should only get events with current user listed in attendees list
+        axios.get("/?userid=" + userID)
             .then(response => {
-                const list = response.data.invites;
-                // setInvitesState({ invites: list });
+                console.log(response.data);
+                let list = response.data.events;
+                setEventsState(list);
+                
+                list = response.data.invites;
                 setInvitesState(list);
-                setLoading({ invites: false });
+                setLoading(false);
             })
             .catch(error => {
+                console.log("There is an error")
                 console.log(error);
-                setLoading({ invites: false });
+                setLoading(false);
             });
     }, []);
 
@@ -183,7 +170,7 @@ const Home = (props) => {
 
     // render
     let homePage = <Spinner />;
-    if (!loading.invites && !loading.events) {
+    if (!loading) {
         homePage = (
             <div className={classes.Home}>
                 {invitesState.length > 0 ? <h5>Pending Invitations</h5> : null}

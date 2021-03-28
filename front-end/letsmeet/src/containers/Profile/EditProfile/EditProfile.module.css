@@ -104,3 +104,9 @@
     resize: both;
     height: 100%;
 }
+
+@media (max-width: 375px) {
+    .Card {
+        width: 75%;
+    }
+}

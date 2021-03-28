@@ -1,17 +1,23 @@
 import React from "react";
-
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./EventInvitees.module.css";
+import { Select } from "antd";
+// import { InfoCircleOutlined } from "@ant-design/icons";
+// import Row from "react-bootstrap/Row";
+// import Col from "react-bootstrap/Col";
+// import Card from "react-bootstrap/Card";
+// import Button from "react-bootstrap/Button";
 
-import { Form, Select } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+// import classes from "./EventInvitees.module.css";
 
-const EventInvitees = (props) => {
+/*
+  TODO: comment what this component is
+
+  Props: 
+    - friends: TODO
+*/
+
+const eventInvitees = (props) => {
   console.log(props.friends);
   const { Option } = Select;
 
@@ -20,8 +26,8 @@ const EventInvitees = (props) => {
   ));
 
   return (
-        {options}
+    {options}
   );
 };
 
-export default EventInvitees;
+export default eventInvitees;

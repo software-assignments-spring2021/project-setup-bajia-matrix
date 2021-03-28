@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import classes from '../NewEvent/NewEvent.module.css'
 import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, Space, TimePicker, Tag} from 'antd';
 import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Tab, Tabs } from 'react-bootstrap'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ScheduleSelector  from 'react-schedule-selector';
-import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 import moment from 'moment';
+
+import classes from '../NewEvent/NewEvent.module.css';
+import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
+
+/*
+    TODO: comment about component
+
+    Props:
+        - isAuthenticated: whether the user is signed in or not
+*/
 
 const NewEvent = (props) => {
 

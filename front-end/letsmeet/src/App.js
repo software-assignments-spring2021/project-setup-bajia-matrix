@@ -1,47 +1,39 @@
 import React, { useState } from 'react';
-import { Route, Switch, withRouter, Redirect, Link} from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect} from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import classes from './App.module.css';
+
 import Layout from './hoc/Layout/Layout';
-import SignIn from '../src/containers/Auth/SignIn/SignIn'
-import SignUp from '../src/containers/Auth/SignUp/SignUp'
 import Landing from './components/Landing/Landing';
-import NewEvent from './containers/NewEvent/NewEvent';
-import AcceptInvite from './containers/AcceptInvite/AcceptInvite'
+import SignIn from '../src/containers/Auth/SignIn/SignIn';
+import SignUp from '../src/containers/Auth/SignUp/SignUp';
+
+import Home from './containers/Home/Home';
 import Profile from './containers/Profile/Profile';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import AddFriends from './containers/Profile/AddFriends/AddFriends';
-import Home from './containers/Home/Home';
-import EditSupplies from './containers/EditSupplies/EditSupplies';
+import NewEvent from './containers/NewEvent/NewEvent';
+import AcceptInvite from './containers/AcceptInvite/AcceptInvite';
+import EditSupplies from './containers/EventPage/EventSupplies/EditSupplies/EditSupplies';
 import EventPage from './containers/EventPage/EventPage';
-import EditDescription from './components/EventParts/EditDescription/EditDescription'
-import EditS from './components/EventParts/EditSupplies/EditSupplies'
 
-/* HOW TO ADD ROUTING TO YOUR COMPONENT:
-    import your component like the landing page example above
-    then add a <Route> component to the let routes variable depending on whether
-    your component is accessible when authenticated or not.
-    You can test your components by typing into the url /yourroutehere
-        ie localhost:3000/signin
-    you have to do this because there isn't a button that takes you there yet.
+/*
+    This is the main component of our app, which is rendered
+    by index.js. It sets up the layout of our app, with a navbar
+    fixed to the top and a specific page below it. All routes are
+    declared here as well.
 
-    all possible routes needs to be defined in App.js before it can be used
+    Props:
+        This component does not accept any custom props
 */
 
 const App = (props) => {
-    // HOW TO ADD ROUTING TO YOUR COMPONENT: to test between authenticated and not,
+
     // change this boolean variable. Later we will have to add real authentication
     const [state, setState] = useState({
         isAuthenticated: true
     });
 
-    // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible without an account
-    // it should sit above the <Redirect to="/" />
-    
-    // <Route path="/signin" component={SignIn} />
-    // <Route path="/signout" component={SignOut} />
-    // <Route path="/" exact component={Landing} />
     let routes = (
         <Switch>
             <Route path="/signin" component={SignIn} />]
@@ -51,10 +43,6 @@ const App = (props) => {
             <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} history={props.history} />} />
         </Switch>
     )
-
-    // HOW TO ADD ROUTING TO YOUR COMPONENT: add your route here if it is accessible only with an account
-    // it should sit above the <Route path="/" exact component={Landing} />
-
 
     //the 'edits' has an edit and routes to the edit supplies made by bing i think.
     if (state.isAuthenticated) {
@@ -68,8 +56,6 @@ const App = (props) => {
                 <Route path="/user/acceptinvite" exact component={AcceptInvite}/>
                 <Route path="/editavatar" exact component={EditAvatar} />
                 <Route path="/editprofile" exact component={EditProfile} />
-                <Route path="/editdescription" exact component={EditDescription} />
-                <Route path="/edits" exact component={EditS} />
                 <Route path="/" exact component={Home} />
                 <Redirect to="/" />
             </Switch>

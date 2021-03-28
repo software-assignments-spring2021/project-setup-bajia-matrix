@@ -1,4 +1,4 @@
-.button {
+.addButton {
     float: right;
     font-size: 12px;
     margin-top: -12px;
@@ -10,25 +10,30 @@
 }
 
 .cancelButton {
+    margin-top: -27px;
     float: left;
     width: 15%;
 }
 
 .container {
-    width: 70%;
+    width: 80%;
 	margin: 0 auto;
-}
-
-.errorMessage {
-    color: red;
+    max-width: 350px;
 }
 
 .friendsList {
-    padding-top: 50px;
-}
-
-.subtitle {
-    font-family: 'Karla', sans-serif;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    font-variant: tabular-nums;
+    line-height: 1.5715;
+    -webkit-font-feature-settings: 'tnum';
+            font-feature-settings: 'tnum';
+    padding: 10px 24px 10px;
+    background-color: #1d39ed27;
+    border: 1px solid #1D38ED;
+    border-radius: 20px;
+    font-size: 14px;
+    text-align: center;
 }
 
 .nameContainer {
@@ -45,7 +50,7 @@
     list-style: none;
     -webkit-font-feature-settings: 'tnum';
             font-feature-settings: 'tnum';
-    padding: 16px 24px 0;
+    padding: 20px 24px 0;
     background-color: #fff;
     border: 1px solid #DCE5E2;
     border-radius: 20px;
@@ -60,4 +65,21 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.subheader {
+    display: block;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid #777;
+    margin-top: -17px;
+    padding: 10px;
+}
+
+.subheader h6 {
+    padding-top: 5px;
+}
+
+.subtitle {
+    font-family: 'Karla', sans-serif;
 }
