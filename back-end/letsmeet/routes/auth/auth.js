@@ -6,7 +6,7 @@ require("dotenv").config();
 const router = express.Router();
 
 router.post("/register", async (req, res, next) => {
-  const { email, password, first_name, last_name } = req.body;
+  /*const { email, password, first_name, last_name } = req.body;
   try {
     // Check if the email is duplicating
     let existingUser = await User.findOne({ where: { email } });
@@ -34,6 +34,15 @@ router.post("/register", async (req, res, next) => {
       message: "Signup failed.",
     });
   }
+  */
+    axios.post(`https://www.mockaroo.com/522eb5e0`, req.body)
+        .then(response => {
+            console.log(response.data);
+            res.send("200 OK");
+    })
+        .catch(error => {
+            next(error);
+    });
 });
 
 // Login
@@ -42,7 +51,7 @@ router.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
 
   // Make a inquiry of the user through email
-  try {
+  /*try {
     const user = await User.findOne({ where: { email }, raw: true });
     if (!user) {
       return res.status(401).json({
@@ -104,6 +113,15 @@ router.post("/login", async (req, res, next) => {
       message: "Login Error",
     });
   }
+  */
+    axios.get(`https://www.mockaroo.com/522eb5e0`)
+        .then(response => {
+            // console.log(response.data);
+            res.json(response.data);
+        })
+        .catch(error => {
+            next(error);
+        });
 });
 
 module.exports = router;
