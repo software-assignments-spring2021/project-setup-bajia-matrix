@@ -35,6 +35,7 @@ const SignIn = (props) => {
                 }
                 else {
                     console.log("signed in!");
+                    this.props.isAuthenticated = true;
                     // authenticated
                 }
             })
@@ -45,7 +46,7 @@ const SignIn = (props) => {
 
     return (
         <div class="row justify-content-center">
-            <form className={classes.Authform}>
+            <form className={classes.Authform} method="POST" action="/login">
                 <h3>Sign In</h3>
 
                 <div className="form-group">

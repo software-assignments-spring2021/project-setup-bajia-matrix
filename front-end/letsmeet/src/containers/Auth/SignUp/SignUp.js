@@ -143,18 +143,22 @@ const SignUp = (props) => {
         e.preventDefault();
         console.log("submitting");
         const userID = 123;
-        axios.post("/users/" + userID + ".json?key=fe6891f0&__method=POST", authState)
+        let url = '/register;';
+        // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
+        axios.post(url , authState)
           .then(response => {
             console.log(response);
           })
           .catch(error => {
             console.log(error);
           });
+
+
     };
 
     return (
         <div className="row justify-content-center">
-            <form className={classes.Authform}>
+            <form className={classes.Authform} method="POST" action="/register" >
                 <h3>Sign Up</h3>
 
                 <div className="form-group">
