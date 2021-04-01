@@ -175,11 +175,13 @@ const EventPage = () => {
       finalTime: chosenTime.time,
     }));
     setShowSuggested(false);
-    //axios post call to update event
-    axios
-      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
+    //axios post call to update event's final time details
+    axios.post("/events?eventid=" + event.id.$oid, event)
       .then((response) => {
-        console.log(response);
+        console.log('successfully updated event\'s final time: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
