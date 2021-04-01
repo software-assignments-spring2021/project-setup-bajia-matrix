@@ -31,7 +31,7 @@ const App = (props) => {
 
     // change this boolean variable. Later we will have to add real authentication
     const [state, setState] = useState({
-        isAuthenticated: false
+        isAuthenticated: true
     });
 
     let routes = (

@@ -76,7 +76,8 @@ const Profile = (props) => {
            setLoading(false);
         } 
         else {
-            axios.get('/profile')
+            const id = 123;
+            axios.get("/profile?userid=" + id)
                 .then(response => {
                     setProfileState(response.data);
                     setLoading(false);
