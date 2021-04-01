@@ -24,5 +24,12 @@ describe("Events routes", () => {
             expect(response.statusCode).to.equal(200);
         });
     });
+
+    describe("Delete request to database", () => {
+        it("should delete a JSON object from database and return 200 OK", async () => {
+            const response = await request(app).delete("/events?eventid=123");
+            expect(response.statusCode).to.equal(200);
+        });
+    })
 });
 
