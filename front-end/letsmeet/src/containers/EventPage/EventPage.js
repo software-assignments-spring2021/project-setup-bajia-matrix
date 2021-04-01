@@ -310,8 +310,11 @@ const EventPage = () => {
       ...prevState,
       edit: false,
     }));
+
+    let eventCopy = event;
+    eventCopy.description = description.description;
     //axios post to update event description
-    axios.post("/events?eventid=" + event.id.$oid, event)
+    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
       .then((response) => {
         console.log('successfully updated event\'s description: ', response);
       })
