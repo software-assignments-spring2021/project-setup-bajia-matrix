@@ -106,6 +106,7 @@ const EventPage = () => {
   let addUnverified = (e) => {
     console.log(e.target.previousElementSibling.inputValue);
     let newAttendee = state.unverifiedInput.current.value;
+    let oldAttendees = [...event.attendees];
     let newAttendees = [...event.attendees]; //make a shallow copy first
     newAttendees.splice(1, 0, newAttendee);
     let newRoles = [...event.roles];
@@ -113,17 +114,10 @@ const EventPage = () => {
 
     setEvent((prevState) => ({
       ...prevState,
+      oldAttendees: oldAttendees,
       attendees: newAttendees,
       roles: newRoles,
-    }));
-    
-    axios.post("/events?eventid=" + event.id.$oid, event)
-      .then((response) => {
-        console.log('successfully posted new attendee: ', response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }))
   };
   useEffect(() => {
     //for attendees list & attendee roles
@@ -135,7 +129,20 @@ const EventPage = () => {
           event.roles.push("Attendee");
         }
       });
-      console.log(event.roles);
+    }
+
+    if (event.oldAttendees) {
+      if (event.oldAttendees !== event.attendees) {
+        console.log('old: ', event.oldAttendees);
+        console.log('new: ', event.attendees);
+        axios.post("/events?eventid=" + event.id.$oid, event)
+      .then((response) => {
+        console.log('successfully posted new attendee: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+     }
     }
   }, [event.attendees]); // TODO: check warnings
 
@@ -202,6 +209,7 @@ const EventPage = () => {
   }, [event.finalDay]); // TODO: check warnings
 
   let addVerified = (e) => {
+    let oldAttendees = [...event.attendees];
     let attendeesCopy = [...event.attendees]; //make a shallow copy first
     let rolesCopy = [...event.roles];
     if (invitees.length > 0) {
@@ -213,6 +221,7 @@ const EventPage = () => {
       setInvitees(null);
       setEvent((prevState) => ({
         ...prevState,
+        oldAttendees: oldAttendees,
         attendees: attendeesCopy,
         roles: rolesCopy,
       }));
