@@ -95,7 +95,7 @@ const EventPage = () => {
      const id = 123;
       axios.get("/events?eventid=" + id)
         .then((response) => {
-        //console.log(response.data);
+        //console.log('successfully get event: ', response.data);
         setEvent(response.data);
       })
       .catch((error) => {
@@ -116,29 +116,24 @@ const EventPage = () => {
       attendees: newAttendees,
       roles: newRoles,
     }));
-    const id = 222;
-
+    
     axios.post("/events?eventid=" + event.id.$oid, event)
-        .then((response) => {
-        console.log(response);
-        //setEvent(response.data);
+      .then((response) => {
+        console.log('successfully posted new attendee: ', response);
       })
       .catch((error) => {
         console.log(error);
       });
-
-
   };
   useEffect(() => {
     //for attendees list & attendee roles
     if (event.attendees) {
-      event.attendees.map((attendee, index) => {
+      event.attendees.filter((attendee) => {
         if (event.creator === attendee) {
           event.roles.push("Creator");
         } else {
           event.roles.push("Attendee");
         }
-        // TODO: should return something from map function
       });
       console.log(event.roles);
     }
@@ -324,8 +319,8 @@ const EventPage = () => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      unverified: true,
-      //creator: true,
+      //unverified: true,
+      creator: true,
       //attendee: true
     }));
     // if (user.name !== "" && event.creator) {

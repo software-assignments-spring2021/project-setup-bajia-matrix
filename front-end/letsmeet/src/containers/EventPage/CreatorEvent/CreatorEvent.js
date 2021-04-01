@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -87,9 +87,9 @@ const CreatorEvent = (props) => {
               <div>
                 <Card.Title>
                   Event Details
-                  <a className={classes.Edit} onClick={props.editDescription}>
+                  <Button className={classes.Edit} onClick={props.editDescription}>
                     Edit
-                  </a>
+                  </Button>
                 </Card.Title>
                 <Card.Text>{props.event.description}</Card.Text>
               </div>
