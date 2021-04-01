@@ -9,11 +9,11 @@ router.use(bodyParser.json());
 
 router.get("/", (req, res, next) => {
     const id = req.query.eventid;
-    console.log("get request on route /event for event with id " + id);
+    console.log("get request on route /events for event with id " + id);
     
     axios.get(`${process.env.API_BASE_URL}/event/${id}.json?key=${process.env.API_SECRET_KEY}`)
         .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
             res.json(response.data);
         })
         .catch(error => {
@@ -24,7 +24,7 @@ router.get("/", (req, res, next) => {
 router.post("/", (req, res, next) => {
     const id = req.body.id.$oid;
     console.log("post request on route /events for event with id " + id);
-    console.log(req.body);
+    // console.log(req.body);
     
     axios.post(`${process.env.API_BASE_URL}/event/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
         .then(response => {

@@ -179,6 +179,7 @@ const NewEvent = (props) => {
                                 onChange={handleFinalTime}
                                 format="h:mm A" use12Hours 
                                 allowClear={false}
+                                minuteStep={30}
                             />
                         </Form.Item>
                     </>}
@@ -249,11 +250,13 @@ const NewEvent = (props) => {
                                     ]}
                                 >
                                     <ScheduleSelector
-                                        hourlyChunks={1}
+                                        hourlyChunks={2}
                                         startDate={startDate}
                                         onChange={handleChangeSchedule}
                                         selectedColor={"#3D41D8"}
                                         selection={schedule}
+                                        minTime={7}
+                                        timeFormat={'h:mm a'}
                                     />
                                 </Form.Item>
                             </Tab>
@@ -292,7 +295,7 @@ const NewEvent = (props) => {
                                                 fieldKey={[field.fieldKey, 'times']}
                                                 rules={[{ required: true, message: 'Missing time slot' }]}
                                             >
-                                                <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
+                                                <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false} minuteStep={30}/>
                                             </Form.Item>
                                             <MinusCircleOutlined onClick={() => remove(field.name)} className={classes.deleteField} />
                                         </Space>

@@ -154,14 +154,12 @@ const SignUp = () => {
         let url = '/auth';
         // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
         axios.post(url , authState)
-          .then(response => {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });;
-
-
+            .then(response => {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });;
     };
 
     return (

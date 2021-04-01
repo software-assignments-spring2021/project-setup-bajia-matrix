@@ -47,12 +47,10 @@ router.post("/", async (req, res, next) => {
     axios.post(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
         .then(response => {
             console.log(response.data);
-                console.log("post request on route /events for event with id " + id);
-
+                // what is this? console.log("post request on route /events for event with id " + id);
             res.send("200 OK");
         })
         .catch(error => {
-
             next(error);
         });
 });

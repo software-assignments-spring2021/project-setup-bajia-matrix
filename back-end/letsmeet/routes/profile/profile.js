@@ -5,11 +5,13 @@ const bodyParser = require("body-parser");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", (req, res, next) => {
-    console.log("get request on route /profile");
+    const id = req.query.userid;
+    console.log("get request on route /profile with user id " + id);
     
-    axios.get(`${process.env.API_BASE_URL}/users.json?key=${process.env.API_SECRET_KEY}`)
+    axios.get(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}`)
         .then(response => {
             // console.log(response.data);
             res.json(response.data);
@@ -20,9 +22,10 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-    console.log("post request on route /profile");
-    console.log(req.body);
     const id = req.body.id.$oid;
+    console.log("post request on route /profile with user id " + id);
+    // console.log(req.body);
+    
     axios.post(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
         .then(response => {
             // console.log(response.data);
