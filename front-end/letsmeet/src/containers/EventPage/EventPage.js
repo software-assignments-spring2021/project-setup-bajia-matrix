@@ -3,9 +3,9 @@ import { Redirect } from "react-router-dom";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./EventPage.module.css";
+import Container from "react-bootstrap/Container";
 
 import axios from "../../axios";
-import Container from "react-bootstrap/Container";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
 // import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
@@ -169,10 +169,51 @@ const EventPage = () => {
     }));
   };
   const [showSuggested, setShowSuggested] = useState(false);
-  const handleShowSuggested = () => setShowSuggested(true);
+  const handleShowSuggested = () => {
+    
+    // BING: retrieve suggested times and update event.suggestedTimes from backend
+        
+    // get browser's current timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    const ev = {
+      availability: [
+        "Mon Apr 02 2001 11:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Wed Apr 04 2001 14:00:00 GMT-0500 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Fri Apr 06 2001 18:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 11:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 12:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 13:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 12:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Wed Apr 04 2001 19:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Mon Apr 02 2001 11:00:00 GMT-0400 (Eastern Daylight Time)",
+        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)"
+      ],
+      tz: timezone
+    }
+    
+    // TODO: once we have database, send this info from the state instead of hardcoding
+    // aka change ev to event and remove ev above
+    // no need to link to specific event since just passing the times to perform the algorithm with
+    axios.post("/suggestedTimes", ev)
+      .then(response => {
+        setEvent((prevState) => ({
+          ...prevState,
+          suggestedTimes: response
+        }));
+        setShowSuggested(true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   const handleCloseSuggested = (e) => setShowSuggested(false);
   const handleFinal = () => {
-    console.log("chosenn time: ", chosenTime);
+    console.log("chosen time: ", chosenTime);
     setEvent((prevState) => ({
       ...prevState,
       finalDay: chosenTime.day,
@@ -324,8 +365,8 @@ const EventPage = () => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      unverified: true,
-      //creator: true,
+      // unverified: true,
+      creator: true,
       //attendee: true
     }));
     // if (user.name !== "" && event.creator) {

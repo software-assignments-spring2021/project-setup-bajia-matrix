@@ -47,8 +47,8 @@ const NewEvent = (props) => {
         // setSelectedEndTimes(date[1].format('LT'))
         selectedStartTimes.push(date[0].format('LT'))
         selectedEndTimes.push(date[1].format('LT'))
-        //console.log(selectedStartTimes)
-        //console.log(selectedEndTimes)
+        console.log(selectedDates)
+        console.log(selectedDates._d + " " + selectedStartTimes + " " + selectedEndTimes)
     }
 
     //Used to select date for non-users
@@ -60,7 +60,7 @@ const NewEvent = (props) => {
     function handleFinalDate(date, dateString) {
         setFinalDate(dateString)
         setFinalDay(moment(dateString).format('dddd'))
-        console.log(finalDate)
+        console.log("final date: " + finalDate)
     }
 
     function handleFinalTime(date, dateString) {
@@ -70,15 +70,18 @@ const NewEvent = (props) => {
     
     function onChange(date, dateString) {
         setDate(dateString)
+        console.log("setDate: " + startDate)
     }
 
     function handleChangeSchedule(e) {
+
         setSchedule(e)
-        console.log(schedule)
+        console.log("schedule: " + schedule)
     }
 
     function handleSubmit(e) {
         e.preventDefault()
+        // TODO: format schedule to send to backend from both week view and list view
     }
 
     // Used for tab display
