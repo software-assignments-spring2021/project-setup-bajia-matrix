@@ -28,12 +28,27 @@ router.post("/", (req, res, next) => {
     
     axios.post(`${process.env.API_BASE_URL}/event/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
         .then(response => {
-            // console.log(response.data);
+            console.log("backend events post request");
+            console.log(response.data);
             res.send("200 OK");
         })
         .catch(error => {
             next(error);
         });
+});
+
+router.delete("/", (req, res, next) => {
+    const eventid = req.query.eventid;
+    console.log("delete request on route /events with for event with id " + eventid);
+
+    axios.delete(`${process.env.API_BASE_URL}/event/${eventid}.json?key=${process.env.API_SECRET_KEY}&__method=DELETE`)
+        .then(response => {
+            // console.log(response.data);
+            res.send("200 OK");
+        })
+        .catch(error => {
+            next(error);
+        })
 });
 
 module.exports = router;

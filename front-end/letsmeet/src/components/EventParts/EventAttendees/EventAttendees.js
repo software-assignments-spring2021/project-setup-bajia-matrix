@@ -24,7 +24,7 @@ const eventAttendees = (props) => {
   let attendeesList;
   if(props.attendees) {
     attendeesList = props.attendees.map((attendee, index) =>
-        <ListGroup.Item className={classes.Border}>
+        <ListGroup.Item key={index} className={classes.Border}>
           <Card className={classes.CardHeader}>
             <Card.Img src={red} className={classes.Avatar} />
             <Card.Body className={classes.Name}><p>{attendee}</p></Card.Body>

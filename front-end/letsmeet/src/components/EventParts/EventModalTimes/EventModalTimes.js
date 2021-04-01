@@ -16,7 +16,7 @@ import Badge from 'react-bootstrap/Badge';
 const eventModalTimes = (props) => {
 
   let badge = props.suggestedTimes.map((time, index) =>
-      <div className="form-check mt-1">
+    <div key={index} className="form-check mt-1">
       <input
         className="form-check-input mt-2"
         type="radio"
