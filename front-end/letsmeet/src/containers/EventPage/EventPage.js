@@ -91,9 +91,8 @@ const EventPage = () => {
   });
 
    useEffect(() => {
-     let eventQueryID = window.location.pathname.split("id:")[1];
-     const id = 123;
-      axios.get("/events?eventid=" + id)
+      let eventQueryID = window.location.pathname.split("id:")[1];
+      axios.get("/events?eventid=" + eventQueryID)
         .then((response) => {
         //console.log('successfully get event: ', response.data);
         setEvent(response.data);
@@ -155,7 +154,6 @@ const EventPage = () => {
   }, [event.id]);
 
   let suggestedTimes;
-  // let suggestedModal;
   let onChecked = (e) => {
     setChosenTime((prevState) => ({
       ...prevState,
@@ -168,7 +166,7 @@ const EventPage = () => {
   const handleShowSuggested = () => setShowSuggested(true);
   const handleCloseSuggested = (e) => setShowSuggested(false);
   const handleFinal = () => {
-    console.log("chosenn time: ", chosenTime);
+    console.log("chosen time: ", chosenTime);
     setEvent((prevState) => ({
       ...prevState,
       finalDay: chosenTime.day,
@@ -235,41 +233,43 @@ const EventPage = () => {
       });
     }
   };
-  // useEffect(() => {
-  //   // setState((prevState) => ({
-  //   //   ...prevState,
-  //   //   name: "Angela Tim",
-  //   //   friends: [
-  //   //     { value: "friend_first1 friend_last1" },
-  //   //     { value: "friend_first2 friend_last2" },
-  //   //     { value: "friend_first3 friend_last3" },
-  //   //     { value: "friend_first4 friend_last4" },
-  //   //     { value: "friend_first5 friend_last5" },
-  //   //   ],
-  //   // }));
-  //   // setLoading({ user: false });
-  //   axios
-  //     .get(`/users/123.json?key=${key}`)
-  //     .then((response) => {
-  //       setUser((prevState) => ({
-  //         ...prevState,
-  //         name: response.data.name,
-  //       }));
-  //       let friendsNames = [];
-  //       response.data.friends.map((friend, index) => {
-  //         friendsNames.push(friend.name);
-  //         // TODO: map function should return something
-  //       });
-  //       setUser((prevState) => ({
-  //         ...prevState,
-  //         name: response.data.name,
-  //         friends: friendsNames,
-  //       }));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+
+  //useEffect(() => {
+    // setState((prevState) => ({
+    //   ...prevState,
+    //   name: "Angela Tim",
+    //   friends: [
+    //     { value: "friend_first1 friend_last1" },
+    //     { value: "friend_first2 friend_last2" },
+    //     { value: "friend_first3 friend_last3" },
+    //     { value: "friend_first4 friend_last4" },
+    //     { value: "friend_first5 friend_last5" },
+    //   ],
+    // }));
+    // setLoading({ user: false });
+
+    // axios
+    //   .get(`/users/123.json?key=${key}`)
+    //   .then((response) => {
+    //     setUser((prevState) => ({
+    //       ...prevState,
+    //       name: response.data.name,
+    //     }));
+    //     let friendsNames = [];
+    //     response.data.friends.map((friend, index) => {
+    //       friendsNames.push(friend.name);
+    //       // TODO: map function should return something
+    //     });
+    //     setUser((prevState) => ({
+    //       ...prevState,
+    //       name: response.data.name,
+    //       friends: friendsNames,
+    //     }));
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+  //}, []);
 
   useEffect(() => {
     console.log(user.friends);
@@ -278,20 +278,18 @@ const EventPage = () => {
   //for canceling event
   const [show, setShow] = useState(false);
   const handleDelete = () => {
-    axios
-      .delete(`https://my.api.mockaroo.com/event/${event.id}.json?key=${key}`)
-      .then((response) => {
-        console.log("deleted");
+    axios.delete("/events?eventid=" + event.id.$oid)
+      .then(response => {
+        console.log("canceled event");
         console.log(response);
         setShow(false);
         setState((prevState) => ({
           ...prevState,
           redirect: true,
         }));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }).catch((error) => {
+      console.log(error);
+    });
   };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
