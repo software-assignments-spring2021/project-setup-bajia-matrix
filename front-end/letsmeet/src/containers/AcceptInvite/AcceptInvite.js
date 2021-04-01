@@ -206,7 +206,7 @@ const AcceptInvite = () => {
                                             fieldKey={[field.fieldKey, 'times']}
                                             rules={[{ required: true, message: 'Missing time slot' }]}
                                         >
-                                            <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false}/>
+                                            <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false} minuteStep={30}/>
                                         </Form.Item>
                                         <MinusCircleOutlined onClick={() => remove(field.name)} className={classes.deleteField} />
                                     </Space>
