@@ -176,8 +176,13 @@ const EventPage = () => {
       finalTime: chosenTime.time,
     }));
     setShowSuggested(false);
+
+    let eventCopy = event;
+    eventCopy.finalDay = chosenTime.day;
+    eventCopy.finalDate = chosenTime.date;
+    eventCopy.finalTime = chosenTime.time;
     //axios post call to update event's final time details
-    axios.post("/events?eventid=" + event.id.$oid, event)
+    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
       .then((response) => {
         console.log('successfully updated event\'s final time: ', response);
       })
