@@ -26,28 +26,6 @@ const NewEvent = (props) => {
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
     };
-    // Used to select friends
-    const { Option } = Select;
-
-    // Used to select date for verified users
-    // Week view
-    const [startDate, setDate] = useState()
-    const dateFormat = "MM/DD"
-    const [schedule, setSchedule] = useState()
-    // List view
-    // let selectedDates = []
-    let selectedStartTimes = []
-    let selectedEndTimes = []
-    const [selectedDates, setSelectedDates] = useState([])
-    // const [selectedStartTimes, setSelectedStartTimes] = useState([]) 
-    // const [selectedEndTimes, setSelectedEndTimes] = useState([])
-   
-    function handleSelectedTimes(date, dateString) {
-        selectedStartTimes.push(date[0].format('LT'))
-        selectedEndTimes.push(date[1].format('LT'))
-        //console.log(selectedStartTimes)
-        //console.log(selectedEndTimes)
-    }
 
     //Used to select date for non-users
     const [finalDate, setFinalDate] = useState(Date())
@@ -58,33 +36,41 @@ const NewEvent = (props) => {
     function handleFinalDate(date, dateString) {
         setFinalDate(dateString)
         setFinalDay(moment(dateString).format('dddd'))
-        console.log(finalDate)
+        console.log(dateString)
     }
 
     function handleFinalTime(date) {
         setFinalStartTime(date[0].format('LT'))
         setFinalEndTime(date[1].format('LT'))
     }
+
+    // Used to select friends
+    const { Option } = Select;
+
+    // Used to select date for verified users
+    const [startDate, setDate] = useState()
+    const dateFormat = "MM/DD"
+    const [schedule, setSchedule] = useState() // this variable holds selected dates and time in this format: Thu Apr 22 2021 09:00:00 GMT-0400 (Eastern Daylight Time)
     
+    // Availability calendar update dates and times selected
     function onChange(date) {
-        setDate(date.format('LL'))
+        setDate(date.format('LL'))  // sets start date for week view
+        setSchedule()               // clear previously selected if start date is changed
     }
 
     function handleChangeSchedule(e) {
-        setSchedule(e)
-        console.log(schedule)
+        setSchedule(e)      // stores selected dates and times
+        console.log(e)
     }
 
+    // when clicking submit
     function handleSubmit(e) {
         e.preventDefault()
     }
 
-    // Used for tab display
-    const [key, setKey] = useState('week')
-
     // Event pop-up after pressing submit
     const [isModalVisible, setIsModalVisible] = useState(false)
-    //const copy = require('clipboard-copy')
+
     const showModal = () => {
         setIsModalVisible(true)
     };
@@ -211,104 +197,49 @@ const NewEvent = (props) => {
                                 icon: <InfoCircleOutlined />,
                             }}
                         >
-                            <span className="ant-form-text">Select your availability using the calendar in "Week View", or manually select dates and time slots using "List View".</span>
+                            <span>Select your availability using the calendar below. Start by selecting a start date, and then click and drag to select availability.</span>
                         </Form.Item>
 
                         {/* Availability for verified users*/}
-                        <Tabs activeKey={key} onSelect={(k) => setKey(k)}>
-
-                            <Tab eventKey="week" title="Week View">
-                                <Form.Item 
-                                    className={classes.dateSelect}
-                                    label="Select start date for availability calendar."
-                                    name="Calendar Start Date"
-                                    required
-                                    rules={[
-                                        {
-                                            validator: async () => {
-                                            if (key === "week" && !startDate) {
-                                                return Promise.reject(new Error('Please select a start date for the availability calendar!'));
-                                            }
-                                            },
-                                        },
-                                    ]}
-                                >
-                                    <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
-                                </Form.Item>
-                                <Form.Item
-                                    name="calendar select"
-                                    rules={[
-                                        {
-                                            validator: async () => {
-                                            if (key === "week" && schedule.length === 0) {
-                                                return Promise.reject(new Error('Please select at least one availability slot!'));
-                                            }
-                                            },
-                                        },
-                                    ]}
-                                >
-                                    <ScheduleSelector
-                                        hourlyChunks={2}
-                                        startDate={startDate}
-                                        onChange={handleChangeSchedule}
-                                        selectedColor={"#3D41D8"}
-                                        selection={schedule}
-                                        minTime={7}
-                                        timeFormat={'h:mm a'}
-                                    />
-                                </Form.Item>
-                            </Tab>
-
-                            <Tab eventKey="list" title="List View">
-                                <Form.Item>
-                                    <span className="ant-form-text"><b>Date and Time Slot Availability:</b> Please add at least one date and time slot. The more the merrier!</span>
-                                </Form.Item>
-                                <Form.List 
-                                    name="slots"
-                                    rules={[
-                                        {
-                                            validator: async (_, names) => {
-                                            if ((!names || names.length < 1) && key === "list") {
-                                                return Promise.reject(new Error('Must include at least one availability slot!'));
-                                            }
-                                            },
-                                        },
-                                    ]}
-                                >
-                                    {(fields, { add, remove }, { errors }) => (
-                                    <>
-                                        {fields.map((field, index) => (
-                                        <Space key={field.key} className={classes.space} align="end">
-                                            <Form.Item
-                                                {...field}
-                                                name={[field.name, 'dates']}
-                                                fieldKey={[field.fieldKey, 'dates']}
-                                                rules={[{ required: true, message: 'Missing date' }]}
-                                            >
-                                                <DatePicker onChange={setSelectedDates} format="MM/DD/YYYY" allowClear={false}/>
-                                            </Form.Item>
-                                            <Form.Item
-                                                {...field}
-                                                name={[field.name, 'times']}
-                                                fieldKey={[field.fieldKey, 'times']}
-                                                rules={[{ required: true, message: 'Missing time slot' }]}
-                                            >
-                                                <TimePicker.RangePicker onChange={handleSelectedTimes} format="h:mm A" use12Hours allowClear={false} minuteStep={30}/>
-                                            </Form.Item>
-                                            <MinusCircleOutlined onClick={() => remove(field.name)} className={classes.deleteField} />
-                                        </Space>
-                                        ))}
-                                        <Form.Item>
-                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                                Add field
-                                            </Button>
-                                            <Form.ErrorList errors={errors} />
-                                        </Form.Item>
-                                    </>
-                                    )}
-                                </Form.List>
-                            </Tab>
-                        </Tabs>
+                        <Form.Item 
+                            className={classes.dateSelect}
+                            label="Select start date for availability calendar."
+                            name="Calendar Start Date"
+                            required
+                            rules={[
+                                {
+                                    validator: async () => {
+                                    if (!startDate) {
+                                        return Promise.reject(new Error('Please select a start date for the availability calendar!'));
+                                    }
+                                    },
+                                },
+                            ]}
+                        >
+                            <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
+                        </Form.Item>
+                        <Form.Item
+                            name="calendar select"
+                            rules={[
+                                {
+                                    validator: async () => {
+                                    if (schedule.length === 0) {
+                                        return Promise.reject(new Error('Please select at least one availability slot!'));
+                                    }
+                                    },
+                                },
+                            ]}
+                        >
+                            <ScheduleSelector
+                                hourlyChunks={1}
+                                startDate={startDate}
+                                onChange={handleChangeSchedule}
+                                selectedColor={"#3D41D8"}
+                                selection={schedule}
+                                minTime={7}
+                                timeFormat={'h a'}
+                            />
+                        </Form.Item>
                     </>}
                         
                     <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
