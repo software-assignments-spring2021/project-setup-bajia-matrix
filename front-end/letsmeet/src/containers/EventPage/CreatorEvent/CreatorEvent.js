@@ -87,7 +87,7 @@ const CreatorEvent = (props) => {
               <div>
                 <Card.Title>
                   Event Details
-                  <Button className={classes.Edit} onClick={props.editDescription}>
+                  <Button variant="link" className={classes.Edit} onClick={props.editDescription}>
                     Edit
                   </Button>
                 </Card.Title>
@@ -96,17 +96,15 @@ const CreatorEvent = (props) => {
             ) : (
               <div>
                 <Card.Title>Event Details</Card.Title>
-                <Card.Text>
-                  <FormB.Group>
-                    <FormB.Control
-                      as="textarea"
-                      rows={3}
-                      defaultValue={props.description.description}
-                      value={props.description.description}
-                      onChange={props.descriptionChange}
-                    />
-                  </FormB.Group>
-                </Card.Text>
+                <FormB.Group>
+                  <FormB.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder={props.description.description}
+                    value={props.description.description}
+                    onChange={props.descriptionChange}
+                  />
+                </FormB.Group>
                 <Row className="justify-content-end pr-3">
                   <Button variant="danger" onClick={props.cancelDescription}>
                     Cancel

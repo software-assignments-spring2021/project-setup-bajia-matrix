@@ -298,11 +298,13 @@ const EventPage = () => {
       ...prevState,
       edit: false,
     }));
-    //axios post to update event
-    axios
-      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
+    //axios post to update event description
+    axios.post("/events?eventid=" + event.id.$oid, event)
       .then((response) => {
-        console.log(response);
+        console.log('successfully updated event\'s description: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
   let descriptionChange = (e) => {
