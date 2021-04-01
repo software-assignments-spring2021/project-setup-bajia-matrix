@@ -43,8 +43,6 @@ const NewEvent = (props) => {
     // const [selectedEndTimes, setSelectedEndTimes] = useState([])
    
     function handleSelectedTimes(date, dateString) {
-        // setSelectedStartTimes(date[0].format('LT'))
-        // setSelectedEndTimes(date[1].format('LT'))
         selectedStartTimes.push(date[0].format('LT'))
         selectedEndTimes.push(date[1].format('LT'))
         //console.log(selectedStartTimes)
@@ -63,13 +61,13 @@ const NewEvent = (props) => {
         console.log(finalDate)
     }
 
-    function handleFinalTime(date, dateString) {
+    function handleFinalTime(date) {
         setFinalStartTime(date[0].format('LT'))
         setFinalEndTime(date[1].format('LT'))
     }
     
-    function onChange(date, dateString) {
-        setDate(dateString)
+    function onChange(date) {
+        setDate(date.format('LL'))
     }
 
     function handleChangeSchedule(e) {
