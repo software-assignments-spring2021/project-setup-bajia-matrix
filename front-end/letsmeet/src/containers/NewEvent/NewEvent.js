@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, Space, TimePicker, Tag} from 'antd';
 import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -6,6 +6,7 @@ import { Tab, Tabs } from 'react-bootstrap'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ScheduleSelector  from 'react-schedule-selector';
 import moment from 'moment';
+import axios from '../../axios';
 
 import classes from '../NewEvent/NewEvent.module.css';
 import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
@@ -81,6 +82,25 @@ const NewEvent = (props) => {
     const handleCancel = () => {
         setIsModalVisible(false)
     };
+
+    const [profileState, setProfileState] = useState({
+        friends: []
+    });
+
+    useEffect(() => {
+        const id = 123;
+        axios.get("/profile?userid=" + id)
+            .then(response => {
+                setProfileState(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+      }, []);
+
+    let friendsList = profileState.friends.map(friend => (
+        <Option value={friend.name}>{friend.name}</Option>
+    ))
 
     return (
         <div>
@@ -181,9 +201,7 @@ const NewEvent = (props) => {
                                 placeholder="Select from Friends List"
                                 className={classes.dropdown}
                             >
-                                <Option value="jack">Jack</Option>
-                                <Option value="lucy">Lucy</Option>
-                                <Option value="tom">Tom</Option>
+                                {friendsList}
                             </Select>
                         </Form.Item>
 
