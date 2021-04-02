@@ -168,7 +168,7 @@ const EventPage = () => {
     // BING: retrieve suggested times and update event.suggestedTimes from backend
         
     // get browser's current timezone
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     
     const ev = {
       availability: [
@@ -186,7 +186,7 @@ const EventPage = () => {
         "Mon Apr 02 2001 11:00:00 GMT-0400 (Eastern Daylight Time)",
         "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)"
       ],
-      tz: timezone
+      timezone: tz
     }
     
     // TODO: once we have database, send this info from the state instead of hardcoding

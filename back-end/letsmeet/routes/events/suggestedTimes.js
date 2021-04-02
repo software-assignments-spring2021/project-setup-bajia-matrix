@@ -137,7 +137,7 @@ router.post("/", (req, res, next) => {
 
     // extract data from the request 
     const requestData = req.body.availability;
-    const currentTimezone = req.body.tz;
+    const currentTimezone = req.body.timezone;
 
     // initialize response
     const response = [];
@@ -153,9 +153,9 @@ router.post("/", (req, res, next) => {
         const currDateTime = standardizeTime(dt + " GMT-0000", currentTimezone);
         const [ day, date, time ] = generateResponse(new Date(currDateTime));
         response.push({
-            "Day": day,
-            "Date": date,
-            "Time": time
+            Day: day,
+            Date: date,
+            Time: time
         });
     });
 
