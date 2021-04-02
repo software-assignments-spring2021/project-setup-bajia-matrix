@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, Space, TimePicker, Tag} from 'antd';
 import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -75,10 +76,16 @@ const NewEvent = (props) => {
     const showModal = () => {
         setIsModalVisible(true)
     }
-    const handleOk = () => {
-        setIsModalVisible(false)
-        window.location.assign('/')
+
+    let handleOk = () => {
+        setIsModalVisible(false);
+        props.history.push({
+            pathname: "/",
+            state: {newUpcomingEvent: newCreatedEvent}
+        });
+        window.location.assign('/');
     }
+
     const handleCancel = () => {
         setIsModalVisible(false)
     }
@@ -111,19 +118,30 @@ const NewEvent = (props) => {
         myCreatedEvent: true
     })
 
-    let sendToBackend = (e) => {
+    let sendToBackend = param => e => {
+        setNewCreatedEvent(prevState => ({
+            ...prevState,
+            id: "123",
+            title: param.getFieldValue('Event Title'),
+            location: param.getFieldValue('Location'),
+            description: param.getFieldValue('Event Description'),
+            attendees: param.getFieldValue('Invited Friends'),
+        }))
+        // console.log(param.getFieldValue('Invited Friends'))
+
         axios.post("/events", newCreatedEvent)
             .then(response => {
                 console.log(response)
             })
             .catch(error => {
                 console.log(error)
-            })
+            });
+        
         console.log(newCreatedEvent);
-        props.history.push({
-            pathname: "/events",
-            state: {newEventState: newCreatedEvent}
-        });
+        // props.history.push({
+        //     pathname: "/events",
+        //     state: {newEventState: newCreatedEvent}
+        // });
     }
 
     return (
@@ -215,6 +233,7 @@ const NewEvent = (props) => {
                     {props.isAuthenticated && <>
                         <Form.Item 
                             label="Invite Friends" 
+                            name="Invited Friends"
                             tooltip={{
                                 title: "Invite people from your friends list. You can add more friends later.",
                                 icon: <InfoCircleOutlined />,
@@ -284,7 +303,7 @@ const NewEvent = (props) => {
                         </Form.Item>
                     </>}
                         
-                    <Button type="primary" htmlType="submit" className={classes.formButton} onClick={sendToBackend}>Submit</Button>
+                    <Button type="primary" htmlType="submit" className={classes.formButton} onClick={sendToBackend(form)}>Submit</Button>
 
                     <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                         {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
@@ -308,4 +327,4 @@ const NewEvent = (props) => {
     );
 };
 
-export default NewEvent;
+export default withRouter(NewEvent);

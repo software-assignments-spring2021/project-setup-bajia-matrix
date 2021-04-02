@@ -130,7 +130,7 @@ const AddFriends = (props) => {
     const [isFriend, setIsFriend] = useState(false)
 
     function checkFriendship(e) {
-        for (var friend of user.friends) {
+        for (let friend of user.friends) {
             if(friend.email === e) {
                 setIsFriend(true)
                 break
