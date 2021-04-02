@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -87,26 +87,24 @@ const CreatorEvent = (props) => {
               <div>
                 <Card.Title>
                   Event Details
-                  <a className={classes.Edit} onClick={props.editDescription}>
+                  <Button variant="link" className={classes.Edit} onClick={props.editDescription}>
                     Edit
-                  </a>
+                  </Button>
                 </Card.Title>
                 <Card.Text>{props.event.description}</Card.Text>
               </div>
             ) : (
               <div>
                 <Card.Title>Event Details</Card.Title>
-                <Card.Text>
-                  <FormB.Group>
-                    <FormB.Control
-                      as="textarea"
-                      rows={3}
-                      defaultValue={props.description.description}
-                      value={props.description.description}
-                      onChange={props.descriptionChange}
-                    />
-                  </FormB.Group>
-                </Card.Text>
+                <FormB.Group>
+                  <FormB.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder={props.description.description}
+                    value={props.description.description}
+                    onChange={props.descriptionChange}
+                  />
+                </FormB.Group>
                 <Row className="justify-content-end pr-3">
                   <Button variant="danger" onClick={props.cancelDescription}>
                     Cancel

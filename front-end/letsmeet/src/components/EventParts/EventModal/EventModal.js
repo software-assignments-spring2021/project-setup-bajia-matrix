@@ -10,6 +10,11 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 
+const handleCopy = (e, url) => {
+  navigator.clipboard.writeText(url);
+  e.target.style.backgroundColor = "gray";
+}
+
 const EventModal = (props) => {
   if (props.role === "attendee") {
     return (
@@ -41,7 +46,7 @@ const EventModal = (props) => {
           <Modal.Body className="px-5 pt-4">
             Copy and paste the link below to share this event:
             <InputGroup className="my-3">
-              <InputGroup.Prepend>
+              <InputGroup.Prepend onClick={(e) => {handleCopy(e, props.url)}}>
                 <InputGroup.Text>📋</InputGroup.Text>
               </InputGroup.Prepend>
               <Form.Control

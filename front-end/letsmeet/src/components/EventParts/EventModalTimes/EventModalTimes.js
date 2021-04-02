@@ -18,7 +18,7 @@ const eventModalTimes = (props) => {
   let badge = <div><p>No suggestions available. Maybe wait for more invitees to respond?</p></div>;
   if (props.suggestedTimes.data.length !== 0) {
     badge = props.suggestedTimes.data.map((time, index) =>
-      <div className="form-check mt-1">
+      <div key={index} className="form-check mt-1">
       <input
         className="form-check-input mt-2"
         type="radio"

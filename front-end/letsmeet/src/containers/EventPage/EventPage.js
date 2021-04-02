@@ -91,11 +91,10 @@ const EventPage = () => {
   });
 
    useEffect(() => {
-     let eventQueryID = window.location.pathname.split("id:")[1];
-     const id = 123;
-      axios.get("/events?eventid=" + id)
+      let eventQueryID = window.location.pathname.split("id:")[1];
+      axios.get("/events?eventid=" + eventQueryID)
         .then((response) => {
-        //console.log(response.data);
+        //console.log('successfully get event: ', response.data);
         setEvent(response.data);
       })
       .catch((error) => {
@@ -110,37 +109,33 @@ const EventPage = () => {
     newAttendees.splice(1, 0, newAttendee);
     let newRoles = [...event.roles];
     newRoles.splice(1, 0, "Attendee");
+    let eventCopy = event;
+    eventCopy.attendees = newAttendees;
 
     setEvent((prevState) => ({
       ...prevState,
       attendees: newAttendees,
       roles: newRoles,
-    }));
-    const id = 222;
+    }))
 
-    axios.post("/events?eventid=" + event.id.$oid, event)
-        .then((response) => {
-        console.log(response);
-        //setEvent(response.data);
+    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+      .then((response) => {
+        console.log('successfully posted new attendee: ', response);
       })
       .catch((error) => {
         console.log(error);
       });
-
-
   };
   useEffect(() => {
     //for attendees list & attendee roles
     if (event.attendees) {
-      event.attendees.map((attendee, index) => {
+      event.attendees.filter((attendee) => {
         if (event.creator === attendee) {
           event.roles.push("Creator");
         } else {
           event.roles.push("Attendee");
         }
-        // TODO: should return something from map function
       });
-      console.log(event.roles);
     }
   }, [event.attendees]); // TODO: check warnings
 
@@ -159,7 +154,6 @@ const EventPage = () => {
   }, [event.id]);
 
   let suggestedTimes;
-  // let suggestedModal;
   let onChecked = (e) => {
     setChosenTime((prevState) => ({
       ...prevState,
@@ -221,11 +215,18 @@ const EventPage = () => {
       finalTime: chosenTime.time,
     }));
     setShowSuggested(false);
-    //axios post call to update event
-    axios
-      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
+
+    let eventCopy = event;
+    eventCopy.finalDay = chosenTime.day;
+    eventCopy.finalDate = chosenTime.date;
+    eventCopy.finalTime = chosenTime.time;
+    //axios post call to update event's final time details
+    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
       .then((response) => {
-        console.log(response);
+        console.log('successfully updated event\'s final time: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -254,49 +255,62 @@ const EventPage = () => {
         rolesCopy.splice(1, 0, "Attendee");
       }
       console.log(invitees);
+
       setInvitees(null);
       setEvent((prevState) => ({
         ...prevState,
         attendees: attendeesCopy,
         roles: rolesCopy,
       }));
+
+      let eventCopy = event;
+      eventCopy.attendees = attendeesCopy;
+      axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+      .then((response) => {
+        console.log('successfully posted new attendee: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     }
   };
-  // useEffect(() => {
-  //   // setState((prevState) => ({
-  //   //   ...prevState,
-  //   //   name: "Angela Tim",
-  //   //   friends: [
-  //   //     { value: "friend_first1 friend_last1" },
-  //   //     { value: "friend_first2 friend_last2" },
-  //   //     { value: "friend_first3 friend_last3" },
-  //   //     { value: "friend_first4 friend_last4" },
-  //   //     { value: "friend_first5 friend_last5" },
-  //   //   ],
-  //   // }));
-  //   // setLoading({ user: false });
-  //   axios
-  //     .get(`/users/123.json?key=${key}`)
-  //     .then((response) => {
-  //       setUser((prevState) => ({
-  //         ...prevState,
-  //         name: response.data.name,
-  //       }));
-  //       let friendsNames = [];
-  //       response.data.friends.map((friend, index) => {
-  //         friendsNames.push(friend.name);
-  //         // TODO: map function should return something
-  //       });
-  //       setUser((prevState) => ({
-  //         ...prevState,
-  //         name: response.data.name,
-  //         friends: friendsNames,
-  //       }));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+
+  //useEffect(() => {
+    // setState((prevState) => ({
+    //   ...prevState,
+    //   name: "Angela Tim",
+    //   friends: [
+    //     { value: "friend_first1 friend_last1" },
+    //     { value: "friend_first2 friend_last2" },
+    //     { value: "friend_first3 friend_last3" },
+    //     { value: "friend_first4 friend_last4" },
+    //     { value: "friend_first5 friend_last5" },
+    //   ],
+    // }));
+    // setLoading({ user: false });
+
+    // axios
+    //   .get(`/users/123.json?key=${key}`)
+    //   .then((response) => {
+    //     setUser((prevState) => ({
+    //       ...prevState,
+    //       name: response.data.name,
+    //     }));
+    //     let friendsNames = [];
+    //     response.data.friends.map((friend, index) => {
+    //       friendsNames.push(friend.name);
+    //       // TODO: map function should return something
+    //     });
+    //     setUser((prevState) => ({
+    //       ...prevState,
+    //       name: response.data.name,
+    //       friends: friendsNames,
+    //     }));
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+  //}, []);
 
   useEffect(() => {
     console.log(user.friends);
@@ -305,20 +319,18 @@ const EventPage = () => {
   //for canceling event
   const [show, setShow] = useState(false);
   const handleDelete = () => {
-    axios
-      .delete(`https://my.api.mockaroo.com/event/${event.id}.json?key=${key}`)
-      .then((response) => {
-        console.log("deleted");
+    axios.delete("/events?eventid=" + event.id.$oid)
+      .then(response => {
+        console.log("canceled event");
         console.log(response);
         setShow(false);
         setState((prevState) => ({
           ...prevState,
           redirect: true,
         }));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }).catch((error) => {
+      console.log(error);
+    });
   };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -342,11 +354,16 @@ const EventPage = () => {
       ...prevState,
       edit: false,
     }));
-    //axios post to update event
-    axios
-      .post("/events/" + event.id.$oid + `.json?key=${key}`, event)
+
+    let eventCopy = event;
+    eventCopy.description = description.description;
+    //axios post to update event description
+    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
       .then((response) => {
-        console.log(response);
+        console.log('successfully updated event\'s description: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
   let descriptionChange = (e) => {
