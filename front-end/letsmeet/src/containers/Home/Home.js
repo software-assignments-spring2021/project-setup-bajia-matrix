@@ -97,6 +97,7 @@ const Home = (props) => {
             .then(response => {
                 console.log(response.data);
                 let list = response.data.events;
+                list.push(props.location.state.newUpcomingEvent)
                 setEventsState(list);
                 
                 list = response.data.invites;

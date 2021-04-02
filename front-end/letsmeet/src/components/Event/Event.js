@@ -32,7 +32,7 @@ const event = (props) => {
     return (
         <div className={classes.Event}>
             <Card className={classes.Card} onClick={manageEventHandler}>
-                <Card.Title className={classes.CardTitle}>{props.title}: {props.day}, {props.date} @ {props.time}</Card.Title>
+                {!props.day ? <Card.Title className={classes.CardTitle}>{props.title}: (date & time TBD)</Card.Title> : <Card.Title className={classes.CardTitle}>{props.title}: {props.day}, {props.date} @ {props.time}</Card.Title> }
                 <Card.Body className={classes.CardBody}>
                     <Text numberOfLines={2} ellipsis={true} text={props.description} />
                     <Text numberOfLines={2} ellipsis={true} text={"Friends who are attending: " + attendeesList} />
