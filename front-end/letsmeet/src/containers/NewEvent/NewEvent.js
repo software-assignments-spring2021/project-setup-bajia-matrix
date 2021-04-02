@@ -46,7 +46,7 @@ const NewEvent = (props) => {
     }
 
     // Used to select friends
-    const { Option } = Select;
+    const { Option } = Select
 
     // Used to select date for verified users
     const [startDate, setDate] = useState()
@@ -74,24 +74,24 @@ const NewEvent = (props) => {
 
     const showModal = () => {
         setIsModalVisible(true)
-    };
+    }
     const handleOk = () => {
         setIsModalVisible(false)
         window.location.assign('/')
-    };
+    }
     const handleCancel = () => {
         setIsModalVisible(false)
-    };
+    }
 
     const [profileState, setProfileState] = useState({
         friends: []
-    });
+    })
 
     useEffect(() => {
         const id = 123;
         axios.get("/profile?userid=" + id)
             .then(response => {
-                setProfileState(response.data);
+                setProfileState(response.data)
             })
             .catch(error => {
                 console.log(error);
@@ -101,6 +101,30 @@ const NewEvent = (props) => {
     let friendsList = profileState.friends.map(friend => (
         <Option value={friend.name}>{friend.name}</Option>
     ))
+
+    const [newCreatedEvent, setNewCreatedEvent] = useState({
+        id: "",
+        title: "",
+        location: "",
+        description: "",
+        attendees: [],
+        myCreatedEvent: true
+    })
+
+    let sendToBackend = (e) => {
+        axios.post("/events", newCreatedEvent)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        console.log(newCreatedEvent);
+        props.history.push({
+            pathname: "/events",
+            state: {newEventState: newCreatedEvent}
+        });
+    }
 
     return (
         <div>
@@ -260,7 +284,7 @@ const NewEvent = (props) => {
                         </Form.Item>
                     </>}
                         
-                    <Button type="primary" htmlType="submit" className={classes.formButton}>Submit</Button>
+                    <Button type="primary" htmlType="submit" className={classes.formButton} onClick={sendToBackend}>Submit</Button>
 
                     <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                         {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
