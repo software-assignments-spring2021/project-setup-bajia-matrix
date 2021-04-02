@@ -28,7 +28,7 @@ const NewEvent = (props) => {
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
         setRequiredMarkType(requiredMarkValue);
     };
-
+    
     //Used to select date for non-users
     const [finalDate, setFinalDate] = useState(Date())
     const [finalStartTime, setFinalStartTime] = useState(Date())
@@ -68,6 +68,7 @@ const NewEvent = (props) => {
     // when clicking submit
     function handleSubmit(e) {
         e.preventDefault()
+        // TODO: send schedule to backend from week view
     }
 
     // Event pop-up after pressing submit

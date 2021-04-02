@@ -14,9 +14,11 @@ import Badge from 'react-bootstrap/Badge';
 */
 
 const eventModalTimes = (props) => {
-
-  let badge = props.suggestedTimes.map((time, index) =>
-    <div key={index} className="form-check mt-1">
+  
+  let badge = <div><p>No suggestions available. Either no availabilities match up or wait for more invitees to respond.</p></div>;
+  if (props.suggestedTimes.data.length !== 0) {
+    badge = props.suggestedTimes.data.map((time, index) =>
+      <div key={index} className="form-check mt-1">
       <input
         className="form-check-input mt-2"
         type="radio"
@@ -35,7 +37,7 @@ const eventModalTimes = (props) => {
         </h5>
       </label>
     </div>
-  );
+  )};
 
   return (
     <div>

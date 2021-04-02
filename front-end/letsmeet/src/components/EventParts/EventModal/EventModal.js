@@ -71,7 +71,7 @@ const EventModal = (props) => {
             <Modal.Title className="pl-4">Choose Final Event Time</Modal.Title>
           </Modal.Header>
           <Modal.Body className="px-5 pt-4">
-            The following are the most popular suggested times. <br />
+            The following are the most popular suggested times from most popular (top) to least popular (bottom). <br />
             <p>Please select a finalized time for your event:</p>
             <EventModalTimes
               suggestedTimes={props.suggestedTimes}
