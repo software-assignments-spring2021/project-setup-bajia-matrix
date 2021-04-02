@@ -19,7 +19,7 @@ import classes from './EventTitle.module.css';
         - description: event description
 */
 
-const eventTitle = (props) => (
+const EventTitle = (props) => (
     <div className={classes.EventTitle}>
         <h1>{props.title}</h1>
         {!props.newEventAuthentication && <h5>{props.day}, {props.date} @ {props.time}</h5>}
@@ -29,4 +29,4 @@ const eventTitle = (props) => (
     </div>
 );
 
-export default eventTitle;
+export default EventTitle;

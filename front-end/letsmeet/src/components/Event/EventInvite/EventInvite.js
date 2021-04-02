@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -20,11 +20,24 @@ import Text from '../../UI/Text/Text';
         - inviter: the person who sent this invite
 */
 
-const eventInvite = (props) => {
+const EventInvite = (props) => {
+
+    const [pendingInvitation, setPendingInvitation] = useState({
+        id: props.key,
+        title: props.title,
+        range: props.range,
+        description: props.description,
+        creator: props.inviter,
+        location: props.eventLocation
+    });
+
     let acceptEventHandler = () => {
         console.log("accept event");
         // TODO: change route to acceptInvite page
-        props.history.push("/user/acceptinvite");
+        props.history.push({
+            pathname: "/user/acceptinvite",
+            state: {acceptPending: pendingInvitation}
+        });
     };
 
     let declineEventHandler = () => {
@@ -58,4 +71,4 @@ const eventInvite = (props) => {
     );
 };
 
-export default withRouter(eventInvite);
+export default withRouter(EventInvite);

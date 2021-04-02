@@ -17,7 +17,7 @@ import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
         This component does not accept any custom props
 */
 
-const AcceptInvite = () => {
+const AcceptInvite = (props) => {
 
     const [loading, setLoading] = useState(true);
 
@@ -34,11 +34,11 @@ const AcceptInvite = () => {
     // Used to populate event details with event details in mdatabase
     useEffect(() => {
         // TODO: should only get events with current user listed in attendees list
-        axios.get("/events.json?key=c66d8800")
+        axios.get("/events")
             .then(response => {
                 const list = response.data.events;
                 // setEvent({ eventsList: list });
-                setEvent(list[0]);
+                setEvent(props.location.state.acceptPending);
                 setLoading({ events: false });
             })
             .catch(error => {
