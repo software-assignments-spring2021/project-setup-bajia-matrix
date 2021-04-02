@@ -28,7 +28,8 @@ const EventInvite = (props) => {
         range: props.range,
         description: props.description,
         creator: props.inviter,
-        location: props.eventLocation
+        location: props.eventLocation,
+        startDate: props.startDate
     });
 
     let acceptEventHandler = () => {

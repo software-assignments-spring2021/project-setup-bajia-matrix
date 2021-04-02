@@ -34,17 +34,8 @@ const AcceptInvite = (props) => {
     // Used to populate event details with event details in mdatabase
     useEffect(() => {
         // TODO: should only get events with current user listed in attendees list
-        axios.get("/events")
-            .then(response => {
-                const list = response.data.events;
-                // setEvent({ eventsList: list });
-                setEvent(props.location.state.acceptPending);
-                setLoading({ events: false });
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading({ events: false });
-            });
+        setEvent(props.location.state.acceptPending);
+        setDate(props.location.state.acceptPending.startDate);
     }, []);
 
     // Variables for the form
@@ -66,6 +57,10 @@ const AcceptInvite = (props) => {
     }
 
     function handleSubmit(e) {
+        props.history.push({
+            pathname: "/",
+            state: {newUpcomingEvent: event}
+        });
         e.preventDefault()
         // TODO: Delete event from pending invitations on home screen
     }
@@ -120,8 +115,8 @@ const AcceptInvite = (props) => {
                                 icon: <InfoCircleOutlined />,
                             }}
                         >
-                            <span>The event creator wants this event to take place the week of {startDate}
-                            {/* TODO: start date indicated by creator */}. Please put in your availability for that week.</span>
+                            <span>The event creator wants this event to take place the week of {startDate}.
+                            Please put in your availability for that week.</span>
                         </Form.Item>
                         <Form.Item
                             name="calendar select"
