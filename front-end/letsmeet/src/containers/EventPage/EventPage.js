@@ -60,8 +60,6 @@ const EventPage = () => {
 
   //for current user info
   const [user, setUser] = useState({
-    name: "",
-    friends: [],
   });
 
   //for general state of current event page
@@ -275,7 +273,7 @@ const EventPage = () => {
     }
   };
 
-  //useEffect(() => {
+  useEffect(() => {
     // setState((prevState) => ({
     //   ...prevState,
     //   name: "Angela Tim",
@@ -289,32 +287,20 @@ const EventPage = () => {
     // }));
     // setLoading({ user: false });
 
-    // axios
-    //   .get(`/users/123.json?key=${key}`)
-    //   .then((response) => {
-    //     setUser((prevState) => ({
-    //       ...prevState,
-    //       name: response.data.name,
-    //     }));
-    //     let friendsNames = [];
-    //     response.data.friends.map((friend, index) => {
-    //       friendsNames.push(friend.name);
-    //       // TODO: map function should return something
-    //     });
-    //     setUser((prevState) => ({
-    //       ...prevState,
-    //       name: response.data.name,
-    //       friends: friendsNames,
-    //     }));
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  //}, []);
+    //get currently logged in user info
+    const id = 123;
+    axios.get("/profile?userid=" + id)
+        .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-  useEffect(() => {
-    console.log(user.friends);
-  }, [user.friends]);
+  // useEffect(() => {
+  //   console.log(user.friends);
+  // }, [user.friends]);
 
   //for canceling event
   const [show, setShow] = useState(false);
@@ -334,6 +320,22 @@ const EventPage = () => {
   };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  //for withdrawing from event
+  const handleWithdraw = () => {
+    let attendeesCopy = [...event.attendees];
+    //TODO: remove user from event attendees
+    console.log(user);
+    let withdrawnCopy = [...event.withdrawn];
+    withdrawnCopy.push(user);
+    setEvent((prevState) => ({
+      ...prevState,
+      withdrawn: withdrawnCopy
+    }))
+    setState((prevState) => ({
+      ...prevState,
+      redirect: true,
+    }));
+  }
 
   //for editing description
   let editDescription = () => {
@@ -382,8 +384,8 @@ const EventPage = () => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      // unverified: true,
-      creator: true,
+      unverified: true,
+      //creator: true,
       //attendee: true
     }));
     // if (user.name !== "" && event.creator) {
@@ -438,7 +440,7 @@ const EventPage = () => {
             handleShow={handleShow}
             show={show}
             handleClose={handleClose}
-            handleDelete={handleDelete}
+            handleDelete={handleWithdraw}
             role="attendee"
           />
         </Container>
