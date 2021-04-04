@@ -335,7 +335,7 @@ const EventPage = () => {
 
     eventCopy.withdrawn = withdrawnCopy;
     //axios post to update event withdrawn array
-    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+    axios.post("/events", eventCopy)
       .then((response) => {
         console.log('successfully updated event\'s withdrawn array: ', response);
       })
