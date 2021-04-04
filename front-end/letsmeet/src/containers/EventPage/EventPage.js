@@ -322,15 +322,27 @@ const EventPage = () => {
   const handleShow = () => setShow(true);
   //for withdrawing from event
   const handleWithdraw = () => {
+    let eventCopy = event;
     let attendeesCopy = [...event.attendees];
-    //TODO: remove user from event attendees
-    console.log(user);
+    //TODO: remove user from event attendees & eventCopy attendees
+
     let withdrawnCopy = [...event.withdrawn];
     withdrawnCopy.push(user);
     setEvent((prevState) => ({
       ...prevState,
       withdrawn: withdrawnCopy
     }))
+
+    eventCopy.withdrawn = withdrawnCopy;
+    //axios post to update event withdrawn array
+    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+      .then((response) => {
+        console.log('successfully updated event\'s withdrawn array: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setState((prevState) => ({
       ...prevState,
       redirect: true,
@@ -384,9 +396,9 @@ const EventPage = () => {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      unverified: true,
+      //unverified: true,
       //creator: true,
-      //attendee: true
+      attendee: true
     }));
     // if (user.name !== "" && event.creator) {
     //   console.log(user.name);
@@ -411,8 +423,8 @@ const EventPage = () => {
   }, [event, user]);
 
   useEffect(() => {
-    console.log(event);
-    console.log(state);
+    //console.log(event);
+    //console.log(state);
     if (
       state.creator === true ||
       state.attendee === true ||
