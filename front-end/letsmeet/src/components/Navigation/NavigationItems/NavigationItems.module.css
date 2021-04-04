@@ -8,6 +8,7 @@
     height: 100%;
     white-space: nowrap;
     width: 100%;
+    text-align: center;
 }
 
 @media (max-width: 459px) {
