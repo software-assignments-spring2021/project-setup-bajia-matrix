@@ -18,16 +18,18 @@ const navigationItems = (props) => {
 
     let navItems = (
         <ul className={classes.NavigationItems}>
-            <NavigationItem link="/signin">Sign In</NavigationItem>
+            <NavigationItem link="/" exact>Home</NavigationItem>
             <NavigationItem link="/signup">Sign Up</NavigationItem>
+            <NavigationItem link="/signin">Sign In</NavigationItem>
         </ul>
     );
 
     if (props.isAuthenticated) {
         navItems = (
             <ul className={classes.NavigationItems}>
-                <NavigationItem link="/" exact>Sign Out</NavigationItem>
+                <NavigationItem link="/" exact>Home</NavigationItem>
                 <NavigationItem link="/profile">My Profile</NavigationItem>
+                <NavigationItem link="/" exact>Sign Out</NavigationItem>    
             </ul>
         );
     }
