@@ -31,7 +31,7 @@ const UnverifiedEvent = (props) => {
           day={props.event.day}
           date={props.event.date}
           time={props.event.time}
-          location={props.event.location}
+          location={props.event.eventLocation}
         />
       </Row>
       <hr />

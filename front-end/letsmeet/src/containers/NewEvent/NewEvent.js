@@ -120,13 +120,14 @@ const NewEvent = (props) => {
     })
 
     let sendToBackend = param => e => {
+        const attendeesList = (param.getFieldValue('Invited Friends')) ? param.getFieldValue('Invited Friends') : [];
         setNewCreatedEvent(prevState => ({
             ...prevState,
             id: "123",
             title: param.getFieldValue('Event Title'),
             location: param.getFieldValue('Location'),
             description: param.getFieldValue('Event Description'),
-            attendees: param.getFieldValue('Invited Friends'),
+            attendees: attendeesList
         }))
         // console.log(param.getFieldValue('Invited Friends'))
 

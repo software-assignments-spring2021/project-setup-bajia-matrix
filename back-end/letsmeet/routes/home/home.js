@@ -13,7 +13,7 @@ router.get("/", (req, res, next) => {
     // TODO: change to fetch events and invites for user id
     axios.get(`${process.env.API_BASE_URL}/events.json?key=${process.env.API_SECRET_KEY}`)
         .then(eventsResponse => {
-            // console.log(response.data);
+            // console.log(eventsResponse.data);
             let data = { events: eventsResponse.data.events }
             axios.get(`${process.env.API_BASE_URL}/invites.json?key=${process.env.API_SECRET_KEY}`)
                 .then(invitesResponse => {

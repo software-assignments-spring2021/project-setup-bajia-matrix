@@ -23,18 +23,20 @@ import Text from '../../UI/Text/Text';
 const EventInvite = (props) => {
 
     const [pendingInvitation, setPendingInvitation] = useState({
-        id: props.key,
+        id: {$oid: props.key},
         title: props.title,
         range: props.range,
         description: props.description,
         creator: props.inviter,
         location: props.eventLocation,
-        startDate: props.startDate
+        startDate: props.startDate,
+        myCreatedEvent: false
     });
 
     let acceptEventHandler = () => {
         console.log("accept event");
         // TODO: change route to acceptInvite page
+        console.log(pendingInvitation);
         props.history.push({
             pathname: "/user/acceptinvite",
             state: {acceptPending: pendingInvitation}

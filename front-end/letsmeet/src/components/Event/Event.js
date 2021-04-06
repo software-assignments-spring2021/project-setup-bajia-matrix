@@ -22,7 +22,7 @@ import Text from '../UI/Text/Text';
 */
 
 const event = (props) => {
-    let attendeesList = props.attendees.sort().join(', ');
+    let attendeesList = props.attendees ? props.attendees.sort().join(', ') : [];
 
     // TODO: take to specific event page when clicked on
     let manageEventHandler = () => {

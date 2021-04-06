@@ -23,12 +23,12 @@ const AcceptInvite = (props) => {
 
     // Event Details
     const [event, setEvent] = useState({
-        id: "1-i-am-random-event-id",
-        title: "Study Date",
-        description:
-          "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-        creator: "Angela Tim",
-        location: "Angela's House",
+        // id: "1-i-am-random-event-id",
+        // title: "Study Date",
+        // description:
+        //   "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
+        // creator: "Angela Tim",
+        // location: "Angela's House",
     });
 
     // Used to populate event details with event details in mdatabase
@@ -57,16 +57,16 @@ const AcceptInvite = (props) => {
     }
 
     function handleSubmit(e) {
-        props.history.push({
-            pathname: "/",
-            state: {newUpcomingEvent: event}
-        });
         e.preventDefault()
         // TODO: Delete event from pending invitations on home screen
     }
 
     // After clicking submit, reroute back to home page
     const goHome = () => {
+        props.history.push({
+            pathname: "/",
+            state: {newUpcomingEvent: event}
+        });
         window.location.assign('/')
     }
 
