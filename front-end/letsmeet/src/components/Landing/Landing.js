@@ -75,10 +75,6 @@ const landing = () => {
                 bringing what. We'll even help you split costs after your event is over."/>
             </CardDeck>
 
-            <a href="/signup" className={classes.a}><button className={classes.Button} ><b>
-                Get Started - Create An Account
-            </b></button></a>
-
             <div className={classes.Text}>
                 <h2 className={classes.LandingH2}>FEATURES</h2>
 
