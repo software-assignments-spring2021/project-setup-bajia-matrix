@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Table from 'react-bootstrap/Table'
 // import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 // import Navbar from "react-bootstrap/Navbar";
 import Card from "react-bootstrap/Card";
 
 import classes from "./EventSupplies.module.css";
+import axios from '../../../axios';
 
 /*
   TODO: comment about component
@@ -40,14 +42,31 @@ const EventSupplies = () => {
       }));
     }
   };
-  let suppliesList = suppliesState.supplies.map(supplies => (
+  let suppliesListName = suppliesState.supplies.map(supplies => (
     <>
       <p key={supplies.id}>
-        Supply: {supplies.name}  &nbsp;
-        Price: {supplies.price}  &nbsp;
-        Person: {supplies.person}  &nbsp;
-        Amount Owed: {supplies.owed} 
-
+        {supplies.name}
+      </p>
+    </>
+  ));
+  let suppliesListPrice = suppliesState.supplies.map(supplies => (
+    <>
+      <p key={supplies.id}>
+        $ {supplies.price}
+      </p>
+    </>
+  ));
+  let suppliesListPerson = suppliesState.supplies.map(supplies => (
+    <>
+      <p key={supplies.id}>
+        {supplies.person}
+      </p>
+    </>
+  ));
+  let suppliesListOwed = suppliesState.supplies.map(supplies => (
+    <>
+      <p key={supplies.id}>
+       $ {supplies.owed} 
       </p>
     </>
   ));
@@ -57,7 +76,20 @@ const EventSupplies = () => {
     console.log(suppliesState);
   };
   let splitCosts = (e) => {
-    var total = 0;
+    let url = '/splitCosts';
+   
+        // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
+        axios.post(url , suppliesState)
+            .then(response => {
+                console.log(response);
+                setSuppliesState({supplies: response.data})
+            })
+            .catch(function (error) {
+                console.log(error);
+            });;
+            
+           
+    /*var total = 0;
 
     for (var index = 0; index < suppliesState.supplies.length; index++) {
       total += suppliesState.supplies[index].price;
@@ -70,15 +102,15 @@ const EventSupplies = () => {
 //positive values means that teh person owes an amount
     for (var index = 0; index < suppliesState.supplies.length; index++) {
       var owe = finalAmount - suppliesState.supplies[index].price;
-      console.log(suppliesState.supplies[index].owed);
+      //console.log(suppliesState.supplies[index].owed);
       suppliesCopy[index].owed = owe.toFixed(2);
     }
     setSuppliesState((prevState) => ({
       ...prevState,
       supplies: suppliesCopy,
     }));
-
-    alert("This is the final split amount: " + finalAmount);
+*/
+    //alert("This is the final split amount: " + finalAmount);
   };
 
   return (
@@ -92,7 +124,26 @@ const EventSupplies = () => {
               <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
-              {suppliesList}
+            <div class="table-responsive">
+              <Table striped bordered hover size="sm" class="table table-fixed" >
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Product</th>
+                    <th>Owed</th>
+                   </tr>
+                  </thead>
+                <tbody>
+                    <tr>
+                      <td>{suppliesListName}</td>
+                      <td>{suppliesListPrice}</td>
+                      <td>{suppliesListPerson}</td>
+                      <td>{suppliesListOwed}</td>
+                    </tr>
+                  </tbody>
+                </Table> 
+              </div>
             </Card.Body>
             <Card.Body className={classes.Buttons}>
               <Button
