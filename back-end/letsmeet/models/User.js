@@ -4,14 +4,6 @@ const mongoose = require("mongoose");
 
 const saltRounds = 10;
 
-const FriendsSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User", 
-        required: true
-    }
-});
-
 const UserSchema = new mongoose.Schema({
 	email: {type: String, required: true, unique: true},
 	passwordHash: {type: String, required: true},
@@ -19,11 +11,15 @@ const UserSchema = new mongoose.Schema({
     city: {type: String, required: false},
     state: {type: String, required: false},
 	avatar: {type: String, required: false},
-	friends: [{user: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "User", 
-        required: true}
-    }]
+    friends: [
+        {type: mongoose.Schema.Types.ObjectId, ref: "User"}
+    ],
+    events: [
+        {type: mongoose.Schema.Types.ObjectId, ref: "Event"}
+    ],
+    invites: [
+        {type: mongoose.Schema.Types.ObjectId, ref: "Event"}
+    ]
 });
 
 // RAHUL: remove if don't need

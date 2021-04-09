@@ -6,19 +6,20 @@ const mongoose = require("mongoose");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 const User = require("../../models/User");
+const Event = require("../../models/Event");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", (req, res, next) => {
-    // const user = {
-    //     email: "AlexTim0@gmail.com",
-    //     name: "Alex Time",
-    //     passwordHash: "password",
-    //     city: "New York City",
-    //     state: "New York",
-    //     avatar: "orange",
-    //     friends: [mongoose.Types.ObjectId("606fa10098eb9f8d8a7bdb5f")]
-    // }
+    const user = {
+        email: "test3@gmail.com",
+        name: "test3 test3",
+        passwordHash: "password",
+        city: "New York City",
+        state: "New York",
+        avatar: "orange",
+        friends: []
+    }
     // User.create(user, (err, user) => {
     //     if (err) {
     //         console.log(err);
@@ -27,6 +28,7 @@ router.get("/", (req, res, next) => {
     //         console.log(user);
     //     }
     // })
+
     const id = req.query.userid;
     console.log("get request on route / with user id " + id);
     
