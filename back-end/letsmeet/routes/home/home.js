@@ -2,11 +2,33 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 require("dotenv").config({ silent: true }); // save private data in .env file
+
+const User = require("../../models/User");
+const Event = require("../../models/Event");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", (req, res, next) => {
+    const user = {
+        email: "test3@gmail.com",
+        name: "test3 test3",
+        passwordHash: "password",
+        city: "New York City",
+        state: "New York",
+        avatar: "orange",
+        friends: []
+    }
+    // User.create(user, (err, user) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    //     else {
+    //         console.log(user);
+    //     }
+    // })
+
     const id = req.query.userid;
     console.log("get request on route / with user id " + id);
     
