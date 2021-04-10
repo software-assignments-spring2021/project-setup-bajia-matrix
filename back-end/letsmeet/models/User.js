@@ -13,12 +13,6 @@ const UserSchema = new mongoose.Schema({
 	avatar: {type: String, required: false},
     friends: [
         {type: mongoose.Schema.Types.ObjectId, ref: "User"}
-    ],
-    events: [
-        {type: mongoose.Schema.Types.ObjectId, ref: "Event"}
-    ],
-    invites: [
-        {type: mongoose.Schema.Types.ObjectId, ref: "Event"}
     ]
 });
 
