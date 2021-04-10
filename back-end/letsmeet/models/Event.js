@@ -9,10 +9,16 @@ const EventSchema = new mongoose.Schema({
   startDate: {type: Date},
   finalDate: {type: Date},
   attendees: [
-    {type: mongoose.Schema.Types.ObjectId, ref: "User"}
+    {
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+      name: {type: String}
+    }
   ],
   withdrawn: [
-    {type: mongoose.Schema.Types.ObjectId, ref: "User"}
+    {
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+      name: {type: String}
+    }
   ],
   supplies: [
     {
@@ -23,7 +29,10 @@ const EventSchema = new mongoose.Schema({
     }
   ],
   invitees: [
-    {type: mongoose.Schema.Types.ObjectId, ref: "User"}
+    {
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+      name: {type: String}
+    }
   ]
 });
 
