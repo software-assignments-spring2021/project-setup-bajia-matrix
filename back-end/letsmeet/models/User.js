@@ -12,7 +12,10 @@ const UserSchema = new mongoose.Schema({
     state: {type: String, required: false},
 	avatar: {type: String, required: false},
     friends: [
-        {type: mongoose.Schema.Types.ObjectId, ref: "User"}
+        {
+            id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+            name: {type: String}
+        }
     ]
 });
 
