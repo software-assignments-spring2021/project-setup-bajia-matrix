@@ -24,7 +24,7 @@ const EventTitle = (props) => (
         <h1>{props.title}</h1>
         {!props.newEventAuthentication && <h5>{props.day}, {props.date} @ {props.time}</h5>}
         {props.showCreator && <p>Event creator: <b>{props.creator}</b></p>}
-        <p><EnvironmentOutlined className={classes.Icon}/> <b>{props.location}</b></p>
+        {props.location && <p><EnvironmentOutlined className={classes.Icon}/> <b>{props.location}</b></p>}
         <p>{props.description}</p>
     </div>
 );
