@@ -9,7 +9,6 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import classes from './EditAvatar.module.css';
 import axios from '../../../axios';
-import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import red from '../../../assets/Avatars/redavi.png';
 import blue from '../../../assets/Avatars/blueavi.png';
@@ -22,28 +21,17 @@ import yellow from '../../../assets/Avatars/yellowavi.png';
     This component renders the Edit Avatar page so that a user can update their avatar.
 
     Props:
-        - profileState
-            * sent over from the EditProfile page
-            * this props contains the 'name', 'city', 'state' and 'avatar' properties
-            * the 'avatar' property will be updated by the edit avatar page
+        This component does not accept any custom props
 */
 
 const EditAvatar = (props) => {
-    const [loading, setLoading] = useState(false);
-
     const [editAvatarState, setEditAvatarState] = useState({});
 
     useEffect(() => {
         setEditAvatarState(props.location.state.profileState);
-    }, []); // TODO: check warnings
+    }, [props.location.state.profileState]);
 
-    useEffect(() => {
-        if (editAvatarState.friends) {
-            setLoading(false);
-        }
-    }, [editAvatarState]);
-
-    //go through all avis and remove highlighted border
+    // go through all avis and remove highlighted border
     function unselectAll(parent) {
         let children1 = parent.children[1].children;
         let children2 = parent.children[2].children;
@@ -55,17 +43,17 @@ const EditAvatar = (props) => {
         }
     }
 
-    //change background color when an avi is hovered over 
+    // change background color when an avi is hovered over 
     function highlight(e) {
         e.target.style.background = '#d2dad9';
     }
 
-    //revert background color back to original color when avi is not hovered over
+    // revert background color back to original color when avi is not hovered over
     function unhighlight(e) {
         e.target.style.background = '#dce5e2';
     }
 
-    //apply highlighted border around avi so that user knows that avi is currently selected
+    // apply highlighted border around avi so that user knows that avi is currently selected
     function selectAvi(e) {
         setEditAvatarState(prevState => ({
             ...prevState,
@@ -75,26 +63,23 @@ const EditAvatar = (props) => {
         e.target.style.border = '1px solid #1d38ed';
     }
 
-    //TODO: handle updating user's avi with currently selected avi 
     function updateAvi() {
         axios.post("/profile", editAvatarState)
             .then(response => {
-                console.log(response);
+                console.log(response.data);
             })
             .catch(error => {
-                console.log(error);
+                console.log(error.response.data);
             });
 
-        console.log(editAvatarState); //this outputs the color of the selected avatar
         props.history.push({
             pathname: "/profile",
-            state: {editState: editAvatarState}
+            state: {editProfileState: editAvatarState}
         });
     }
 
-    let editAvatarPage = <Spinner />;
-    if (!loading) {
-        editAvatarPage = (
+    // render
+    const editAvatarPage = (
         <Container fluid>
             <Row>
                 <Col className="md-12">
@@ -141,9 +126,8 @@ const EditAvatar = (props) => {
                 <Button size="lg" onClick={updateAvi}>Update Avatar</Button>
             </Row>
         </Container>
-        )
-    }
-
+    );
+    
     return (
         <div>
             {editAvatarPage}

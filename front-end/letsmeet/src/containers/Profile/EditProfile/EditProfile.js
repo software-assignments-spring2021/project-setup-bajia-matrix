@@ -7,11 +7,9 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
-// import Form from 'react-bootstrap/Form';
 
 import classes from './EditProfile.module.css';
 import axios from '../../../axios';
-import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import red from '../../../assets/Avatars/redavi.png';
 import blue from '../../../assets/Avatars/blueavi.png';
@@ -24,68 +22,35 @@ import yellow from '../../../assets/Avatars/yellowavi.png';
     This component renders the Edit Profile page so that a user can update their user info.
 
     Props:
-        - profileState
-            * sent over from the Profile page
-            * this props contains the 'name', 'city', 'state' and 'avatar' properties 
-            * the 'name', 'city', and 'state' properties will be updated by the edit profile page
+        This component does not accept any custom props
 */
 
 const EditProfile = (props) => {
-    const [loading, setLoading] = useState(true);
-
-    //hard coded data
-    // const [editProfile, setEditProfile] = useState({
-    //     avatar: avi,
-    //     name: "Angela Tim",
-    //     location: "New York City, NY",
-    //     friends: [
-    //         {id: 1, name: "Alexa Taylor"},
-    //         {id: 2, name: "Timothy Sanders"},
-    //         {id: 3, name: "Matthew Fishman"},
-    //         {id: 4, name: "Matthew Fishman"},
-    //         {id: 5, name: "Matthew Fishman"},
-    //         {id: 6, name: "Matthew Fishman"},
-    //         {id: 7, name: "Matthew Fishman"},
-    //         {id: 8, name: "Matthew Fishman"},
-    //         {id: 9, name: "Matthew Fishman"},
-    //         {id: 10, name: "Matthew Fishman"},
-    //         {id: 11, name: "Matthew Fishman"},
-    //         {id: 12, name: "Matthew Fishman"},
-    //         {id: 13, name: "Matthew Fishman"},
-    //         {id: 14, name: "Matthew Fishman"},
-    //         {id: 15, name: "Matthew Fishman"},
-    //         {id: 16, name: "Matthew Fishman"},
-    //         {id: 17, name: "Matthew Fishman"}
-    //     ]
-    // });
-
-    //set up axios
-    const [editProfileState, setEditProfileState] = useState({});
-    const [avatar, setAvatar] = useState(red);
+    const [editProfileState, setEditProfileState] = useState({friends: []});
+    const [avatar, setAvatar] = useState();
 
     useEffect(() => {
-        console.log(props.location.state.profileState);
-        let profileState = props.location.state.profileState;
-        if (profileState.avatar === 'red') {
-            setAvatar(red)
-        } else if (profileState.avatar === 'orange') {
-             setAvatar(orange)
-        } else if (profileState.avatar === 'yellow') {
-             setAvatar(yellow)
-        } else if (profileState.avatar === 'green') {
-             setAvatar(green)
-        } else if (profileState.avatar === 'blue') {
-             setAvatar(blue)
-        } else if (profileState.avatar === 'purple') {
-             setAvatar(purple)
-        }
-        setEditProfileState(props.location.state.profileState);
-        setLoading(false);
-    }, []); // TODO: check warnings about dependencies
+        const profileState = props.location.state.profileState;
+        setEditProfileState(profileState);
 
-    //update state to reflect changes made to the name and/or location fields
-    //gotta use callback functions to update objects for state hooks apparently https://reactjs.org/docs/hooks-state.html
-    let handleChange = (e) => {
+        const avi = profileState.avatar;
+        switch (avi) {
+            case "orange": setAvatar(orange); break;
+            case "yellow": setAvatar(yellow); break;
+            case "green": setAvatar(green); break;
+            case "blue": setAvatar(blue); break;
+            case "purple": setAvatar(purple); break;
+            default: setAvatar(red);
+        }
+    }, [props.location.state.profileState]);
+
+    const friendsList = editProfileState.friends.map(friend => (
+        <p key={friend.id}>{friend.name}</p>
+    ));
+
+    // update state to reflect changes made to the name and/or location fields
+    // gotta use callback functions to update objects for state hooks apparently https://reactjs.org/docs/hooks-state.html
+    const handleChange = (e) => {
         if (e.target.name === "editCity") {
             setEditProfileState(prevState => ({
                 ...prevState,
@@ -102,45 +67,39 @@ const EditProfile = (props) => {
                 state: e.target.value
             }));
         }
-    }
+    };
 
-    //TODO: handle updating user's information in backend
-    let saveProfile = (e) => {
+    const saveProfile = (e) => {
         axios.post("/profile", editProfileState)
             .then(response => {
-                console.log(response);
+                console.log(response.data);
             })
             .catch(error => {
-                console.log(error);
+                console.log(error.response.data);
             });
 
-        console.log(editProfileState);
         props.history.push({
             pathname: "/profile",
-            state: {editState: editProfileState}
+            state: {editProfileState: editProfileState}
         });
-    }
+    };
 
-    let editAvatar = () => {
+    const editAvatar = () => {
         props.history.push({
             pathname: "/editavatar",
             state: {profileState: editProfileState}
         });
-    }
+    };
 
-    let addFriendsHandler = () => {
+    const addFriendsHandler = () => {
         props.history.push({
             pathname: "/editfriends",
             state: {friendState: editProfileState}
         });
-    }
+    };
 
-    let editProfilePage = <Spinner />;
-    if (!loading) {
-        let friendsList = editProfileState.friends.map(friend => (
-            <p key={friend.id.$oid}>{friend.name}</p>
-        ))
-        editProfilePage = (
+    // render
+    const editProfilePage = (
         <Container fluid>
             <Row>
                 <Col className="md-12">
@@ -165,7 +124,7 @@ const EditProfile = (props) => {
                     
                     <Card.Body className={classes.CardBody}>
                         <Card.Title className={classes.Title}>
-                            <a href="" onClick={editAvatar} className={classes.Edit}>Edit</a>
+                            <Button onClick={editAvatar} className={classes.LinkButton}>Edit</Button>
                         </Card.Title>
                         <Card.Img className={classes.CardImg} src={avatar} />
                         <hr />
@@ -188,7 +147,7 @@ const EditProfile = (props) => {
                 </Card>
                 <Card className={classes.Card}>
                     <Card.Title className={classes.Title}>
-                            <a href="/editfriends" className={classes.Edit} onClick={addFriendsHandler}>Edit</a>
+                            <Button className={classes.LinkButton} onClick={addFriendsHandler}>Edit</Button>
                     </Card.Title>
                     <Card.Title className={classes.FriendsTitle} as="h2">
                         Your Friends
@@ -198,10 +157,8 @@ const EditProfile = (props) => {
                 </Card>
             </div>
             </Row>
-
         </Container>
-        )
-    }
+    );
 
     return (
         <div>

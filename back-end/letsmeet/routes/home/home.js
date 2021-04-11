@@ -11,15 +11,15 @@ const Event = require("../../models/Event");
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", (req, res, next) => {
-    const user = {
-        email: "test3@gmail.com",
-        name: "test3 test3",
-        passwordHash: "password",
-        city: "New York City",
-        state: "New York",
-        avatar: "orange",
-        friends: []
-    }
+    // const user = {
+    //     email: "GladysVevers@gmail.com",
+    //     name: "Gladys Vevers",
+    //     passwordHash: "password",
+    //     city: "Evansville",
+    //     state: "Indiana",
+    //     avatar: "green",
+    //     friends: []
+    // }
     // User.create(user, (err, user) => {
     //     if (err) {
     //         console.log(err);

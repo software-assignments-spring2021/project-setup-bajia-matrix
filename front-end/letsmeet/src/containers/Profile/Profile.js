@@ -24,91 +24,70 @@ import yellow from '../../assets/Avatars/yellowavi.png';
 
 const Profile = (props) => {
     const [loading, setLoading] = useState(true);
-    
-    // TODO: comment out data when mockaroo request cap resets
-    const [profileState, setProfileState] = useState({
-        // id: "1",
-        // avatar: red,
-        // name: "Angela Tim",
-        // city: "New York City",
-        // state: "NY",
-        // friends: [
-        //     {id: 1, name: "Alexa Taylor"},
-        //     {id: 2, name: "Timothy Sanders"},
-        //     {id: 3, name: "Matthew Fishman"},
-        //     {id: 4, name: "Matthew Fishman"},
-        //     {id: 5, name: "Matthew Fishman"},
-        //     {id: 6, name: "Matthew Fishman"},
-        //     {id: 7, name: "Matthew Fishman"},
-        //     {id: 8, name: "Matthew Fishman"},
-        //     {id: 9, name: "Matthew Fishman"},
-        //     {id: 10, name: "Matthew Fishman"},
-        //     {id: 11, name: "Matthew Fishman"},
-        //     {id: 12, name: "Matthew Fishman"},
-        //     {id: 13, name: "Matthew Fishman"},
-        //     {id: 14, name: "Matthew Fishman"},
-        //     {id: 15, name: "Matthew Fishman"},
-        //     {id: 16, name: "Matthew Fishman"},
-        //     {id: 17, name: "Matthew Fishman"}
-        // ]
-        friends: []
-    });
-
-    const [avatar, setAvatar] = useState(red);
+    const [profileState, setProfileState] = useState({ friends: [] });
+    const [avatar, setAvatar] = useState();
 
     useEffect(() => {
         if (props.location.state) {
-           let editState = props.location.state.editState;
-           if (editState.avatar === 'red') {
-               setAvatar(red)
-           } else if (editState.avatar === 'orange') {
-                setAvatar(orange)
-           } else if (editState.avatar === 'yellow') {
-                setAvatar(yellow)
-           } else if (editState.avatar === 'green') {
-                setAvatar(green)
-           } else if (editState.avatar === 'blue') {
-                setAvatar(blue)
-           } else if (editState.avatar === 'purple') {
-                setAvatar(purple)
-           }
-           setProfileState(props.location.state.editState);
-           setLoading(false);
+            const editProfileState = props.location.state.editProfileState;
+            setProfileState(editProfileState);
+
+            const avi = editProfileState.avatar;
+            switch (avi) {
+                case "orange": setAvatar(orange); break;
+                case "yellow": setAvatar(yellow); break;
+                case "green": setAvatar(green); break;
+                case "blue": setAvatar(blue); break;
+                case "purple": setAvatar(purple); break;
+                default: setAvatar(red);
+            }
+            
+            setLoading(false);
         } 
         else {
-            const id = 123;
+            // TODO: change id to currently logged in user once authentication is implemented
+            const id = "6071f92b7278a8a7c6d70217";
+        
             axios.get("/profile?userid=" + id)
                 .then(response => {
                     setProfileState(response.data);
+
+                    const avi = response.data.avatar;
+                    switch (avi) {
+                        case "orange": setAvatar(orange); break;
+                        case "yellow": setAvatar(yellow); break;
+                        case "green": setAvatar(green); break;
+                        case "blue": setAvatar(blue); break;
+                        case "purple": setAvatar(purple); break;
+                        default: setAvatar(red);
+                    }
+                    
                     setLoading(false);
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.log(error.response.data);
                     setLoading(false);
-                })
+                });
         }
-      }, []); // TODO: check warnings
+    }, [props.location.state]);
 
-    let friendsList = profileState.friends.map(friend => (
-        <p key={friend.id.$oid}>{friend.name}</p>
-    ))
-    
+    const friendsList = profileState.friends.map(friend => (
+        <p key={friend.id}>{friend.name}</p>
+    ));
+
     let editProfileHandler = () => {
         props.history.push({
             pathname: "/editprofile",
-            state: {profileState: profileState}
+            state: { profileState: profileState }
         });
     }
 
     // render
-    // TODO: logic to check the name of user's avatar and display the image associated with it
-    // maybe store avatar as an id
     let profilePage = <Spinner />;
     if (!loading) {
         profilePage = (
             <div className={classes.Profile}>
                 <Card className={classes.Card}>
-                    {/* TODO: replace src to actual avatar for current user */}
                     <Card.Img className={classes.CardImg} src={avatar} />
                     <Card.Body className={classes.CardBody}>
                         <hr />
@@ -121,7 +100,7 @@ const Profile = (props) => {
                 <Card className={classes.Card}>
                     <Card.Title className={classes.FriendsTitle} as="h2">
                         Your Friends
-                        <hr />    
+                        <hr />
                     </Card.Title>
                     <Card.Body className={classes.FriendsBody}>{friendsList}</Card.Body>
                 </Card>

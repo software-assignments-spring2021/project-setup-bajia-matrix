@@ -2,23 +2,28 @@
     margin: auto;
     display: flex;
     width: 100%;
-    overflow: scroll; /* enable scrolling if too long */
+    overflow: scroll;
+    /* enable scrolling if too long */
     align-items: center;
     flex-flow: column;
-    padding: 0 0 20px 0; /* top and bottom, left and right */
+    padding: 0 0 20px 0;
+    /* top and bottom, left and right */
 }
 
 .Card {
     text-align: center;
     background-color: #dce5e2;
     width: 50%;
-    border: thin solid #d2dad9; /* width, style, color */
-    border-radius: 25px; /* rounded borders */
+    border: thin solid #d2dad9;
+    /* width, style, color */
+    border-radius: 25px;
+    /* rounded borders */
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin: 20px; /* space b/t each card */
-}  
+    margin: 20px;
+    /* space b/t each card */
+}
 
 .CardImg {
     height: 75%;
@@ -87,7 +92,15 @@
     width: 100%;
 }
 
-.Edit {
+.LinkButton {
+    background-color: transparent;
+    color: rgb(4, 189, 235);
+    font-family: arial, sans-serif;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline;
+    padding: 0;
     float: right;
     margin-right: 50px;
     margin-top: -20px;
