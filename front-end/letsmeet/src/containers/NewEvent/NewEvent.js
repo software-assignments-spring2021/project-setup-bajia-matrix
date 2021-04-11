@@ -130,7 +130,6 @@ const NewEvent = (props) => {
             description: param.getFieldValue('Event Description'),
             attendees: attendeesList
         }))
-        // console.log(param.getFieldValue('Invited Friends'))
 
         axios.post("/events", newCreatedEvent)
             .then(response => {
@@ -141,10 +140,6 @@ const NewEvent = (props) => {
             });
         
         console.log(newCreatedEvent);
-        // props.history.push({
-        //     pathname: "/events",
-        //     state: {newEventState: newCreatedEvent}
-        // });
     }
 
     return (

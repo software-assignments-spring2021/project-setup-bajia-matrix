@@ -17,6 +17,16 @@ const UserSchema = new mongoose.Schema({
             name: {type: String, required: true},
             email: {type: String, required: true}
         }
+    ],
+    createdEvents: [
+        {
+            id: {type: mongoose.Schema.Types.ObjectId, ref: "Event", required: true}
+        }
+    ],
+    upcomingEvents: [
+        {
+            id: {type: mongoose.Schema.Types.ObjectId, ref: "Event", required: true}
+        }
     ]
 });
 
