@@ -22,31 +22,6 @@ const Layout = (props) => {
         props.children will render different components depending on which route is active,
         these componens are the so-called different "pages"
     */
-    
-    // HAVE TO DO WITH HEADERS
-    // get the current route
-    // const currPath = props.children.props.children[0].props.path.split('/');
-    // const currRoute = currPath[currPath.length - 1];
-
-    // // set page title for the header if the current route requires a header
-    // let title = "";
-    // console.log(currRoute);
-    // switch (currRoute) {
-    //     case "profile": // TODO: change to editprofile when done testing
-    //         title = "Edit Profile"; 
-    //         break;
-    //     case "editavatar": 
-    //         title = "Edit Avatar";
-    //         break;
-    //     case "editsupplies":
-    //         title = "Edit Event Supplies";
-    //         break;
-    //     case "createevent":
-    //         title = "Create New Event";
-    //         break;
-    //     default:
-    //         title = "";
-    // }
 
     const [show, setShow] = useState({
         showSideDrawer: false

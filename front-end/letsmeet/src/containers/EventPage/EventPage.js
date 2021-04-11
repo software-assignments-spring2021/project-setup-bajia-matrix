@@ -288,7 +288,8 @@ const EventPage = () => {
     // setLoading({ user: false });
 
     //get currently logged in user info
-    const id = 123;
+    // TODO: change id to currently logged in user
+    const id = "6071f92b7278a8a7c6d70217";
     axios.get("/profile?userid=" + id)
         .then((response) => {
         setUser(response.data);
