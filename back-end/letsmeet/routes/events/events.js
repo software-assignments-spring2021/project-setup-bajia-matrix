@@ -7,33 +7,35 @@ require("dotenv").config({ silent: true }); // save private data in .env file
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
+const Event = require("../../models/Event");
+
 router.get("/", (req, res, next) => {
     const id = req.query.eventid;
     console.log("get request on route /events for event with id " + id);
     
-    axios.get(`${process.env.API_BASE_URL}/event/${id}.json?key=${process.env.API_SECRET_KEY}`)
-        .then(response => {
-            // console.log(response.data);
-            res.json(response.data);
+    Event.findById(id)
+        .then(event => {
+            let thisEvent = JSON.parse(JSON.stringify(event));
+            send(res, thisEvent);
         })
         .catch(error => {
+            res.status(500).send("ERROR 500: Issue finding event");
             next(error);
-        });
+        }
 });
 
 router.post("/", (req, res, next) => {
-    const id = req.body.id.$oid;
+    const id = req.body._id;
     console.log("post request on route /events for event with id " + id);
-    // console.log(req.body);
-    
-    axios.post(`${process.env.API_BASE_URL}/event/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
-        .then(response => {
-            // console.log("backend events post request");
-            // console.log(response.data);
-            res.send("200 OK");
+
+    const query = {_id: id}
+    Event.updateOne(query, req.body)
+        .then(updatedEvent => {
+            res.send("200 OK: Successfully updated event");
         })
         .catch(error => {
-            next(error);
+            console.log(error)
+            res.status(500).json({message: "ERROR 500: Issue updating event"});
         });
 });
 
@@ -41,14 +43,14 @@ router.delete("/", (req, res, next) => {
     const eventid = req.query.eventid;
     console.log("delete request on route /events with for event with id " + eventid);
 
-    axios.delete(`${process.env.API_BASE_URL}/event/${eventid}.json?key=${process.env.API_SECRET_KEY}&__method=DELETE`)
-        .then(response => {
-            // console.log(response.data);
-            res.send("200 OK");
+    Event.findByIdAndDelete(id)
+        .then(deletedEvent => {
+            res.send("200 OK: Successfully deleted event");
         })
         .catch(error => {
-            next(error);
-        })
+            console.log(error)
+            res.status(500).json({message: "ERROR 500: Issue deleting event"});
+        });
 });
 
 module.exports = router;
