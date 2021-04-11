@@ -21,7 +21,7 @@ router.get("/", (req, res, next) => {
         .catch(error => {
             res.status(500).send("ERROR 500: Issue finding event");
             next(error);
-        }
+        })
 });
 
 router.post("/", (req, res, next) => {
