@@ -25,18 +25,30 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-    const id = req.body._id;
-    console.log("post request on route /events for event with id " + id);
-
-    const query = {_id: id}
-    Event.updateOne(query, req.body)
-        .then(updatedEvent => {
-            res.send("200 OK: Successfully updated event");
+    if (req.query.new) {
+        console.log(req.body);
+        Event.create(req.body, (err, event) => {
+            if (err) {
+                res.status(500).json({message: "ERROR 500: Issue with creating event"});
+            } else {
+                res.send("200 OK: Sucessfully created event");
+            }
         })
-        .catch(error => {
-            console.log(error)
-            res.status(500).json({message: "ERROR 500: Issue updating event"});
-        });
+    } else {
+        const id = req.body._id;
+        console.log("post request on route /events for event with id " + id);
+
+        const query = {_id: id}
+        Event.updateOne(query, req.body)
+            .then(updatedEvent => {
+                res.send("200 OK: Successfully updated event");
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).json({message: "ERROR 500: Issue updating event"});
+            });
+    }
+    
 });
 
 router.delete("/", (req, res, next) => {

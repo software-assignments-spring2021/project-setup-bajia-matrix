@@ -112,26 +112,30 @@ const NewEvent = (props) => {
     ))
 
     const [newCreatedEvent, setNewCreatedEvent] = useState({
-        id: "",
         title: "",
         location: "",
         description: "",
-        attendees: [],
-        myCreatedEvent: true
+        attendees: []
     })
 
     let sendToBackend = param => e => {
         const attendeesList = (param.getFieldValue('Invited Friends')) ? param.getFieldValue('Invited Friends') : [];
         setNewCreatedEvent(prevState => ({
             ...prevState,
-            id: "123",
             title: param.getFieldValue('Event Title'),
             location: param.getFieldValue('Location'),
             description: param.getFieldValue('Event Description'),
             attendees: attendeesList
         }))
 
-        axios.post("/events", newCreatedEvent)
+        let newEventCopy = newCreatedEvent;
+        newEventCopy.title = param.getFieldValue('Event Title');
+        newEventCopy.eventLocation = param.getFieldValue('Location');
+        newEventCopy.description = param.getFieldValue('Event Description');
+        newEventCopy.attendees = attendeesList;
+        newEventCopy.dates = schedule;
+
+        axios.post("/events?new=true", newEventCopy)
             .then(response => {
                 console.log(response)
             })
