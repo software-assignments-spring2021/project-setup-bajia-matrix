@@ -107,8 +107,9 @@ const NewEvent = (props) => {
             })
       }, []);
 
+    //JOANNE: i did JSON.stringify here bc i want to store the entire friend object as the value and React won't let me do that unless I pass it in as a JSON string...rude
     let friendsList = profileState.friends.map(friend => (
-        <Option value={friend.name}>{friend.name}</Option>
+        <Option value={JSON.stringify(friend)}>{friend.name}</Option>
     ))
 
     const [newCreatedEvent, setNewCreatedEvent] = useState({
@@ -128,12 +129,21 @@ const NewEvent = (props) => {
             attendees: attendeesList
         }))
 
+        let inviteesCopy = [];
+        if (attendeesList.length > 0) {
+            attendeesList.map((invitee) => {
+                //JOANNE: i am undoing the converting to JSON string that i did earlier by using JSON.parse
+                inviteesCopy.push(JSON.parse(invitee));
+            })
+        }
+
         let newEventCopy = newCreatedEvent;
         newEventCopy.title = param.getFieldValue('Event Title');
         newEventCopy.eventLocation = param.getFieldValue('Location');
         newEventCopy.description = param.getFieldValue('Event Description');
-        newEventCopy.attendees = attendeesList;
-        newEventCopy.dates = schedule;
+        newEventCopy.invitees = inviteesCopy;
+        newEventCopy.availability = schedule;
+        newEventCopy.startDate = startDate;
 
         axios.post("/events?new=true", newEventCopy)
             .then(response => {
