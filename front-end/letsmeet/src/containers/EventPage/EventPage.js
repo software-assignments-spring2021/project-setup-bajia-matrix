@@ -143,7 +143,7 @@ const EventPage = () => {
   useEffect(() => {
     //for generating event url
     if (event.id) {
-      let eventURL = window.location.origin + "/event/id:" + event.id.$oid;
+      let eventURL = window.location.origin + "/event/" + event.id;
       setEvent((prevState) => ({
         ...prevState,
         url: eventURL,
@@ -398,8 +398,8 @@ const EventPage = () => {
     setState((prevState) => ({
       ...prevState,
       //unverified: true,
-      //creator: true,
-      attendee: true
+      creator: true,
+      //attendee: true
     }));
     // if (user.name !== "" && event.creator) {
     //   console.log(user.name);
