@@ -114,10 +114,26 @@ const Home = (props) => {
             });
     }, []);
 
+    const [profileState, setProfileState] = useState({
+        friends: []
+    })
+
+    useEffect(() => {
+        // TODO: change user id to currently logged in user
+        const id = "6071f92b7278a8a7c6d70217";
+        axios.get("/profile?userid=" + id)
+            .then(response => {
+                setProfileState(response.data)
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }, []);
+
     let pendingInvites = invitesState.map((e) => {
         return (
             <EventInvite
-                key={e.id.$oid}
+                key={e._id}
                 title={e.title}
                 range={e.range}
                 description={e.description}
@@ -129,10 +145,10 @@ const Home = (props) => {
     });
 
     let myEvents = eventsState.map((e) => {
-        if (e.myCreatedEvent) {
+        if (e.creator.id === profileState._id) {
             return (
                 <Event
-                    id={e.id.$oid}
+                    id={e._id}
                     title={e.title}
                     day={e.day}
                     date={e.date}
@@ -150,10 +166,10 @@ const Home = (props) => {
     }, []);
 
     let upcomingEvents = eventsState.map((e) => {
-        if (!e.myCreatedEvent) {
+        if (e.creator.id !== profileState._id) {
             return (
                 <Event
-                    id={e.id.$oid}
+                    id={e._id}
                     title={e.title}
                     day={e.day}
                     date={e.date}
