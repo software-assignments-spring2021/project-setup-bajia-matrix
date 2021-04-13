@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
-import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, Space, TimePicker, Tag} from 'antd';
-import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Tab, Tabs } from 'react-bootstrap'
+import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
+import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined} from '@ant-design/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ScheduleSelector  from 'react-schedule-selector';
 import moment from 'moment';
@@ -121,13 +120,29 @@ const NewEvent = (props) => {
 
     let sendToBackend = param => e => {
         const attendeesList = (param.getFieldValue('Invited Friends')) ? param.getFieldValue('Invited Friends') : [];
-        setNewCreatedEvent(prevState => ({
-            ...prevState,
-            title: param.getFieldValue('Event Title'),
-            location: param.getFieldValue('Location'),
-            description: param.getFieldValue('Event Description'),
-            attendees: attendeesList
-        }))
+
+        if (props.isAuthenticated) {
+            setNewCreatedEvent(prevState => ({
+                ...prevState,
+                title: param.getFieldValue('Event Title'),
+                location: param.getFieldValue('Location'),
+                description: param.getFieldValue('Event Description'),
+                attendees: attendeesList,
+                creator: {
+                    id: profileState._id,
+                    name: profileState.name
+                }
+            }))
+        }
+        else {
+            setNewCreatedEvent(prevState => ({
+                ...prevState,
+                title: param.getFieldValue('Event Title'),
+                location: param.getFieldValue('Location'),
+                description: param.getFieldValue('Event Description'),
+                attendees: attendeesList,
+            }))
+        }
 
         let inviteesCopy = [];
         if (attendeesList.length > 0) {
@@ -144,6 +159,11 @@ const NewEvent = (props) => {
         newEventCopy.invitees = inviteesCopy;
         newEventCopy.availability = schedule;
         newEventCopy.startDate = startDate;
+        if (props.isAuthenticated) {
+            newEventCopy.creator = {};
+            newEventCopy.creator.id = profileState._id;
+            newEventCopy.creator.name = profileState.name; 
+        }
 
         axios.post("/events?new=true", newEventCopy)
             .then(response => {
