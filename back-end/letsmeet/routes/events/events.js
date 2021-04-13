@@ -16,7 +16,8 @@ router.get("/", (req, res, next) => {
     Event.findById(id)
         .then(event => {
             let thisEvent = JSON.parse(JSON.stringify(event));
-            send(res, thisEvent);
+            res.status(200).send(thisEvent);
+            //send(res, thisEvent);
         })
         .catch(error => {
             res.status(500).send("ERROR 500: Issue finding event");

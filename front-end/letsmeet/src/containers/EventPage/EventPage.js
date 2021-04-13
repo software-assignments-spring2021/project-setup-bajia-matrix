@@ -20,7 +20,7 @@ import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
     This component does not accept any custom props
 */
 
-const EventPage = () => {
+const EventPage = (props) => {
   const key = "57a7ac80";
 
   const [loading, setLoading] = useState({
@@ -89,10 +89,10 @@ const EventPage = () => {
   });
 
    useEffect(() => {
-      let eventQueryID = window.location.pathname.split("id:")[1];
+      let eventQueryID = window.location.pathname.split("/")[2];
       axios.get("/events?eventid=" + eventQueryID)
         .then((response) => {
-        //console.log('successfully get event: ', response.data);
+        console.log('successfully get event: ', response.data);
         setEvent(response.data);
       })
       .catch((error) => {
@@ -274,22 +274,9 @@ const EventPage = () => {
   };
 
   useEffect(() => {
-    // setState((prevState) => ({
-    //   ...prevState,
-    //   name: "Angela Tim",
-    //   friends: [
-    //     { value: "friend_first1 friend_last1" },
-    //     { value: "friend_first2 friend_last2" },
-    //     { value: "friend_first3 friend_last3" },
-    //     { value: "friend_first4 friend_last4" },
-    //     { value: "friend_first5 friend_last5" },
-    //   ],
-    // }));
-    // setLoading({ user: false });
-
     //get currently logged in user info
     // TODO: change id to currently logged in user
-    const id = "6071f92b7278a8a7c6d70217";
+    const id = "6071f967768563a80b9a5aeb";
     axios.get("/profile?userid=" + id)
         .then((response) => {
         setUser(response.data);
@@ -395,33 +382,38 @@ const EventPage = () => {
   };
 
   useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      //unverified: true,
-      creator: true,
-      //attendee: true
-    }));
-    // if (user.name !== "" && event.creator) {
-    //   console.log(user.name);
-    //   console.log(event.creator);
-    //   if (user.name === event.creator) {
-    //     setState(prevState => ({
-    //       ...prevState,
-    //       creator: true
-    //     }));
-    //   } else {
-    //     setState(prevState => ({
-    //       ...prevState,
-    //       attendee: true
-    //     }));
-    //   }
-    // } else {
-    //   setState(prevState => ({
-    //     ...prevState,
-    //     unverified: true
-    //   }));
-    // }
-  }, [event, user]);
+    // setState((prevState) => ({
+    //   ...prevState,
+    //   unverified: true,
+    //   //creator: true,
+    //   //attendee: true
+    // }));
+    if (props.isAuthenticated) {
+      if (user.name && event.creator) {
+        if (user.name === event.creator) {
+          setState(prevState => ({
+            ...prevState,
+            creator: true
+          }));
+        } else {
+          setState(prevState => ({
+            ...prevState,
+            attendee: true
+          }));
+        }
+        // console.log(user.name);
+        // console.log(event.creator);
+      }
+    } else {
+      if (event.creator) {
+        setState(prevState => ({
+          ...prevState,
+          unverified: true
+        }));
+        // console.log(event.creator);
+      }
+    }
+  }, [event.creator, user.name]);
 
   useEffect(() => {
     //console.log(event);
