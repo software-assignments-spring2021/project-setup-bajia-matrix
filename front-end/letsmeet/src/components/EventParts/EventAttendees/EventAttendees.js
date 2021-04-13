@@ -27,17 +27,22 @@ const eventAttendees = (props) => {
         <ListGroup.Item key={index} className={classes.Border}>
           <Card className={classes.CardHeader}>
             <Card.Img src={red} className={classes.Avatar} />
-            <Card.Body className={classes.Name}><p>{attendee}</p></Card.Body>
-            <Card.Body className={classes.Role}><p>{props.roles[index]}</p></Card.Body>
+            <Card.Body className={classes.Name}><p>{attendee.name}</p></Card.Body>
+            <Card.Body className={classes.Role}><p>Attendee</p></Card.Body>
           </Card>
         </ListGroup.Item>
     );
-  } else {
-    <ListGroup.Item className={classes.Border}>no attendees</ListGroup.Item>
   }
 
   return (
     <ListGroup className={classes.Group}>
+      <ListGroup.Item key={props.event.creator.id} className={classes.Border}>
+        <Card className={classes.CardHeader}>
+          <Card.Img src={red} className={classes.Avatar} />
+          <Card.Body className={classes.Name}><p>{props.event.creator.name}</p></Card.Body>
+          <Card.Body className={classes.Role}><p>Creator</p></Card.Body>
+        </Card>
+      </ListGroup.Item>
       {attendeesList}
     </ListGroup>
   );

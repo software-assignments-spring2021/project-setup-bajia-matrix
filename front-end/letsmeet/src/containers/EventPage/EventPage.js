@@ -124,18 +124,6 @@ const EventPage = (props) => {
         console.log(error);
       });
   };
-  useEffect(() => {
-    //for attendees list & attendee roles
-    if (event.attendees) {
-      event.attendees.filter((attendee) => {
-        if (event.creator === attendee) {
-          event.roles.push("Creator");
-        } else {
-          event.roles.push("Attendee");
-        }
-      });
-    }
-  }, [event.attendees]); // TODO: check warnings
 
   const [showLink, setShowLink] = useState(false);
   const handleShowLink = () => setShowLink(true);
