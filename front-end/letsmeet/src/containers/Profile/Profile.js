@@ -75,7 +75,6 @@ const Profile = (props) => {
     ));
 
     const editProfileHandler = () => {
-        console.log(props)
         props.history.push({
             pathname: "/editprofile",
             state: { profileState: profileState }
