@@ -92,10 +92,7 @@ const EditProfile = (props) => {
     };
 
     const addFriendsHandler = () => {
-        props.history.push({
-            pathname: "/editfriends",
-            state: {friendState: editProfileState}
-        });
+        window.location.assign('/editfriends')
     };
 
     // render

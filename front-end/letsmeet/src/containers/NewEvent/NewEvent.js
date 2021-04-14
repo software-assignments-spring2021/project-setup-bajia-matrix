@@ -94,6 +94,7 @@ const NewEvent = (props) => {
 
     useEffect(() => {
         const id = localStorage.getItem("userID");
+      
         axios.get("/profile?userid=" + id)
             .then(response => {
                 setProfileState(response.data)
