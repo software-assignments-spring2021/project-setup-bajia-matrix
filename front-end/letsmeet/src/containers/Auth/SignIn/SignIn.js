@@ -33,22 +33,29 @@ const SignIn = () => {
     }
 
     let onSubmit = (e) => {
-        //e.preventDefault();
-
-        axios.get("/auth")
+        e.preventDefault();
+        axios.post("/auth/login", authState)
             .then(response => {
-                if (response.password !== authState.password) {
-                    // TODO: if auth failed, should change so page reloads and displays this message 
-                    setErrorMessage(<strong>Either your email is incorrect or your password does not match!</strong>);
+                console.log(response.data);
+
+                if (response.data.success) {
+                    // setState((prevState) => ({
+                    //     ...prevState,
+                    //     isAuthenticated: true,
+                    //     userID: response.data.uid
+                    //   }));
+                    
+
                 }
                 else {
-                    console.log("signed in!");
-                    this.props.isAuthenticated = true;
+                    // TODO: if auth failed, should change so page reloads and displays this message 
+                    setErrorMessage(<strong>Either your email is incorrect or your password does not match!</strong>);
                     // authenticated
                 }
             })
             .catch(error => {
               console.log(error);
+
             });      
     }
 
