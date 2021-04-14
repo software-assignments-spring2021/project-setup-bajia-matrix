@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Switch, withRouter, Redirect} from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -28,14 +28,13 @@ import EventPage from './containers/EventPage/EventPage';
 */
 
 const App = (props) => {
-
-    // change this boolean variable. Later we will have to add real authentication
-
-    const [state, setState] = useState({
-        isAuthenticated: (localStorage.getItem('isAuthenticated')) ?localStorage.getItem('isAuthenticated') : false,
-        userID: (localStorage.getItem('userID')) ?localStorage.getItem('userID') : "",
-    });
-    
+    let isAuthenticated = localStorage.getItem("isAuthenticated");
+    if (isAuthenticated !== null && isAuthenticated === "true") {
+        isAuthenticated = true;
+    }
+    else {
+        isAuthenticated = false;
+    }
 
     let routes = (
         <Switch>
@@ -43,18 +42,17 @@ const App = (props) => {
             <Route path="/signup" component={SignUp} />]
             <Route path="/" exact component={Landing} />
             <Route path="/newevent" component={NewEvent}/>
-            <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} history={props.history} />} />
+            <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={isAuthenticated} history={props.history} />} />
         </Switch>
-    )
+    );
 
-    //the 'edits' has an edit and routes to the edit supplies made by bing i think.
-    if (state.isAuthenticated) {
+    if (isAuthenticated === true) {
         routes = (
             <Switch>
-                <Route path="/profile" exact component={Profile} />
-                <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/profile" exact component={Profile}/>
+                <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={isAuthenticated} />} />
                 <Route path="/editsupplies" exact component={EditSupplies} />
-                <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={state.isAuthenticated} />} />
+                <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={isAuthenticated} />} />
                 <Route path="/editfriends" exact component={AddFriends} />
                 <Route path="/user/acceptinvite" exact component={AcceptInvite}/>
                 <Route path="/editavatar" exact component={EditAvatar} />
@@ -64,9 +62,10 @@ const App = (props) => {
             </Switch>
         );
     }
+    
     return (
         <div className="App">
-            <Layout isAuthenticated={state.isAuthenticated}>
+            <Layout isAuthenticated={isAuthenticated}>
                 {routes}
             </Layout>
         </div>

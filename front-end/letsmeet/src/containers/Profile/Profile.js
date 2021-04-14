@@ -45,8 +45,7 @@ const Profile = (props) => {
             setLoading(false);
         } 
         else {
-            // TODO: change id to currently logged in user once authentication is implemented
-            const id = "6071f92b7278a8a7c6d70217";
+            const id = localStorage.getItem("userID");
         
             axios.get("/profile?userid=" + id)
                 .then(response => {
@@ -76,6 +75,7 @@ const Profile = (props) => {
     ));
 
     const editProfileHandler = () => {
+        console.log(props)
         props.history.push({
             pathname: "/editprofile",
             state: { profileState: profileState }

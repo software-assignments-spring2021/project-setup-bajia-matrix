@@ -36,7 +36,7 @@ const Layout = (props) => {
             return {showSideDrawer: !prevState.showSideDrawer};
         });
     };
-
+    
     return ( 
         <div> 
             <Toolbar 

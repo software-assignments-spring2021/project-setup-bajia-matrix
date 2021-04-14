@@ -23,7 +23,7 @@ const Home = (props) => {
     const [invitesState, setInvitesState] = useState([]); 
     const [myEventsState, setMyEventsState] = useState([]);
     const [upcomingEventsState, setUpcomingEventsState] = useState([]);
-    const id = "6071f9ab0239b3a831836df1"; // TODO: change to props.id once Rahul is done with auth
+    const id = localStorage.getItem("userID");
 
     useEffect(() => {
         axios.get("/?userid=" + id)
@@ -47,7 +47,7 @@ const Home = (props) => {
                 console.log(error.response.data);
                 setLoading(false);
             });
-    }, []);
+    }, [id]);
 
     const pendingInvites = invitesState.map(e => {
         return (

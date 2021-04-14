@@ -20,19 +20,19 @@ router.post("/signup", async (req, res, next) => {
   try {
     // Check if the email is duplicating
     const email_val = email.value;
-    console.log(email_val);
+    // console.log(email_val);
 
-    let existingUser = await User.findOne({email: email_val} );
+    const existingUser = await User.findOne({email: email_val} );
     
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "User already exists.",
+        message: "User already exists."
       });
     }
     const hash =   await bcrypt.hash(verifiedPassword.value, 12);
     const name1 = firstName.value + " " + lastName.value;
-     await User.create({
+    await User.create({
       email: email.value,
       name: name1,
       passwordHash: hash,
@@ -48,24 +48,13 @@ router.post("/signup", async (req, res, next) => {
       uid: user.id,
       message: "Signup successful.",
     });
-  } catch (error) {
-    return res.json({
+  } 
+  catch (error) {
+    return res.status(500).json({
       success: false,
-      message: "Signup failed.",
+      message: "Signup failed."
     });
-  }
-  
-
-    // axios.post(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
-    //     .then(response => {
-    //         console.log(response.data);
-    //             // what is this? console.log("post request on route /events for event with id " + id);
-    //         res.send("200 OK");
-    //     })
-    //     .catch(error => {
-    //         next(error);
-    //     });
-      
+  }    
 });
 
 // Login
@@ -75,30 +64,30 @@ router.post("/signin", async (req, res, next) => {
   const email_val = email;
   //console.log(email_val);
 
-  // Make a inquiry of the user through email
+  // Make an inquiry of the user through email
   try {
     const user = await User.findOne({ email: email_val } );
     if (!user) {
-      return res.json({
+      return res.status(500).json({
         success: false,
         message: "No member exists.",
       });
     }
     const user_id = user.id;
-    console.log(user_id);
+    // console.log(user_id);
 
     // Check password
     //console.log(User.findOne({_id: {user_id}}).select("+passwordHash"));
     const pass = await User.findOne({_id: user_id}).select("+passwordHash");
     //console.log(pass.passwordHash);
 
-      const isMatch = await bcrypt.compare(password, pass.passwordHash);
-      if (isMatch) {
-        console.log('GOOD');
-      // If the password matches,create JWT payload 
-        const payload = {
-          uid: user.id,
-        };
+    const isMatch = await bcrypt.compare(password, pass.passwordHash);
+    if (isMatch) {
+      // console.log('GOOD');
+    // If the password matches,create JWT payload 
+      const payload = {
+        uid: user.id,
+      };
     //   User.findOne({_id: {user_id}}).select('+passwordHash').exec(function (err, user) {
     //     const isMatch = await bcrypt.compare(password, user.passwordHash);
     //     if (isMatch){
@@ -145,18 +134,20 @@ router.post("/signin", async (req, res, next) => {
       //   req.client.print
       // );
 
-      return res.json({
+      return res.status(200).json({
         success: true,
         uid: user.id,
         message: "Login Successful",
       });
-    } else {
+    } 
+    else {
       return res.status(401).json({
         success: false,
         message: "Password's don't match.",
       });
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.error(error);
     res.status(401).json({
       success: false,
@@ -176,6 +167,7 @@ router.post("/signin", async (req, res, next) => {
     //         next(error);
     //     });
 });
+
 router.post("/signout", async (req, res, next) => {
   console.log("OUTT");
   try {

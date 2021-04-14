@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from '../../../axios';
 
 import classes from './NavigationItems.module.css';
 import NavigationItem from './NavigationItem/NavigationItem';
@@ -49,13 +48,13 @@ const navigationItems = (props) => {
 
     let navItems = (
         <ul className={classes.NavigationItems}>
-            <NavigationItem link="/" exact>Home</NavigationItem>
+            <NavigationItem link="/" exact>Landing</NavigationItem>
             <NavigationItem link="/signup">Sign Up</NavigationItem>
             <NavigationItem link="/signin">Sign In</NavigationItem>
         </ul>
     );
-
-    if (props.isAuthenticated) {
+        
+    if (props.isAuthenticated === true) {
         navItems = (
             <ul className={classes.NavigationItems}>
                 <NavigationItem link="/" exact>Home</NavigationItem>
@@ -64,7 +63,7 @@ const navigationItems = (props) => {
             </ul>
         );
     }
-
+    
     return (
         <div>
             {navItems}
