@@ -51,7 +51,7 @@ const AddFriends = (props) => {
         const lowercaseSearch = e.toLowerCase().trim()
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
         if (!pattern.test(e)) {
-            setError("Please enter valid email address")
+            setError("Please enter valid email address!")
         } else {
             setError()
         }
@@ -108,7 +108,7 @@ const AddFriends = (props) => {
                         enterButton
                     />
                     {(searchTerm && error) &&
-                        <p className={classes.errorMessage}>Enter a valid email address!</p>
+                        <p className={classes.errorMessage}>{error}</p>
                     }
                     {(searchTerm && !error) &&
                         <div>
@@ -132,7 +132,7 @@ const AddFriends = (props) => {
                                     description={description}
                                     type="error"
                                     action={
-                                        <Button size="small" danger>
+                                        <Button size="small" danger className={classes.inviteButton}>
                                           Invite
                                         </Button>
                                     }
