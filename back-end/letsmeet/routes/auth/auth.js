@@ -38,7 +38,7 @@ router.post("/signup", async (req, res, next) => {
       passwordHash: hash,
       city: "",
       state: "",
-      avatar: "green",
+      avatar: "red",
       friends: []
     });
     const user = await User.findOne({ email: email_val } );

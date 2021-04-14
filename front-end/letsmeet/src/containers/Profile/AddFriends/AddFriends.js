@@ -24,22 +24,26 @@ const AddFriends = (props) => {
     // Get profile of current user
     useEffect(() => {
         // TODO: change user id to currently logged in user
-        const id = "6071f92b7278a8a7c6d70217";
+        const id = localStorage.getItem("userID");
+
         axios.get("/profile?userid=" + id)
             .then(response => {
                 setUser(response.data);
                 console.log(response.data.friends);
             })
             .catch(error => {
-                console.log(error);
+                console.log(error.response.data);
             })
     }, []);
 
     const { Search } = Input;
     const [searchTerm, setSearchTerm] = useState("")
     const [error, setError] = useState()
+    const [disabled, setDisabled] = useState(false);
 
     const handleChange = e => {
+        setButtonText("Add Friend")
+        setDisabled(false)
         setSearchTerm(e)
         validateFriend(e)
         checkFriendship(e)
@@ -77,15 +81,16 @@ const AddFriends = (props) => {
                 return
             }
         }
+
         // Check MongoDB to see if email is associated with a user
         if (!isFriend) {
-            axios.get("/profile?findUser=true&searchEmail=" + e.toLowerCase().trim())
+            axios.get("/profile?findUser=true&searchEmail=" + e.trim())
                 .then(response => {
                     setData(response.data)
                     console.log(response.data);
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.log(error.response.data);
                 })
         }
     }
@@ -93,11 +98,27 @@ const AddFriends = (props) => {
     const [buttonText, setButtonText] = useState("Add Friend")
     const changeText = (text) => setButtonText(text)
 
+    const userFriends = user.friends.map(i => <div key={i.id}> {i.name} </div>);
+
     let addFriend = param => e => {
         changeText("Added")
-        user.friends.push(param)
-
-        axios.post("/profile", user)
+        setDisabled(true);
+        
+        // update friends list immutably
+        const userCopy = { ...user };
+        const friendsList = [ ...userCopy.friends ];
+        
+        const newFriend = {
+            id: param._id,
+            name: param.name,
+            email: param.email
+        }
+        
+        friendsList.push(newFriend);
+        userCopy.friends = friendsList;
+        setUser(userCopy);
+        
+        axios.post("/profile", userCopy)
             .then(response => {
                 console.log(response.data);
             })
@@ -137,7 +158,7 @@ const AddFriends = (props) => {
                                     <div key={i} className={classes.nameContainer}>
                                         <div className={classes.nameDisplay}> {d.name} <br/>
                                             {!isFriend &&
-                                                <button size="small" type="primary" className={classes.addButton} onClick={addFriend(d)}>{buttonText}</button>
+                                                <button size="small" type="primary" className={classes.addButton} disabled={disabled} onClick={addFriend(d)}>{buttonText}</button>
                                             }
                                             <div>{d.email}</div>
                                             <br/>                      
@@ -164,7 +185,7 @@ const AddFriends = (props) => {
                 <br />
                 <Divider orientation="center">Current Friends List</Divider>
                 <div className={classes.friendsList}>
-                    {user.friends.map(i => <div> {i.name} </div>)}
+                    {userFriends}
                 </div>
             </div>
         </>

@@ -44,9 +44,9 @@ router.get("/", async (req, res, next) => {
         const searchEmail = req.query.searchEmail;
         console.log("get request on route /profile to find user with email " + searchEmail);
 
-        User.find( { email : searchEmail })
+        User.find({ email : searchEmail })
             .then(newFriend => {
-                res.send(newFriend)
+                res.json(newFriend)
             })
             .catch(error => {
                 console.log("ERROR: Unable to retrieve user with searched email.")
