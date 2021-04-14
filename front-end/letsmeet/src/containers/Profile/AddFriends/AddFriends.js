@@ -21,6 +21,7 @@ const AddFriends = (props) => {
         email: ""
     });
 
+    // Get profile of current user
     useEffect(() => {
         // TODO: change user id to currently logged in user
         const id = "6071f92b7278a8a7c6d70217";
@@ -75,6 +76,17 @@ const AddFriends = (props) => {
                 setIsFriend(true)
                 break
             }
+        }
+        // Check MongoDB to see if email is associated with a user
+        if (!isFriend) {
+            axios.get("/profile?findUser=true&searchEmail=" + e.toLowerCase().trim())
+            .then(response => {
+                setData(response.data)
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
     }
 
