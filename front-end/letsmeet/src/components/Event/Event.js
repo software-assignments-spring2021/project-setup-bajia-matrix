@@ -11,6 +11,7 @@ import Text from '../UI/Text/Text';
     will redirect the user to the event page of the event.
 
     Props: 
+        - id: the id of the event
         - title: the event title
         - day: the day of the week the event takes place
         - date: the month and day the event takes place
@@ -22,10 +23,9 @@ import Text from '../UI/Text/Text';
 */
 
 const event = (props) => {
-    let attendeesList = props.attendees ? props.attendees.sort().join(', ') : [];
+    const attendeesList = props.attendees ? props.attendees.sort().join(', ') : [];
 
-    // TODO: take to specific event page when clicked on
-    let manageEventHandler = () => {
+    const manageEventHandler = () => {
         props.history.push(`/event/id:${props.id}`);
     };
 

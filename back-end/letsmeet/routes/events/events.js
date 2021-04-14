@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const bodyParser = require("body-parser");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
@@ -12,21 +11,22 @@ const Event = require("../../models/Event");
 router.get("/", (req, res, next) => {
     const id = req.query.eventid;
     console.log("get request on route /events for event with id " + id);
-    
-    Event.findById(id)
-        .then(event => {
-            let thisEvent = JSON.parse(JSON.stringify(event));
-            send(res, thisEvent);
-        })
-        .catch(error => {
+
+    Event.findById(id, (err, event) => {
+        if (err || !event) {
             res.status(500).send("ERROR 500: Issue finding event");
-            next(error);
-        })
+        }
+        else {
+            res.json(event);
+        }
+    });
 });
 
 router.post("/", (req, res, next) => {
+    const id = req.body._id;
+    console.log("post request on route /events for event with id " + id);
+    
     if (req.query.new) {
-        console.log(req.body);
         Event.create(req.body, (err, event) => {
             if (err) {
                 res.status(500).json({message: "ERROR 500: Issue with creating event"});
@@ -35,9 +35,6 @@ router.post("/", (req, res, next) => {
             }
         })
     } else {
-        const id = req.body._id;
-        console.log("post request on route /events for event with id " + id);
-
         const query = {_id: id}
         Event.updateOne(query, req.body)
             .then(updatedEvent => {

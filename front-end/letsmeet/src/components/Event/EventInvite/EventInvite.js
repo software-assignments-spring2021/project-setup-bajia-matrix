@@ -13,55 +13,43 @@ import Text from '../../UI/Text/Text';
     page. Declining will remove the invite from the user's list in the database.
 
     Props: 
-        - key: the id of the event
+        - id: the id of the event
+        - userId: the id of the currently logged in user
         - title: the event title
-        - range: the date-and-time range of the event
+        - start: the start date to schedule the event
         - description: a description of the event
         - inviter: the person who sent this invite
 */
 
-const EventInvite = (props) => {
+const eventInvite = (props) => {
 
-    const [pendingInvitation, setPendingInvitation] = useState({
-        id: {$oid: props.key},
-        title: props.title,
-        range: props.range,
-        description: props.description,
-        creator: props.inviter,
-        location: props.eventLocation,
-        startDate: props.startDate,
-        myCreatedEvent: false
-    });
-
-    let acceptEventHandler = () => {
-        console.log("accept event");
-        // TODO: change route to acceptInvite page
-        console.log(pendingInvitation);
+    const acceptEventHandler = () => {
         props.history.push({
             pathname: "/user/acceptinvite",
-            state: {acceptPending: pendingInvitation}
+            state: {
+                eventId: props.id,
+                userId: props.userId
+            }
         });
     };
 
-    let declineEventHandler = () => {
-        console.log("decline event");
-        // TODO: backend: delete a pending invitation from a user's pending invitations list
-        // Will this rerender the page? Would like so
-        const id = props.key;
-        const eventid = 123;
-        axios.delete("/?userid=" + id + "&eventid=" + eventid)
+    const declineEventHandler = () => {
+        axios.delete("/?userid=" + props.userId + "&eventid=" + props.id)
             .then(response => {
                 console.log(response);
+                window.location.reload(false);
             })
-        // TODO: remove .then(response)
-    }
+            .catch(error => {
+                console.log(error.response.data);
+            });
+    };
 
     return (
         <div className={classes.Event}>
             <Card className={classes.Card}>
                 <Card.Title className={classes.CardTitle}>{props.title}</Card.Title>
                 <Card.Body className={classes.CardBody}>
-                    <Text numberOfLines={1} ellipsis={false} text={"When: " + props.range} />
+                    <Text numberOfLines={1} ellipsis={false} text={"When: Week of " + props.start} />
                     <Text numberOfLines={4} ellipsis={true} text={props.description} />
                     <Text numberOfLines={1} ellipsis={false} text={"Invited by: " + props.inviter} />
                     <div>
@@ -74,4 +62,4 @@ const EventInvite = (props) => {
     );
 };
 
-export default withRouter(EventInvite);
+export default withRouter(eventInvite);

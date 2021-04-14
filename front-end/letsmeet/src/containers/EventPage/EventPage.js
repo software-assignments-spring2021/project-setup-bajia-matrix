@@ -187,7 +187,7 @@ const EventPage = () => {
       timezone: tz
     }
     
-    // TODO: once we have database, send this info from the state instead of hardcoding
+    // TODO JOANNE: once we have database, send this info from the state instead of hardcoding
     // aka change ev to event and remove ev above
     // no need to link to specific event since just passing the times to perform the algorithm with
     axios.post("/suggestedTimes", ev)

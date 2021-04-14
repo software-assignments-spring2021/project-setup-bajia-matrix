@@ -9,6 +9,10 @@
     overflow-y: scroll;
 }
 
+.Event p {
+    text-align: center
+}
+
 .Event::-webkit-scrollbar {
     width: 8px;
     height: 16px;

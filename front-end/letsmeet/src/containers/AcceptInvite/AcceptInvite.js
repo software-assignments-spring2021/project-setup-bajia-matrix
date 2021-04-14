@@ -21,21 +21,32 @@ const AcceptInvite = (props) => {
 
     const [loading, setLoading] = useState(true);
 
-    // Event Details
+    // default event state
     const [event, setEvent] = useState({
-        // id: "1-i-am-random-event-id",
-        // title: "Study Date",
-        // description:
-        //   "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-        // creator: "Angela Tim",
-        // location: "Angela's House",
+        title: "",
+        description: "",
+        creator: "",
+        showCreator: false,
+        newEventAuthentication: false,
+        location: "",
     });
 
-    // Used to populate event details with event details in mdatabase
+    const [userId, setUserId] = useState();
+
+    // Used to populate event details from database
     useEffect(() => {
-        // TODO: should only get events with current user listed in attendees list
-        setEvent(props.location.state.acceptPending);
-        setDate(props.location.state.acceptPending.startDate);
+        const id = props.location.state.eventId;
+        const userId = props.location.state.userId;
+        axios.get("/events?eventid=" + id)
+            .then((response) => {
+                setEvent(response.data);
+                setDate(response.data.startDate);
+                setUserId(userId);
+            })
+            .catch((error) => {
+                console.log(error.response.data);
+                props.history.push("/"); // redirect to home page if event no longer exists
+            });
     }, []);
 
     // Variables for the form
@@ -59,14 +70,14 @@ const AcceptInvite = (props) => {
     function handleSubmit(e) {
         e.preventDefault()
         // TODO: Delete event from pending invitations on home screen
+        // Bing's comments
+        // TODO: Add event to upcoming events aka add current user to list of attendees and remove user from list of invitees
+        // if you do this in the backend, then you shouldn't need to pass this event to home
     }
 
     // After clicking submit, reroute back to home page
     const goHome = () => {
-        props.history.push({
-            pathname: "/",
-            state: {newUpcomingEvent: event}
-        });
+        props.history.push("/");
         window.location.assign('/')
     }
 
@@ -100,7 +111,7 @@ const AcceptInvite = (props) => {
                             showCreator={true}
                             // Set newEventAuthentication to true for this page
                             newEventAuthentication={true}
-                            location={event.location}
+                            location={event.eventLocation}
                         />
                     </Form.Item>
 

@@ -7,20 +7,20 @@ const EventSchema = new mongoose.Schema({
   ],
   eventLocation: {type: String, required: true},
   description: {type: String},
-  creator: {
-    id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-    name: {type: String}
-  },
+  creator: {type: String, required: true},
+  creatorID: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
   startDate: {type: String},
   finalDate: {type: Date},
   attendees: [
     {
+      _id: false,
       id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
       name: {type: String}
     }
   ],
   withdrawn: [
     {
+      _id: false,
       id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
       name: {type: String}
     }
@@ -35,6 +35,7 @@ const EventSchema = new mongoose.Schema({
   ],
   invitees: [
     {
+      _id: false,
       id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
       name: {type: String}
     }

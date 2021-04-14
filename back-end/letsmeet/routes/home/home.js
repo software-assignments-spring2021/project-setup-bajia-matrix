@@ -11,63 +11,71 @@ const Event = require("../../models/Event");
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/", (req, res, next) => {
-    // const user = {
-    //     email: "GladysVevers@gmail.com",
-    //     name: "Gladys Vevers",
-    //     passwordHash: "password",
-    //     city: "Evansville",
-    //     state: "Indiana",
-    //     avatar: "green",
-    //     friends: []
-    // }
-    // User.create(user, (err, user) => {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    //     else {
-    //         console.log(user);
-    //     }
-    // })
+    const userId = req.query.userid;
+    console.log("get request on route / with user id " + userId);
 
-    const id = req.query.userid;
-    console.log("get request on route / with user id " + id);
-    
-    // TODO: change to fetch events and invites for user id
-    axios.get(`${process.env.API_BASE_URL}/events.json?key=${process.env.API_SECRET_KEY}`)
-        .then(eventsResponse => {
-            // console.log(eventsResponse.data);
-            let data = { events: eventsResponse.data.events }
-            axios.get(`${process.env.API_BASE_URL}/invites.json?key=${process.env.API_SECRET_KEY}`)
-                .then(invitesResponse => {
-                    let updateData = { 
-                        ...data,
-                        invites: invitesResponse.data.invites
-                    };
+    // find all invites
+    Event.find({ "invitees.id" : userId })
+        .then(invs => {
+            const invites = invs;
+            
+            // find all myEvents
+            Event.find({ creatorID : userId })
+                .then(myEvs => {
+                    const myEvents = myEvs;
 
-                    res.json(updateData);
+                    // find all upcoming events
+                    Event.find({ "attendees.id" : userId})
+                        .then(upEvs => {
+                            const upcomingEvents = upEvs;
+
+                            // generate response and send to client
+                            const allEvents = {
+                                invites: invites,
+                                myEvents: myEvents,
+                                upcomingEvents: upcomingEvents
+                            }
+
+                            res.json(allEvents);
+                        })
+                        .catch(error => {
+                            console.log("ERROR: Unable to retrieve upcoming events.");
+                            console.log(error);
+                            res.status(500).send("ERROR 500: Issue retrieving upcoming events");
+                        });
                 })
                 .catch(error => {
-                    next(error);
+                    console.log("ERROR: Unable to retrieve my events.");
+                    console.log(error);
+                    res.status(500).send("ERROR 500: Issue retrieving my events");
                 });
         })
         .catch(error => {
-            next(error);
+            console.log("ERROR: Unable to retrieve pending invites.");
+            console.log(error);
+            res.status(500).send("ERROR 500: Issue retrieving pending invites");
         });
 });
 
 router.delete("/", (req, res, next) => {
-    const id = req.query.userid;
-    const eventid = req.query.eventid;
-    console.log("delete request on route / with user id " + id + " and for event with id " + eventid);
-
-    axios.delete(`${process.env.API_BASE_URL}/invites/${eventid}.json?key=${process.env.API_SECRET_KEY}&__method=DELETE`)
-        .then(response => {
-            // console.log(response.data);
-            res.send("200 OK");
-        })
-        .catch(error => {
-            next(error);
-        })
+    const userId = req.query.userid;
+    const eventId = req.query.eventid;
+    console.log("delete request on route / with user id " + userId + " and for event with id " + eventId);
+    
+    // find event and remove the user from list of invitees
+    Event.findOneAndUpdate({ _id: eventId }, {$pull: {
+        invitees : { 
+            id: userId 
+        } 
+    }})
+    .then(response => {
+        res.send("200 OK: Successfully removed invite from user");
+    })
+    .catch(error => {
+        console.log("ERROR: Unable to find and delete invite.");
+        console.log(error);
+        res.status(500).json({message: "ERROR 500: Issue deleting invite"});
+    });
 });
 
 module.exports = router;
