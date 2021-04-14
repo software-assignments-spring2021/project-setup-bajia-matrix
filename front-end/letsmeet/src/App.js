@@ -30,9 +30,12 @@ import EventPage from './containers/EventPage/EventPage';
 const App = (props) => {
 
     // change this boolean variable. Later we will have to add real authentication
+    
     const [state, setState] = useState({
-        isAuthenticated: true
+        isAuthenticated: false,
+        userID: "",
     });
+    
 
     let routes = (
         <Switch>
