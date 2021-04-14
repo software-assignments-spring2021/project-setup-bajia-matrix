@@ -48,8 +48,9 @@ router.get("/", async (req, res, next) => {
             send(res, viewedUser);
         })
         .catch(error => {
+            console.log("ERROR: Unable to retrieve user.");
+            console.log(error);
             res.status(500).send("ERROR 500: Issue finding user");
-            next(error);
         });
 });
 
@@ -64,7 +65,8 @@ router.post("/", (req, res, next) => {
             res.send("200 OK: Successfully updated user");
         })
         .catch(error => {
-            console.log(error)
+            console.log("ERROR: Unable to update user.");
+            console.log(error);
             res.status(500).json({message: "ERROR 500: Issue updating user"});
         });
 });

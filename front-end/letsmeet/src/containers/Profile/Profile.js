@@ -75,7 +75,7 @@ const Profile = (props) => {
         <p key={friend.id}>{friend.name}</p>
     ));
 
-    let editProfileHandler = () => {
+    const editProfileHandler = () => {
         props.history.push({
             pathname: "/editprofile",
             state: { profileState: profileState }
