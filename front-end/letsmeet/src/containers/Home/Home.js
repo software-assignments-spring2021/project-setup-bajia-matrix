@@ -23,7 +23,7 @@ const Home = (props) => {
     const [invitesState, setInvitesState] = useState([]); 
     const [myEventsState, setMyEventsState] = useState([]);
     const [upcomingEventsState, setUpcomingEventsState] = useState([]);
-    const id = "6071f9ab0239b3a831836df1"; // TODO: change to props.id once Rahul is done with auth
+    const id = "6071f92b7278a8a7c6d70217"; // TODO: change to props.id once Rahul is done with auth
 
     useEffect(() => {
         axios.get("/?userid=" + id)

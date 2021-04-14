@@ -94,7 +94,7 @@ const NewEvent = (props) => {
 
     useEffect(() => {
         // TODO: change user id to currently logged in user
-        const id = "6071f98b83a8d5a81f763cab";
+        const id = "6071f92b7278a8a7c6d70217";
         axios.get("/profile?userid=" + id)
             .then(response => {
                 setProfileState(response.data)

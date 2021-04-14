@@ -13,6 +13,7 @@ import axios from '../../../axios';
 */
 
 const AddFriends = (props) => {
+    
     const [data, setData] = useState()
     const [user, setUser] = useState({
         name: "",
@@ -21,8 +22,16 @@ const AddFriends = (props) => {
     });
 
     useEffect(() => {
-        setUser(props.location.state.friendState);
-        console.log(props.location.state.friendState);
+        // TODO: change user id to currently logged in user
+        const id = "6071f92b7278a8a7c6d70217";
+        axios.get("/profile?userid=" + id)
+            .then(response => {
+                setUser(response.data);
+                console.log(response.data.friends);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }, []);
 
     const { Search } = Input;
