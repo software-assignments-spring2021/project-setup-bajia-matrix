@@ -44,7 +44,7 @@ router.get("/", async (req, res, next) => {
         const searchEmail = req.query.searchEmail;
         console.log("get request on route /profile to find user with email " + searchEmail);
 
-        User.find({ email : searchEmail })
+        User.find({ email : new RegExp(`^${searchEmail}$`, 'i') })
             .then(newFriend => {
                 res.json(newFriend)
             })
