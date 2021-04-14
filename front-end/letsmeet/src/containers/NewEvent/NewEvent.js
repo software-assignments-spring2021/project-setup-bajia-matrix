@@ -77,12 +77,10 @@ const NewEvent = (props) => {
         setIsModalVisible(true)
     }
 
+    const [url, setUrl] = useState("");
+
     let handleOk = () => {
         setIsModalVisible(false);
-        props.history.push({
-            pathname: "/",
-            state: {newUpcomingEvent: newCreatedEvent}
-        });
         window.location.assign('/');
     }
 
@@ -115,11 +113,11 @@ const NewEvent = (props) => {
         title: "",
         location: "",
         description: "",
-        attendees: []
+        invitees: []
     })
 
     let sendToBackend = param => e => {
-        const attendeesList = (param.getFieldValue('Invited Friends')) ? param.getFieldValue('Invited Friends') : [];
+        const inviteesList = (param.getFieldValue('Invited Friends')) ? param.getFieldValue('Invited Friends') : [];
 
         if (props.isAuthenticated) {
             setNewCreatedEvent(prevState => ({
@@ -127,7 +125,7 @@ const NewEvent = (props) => {
                 title: param.getFieldValue('Event Title'),
                 location: param.getFieldValue('Location'),
                 description: param.getFieldValue('Event Description'),
-                attendees: attendeesList,
+                invitees: inviteesList,
                 creator: profileState.name,
                 creatorID: profileState._id
             }))
@@ -138,13 +136,13 @@ const NewEvent = (props) => {
                 title: param.getFieldValue('Event Title'),
                 location: param.getFieldValue('Location'),
                 description: param.getFieldValue('Event Description'),
-                attendees: attendeesList,
+                invitees: inviteesList,
             }))
         }
 
         let inviteesCopy = [];
-        if (attendeesList.length > 0) {
-            attendeesList.map((invitee) => {
+        if (inviteesList.length > 0) {
+            inviteesList.map((invitee) => {
                 //JOANNE: i am undoing the converting to JSON string that i did earlier by using JSON.parse
                 inviteesCopy.push(JSON.parse(invitee));
             })
@@ -165,6 +163,10 @@ const NewEvent = (props) => {
         axios.post("/events?new=true", newEventCopy)
             .then(response => {
                 console.log(response)
+                console.log(response.data.newEventURL)
+                // TODO: Change to website
+                let eventURL = "http://localhost:3000/event/" + response.data.newEventURL
+                setUrl(eventURL)
             })
             .catch(error => {
                 console.log(error)
@@ -337,8 +339,8 @@ const NewEvent = (props) => {
                     <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
                         {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
                         {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
-                        <CopyToClipboard text='[event id link]' className={classes.copyLink}>
-                            <Tag icon={<CopyOutlined/>} className={classes.copyButton}>[event id link] (Click to copy to clipboard)</Tag>
+                        <CopyToClipboard text={url} className={classes.copyLink}>
+                            <Tag icon={<CopyOutlined/>} className={classes.copyButton}>Click to copy shareable event link</Tag>
                         </CopyToClipboard>
                         <div className={classes.spacing}></div>
                         {!props.isAuthenticated && <>
