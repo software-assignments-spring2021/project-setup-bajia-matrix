@@ -41,8 +41,11 @@ router.post("/", async (req, res, next) => {
       avatar: "green",
       friends: []
     });
+    const user = await User.findOne({ email: email_val } );
+
     return res.status(200).json({
       success: true,
+      uid: user.id,
       message: "Signup successful.",
     });
   } catch (error) {
@@ -52,49 +55,6 @@ router.post("/", async (req, res, next) => {
     });
   }
   
-
-  // const { firstName, lastName, email, password, verifiedPassword } = req.body;
-  // const hash = await bcrypt.hash(password, 12);
-  // const name1 = firstName + " " + lastName;
-
-  // const user = {
-  //       email: email,
-  //       name: name1,
-  //       passwordHash: hash,
-  //       city: "",
-  //       state: "",
-  //       avatar: "green",
-  //       friends: []
-  //   }
-    //  try {
-    // // Check if the email is duplicating
-    // let existingUser = await User.findOne({ where: { email } });
-    // if (existingUser) {
-    //   return res.status(409).json({
-    //     success: false,
-    //     message: "User already exists.",
-    //   });
-    // }
-  
-
-
-    //  User.create(user, (err, user) => {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    //     else {
-    //         console.log(user);
-    //     }
-    // })
-  
-
-    // const id = req.query.userid;
-    // console.log("get request on route / with user id " + id);
-    // const id = 123;
-    // console.log("post request on route /auth");
-
-    // console.log(req.body);
-
 
     // axios.post(`${process.env.API_BASE_URL}/users/${id}.json?key=${process.env.API_SECRET_KEY}&__method=POST`, req.body)
     //     .then(response => {
@@ -216,5 +176,21 @@ router.post("/login", async (req, res, next) => {
     //         next(error);
     //     });
 });
+router.post("/signout", async (req, res, next) => {
+  console.log("OUTT");
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+        return token.token != req.token
+    })
+    await req.user.save()
+    res.send()
+} catch (error) {
+    res.status(500).send(error)
+}
+  
+  
+      
+});
+
 
 module.exports = router;

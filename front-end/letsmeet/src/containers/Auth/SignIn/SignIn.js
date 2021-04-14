@@ -11,6 +11,7 @@ import axios from '../../../axios';
         This component does not accept any custom props
 */
 
+
 const SignIn = () => {
     const [authState, setauthState] = useState({
         email: "",
@@ -44,7 +45,9 @@ const SignIn = () => {
                     //     isAuthenticated: true,
                     //     userID: response.data.uid
                     //   }));
-                    
+                    localStorage.setItem('userID', response.data.uid);
+                    localStorage.setItem('isAuthenticated', true);
+                    window.location.reload(false); 
 
                 }
                 else {

@@ -30,10 +30,10 @@ import EventPage from './containers/EventPage/EventPage';
 const App = (props) => {
 
     // change this boolean variable. Later we will have to add real authentication
-    
+
     const [state, setState] = useState({
-        isAuthenticated: false,
-        userID: "",
+        isAuthenticated: (localStorage.getItem('isAuthenticated')) ?localStorage.getItem('isAuthenticated') : false,
+        userID: (localStorage.getItem('userID')) ?localStorage.getItem('userID') : "",
     });
     
 

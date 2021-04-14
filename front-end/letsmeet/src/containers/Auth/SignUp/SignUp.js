@@ -145,6 +145,7 @@ const SignUp = () => {
 
         setValidForm(formIsValid);
         setAuthState(updatedAuthState);
+        
     };
 
     let onSubmit = (e) => {
@@ -156,6 +157,10 @@ const SignUp = () => {
         axios.post(url , authState)
             .then(response => {
                 console.log(response);
+                localStorage.setItem('userID', response.data.uid);
+                localStorage.setItem('isAuthenticated', true);
+                window.location.reload(false); 
+
             })
             .catch(function (error) {
                 console.log(error);
