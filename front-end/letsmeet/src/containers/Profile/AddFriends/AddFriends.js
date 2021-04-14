@@ -13,59 +13,7 @@ import axios from '../../../axios';
 */
 
 const AddFriends = (props) => {
-
-    // uncomment this for hardcoded data for all users to test add functionality
-    // const dataList = [
-    //     {
-    //         "id": 1, 
-    //         "name": "Alexa Taylor", 
-    //         "email": "alexa@gmail.com", 
-    //         "friends": [
-    //             {
-    //             "id": 2,
-    //             "name": "Timothy Sanders",
-    //             "email": "timothy@gmail.com"
-    //             }
-    //         ]
-    //     },
-    //     {"id": 2, "name": "Timothy Sanders", "email": "timothy@gmail.com",
-    //         "friends": [
-    //             {
-    //                 "id": 1,
-    //                 "name": "Alexa Taylor",
-    //                 "email": "alexa@gmail.com"
-    //             },
-    //             {
-    //                 "id": 11,
-    //                 "name": "Test", 
-    //                 "email": "me@gmail.com", 
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         "id": 3, 
-    //         "name": "Sam Peter", 
-    //         "email": "sam@gmail.com", 
-    //         "friend": [
-    //             {
-    //                 "id": 11,
-    //                 "name": "Test", 
-    //                 "email": "me@gmail.com", 
-    //             }
-    //         ]
-    //     },
-    //     {"id": 4, "name": "Matthew Fishman", "email": "matt@gmail.com"},
-    //     {id: 5, name: "Matthew Fishman", email: "matt2@gmail.com"},
-    //     {id: 6, name: "Matthew Fishman", email: "matt3@gmail.com"},
-    //     {id: 7, name: "Matt Fish", email: "mattf@gmail.com"},
-    //     {id: 8, name: "Matt Fishman", email: "fishmanm@gmail.com"},
-    //     {id: 9, name: "Matt Fishman", email: "fishman1@gmail.com"},
-    //     {id: 10, name: "Matt Fishman", email: "fishmanmatt@gmail.com"}
-    // ]
-
-
     const [data, setData] = useState()
-    // const [data, setData] = useState(dataList) // uncomment this for hard coded data for all users
     const [user, setUser] = useState({
         name: "",
         friends: [],
@@ -75,22 +23,6 @@ const AddFriends = (props) => {
     useEffect(() => {
         setUser(props.location.state.friendState);
         console.log(props.location.state.friendState);
-        /*
-        axios.get('/profile')
-            .then((response) => {
-                console.log(response.data);
-                setData(response.data);
-                setUser(prevState => ({
-                    ...prevState,
-                    name: response.data.name,
-                    friends: response.data.friends,
-                    email: response.data.email
-                }));
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        */
     }, []);
 
     const { Search } = Input;
@@ -118,7 +50,6 @@ const AddFriends = (props) => {
             setData()
         } else {
             const filteredData = user.friends.filter(item => {
-            // const filteredData = dataList.filter(item => { // uncomment for harded data; searches through hardcoded data of users
                 return Object.keys(item).some(e =>
                     excludeColumns.includes(e) ? false : item[e].toString().toLowerCase().includes(lowercaseSearch)
                 )
@@ -141,25 +72,9 @@ const AddFriends = (props) => {
     const [buttonText, setButtonText] = useState("Add Friend")
     const changeText = (text) => setButtonText(text)
 
-    let addFriend = param => e => { // param is the argument you passed to the function; e is the event object that returned
+    let addFriend = param => e => {
         changeText("Added")
         user.friends.push(param)
-        // setUser(prevState => ({
-        //     ...prevState,
-        //     friends: 
-        // }))
-        // axios.post("/profile", setUser)
-        //     .then(response => {
-        //         console.log(response)
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //     });
-        // console.log(setUser)
-        // props.history.push({
-        //     pathname: "/profile",
-        //     state: {editState: setUser}
-        // });
     }
 
     // Line for alert
