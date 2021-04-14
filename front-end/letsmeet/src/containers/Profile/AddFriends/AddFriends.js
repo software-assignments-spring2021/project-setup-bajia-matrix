@@ -74,7 +74,7 @@ const AddFriends = (props) => {
         for (let friend of user.friends) {
             if(friend.email === e) {
                 setIsFriend(true)
-                break
+                return
             }
         }
         // Check MongoDB to see if email is associated with a user
