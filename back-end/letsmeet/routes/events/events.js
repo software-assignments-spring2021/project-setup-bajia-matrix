@@ -31,7 +31,10 @@ router.post("/", (req, res, next) => {
             if (err) {
                 res.status(500).json({message: "ERROR 500: Issue with creating event"});
             } else {
-                res.send("200 OK: Sucessfully created event");
+                res.send({
+                    data: "200 OK: Sucessfully created event",
+                    newEventURL: event._id
+                });
             }
         })
     } else {
