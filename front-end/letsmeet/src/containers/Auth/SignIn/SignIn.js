@@ -34,7 +34,7 @@ const SignIn = () => {
 
     let onSubmit = (e) => {
         e.preventDefault();
-        axios.post("/auth/login", authState)
+        axios.post("/auth/signin", authState)
             .then(response => {
                 console.log(response.data);
 

@@ -11,7 +11,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 
-router.post("/", async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   //console.log("wrong");
 
   const { firstName, lastName, email, password, verifiedPassword } = req.body;
@@ -110,7 +110,7 @@ router.post("/", async (req, res, next) => {
 
 // Login
 // Create token and return to user (httpOnly cookies)
-router.post("/login", async (req, res, next) => {
+router.post("/signin", async (req, res, next) => {
   const { email, password } = req.body;
   const email_val = email;
   //console.log(email_val);

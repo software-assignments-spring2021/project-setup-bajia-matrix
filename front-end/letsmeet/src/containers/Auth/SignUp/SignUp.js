@@ -151,9 +151,9 @@ const SignUp = () => {
         e.preventDefault();
         console.log("submitting");
         const userID = 123;
-        let url = '/auth';
+        
         // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
-        axios.post(url , authState)
+        axios.post("/auth/signup" , authState)
             .then(response => {
                 console.log(response);
             })
