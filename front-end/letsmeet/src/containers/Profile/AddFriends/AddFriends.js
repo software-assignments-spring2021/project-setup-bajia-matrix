@@ -80,13 +80,13 @@ const AddFriends = (props) => {
         // Check MongoDB to see if email is associated with a user
         if (!isFriend) {
             axios.get("/profile?findUser=true&searchEmail=" + e.toLowerCase().trim())
-            .then(response => {
-                setData(response.data)
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+                .then(response => {
+                    setData(response.data)
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
         }
     }
 
@@ -96,6 +96,14 @@ const AddFriends = (props) => {
     let addFriend = param => e => {
         changeText("Added")
         user.friends.push(param)
+
+        axios.post("/profile", user)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            })
     }
 
     // Line for alert
