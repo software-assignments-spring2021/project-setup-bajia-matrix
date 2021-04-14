@@ -128,9 +128,9 @@ const EventSupplies = () => {
               <Table striped bordered hover size="sm" class="table table-fixed" >
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Price</th>
                     <th>Product</th>
+                    <th>Price</th>
+                    <th>Name</th>
                     <th>Owed</th>
                    </tr>
                   </thead>

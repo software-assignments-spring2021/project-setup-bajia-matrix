@@ -11,7 +11,7 @@ import axios from '../../../axios';
         This component does not accept any custom props
 */
 
-const SignIn = () => {
+const SignIn = (props) => {
     const [authState, setauthState] = useState({
         email: "",
         password: "",
@@ -19,7 +19,7 @@ const SignIn = () => {
 
     const [errorMessage, setErrorMessage] = useState("");
 
-    let myChangeHandler = (event) => {
+    const myChangeHandler = (event) => {
         // update authState immutably
         const updatedAuthState = {
           ...authState
@@ -32,23 +32,34 @@ const SignIn = () => {
         setauthState(updatedAuthState);
     }
 
-    let onSubmit = (e) => {
-        //e.preventDefault();
+    const [submitting, setSubmitting] = useState(false);
 
-        axios.get("/auth")
+    const onSubmit = (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+
+        axios.post("/auth/signin", authState)
             .then(response => {
-                if (response.password !== authState.password) {
-                    // TODO: if auth failed, should change so page reloads and displays this message 
-                    setErrorMessage(<strong>Either your email is incorrect or your password does not match!</strong>);
+                if (response.data.success) {
+                    localStorage.setItem('userID', response.data.uid);
+                    localStorage.setItem('isAuthenticated', true);
+                   
+                    props.history.push("/");
                 }
                 else {
-                    console.log("signed in!");
-                    this.props.isAuthenticated = true;
-                    // authenticated
+                    // TODO: if auth failed, should change so page reloads and displays this message 
+                    setErrorMessage(<strong>Either your email is incorrect or your password does not match!</strong>);
+                    localStorage.setItem("userID", "");
+                    localStorage.setItem("isAuthenticated", false)
+                    console.log(response.data.message);
+                    window.location.reload(false);
                 }
             })
             .catch(error => {
-              console.log(error);
+                localStorage.setItem("userID", "");
+                localStorage.setItem("isAuthenticated", false)
+                console.log(error.response.data.message);
+                window.location.reload(false);
             });      
     }
 
@@ -88,7 +99,10 @@ const SignIn = () => {
                     </div>
                 </div>
 
-                <button type="submit" onClick={onSubmit} className="btn btn-primary btn-block">Submit</button>
+                <div>
+                    <button type="submit" onClick={onSubmit} className="btn btn-primary btn-block">Submit</button>
+                    {submitting ? <p>Signing in...</p> : null}
+                </div>
                 <p className="Create Account">
                         Need an Account?
                 <a href="/signup"> Create Account</a>

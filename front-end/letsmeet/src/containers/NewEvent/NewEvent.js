@@ -93,8 +93,8 @@ const NewEvent = (props) => {
     })
 
     useEffect(() => {
-        // TODO: change user id to currently logged in user
-        const id = "6071f92b7278a8a7c6d70217";
+        const id = localStorage.getItem("userID");
+      
         axios.get("/profile?userid=" + id)
             .then(response => {
                 setProfileState(response.data)

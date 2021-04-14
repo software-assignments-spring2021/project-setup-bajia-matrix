@@ -23,7 +23,7 @@ const sideDrawer = (props) => {
     if (props.open) {
         attachedClasses = [classes.SideDrawer, classes.Open];
     }
-
+   
     return (
         <div>
             {/* able to close sidedrawer if click on hamburger menu or backdrop */}
