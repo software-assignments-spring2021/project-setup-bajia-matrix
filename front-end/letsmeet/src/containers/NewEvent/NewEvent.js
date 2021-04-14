@@ -94,7 +94,7 @@ const NewEvent = (props) => {
 
     useEffect(() => {
         // TODO: change user id to currently logged in user
-        const id = "6071f92b7278a8a7c6d70217";
+        const id = "6071f98b83a8d5a81f763cab";
         axios.get("/profile?userid=" + id)
             .then(response => {
                 setProfileState(response.data)
@@ -156,8 +156,8 @@ const NewEvent = (props) => {
         newEventCopy.availability = schedule;
         newEventCopy.startDate = startDate;
         if (props.isAuthenticated) {
-            newEventCopy.creator = profileState.name;
             newEventCopy.creatorID = profileState._id;
+            newEventCopy.creator = profileState.name; 
         }
 
         axios.post("/events?new=true", newEventCopy)

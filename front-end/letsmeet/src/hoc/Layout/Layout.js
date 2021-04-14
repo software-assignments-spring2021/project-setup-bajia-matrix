@@ -27,11 +27,11 @@ const Layout = (props) => {
         showSideDrawer: false
     });
 
-    let sideDrawerClosedHandler = () => {
+    const sideDrawerClosedHandler = () => {
         setShow({showSideDrawer: false});
     };
 
-    let sideDrawerToggleHandler = () => {
+    const sideDrawerToggleHandler = () => {
         setShow((prevState) => {
             return {showSideDrawer: !prevState.showSideDrawer};
         });

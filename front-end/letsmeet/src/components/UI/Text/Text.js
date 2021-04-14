@@ -50,7 +50,7 @@ const text = (props) => {
         }
     }
 
-    let display = lines.map((line, index) => (
+    const display = lines.map((line, index) => (
         <p key={index}>{line}</p>
     ));
     

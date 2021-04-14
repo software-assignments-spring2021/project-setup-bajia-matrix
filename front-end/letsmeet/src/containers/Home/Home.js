@@ -7,7 +7,6 @@ import axios from '../../axios';
 import Event from '../../components/Event/Event';
 import EventInvite from '../../components/Event/EventInvite/EventInvite';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { LeftCircleFilled } from '@ant-design/icons';
 
 /*
     This component displays the home page with a signed in user.
@@ -19,174 +18,146 @@ import { LeftCircleFilled } from '@ant-design/icons';
         This component does not accept any custom props
 */
 
-// TODO: display myEvents and upcomingEvents and pendingInvites using custom sorter
-// sort by earliest date to latest. Better to do this in front-end or do it in back-end
-// and pass a sorted array to front-end? I think back-end is best
 const Home = (props) => {
     const [loading, setLoading] = useState(true);
-
-    // TODO: comment out eventsList items when mockaroo runs out of requests
-    const [eventsState, setEventsState] = useState([
-        // {
-        //     id: {
-        //         $oid: "1"
-        //     },
-        //     title: "Study Date",
-        //     day: "Wed",
-        //     date: "Mar 10",
-        //     time: "5:00 pm",
-        //     description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-        //     attendees: [
-        //         "Angela"
-        //     ],
-        //     myCreatedEvent: true,
-        //     creator: "Angela"
-        // },
-        // {
-        //     id: {
-        //         $oid: "2"
-        //     },
-        //     title: "Brunch",
-        //     day: "Sat",
-        //     date: "Mar 6",
-        //     time: "11:00 am",
-        //     description: "Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. ",
-        //     attendees: [
-        //         "Jessica",
-        //         "James",
-        //         "Ethan",
-        //         "Kai"
-        //     ],
-        //     myCreatedEvent: false,
-        //     creator: "Jessica"
-        // },
-        // {
-        //     id: {
-        //         $oid: "3"
-        //     },
-        //     title: "Alex's Birthday",
-        //     day: "Wed",
-        //     date: "Mar 24",
-        //     time: "7:30 pm",
-        //     description: "The purpose of lorem ipsum is to create a natural looking block of text (sentence, paragraph, page, etc.) that doesn't distract from the layout. A practice not without controversy, laying out pages with meaningless filler text can be very useful when the focus is meant to be on design, not content.",
-        //     attendees: [
-        //         "Alex",
-        //         "Tom",
-        //         "Alice"
-        //     ],
-        //     myCreatedEvent: false,
-        //     creator: "Alex"
-        // }
-    ]);
-
-    // TODO: comment out invites list when mockaroo runs out of requests
-    const [invitesState, setInvitesState] = useState([
-        // {
-        //     id: 1,
-        //     title: "Movie Night",
-        //     range: "March 15th - March 19th",
-        //     description: "Until recently, the prevailing view assumed lorem ipsum was born as a nonsense text. “It's not Latin, though it looks like it, and it actually says nothing,” Before & After magazine answered a curious reader, “Its ‘words’ loosely approximate the frequency with which letters occur in English, which is why at a glance it looks pretty real.”",
-        //     inviter: "Ethan",
-        //     eventLocation: "Regal Union Square",
-        //     startDate: "March 15, 2021"
-        // }
-    ]);
+    const [invitesState, setInvitesState] = useState([]); 
+    const [myEventsState, setMyEventsState] = useState([]);
+    const [upcomingEventsState, setUpcomingEventsState] = useState([]);
+    const id = "6071f9ab0239b3a831836df1"; // TODO: change to props.id once Rahul is done with auth
 
     useEffect(() => {
-        const userID = 123;
-        // TODO: should only get events with current user listed in attendees list
-        axios.get("/?userid=" + userID)
+        axios.get("/?userid=" + id)
             .then(response => {
-                let list = response.data.events;
-                if (props.location.state) {
-                    list.push(props.location.state.newUpcomingEvent)
-                }
-                setEventsState(list);
-                
-                list = response.data.invites;
+                // invites
+                let list = response.data.invites;
                 setInvitesState(list);
+
+                // my events
+                list = response.data.myEvents;
+                setMyEventsState(list);
+                
+                // upcoming events
+                list = response.data.upcomingEvents;
+                setUpcomingEventsState(list);
+
+                // disable spinner
                 setLoading(false);
             })
             .catch(error => {
-                console.log("There is an error")
-                console.log(error);
+                console.log(error.response.data);
                 setLoading(false);
             });
     }, []);
 
-    const [profileState, setProfileState] = useState({
-        friends: []
-    })
-
-    useEffect(() => {
-        // TODO: change user id to currently logged in user
-        const id = "6071f92b7278a8a7c6d70217";
-        axios.get("/profile?userid=" + id)
-            .then(response => {
-                setProfileState(response.data)
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }, []);
-
-    let pendingInvites = invitesState.map((e) => {
+    const pendingInvites = invitesState.map(e => {
         return (
             <EventInvite
                 key={e._id}
+                id={e._id}
                 title={e.title}
-                range={e.range}
+                start={e.startDate}
                 description={e.description}
-                inviter={e.inviter}
-                eventLocation={e.eventLocation}
-                startDate={e.startDate}
+                inviter={e.creator}
+                userId={id}
             />
         );
     });
 
-    let myEvents = eventsState.map((e) => {
-        if (e.creator.id === profileState._id) {
-            return (
-                <Event
-                    id={e._id}
-                    title={e.title}
-                    day={e.day}
-                    date={e.date}
-                    time={e.time}
-                    description={e.description}
-                    attendees={e.attendees}
-                    myCreatedEvent={e.myCreatedEvent}
-                    creator={e.creator}
-                />
-            );
+    // accepts a datetime (Date object) and converts it into day, date, and time
+    const formatDateTime = (datetime) => {
+        const finalDate = datetime.toLocaleString("en-US",  {
+            hour12: true,
+            month: "2-digit",
+            day: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+        const dt = finalDate.split(", ");
+
+        // get day
+        const weekday = [
+            "Sun",
+            "Mon",
+            "Tues",
+            "Wed",
+            "Thurs",
+            "Fri",
+            "Sat"
+        ];
+        const day = weekday[datetime.getDay()];
+        const date = dt[0];
+        const time = dt[1];
+
+        return [day, date, time];
+    };
+
+    const myEvents = myEventsState.map(e => {
+        let day = null;
+        let date = null;
+        let time = null;
+
+        // TODO remove the ! when finalDate exists again
+        if (!e.finalDate) {
+            // TODO: replace mockDate with e.finalDate
+            const mockDate = new Date("2021-04-19T13:00:00.000Z");
+            [day, date, time] = formatDateTime(mockDate);
         }
-        else {
-            return null;
-        }
+        
+        const attendeesList = e.attendees.map(a => {
+            return a.name;
+        });
+        
+        return (
+            <Event
+                key={e._id}
+                id={e._id}
+                title={e.title}
+                day={day}
+                date={date}
+                time={time}
+                myCreatedEvent={true}
+                description={e.description}
+                attendees={attendeesList}
+                creator={e.creator}
+            />
+        );
     }, []);
 
-    let upcomingEvents = eventsState.map((e) => {
-        if (e.creator.id !== profileState._id) {
-            return (
-                <Event
-                    id={e._id}
-                    title={e.title}
-                    day={e.day}
-                    date={e.date}
-                    time={e.time}
-                    description={e.description}
-                    attendees={e.attendees}
-                    myCreatedEvent={e.myCreatedEvent}
-                    creator={e.creator}
-                />
-            );
+    const upcomingEvents = upcomingEventsState.map((e) => {
+        let day = null;
+        let date = null;
+        let time = null;
+
+        // TODO remove the ! when finalDate exists again
+        if (!e.finalDate) {
+            // TODO: replace mockDate with e.finalDate
+            const mockDate = new Date("2021-04-19T13:00:00.000Z");
+            [day, date, time] = formatDateTime(mockDate);
         }
-        else {
-            return null;
-        }
+        
+        const attendeesList = e.attendees.map(a => {
+            return a.name;
+        });
+
+        return (
+            <Event
+                key={e._id}
+                id={e._id}
+                title={e.title}
+                day={day}
+                date={date}
+                time={time}
+                myCreatedEvent={false}
+                description={e.description}
+                attendees={attendeesList}
+                creator={e.creator}
+            />
+        );
     });
 
-    let newEventHandler = () => {
+    const newEventHandler = () => {
         props.history.push("/user/newevent");
     }
 
@@ -195,18 +166,21 @@ const Home = (props) => {
     if (!loading) {
         homePage = (
             <div className={classes.Home}>
-                {invitesState.length > 0 ? <h5>Pending Invitations</h5> : null}
+                <h5>Pending Invitations</h5>
                 <div className={classes.Event}>
+                    {(pendingInvites.length === 0) ? <p>You have no pending invitations at the moment.</p> : null}
                     {pendingInvites}
                 </div>
                 <br />
                 <Button className={classes.Button} variant="outline-dark" onClick={newEventHandler}>Create New Event</Button>
                 <h5>Your Events</h5>
                 <div className={classes.Event}>
+                    {(myEvents.length === 0) ? <p>You do not have any created events at the moment.</p> : null}
                     {myEvents}
                 </div>
                 <h5>Other Upcoming Events</h5>
                 <div className={classes.Event}>
+                    {(upcomingEvents.length === 0) ? <p>You do not have any upcoming events at the moment.</p> : null}
                     {upcomingEvents}    
                 </div>
             </div>

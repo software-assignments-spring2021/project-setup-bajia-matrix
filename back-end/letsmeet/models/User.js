@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
 	avatar: {type: String, required: false},
     friends: [
         {
+            _id: false,
             id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
             name: {type: String, required: true},
             email: {type: String, required: true}
