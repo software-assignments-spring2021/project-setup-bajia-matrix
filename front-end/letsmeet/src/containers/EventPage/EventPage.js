@@ -21,7 +21,6 @@ import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
 */
 
 const EventPage = (props) => {
-  const key = "57a7ac80";
 
   const [loading, setLoading] = useState({
     event: true,
@@ -46,7 +45,7 @@ const EventPage = (props) => {
       "Faye Valentine",
     ],
     creator: "Angela Tim",
-    roles: new Array(),
+    roles: [],
     suggestedTimes: [
       { "Day": "Saturday", "Date": "10/30/2020", "Time": "2:09 AM" },
       { "Day": "Saturday", "Date": "04/27/2021", "Time": "7:15 AM" },
@@ -299,7 +298,6 @@ const EventPage = (props) => {
   //for withdrawing from event
   const handleWithdraw = () => {
     let eventCopy = event;
-    let attendeesCopy = [...event.attendees];
     //TODO: remove user from event attendees & eventCopy attendees
 
     let withdrawnCopy = [...event.withdrawn];
@@ -401,7 +399,7 @@ const EventPage = (props) => {
         // console.log(event.creator);
       }
     }
-  }, [event.creator, user.name]);
+  }, [event.creator, user.name, props.isAuthenticated]);
 
   useEffect(() => {
     //console.log(event);

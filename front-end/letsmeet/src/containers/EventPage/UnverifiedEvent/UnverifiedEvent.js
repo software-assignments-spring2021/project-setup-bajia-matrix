@@ -28,9 +28,7 @@ const UnverifiedEvent = (props) => {
       <Row className={classes.EventTitle}>
         <EventTitle
           title={props.event.title}
-          day={props.event.day}
-          date={props.event.date}
-          time={props.event.time}
+          event={props.event}
           location={props.event.eventLocation}
         />
       </Row>
@@ -52,6 +50,7 @@ const UnverifiedEvent = (props) => {
       <h5 className="ml-2">Event Attendees</h5>
       <div className={classes.UnverifiedAttendees}>
         <EventAttendees
+          event={props.event}
           attendees={props.event.attendees}
           roles={props.event.roles}
           isAuthenticated={props.state.isAuthenticated}

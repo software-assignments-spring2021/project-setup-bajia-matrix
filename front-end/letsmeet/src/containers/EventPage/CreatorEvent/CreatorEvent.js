@@ -161,7 +161,6 @@ const CreatorEvent = (props) => {
                             <Option value="tom">Tom</Option>
                           </Select>
                           <Button
-                            className="ml-3"
                             onClick={props.addVerified}
                             className={classes.AddVerified}
                           >

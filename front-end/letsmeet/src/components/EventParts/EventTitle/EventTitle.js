@@ -22,7 +22,10 @@ import classes from './EventTitle.module.css';
 const EventTitle = (props) => (
     <div className={classes.EventTitle}>
         <h1>{props.title}</h1>
-        {!props.newEventAuthentication && <h5>{props.day}, {props.date} @ {props.time}</h5>}
+        {props.event.finalDate !== "" ?
+            [(!props.newEventAuthentication && <h5>{props.event.finalDate}</h5>)]
+            : [(!props.newEventAuthentication && <h5>{props.event.startDate}</h5>)]
+        }
         {props.showCreator && <p>Event creator: <b>{props.creator}</b></p>}
         {props.location && <p><EnvironmentOutlined className={classes.Icon}/> <b>{props.location}</b></p>}
         <p>{props.description}</p>
