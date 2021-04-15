@@ -84,10 +84,6 @@ const NewEvent = (props) => {
         window.location.assign('/');
     }
 
-    const handleCancel = () => {
-        setIsModalVisible(false)
-    }
-
     const [profileState, setProfileState] = useState({
         friends: []
     })
@@ -336,7 +332,18 @@ const NewEvent = (props) => {
                         
                     <Button type="primary" htmlType="submit" className={classes.formButton} onClick={sendToBackend(form)}>Submit</Button>
 
-                    <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
+                    <Modal 
+                        title="Event created successfully!" 
+                        visible={isModalVisible} 
+                        onOk={handleOk} 
+                        closable={false} 
+                        centered
+                        footer={[
+                            <Button key="submit" type="primary" onClick={handleOk}>
+                              Done
+                            </Button>
+                          ]}
+                    >
                         {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
                         {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
                         <CopyToClipboard text={url} className={classes.copyLink}>
