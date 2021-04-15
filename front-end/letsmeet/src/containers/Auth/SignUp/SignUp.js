@@ -12,7 +12,7 @@ import axios from '../../../axios';
         This component does not accept any custom props
 */
 
-const SignUp = () => {
+const SignUp = (props) => {
     const [validForm, setValidForm] = useState(false);
 
     const [authState, setAuthState] = useState({
@@ -39,9 +39,8 @@ const SignUp = () => {
     });
 
     const [errorMessage, setErrorMessage] = useState("");
-    // console.log("hello: ", authState);
     
-    let myChangeHandler = (event) => {
+    const myChangeHandler = (event) => {
         // update state immutably to do validation correctly
 
         // first copy first layer of state
@@ -147,18 +146,32 @@ const SignUp = () => {
         setAuthState(updatedAuthState);
     };
 
-    let onSubmit = (e) => {
+    const [submitting, setSubmitting] = useState(false);
+
+    const onSubmit = (e) => {
         e.preventDefault();
         console.log("submitting");
-        const userID = 123;
-        let url = '/auth';
-        // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
-        axios.post(url , authState)
+
+        setSubmitting(true);
+
+        axios.post("/auth/signup" , authState)
             .then(response => {
-                console.log(response);
+                // console.log(response);
+                localStorage.setItem('userID', response.data.uid);
+                localStorage.setItem('isAuthenticated', true);
+                props.history.push("/"); 
             })
             .catch(function (error) {
-                console.log(error);
+                localStorage.setItem("userID", "");
+                localStorage.setItem("isAuthenticated", false)
+                console.log(error.response.data.message);
+                window.location.reload(false);
+
+                // Bing to Rahul: you should display some message after reloading if account creation fails.
+                // such as: "There is already an account associated with that Email address!"
+                // Something that might help: First attempt at signup, localStorage will have nothing
+                // Second attempt, localStorage will have isAuthenticated: false, userID: ""
+                // Same thing for sign in page
             });;
     };
 
@@ -232,17 +245,19 @@ const SignUp = () => {
                         required
                     />
                     <div className="text-danger">{errorMessage}</div>
-                    {/* {authState.verifiedPassword} */}
                 </div>
 
-                <button
-                    type="submit"
-                    onClick={onSubmit}
-                    className="btn btn-primary btn-block"
-                    disabled={!validForm}>
-                    {" "}
-                    Sign Up
-                </button>
+                <div>
+                    <button
+                        type="submit"
+                        onClick={onSubmit}
+                        className="btn btn-primary btn-block"
+                        disabled={!validForm}>
+                        {" "}
+                        Sign Up
+                    </button>
+                    {submitting ? <p>Creating account...</p> : null}
+                </div>
                 <p className="Already Registered">
                     Already registered? <a href="/signin">Sign In</a>
                 </p>

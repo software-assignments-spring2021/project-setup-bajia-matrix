@@ -38,20 +38,40 @@ async function send(res, user) {
 };
 
 router.get("/", async (req, res, next) => {
-    const id = req.query.userid;
-    console.log("get request on route /profile with user id " + id);
-    
-    // find user, replace friends with list of names instead of ObjectIds, and send
-    User.findById(id)
-        .then(user => {
-            let viewedUser = JSON.parse(JSON.stringify(user));
-            send(res, viewedUser);
-        })
-        .catch(error => {
-            console.log("ERROR: Unable to retrieve user.");
-            console.log(error);
-            res.status(500).send("ERROR 500: Issue finding user");
-        });
+
+    // If looking to add a friend
+    if (req.query.findUser) {
+        const searchEmail = req.query.searchEmail;
+        console.log("get request on route /profile to find user with email " + searchEmail);
+
+        User.find({ email : searchEmail })
+            .then(newFriend => {
+                res.json(newFriend)
+            })
+            .catch(error => {
+                console.log("ERROR: Unable to retrieve user with searched email.")
+                console.log(error);
+                res.status(500).send("ERROR 500: Issue finding user with searched email");
+            })
+    }
+
+    // Find current user
+    else {
+        const id = req.query.userid;
+        console.log("get request on route /profile with user id " + id);
+        
+        // find user, replace friends with list of names instead of ObjectIds, and send
+        User.findById(id)
+            .then(user => {
+                let viewedUser = JSON.parse(JSON.stringify(user));
+                send(res, viewedUser);
+            })
+            .catch(error => {
+                console.log("ERROR: Unable to retrieve user.");
+                console.log(error);
+                res.status(500).send("ERROR 500: Issue finding user");
+            });
+    }
 });
 
 router.post("/", (req, res, next) => {

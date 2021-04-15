@@ -67,14 +67,14 @@ const NewEvent = (props) => {
     // when clicking submit
     function handleSubmit(e) {
         e.preventDefault()
-        // TODO: send schedule to backend from week view
     }
 
     // Event pop-up after pressing submit
     const [isModalVisible, setIsModalVisible] = useState(false)
 
-    const showModal = () => {
+    const showModal = (param) => e => {
         setIsModalVisible(true)
+        sendToBackend(param)
     }
 
     const [url, setUrl] = useState("");
@@ -84,17 +84,13 @@ const NewEvent = (props) => {
         window.location.assign('/');
     }
 
-    const handleCancel = () => {
-        setIsModalVisible(false)
-    }
-
     const [profileState, setProfileState] = useState({
         friends: []
     })
 
     useEffect(() => {
-        // TODO: change user id to currently logged in user
-        const id = "6071f98b83a8d5a81f763cab";
+        const id = localStorage.getItem("userID");
+      
         axios.get("/profile?userid=" + id)
             .then(response => {
                 setProfileState(response.data)
@@ -111,7 +107,7 @@ const NewEvent = (props) => {
 
     const [newCreatedEvent, setNewCreatedEvent] = useState({
         title: "",
-        location: "",
+        eventLocation: "",
         description: "",
         invitees: []
     })
@@ -123,7 +119,7 @@ const NewEvent = (props) => {
             setNewCreatedEvent(prevState => ({
                 ...prevState,
                 title: param.getFieldValue('Event Title'),
-                location: param.getFieldValue('Location'),
+                eventLocation: param.getFieldValue('Location'),
                 description: param.getFieldValue('Event Description'),
                 invitees: inviteesList,
                 creator: profileState.name,
@@ -134,7 +130,7 @@ const NewEvent = (props) => {
             setNewCreatedEvent(prevState => ({
                 ...prevState,
                 title: param.getFieldValue('Event Title'),
-                location: param.getFieldValue('Location'),
+                eventLocation: param.getFieldValue('Location'),
                 description: param.getFieldValue('Event Description'),
                 invitees: inviteesList,
             }))
@@ -175,6 +171,7 @@ const NewEvent = (props) => {
             });
         
         console.log(newCreatedEvent);
+        setIsModalVisible(true);
     }
 
     return (
@@ -195,7 +192,7 @@ const NewEvent = (props) => {
                     onValuesChange={onRequiredTypeChange}
                     requiredMark={requiredMark}
                     submit={handleSubmit}
-                    onFinish={showModal}
+                    onFinish={sendToBackend(form)}
                 >
                     <Form.Item 
                         label="Event Title" 
@@ -336,9 +333,20 @@ const NewEvent = (props) => {
                         </Form.Item>
                     </>}
                         
-                    <Button type="primary" htmlType="submit" className={classes.formButton} onClick={sendToBackend(form)}>Submit</Button>
+                    <Button type="primary" htmlType="submit" className={classes.formButton} >Submit</Button>
 
-                    <Modal title="Event created successfully!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
+                    <Modal 
+                        title="Event created successfully!" 
+                        visible={isModalVisible} 
+                        onOk={handleOk} 
+                        closable={false} 
+                        centered
+                        footer={[
+                            <Button key="submit" type="primary" onClick={handleOk}>
+                              Done
+                            </Button>
+                          ]}
+                    >
                         {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
                         {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
                         <CopyToClipboard text={url} className={classes.copyLink}>
