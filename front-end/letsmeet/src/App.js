@@ -6,6 +6,8 @@ import Layout from './hoc/Layout/Layout';
 import Landing from './components/Landing/Landing';
 import SignIn from '../src/containers/Auth/SignIn/SignIn';
 import SignUp from '../src/containers/Auth/SignUp/SignUp';
+import SignOut from '../src/containers/Auth/SignOut/SignOut';
+
 
 import Home from './containers/Home/Home';
 import Profile from './containers/Profile/Profile';
@@ -55,6 +57,7 @@ const App = (props) => {
                 <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={isAuthenticated} />} />
                 <Route path="/editfriends" exact component={AddFriends} />
                 <Route path="/user/acceptinvite" exact component={AcceptInvite}/>
+                <Route path="/signout" exact component={SignOut} />
                 <Route path="/editavatar" exact component={EditAvatar} />
                 <Route path="/editprofile" exact component={EditProfile} />
                 <Route path="/" exact component={Home} />
