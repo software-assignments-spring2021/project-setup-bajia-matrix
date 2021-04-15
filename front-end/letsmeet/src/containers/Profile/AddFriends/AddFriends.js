@@ -108,6 +108,7 @@ const AddFriends = (props) => {
         const userCopy = { ...user };
         const friendsList = [ ...userCopy.friends ];
         
+        console.log(param)
         const newFriend = {
             id: param._id,
             name: param.name,
@@ -125,6 +126,28 @@ const AddFriends = (props) => {
             .catch(error => {
                 console.log(error.response.data);
             })
+
+        // Update new friend's friends list as well
+        const friendCopy = { ...param }
+        const friendsFriendsList = [ ...friendCopy.friends ];
+
+        const updateFriend = {
+            id: userCopy._id,
+            name: userCopy.name,
+            email: userCopy.email
+        }
+
+        friendsFriendsList.push(updateFriend);
+        friendCopy.friends = friendsFriendsList;
+        
+        axios.post("/profile", friendCopy)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            })
+
     }
 
     // Line for alert
