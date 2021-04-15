@@ -168,21 +168,21 @@ router.post("/signin", async (req, res, next) => {
     //     });
 });
 
-router.post("/signout", async (req, res, next) => {
-  console.log("OUTT");
-  try {
-    req.user.tokens = req.user.tokens.filter((token) => {
-        return token.token != req.token
-    })
-    await req.user.save()
-    res.send()
-} catch (error) {
-    res.status(500).send(error)
-}
+// router.post("/signout", async (req, res, next) => {
+//   console.log(res.data);
+//   try {
+//     req.user.tokens = req.user.tokens.filter((token) => {
+//         return token.token != req.token
+//     })
+//     await req.user.save()
+//     res.send()
+// } catch (error) {
+//     res.status(500).send(error)
+// }
   
   
       
-});
+// });
 
 
 module.exports = router;

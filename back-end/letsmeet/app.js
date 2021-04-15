@@ -14,4 +14,5 @@ app.use("/splitCosts", require("./routes/events/splitCosts"));
 
 
 
+
 module.exports = app;
