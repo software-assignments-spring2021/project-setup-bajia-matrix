@@ -25,8 +25,8 @@ import Text from '../UI/Text/Text';
 const event = (props) => {
     const attendeesList = props.attendees ? props.attendees.sort().join(', ') : [];
 
-    const manageEventHandler = () => {
-        props.history.push(`/event/id:${props.id}`);
+    let manageEventHandler = () => {
+        props.history.push(`/event/${props.id}`);
     };
 
     return (

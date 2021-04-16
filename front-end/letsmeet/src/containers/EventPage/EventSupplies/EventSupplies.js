@@ -124,8 +124,8 @@ const EventSupplies = () => {
               <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
-            <div class="table-responsive">
-              <Table striped bordered hover size="sm" class="table table-fixed" >
+            <div className="table-responsive">
+              <Table striped bordered hover size="sm" className="table table-fixed" >
                 <thead>
                   <tr>
                     <th>Product</th>

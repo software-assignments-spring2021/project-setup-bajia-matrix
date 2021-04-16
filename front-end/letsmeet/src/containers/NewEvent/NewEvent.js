@@ -35,9 +35,9 @@ const NewEvent = (props) => {
     const [finalDay, setFinalDay] = useState(Date())
 
     function handleFinalDate(date, dateString) {
-        setFinalDate(dateString)
+        setFinalDate(date.format('LL'))
         setFinalDay(moment(dateString).format('dddd'))
-        console.log(dateString)
+        console.log(date)
     }
 
     function handleFinalTime(date) {
@@ -154,6 +154,10 @@ const NewEvent = (props) => {
         if (props.isAuthenticated) {
             newEventCopy.creatorID = profileState._id;
             newEventCopy.creator = profileState.name; 
+        } else {
+            newEventCopy.finalDate = finalDate;
+            newEventCopy.finalDay = finalDay;
+            newEventCopy.finalTime = finalStartTime + ' - ' + finalEndTime;
         }
 
         axios.post("/events?new=true", newEventCopy)
