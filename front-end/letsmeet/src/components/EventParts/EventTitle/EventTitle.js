@@ -26,7 +26,7 @@ const EventTitle = (props) => (
         {props.day === "" 
         ? <h5>Week of {props.event.startDate} @ TBA</h5>
         : [(!props.newEventAuthentication
-            ? <h5>{props.day}, {props.date} @ {props.time}</h5>
+            ? <h5 key="idk why this needs a key but okay go off react">{props.day}, {props.date} @ {props.time}</h5>
             : null
             )]
         }

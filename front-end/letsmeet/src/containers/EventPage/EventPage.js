@@ -216,7 +216,6 @@ const EventPage = (props) => {
 
   useEffect(() => {
     if (event.finalDay) {
-      console.log("finalDay changed!");
       setEvent((prevState) => ({
         ...prevState,
         day: event.finalDay,

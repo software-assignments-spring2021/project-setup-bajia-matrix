@@ -54,8 +54,10 @@ const CreatorEvent = (props) => {
         <EventTitle
           title={props.event.title}
           day={props.event.day}
-          date={props.event.date}
-          time={props.event.time}
+          day={props.event.finalDay}
+          date={props.event.finalDate}
+          time={props.event.finalTime}
+          event={props.event}
           location={props.event.eventLocation}
         />
       </Row>
