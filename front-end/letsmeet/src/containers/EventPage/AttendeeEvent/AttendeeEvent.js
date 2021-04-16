@@ -69,6 +69,7 @@ const AttendeeEvent = (props) => {
                       attendees={props.event.attendees}
                       roles={props.event.roles}
                       isAuthenticated={props.state.isAuthenticated}
+                      event={props.event}
                     ></EventAttendees>
                   </Card.Body>
                   <Card.Body>

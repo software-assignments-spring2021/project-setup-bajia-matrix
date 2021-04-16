@@ -262,7 +262,7 @@ const EventPage = (props) => {
   useEffect(() => {
     //get currently logged in user info
     // TODO: change id to currently logged in user
-    const id = "6071f967768563a80b9a5aeb";
+    const id = localStorage.getItem("userID");
     axios.get("/profile?userid=" + id)
         .then((response) => {
         setUser(response.data);
@@ -273,8 +273,8 @@ const EventPage = (props) => {
   }, []);
 
   // useEffect(() => {
-  //   console.log(user.friends);
-  // }, [user.friends]);
+  //   console.log(user.name);
+  // }, [user.name]);
 
   //for canceling event
   const [show, setShow] = useState(false);
@@ -374,7 +374,7 @@ const EventPage = (props) => {
     //   //attendee: true
     // }));
     if (props.isAuthenticated) {
-      if (user.name && event.creator) {
+      if (user.name && event.title) {
         if (user.name === event.creator) {
           setState(prevState => ({
             ...prevState,
@@ -398,7 +398,7 @@ const EventPage = (props) => {
         // console.log(event.creator);
       }
     }
-  }, [event.creator, user.name, props.isAuthenticated]);
+  }, [event.title, user.name, props.isAuthenticated]);
 
   useEffect(() => {
     //console.log(event);
