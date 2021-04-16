@@ -41,7 +41,7 @@ const AcceptInvite = (props) => {
     useEffect(() => {
         const id = props.location.state.eventId;
         const userId = props.location.state.userId;
-        
+
         axios.get("/events?eventid=" + id)
             .then((response) => {
                 console.log(response.data)
@@ -94,10 +94,17 @@ const AcceptInvite = (props) => {
         }
 
         event.attendees.push(attendee)
+        
+        for (let i in event.invitees) {
+            if (user._id === event.invitees[i].id) {
+                delete event.invitees[i]
+            }
+        }
+        console.log(event.invitees)
 
         setEvent(prevState => ({
             ...prevState,
-            availability: newAvailability
+            availability: newAvailability,
         }))
 
         axios.post("/events?_id=" + event._id, event)
@@ -108,7 +115,7 @@ const AcceptInvite = (props) => {
                 console.log(error.response.data)
             })
 
-        window.location.assign('/')
+        // window.location.assign('/')
     }
 
     return (
