@@ -82,7 +82,7 @@ const AcceptInvite = (props) => {
 
     function updateInvitee() {
         // Remove user from invitee list
-        axios.delete("/events?userid=" + user._id + "&eventid=" + event._id)
+        axios.delete("/events?pending=true&userid=" + user._id + "&eventid=" + event._id)
             .then(response => {
                 console.log(response.data)
                 window.location.assign('/')
