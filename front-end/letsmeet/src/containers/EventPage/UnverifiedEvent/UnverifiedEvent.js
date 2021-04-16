@@ -68,7 +68,7 @@ const UnverifiedEvent = (props) => {
               ref={props.state.unverifiedInput}
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
-              placeholder="Enter Your Name"
+              placeholder="Enter Your Email"
             />
             <Button className="ml-3" onClick={props.addUnverified}>
               Join Event
@@ -86,7 +86,7 @@ const UnverifiedEvent = (props) => {
           <Card.Body>
             <Card.Title>Want to unlock all features?</Card.Title>
             <Card.Text>Create an account now!</Card.Text>
-            <Button href="/signup" variant="primary">
+            <Button href={props.event.unverifiedURL} variant="primary">
               Create Account
             </Button>
           </Card.Body>

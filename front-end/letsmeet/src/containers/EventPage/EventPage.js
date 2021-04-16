@@ -8,7 +8,6 @@ import Container from "react-bootstrap/Container";
 import axios from "../../axios";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
-// import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
 import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
 import CreatorEvent from "./CreatorEvent/CreatorEvent";
 import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
@@ -100,22 +99,22 @@ const EventPage = (props) => {
   }, []);
 
   let addUnverified = (e) => {
-    console.log(e.target.previousElementSibling.inputValue);
-    let newAttendee = state.unverifiedInput.current.value;
-    let newAttendees = [...event.attendees]; //make a shallow copy first
-    newAttendees.splice(1, 0, newAttendee);
-    let newRoles = [...event.roles];
-    newRoles.splice(1, 0, "Attendee");
-    let eventCopy = event;
-    eventCopy.attendees = newAttendees;
+    let attendeesCopy = [...event.attendees]; //make a shallow copy first
+    let newAttendee = {
+      name: state.unverifiedInput.current.value,
+      eventID: event._id
+    };
+    attendeesCopy.push(newAttendee);
 
-    setEvent((prevState) => ({
+    if (newAttendee.name.includes('@')) {
+      setEvent((prevState) => ({
       ...prevState,
-      attendees: newAttendees,
-      roles: newRoles,
+      attendees: attendeesCopy,
+      unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
     }))
-
-    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+    }
+  
+    axios.post("/events/newAttendee", newAttendee)
       .then((response) => {
         console.log('successfully posted new attendee: ', response);
       })

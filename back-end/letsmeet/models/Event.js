@@ -16,7 +16,7 @@ const EventSchema = new mongoose.Schema({
   attendees: [
     {
       _id: false,
-      id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "User", default: mongoose.mongo.ObjectId()},
       name: {type: String}
     }
   ],

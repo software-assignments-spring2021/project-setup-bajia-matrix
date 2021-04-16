@@ -34,15 +34,20 @@ const eventAttendees = (props) => {
     );
   }
 
-  return (
-    <ListGroup className={classes.Group}>
-      <ListGroup.Item key={props.event.creator.id} className={classes.Border}>
+  let creatorItem;
+  if (props.event.creator) {
+    creatorItem = <ListGroup.Item key={props.event.creator.id} className={classes.Border}>
         <Card className={classes.CardHeader}>
           <Card.Img src={red} className={classes.Avatar} />
           <Card.Body className={classes.Name}><p>{props.event.creator}</p></Card.Body>
           <Card.Body className={classes.Role}><p>Creator</p></Card.Body>
         </Card>
       </ListGroup.Item>
+  }
+
+  return (
+    <ListGroup className={classes.Group}>
+      {creatorItem}
       {attendeesList}
     </ListGroup>
   );
