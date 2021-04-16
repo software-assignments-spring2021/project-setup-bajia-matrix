@@ -86,9 +86,14 @@ const UnverifiedEvent = (props) => {
           <Card.Body>
             <Card.Title>Want to unlock all features?</Card.Title>
             <Card.Text>Create an account now!</Card.Text>
-            <Button href={props.event.unverifiedURL} variant="primary">
-              Create Account
-            </Button>
+            {props.event.unverifiedURL
+              ? <Button href={props.event.unverifiedURL} variant="primary">
+                  Create Account
+                </Button>
+              : <Button href='/signup' variant="primary">
+                  Create Account
+                </Button>
+            }
           </Card.Body>
           <Card.Footer className="text-muted"></Card.Footer>
         </Card>
