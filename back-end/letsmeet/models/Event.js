@@ -11,6 +11,8 @@ const EventSchema = new mongoose.Schema({
   creatorID: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
   startDate: {type: String, default: ""},
   finalDate: {type: String, default: ""},
+  finalDay: {type: String, default: ""},
+  finalTime: {type: String, default: ""},
   attendees: [
     {
       _id: false,

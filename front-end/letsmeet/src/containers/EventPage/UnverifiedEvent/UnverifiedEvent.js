@@ -29,6 +29,9 @@ const UnverifiedEvent = (props) => {
         <EventTitle
           title={props.event.title}
           event={props.event}
+          day={props.event.finalDay}
+          date={props.event.finalDate}
+          time={props.event.finalTime}
           location={props.event.eventLocation}
         />
       </Row>

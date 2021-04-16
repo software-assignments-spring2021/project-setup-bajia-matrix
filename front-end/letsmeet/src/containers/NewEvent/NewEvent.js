@@ -156,6 +156,8 @@ const NewEvent = (props) => {
             newEventCopy.creator = profileState.name; 
         } else {
             newEventCopy.finalDate = finalDate;
+            newEventCopy.finalDay = finalDay;
+            newEventCopy.finalTime = finalStartTime + ' - ' + finalEndTime;
         }
 
         axios.post("/events?new=true", newEventCopy)
