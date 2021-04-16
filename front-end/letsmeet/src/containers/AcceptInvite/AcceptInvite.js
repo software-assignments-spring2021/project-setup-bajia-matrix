@@ -41,6 +41,7 @@ const AcceptInvite = (props) => {
     useEffect(() => {
         const id = props.location.state.eventId;
         const userId = props.location.state.userId;
+
         axios.get("/events?eventid=" + id)
             .then((response) => {
                 console.log(response.data)
@@ -51,6 +52,7 @@ const AcceptInvite = (props) => {
                 console.log(error.response.data);
                 props.history.push("/"); // redirect to home page if event no longer exists
             });
+
         axios.get("/profile?userid=" + userId)
             .then(response => {
                 console.log(response.data)
@@ -78,24 +80,46 @@ const AcceptInvite = (props) => {
         e.preventDefault()
     }
 
-    // After clicking submit, reroute back to home page
-    const goHome = () => {
-        let newAvailability = event.availability
-        for (let i of schedule) {
-            newAvailability.push(i)
-        }
-        setEvent(prevState => ({
-            ...prevState,
-            availability: newAvailability
-        }))
-        axios.post("/events?_id=" + event._id, event)
+    function updateInvitee() {
+        // Remove user from invitee list
+        axios.delete("/events?pending=true&userid=" + user._id + "&eventid=" + event._id)
             .then(response => {
                 console.log(response.data)
+                window.location.assign('/')
             })
             .catch(error => {
                 console.log(error.response.data)
             })
-        window.location.assign('/')
+    }
+
+    // After clicking submit, reroute back to home page
+    const goHome = () => {
+        let newAvailability = event.availability
+
+        for (let i of schedule) {
+            newAvailability.push(i)
+        }
+
+        let attendee = {
+            id: user._id,
+            name: user.name
+        }
+
+        event.attendees.push(attendee)
+
+        setEvent(prevState => ({
+            ...prevState,
+            availability: newAvailability
+        }))
+
+        axios.post("/events?_id=" + event._id, event)
+            .then(response => {
+                console.log(response.data)    
+                updateInvitee()
+            })
+            .catch(error => {
+                console.log(error.response.data)
+            })
     }
 
     return (
