@@ -80,6 +80,18 @@ const AcceptInvite = (props) => {
         e.preventDefault()
     }
 
+    function updateInvitee() {
+        // Remove user from invitee list
+        axios.delete("/events?updateInvitee=true&userid=" + user._id + "&eventid=" + event._id)
+            .then(response => {
+                console.log(response.data)
+                window.location.assign('/')
+            })
+            .catch(error => {
+                console.log(error.response.data)
+            })
+    }
+
     // After clicking submit, reroute back to home page
     const goHome = () => {
         let newAvailability = event.availability
@@ -94,28 +106,20 @@ const AcceptInvite = (props) => {
         }
 
         event.attendees.push(attendee)
-        
-        for (let i in event.invitees) {
-            if (user._id === event.invitees[i].id) {
-                delete event.invitees[i]
-            }
-        }
-        console.log(event.invitees)
 
         setEvent(prevState => ({
             ...prevState,
-            availability: newAvailability,
+            availability: newAvailability
         }))
 
         axios.post("/events?_id=" + event._id, event)
             .then(response => {
-                console.log(response.data)
+                console.log(response.data)    
+                updateInvitee()
             })
             .catch(error => {
                 console.log(error.response.data)
             })
-
-        // window.location.assign('/')
     }
 
     return (

@@ -52,17 +52,36 @@ router.post("/", (req, res, next) => {
 });
 
 router.delete("/", (req, res, next) => {
-    const eventid = req.query.eventid;
-    console.log("delete request on route /events with for event with id " + eventid);
-
-    Event.findByIdAndDelete(id)
-        .then(deletedEvent => {
-            res.send("200 OK: Successfully deleted event");
+    if (req.query.updateInvitee) {
+        const userId = req.query.userid;
+        const eventId = req.query.eventid;
+        Event.findOneAndUpdate({ _id: eventId }, {$pull: {
+            invitees : { 
+                id: userId 
+            } 
+        }})
+        .then(response => {
+            res.send("200 OK: Successfully removed user from invitee list");
         })
         .catch(error => {
-            console.log(error)
-            res.status(500).json({message: "ERROR 500: Issue deleting event"});
+            console.log("ERROR: Unable to find and delete invitee");
+            console.log(error);
+            res.status(500).json({message: "ERROR 500: Issue deleting invitee"});
         });
+    } 
+    else {
+        const eventid = req.query.eventid;
+        console.log("delete request on route /events with for event with id " + eventid);
+
+        Event.findByIdAndDelete(id)
+            .then(deletedEvent => {
+                res.send("200 OK: Successfully deleted event");
+            })
+            .catch(error => {
+                console.log(error)
+                res.status(500).json({message: "ERROR 500: Issue deleting event"});
+            });
+    }
 });
 
 module.exports = router;
