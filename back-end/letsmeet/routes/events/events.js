@@ -54,6 +54,8 @@ router.post("/", (req, res, next) => {
 router.delete("/", (req, res, next) => {
     const userId = req.query.userid;
     const eventId = req.query.eventid;
+    console.log("delete request on route / with user id " + userId + " and for event with id " + eventId);
+    
     Event.findOneAndUpdate({ _id: eventId }, {$pull: {
         invitees : { 
             id: userId 
