@@ -95,8 +95,7 @@ const AcceptInvite = (props) => {
             .catch(error => {
                 console.log(error.response.data)
             })
-        // props.history.push("/")
-        // window.location.assign('/')
+        window.location.assign('/')
     }
 
     return (
