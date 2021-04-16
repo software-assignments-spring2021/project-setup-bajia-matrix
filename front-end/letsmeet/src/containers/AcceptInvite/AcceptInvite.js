@@ -24,14 +24,18 @@ const AcceptInvite = (props) => {
     // default event state
     const [event, setEvent] = useState({
         title: "",
+        availability: [],
+        eventLocation: "",
         description: "",
-        creator: "",
-        showCreator: false,
-        newEventAuthentication: false,
-        location: "",
+        creator: ""
     });
 
-    const [userId, setUserId] = useState();
+    const [user, setUser] = useState({});
+    
+    // Used to select availability
+    // Week view
+    const [startDate, setDate] = useState("3/28")
+    const [schedule, setSchedule] = useState()
 
     // Used to populate event details from database
     useEffect(() => {
@@ -39,13 +43,21 @@ const AcceptInvite = (props) => {
         const userId = props.location.state.userId;
         axios.get("/events?eventid=" + id)
             .then((response) => {
+                console.log(response.data)
                 setEvent(response.data);
                 setDate(response.data.startDate);
-                setUserId(userId);
             })
             .catch((error) => {
                 console.log(error.response.data);
                 props.history.push("/"); // redirect to home page if event no longer exists
+            });
+        axios.get("/profile?userid=" + userId)
+            .then(response => {
+                console.log(response.data)
+                setUser(response.data)
+            })
+            .catch((error) => {
+                console.log(error.response.data)
             });
     }, []);
 
@@ -57,11 +69,6 @@ const AcceptInvite = (props) => {
         setRequiredMarkType(requiredMarkValue);
     };
 
-    // Used to select availability
-    // Week view
-    const [startDate, setDate] = useState("3/28")
-    const [schedule, setSchedule] = useState()
-
     function handleChangeSchedule(e) {
         setSchedule(e)
         console.log(e)
@@ -69,16 +76,27 @@ const AcceptInvite = (props) => {
 
     function handleSubmit(e) {
         e.preventDefault()
-        // TODO: Delete event from pending invitations on home screen
-        // Bing's comments
-        // TODO: Add event to upcoming events aka add current user to list of attendees and remove user from list of invitees
-        // if you do this in the backend, then you shouldn't need to pass this event to home
     }
 
     // After clicking submit, reroute back to home page
     const goHome = () => {
-        props.history.push("/");
-        window.location.assign('/')
+        let newAvailability = event.availability
+        for (let i of schedule) {
+            newAvailability.push(i)
+        }
+        setEvent(prevState => ({
+            ...prevState,
+            availability: newAvailability
+        }))
+        axios.post("/events?_id=" + event._id, event)
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.log(error.response.data)
+            })
+        // props.history.push("/")
+        // window.location.assign('/')
     }
 
     return (
