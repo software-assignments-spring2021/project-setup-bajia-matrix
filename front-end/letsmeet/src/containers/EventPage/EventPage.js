@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./EventPage.module.css";
@@ -8,7 +8,6 @@ import Container from "react-bootstrap/Container";
 import axios from "../../axios";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
-// import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
 import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
 import CreatorEvent from "./CreatorEvent/CreatorEvent";
 import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
@@ -20,8 +19,7 @@ import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
     This component does not accept any custom props
 */
 
-const EventPage = () => {
-  const key = "57a7ac80";
+const EventPage = (props) => {
 
   const [loading, setLoading] = useState({
     event: true,
@@ -46,7 +44,7 @@ const EventPage = () => {
       "Faye Valentine",
     ],
     creator: "Angela Tim",
-    roles: new Array(),
+    roles: [],
     suggestedTimes: [
       { "Day": "Saturday", "Date": "10/30/2020", "Time": "2:09 AM" },
       { "Day": "Saturday", "Date": "04/27/2021", "Time": "7:15 AM" },
@@ -89,34 +87,51 @@ const EventPage = () => {
   });
 
    useEffect(() => {
-      let eventQueryID = window.location.pathname.split("id:")[1];
-      axios.get("/events?eventid=" + eventQueryID)
-        .then((response) => {
-        //console.log('successfully get event: ', response.data);
-        setEvent(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+     console.log(props)
+      if (props.location.state) {
+        const eventState = props.location.state.eventState;
+        setEvent(eventState);
+        // setLoading(prevState => {
+        //   ...prevState,
+        //   event: false
+        // });
+      }
+      else {
+        let eventQueryID = window.location.pathname.split("/")[2];
+
+        axios.get("/events?eventid=" + eventQueryID)
+          .then((response) => {
+          console.log('successfully get event: ', response.data);
+          setEvent(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        // setLoading(prevState => {
+        //   ...prevState,
+        //   event: false
+        // });
+      }
   }, []);
 
   let addUnverified = (e) => {
-    console.log(e.target.previousElementSibling.inputValue);
-    let newAttendee = state.unverifiedInput.current.value;
-    let newAttendees = [...event.attendees]; //make a shallow copy first
-    newAttendees.splice(1, 0, newAttendee);
-    let newRoles = [...event.roles];
-    newRoles.splice(1, 0, "Attendee");
-    let eventCopy = event;
-    eventCopy.attendees = newAttendees;
+    let attendeesCopy = [...event.attendees]; //make a shallow copy first
+    let newAttendee = {
+      name: state.unverifiedInput.current.value,
+      eventID: event._id
+    };
+    attendeesCopy.push(newAttendee);
 
-    setEvent((prevState) => ({
+    if (newAttendee.name.includes('@')) {
+      setEvent((prevState) => ({
       ...prevState,
-      attendees: newAttendees,
-      roles: newRoles,
+      attendees: attendeesCopy,
+      unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
     }))
-
-    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+    }
+  
+    axios.post("/events/newAttendee", newAttendee)
       .then((response) => {
         console.log('successfully posted new attendee: ', response);
       })
@@ -124,18 +139,6 @@ const EventPage = () => {
         console.log(error);
       });
   };
-  useEffect(() => {
-    //for attendees list & attendee roles
-    if (event.attendees) {
-      event.attendees.filter((attendee) => {
-        if (event.creator === attendee) {
-          event.roles.push("Creator");
-        } else {
-          event.roles.push("Attendee");
-        }
-      });
-    }
-  }, [event.attendees]); // TODO: check warnings
 
   const [showLink, setShowLink] = useState(false);
   const handleShowLink = () => setShowLink(true);
@@ -143,7 +146,7 @@ const EventPage = () => {
   useEffect(() => {
     //for generating event url
     if (event.id) {
-      let eventURL = window.location.origin + "/event/id:" + event.id.$oid;
+      let eventURL = window.location.origin + "/event/" + event.id;
       setEvent((prevState) => ({
         ...prevState,
         url: eventURL,
@@ -230,7 +233,6 @@ const EventPage = () => {
 
   useEffect(() => {
     if (event.finalDay) {
-      console.log("finalDay changed!");
       setEvent((prevState) => ({
         ...prevState,
         day: event.finalDay,
@@ -274,22 +276,9 @@ const EventPage = () => {
   };
 
   useEffect(() => {
-    // setState((prevState) => ({
-    //   ...prevState,
-    //   name: "Angela Tim",
-    //   friends: [
-    //     { value: "friend_first1 friend_last1" },
-    //     { value: "friend_first2 friend_last2" },
-    //     { value: "friend_first3 friend_last3" },
-    //     { value: "friend_first4 friend_last4" },
-    //     { value: "friend_first5 friend_last5" },
-    //   ],
-    // }));
-    // setLoading({ user: false });
-
     //get currently logged in user info
     // TODO: change id to currently logged in user
-    const id = "6071f92b7278a8a7c6d70217";
+    const id = localStorage.getItem("userID");
     axios.get("/profile?userid=" + id)
         .then((response) => {
         setUser(response.data);
@@ -300,8 +289,8 @@ const EventPage = () => {
   }, []);
 
   // useEffect(() => {
-  //   console.log(user.friends);
-  // }, [user.friends]);
+  //   console.log(user.name);
+  // }, [user.name]);
 
   //for canceling event
   const [show, setShow] = useState(false);
@@ -324,7 +313,6 @@ const EventPage = () => {
   //for withdrawing from event
   const handleWithdraw = () => {
     let eventCopy = event;
-    let attendeesCopy = [...event.attendees];
     //TODO: remove user from event attendees & eventCopy attendees
 
     let withdrawnCopy = [...event.withdrawn];
@@ -395,33 +383,38 @@ const EventPage = () => {
   };
 
   useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      //unverified: true,
-      //creator: true,
-      attendee: true
-    }));
-    // if (user.name !== "" && event.creator) {
-    //   console.log(user.name);
-    //   console.log(event.creator);
-    //   if (user.name === event.creator) {
-    //     setState(prevState => ({
-    //       ...prevState,
-    //       creator: true
-    //     }));
-    //   } else {
-    //     setState(prevState => ({
-    //       ...prevState,
-    //       attendee: true
-    //     }));
-    //   }
-    // } else {
-    //   setState(prevState => ({
-    //     ...prevState,
-    //     unverified: true
-    //   }));
-    // }
-  }, [event, user]);
+    // setState((prevState) => ({
+    //   ...prevState,
+    //   unverified: true,
+    //   //creator: true,
+    //   //attendee: true
+    // }));
+    if (props.isAuthenticated) {
+      if (user.name && event.title) {
+        if (user.name === event.creator) {
+          setState(prevState => ({
+            ...prevState,
+            creator: true
+          }));
+        } else {
+          setState(prevState => ({
+            ...prevState,
+            attendee: true
+          }));
+        }
+        // console.log(user.name);
+        // console.log(event.creator);
+      }
+    } else {
+      if (event.creator) {
+        setState(prevState => ({
+          ...prevState,
+          unverified: true
+        }));
+        // console.log(event.creator);
+      }
+    }
+  }, [event.title, user.name, props.isAuthenticated]);
 
   useEffect(() => {
     //console.log(event);
@@ -503,4 +496,4 @@ const EventPage = () => {
   return <div>{eventPage}</div>;
 };
 
-export default EventPage;
+export default withRouter(EventPage);

@@ -54,8 +54,10 @@ const CreatorEvent = (props) => {
         <EventTitle
           title={props.event.title}
           day={props.event.day}
-          date={props.event.date}
-          time={props.event.time}
+          day={props.event.finalDay}
+          date={props.event.finalDate}
+          time={props.event.finalTime}
+          event={props.event}
           location={props.event.eventLocation}
         />
       </Row>
@@ -136,6 +138,7 @@ const CreatorEvent = (props) => {
                       attendees={props.event.attendees}
                       roles={props.event.roles}
                       isAuthenticated={props.state.isAuthenticated}
+                      event={props.event}
                     ></EventAttendees>
                   </Card.Body>
                   <Card.Body>
@@ -161,7 +164,6 @@ const CreatorEvent = (props) => {
                             <Option value="tom">Tom</Option>
                           </Select>
                           <Button
-                            className="ml-3"
                             onClick={props.addVerified}
                             className={classes.AddVerified}
                           >
@@ -177,7 +179,7 @@ const CreatorEvent = (props) => {
           </Container>
         </Card>
         <Card className={classes.CardBorder}>
-          <EventSupplies />
+          <EventSupplies event={props.event} />
         </Card>
       </CardGroup>
       <hr />

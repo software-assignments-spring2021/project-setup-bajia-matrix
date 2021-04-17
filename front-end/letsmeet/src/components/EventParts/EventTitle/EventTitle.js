@@ -17,12 +17,19 @@ import classes from './EventTitle.module.css';
         - creator: name of event creator
         - location: location of event
         - description: event description
+        - event: current event
 */
 
 const EventTitle = (props) => (
     <div className={classes.EventTitle}>
         <h1>{props.title}</h1>
-        {!props.newEventAuthentication && <h5>{props.day}, {props.date} @ {props.time}</h5>}
+        {props.day === "" 
+        ? <h5>Week of {props.event.startDate} @ TBA</h5>
+        : [(!props.newEventAuthentication
+            ? <h5 key="idk why this needs a key but okay go off react">{props.day}, {props.date} @ {props.time}</h5>
+            : null
+            )]
+        }
         {props.showCreator && <p>Event creator: <b>{props.creator}</b></p>}
         {props.location && <p><EnvironmentOutlined className={classes.Icon}/> <b>{props.location}</b></p>}
         <p>{props.description}</p>

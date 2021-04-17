@@ -22,93 +22,79 @@ import Spinner from '../../../../components/UI/Spinner/Spinner';
 
 const EditSupplies = (props) => {
     const [loading, setLoading] = useState(true);
-
-    const [suppliesState, setSuppliesState] = useState({
-        // title: "Study Date",
-        // day: "Wednesday",
-        // date: "Feb 17th",
-        // time: "4:30 - 5:30 pm",
-        // supplies: [
-        //     {id: 1, supply: "boba tea", name: "Raddy", amount: 30.00},
-        //     {id: 2, supply: "muffins", name: "Micky", amount: 25.99}
-        // ]
-        supplies: []
-    });
+    const [suppliesState, setSuppliesState] = useState({ supplies: [] });
+    const [profileState, setProfileState] = useState({});
 
     useEffect(() => {
-        // fetch event info to display
-        // TODO: fetch event that has selected event id
-        const id = 123;
-        axios.get("/events?eventid=" + id)
+        const suppliesState = props.location.state.suppliesState;
+        setSuppliesState(suppliesState);
+       
+        const id = localStorage.getItem("userID");
+        axios.get("/profile?userid=" + id)
             .then(response => {
-                setSuppliesState(response.data);
+                setProfileState(response.data);
                 setLoading(false);
             })
             .catch(error => {
-                console.log(error);
+                console.log(error.response.data);
                 setLoading(false);
             });
-    }, []);
+    }, [props.location.state.suppliesState]);
 
-    const formReducer = (state, event) => {
+    const formReducer = (state, e) => {
         return {
             ...state, // keep old formData
-            [event.name]: event.value // either addSupply: value, or amount: value
+            [e.name]: e.value // either addSupply: value, or amount: value
         }
     };
 
-    const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useReducer(formReducer, {});
     
-    let suppliesList = suppliesState.supplies.map(sup => {
-        return <li key={sup.id.$oid}>{sup.supply} (${sup.amount}) - {sup.name}</li>;
+    const suppliesList = suppliesState.supplies.map((sup, index) => {
+        return <li key={index}>{sup.supply} (${sup.amount}) - {sup.name}</li>;
     });
 
-    let inputChangedHandler = (event) => {
+    const inputChangedHandler = (e) => {
         setFormData({
             // this is the "name" and "value" formReducer use to update formData
-            name: event.target.name,
-            value: event.target.value
+            name: e.target.name,
+            value: e.target.value
         });
     };
 
-    let submitHandler = (event) => {
-        // prevents reload so don't fetch from backend again
-        // instead will update state and display from there
-        // TODO: if supplies list doesn't update with added supply, remove this
-        event.preventDefault();
-
-        setSubmitting(true);
+    const submitHandler = (e) => {
+        e.preventDefault();
 
         // update supplies list immutably using a copy
-        const copySupplies = { ...suppliesState};
+        const copySupplies = { ...suppliesState };
         const list = copySupplies.supplies;
 
-        // TODO: should change to generate new mongoDB id
-        const newId = list[list.length - 1] + 1;
-
         list.push({
-            id: newId,
             supply: formData.addSupply,
-            name: "Timmy", // TODO: replace with name of current user
-            amount: formData.amount
+            name: profileState.name,
+            amount: formData.amount,
+            owed: 0
         })
 
         setSuppliesState(copySupplies);
+    };
 
+    const saveHandler = () => {
+       
         // send to database
         axios.post("/events", suppliesState)
-            .then(response => {
-                console.log(response);
-                setSubmitting(false);
-            });
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.log(error.response.data);
+        });
 
-        // TODO: remove when have real api
-        // to simulate sending to database
-        // setTimeout(() => {
-        //     setSubmitting(false);
-        // }, 3000);
-    };
+        props.history.push({
+            pathname: "/event/" + suppliesState._id,
+            state: {eventState: suppliesState}
+        });
+    }
 
     let editSuppliesPage = <Spinner />;
     if (!loading) {
@@ -118,7 +104,7 @@ const EditSupplies = (props) => {
                     <Col className="md-12">
                         <Navbar>
                             {/* TODO: update link to myevent */}
-                            <Link to="/event/1" exact>
+                            <Link to={{ pathname: "/event/" + suppliesState._id }} exact>
                                 <Navbar.Text>Cancel</Navbar.Text>
                             </Link>
                             
@@ -178,7 +164,7 @@ const EditSupplies = (props) => {
                             </div>
                             <div className={classes.Submit}>
                                 <Button className={classes.Button} variant="secondary" type="submit">Add</Button>
-                                {submitting ? <p>Adding...</p> : null}
+                                <Button className={classes.Button} variant="secondary" onClick={saveHandler}>Save Supplies</Button>
                             </div>
                         </form>
                     </div>

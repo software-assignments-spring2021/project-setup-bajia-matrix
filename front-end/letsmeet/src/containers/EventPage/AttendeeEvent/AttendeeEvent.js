@@ -34,8 +34,9 @@ const AttendeeEvent = (props) => {
         <EventTitle
           title={props.event.title}
           day={props.event.day}
-          date={props.event.date}
-          time={props.event.time}
+          day={props.event.finalDay}
+          date={props.event.finalDate}
+          time={props.event.finalTime}
           location={props.event.eventLocation}
         />
       </Row>
@@ -68,7 +69,7 @@ const AttendeeEvent = (props) => {
                     <EventAttendees
                       attendees={props.event.attendees}
                       roles={props.event.roles}
-                      isAuthenticated={props.state.isAuthenticated}
+                      event={props.event}
                     ></EventAttendees>
                   </Card.Body>
                   <Card.Body>
@@ -80,7 +81,7 @@ const AttendeeEvent = (props) => {
           </Container>
         </Card>
         <Card className={classes.CardBorder}>
-          <EventSupplies />
+          <EventSupplies event={props.event} />
         </Card>
       </CardGroup>
 
