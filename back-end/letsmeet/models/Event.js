@@ -29,8 +29,8 @@ const EventSchema = new mongoose.Schema({
   ],
   supplies: [
     {
+      name: {type: String},
       supply: {type: String},
-      name: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
       amount: {type: Number},
       owed: {type: Number}
     }

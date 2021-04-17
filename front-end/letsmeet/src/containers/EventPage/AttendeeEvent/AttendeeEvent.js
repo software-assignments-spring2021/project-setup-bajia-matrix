@@ -81,7 +81,7 @@ const AttendeeEvent = (props) => {
           </Container>
         </Card>
         <Card className={classes.CardBorder}>
-          <EventSupplies />
+          <EventSupplies event={props.event} />
         </Card>
       </CardGroup>
 

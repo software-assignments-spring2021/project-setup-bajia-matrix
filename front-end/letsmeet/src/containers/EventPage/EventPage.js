@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./EventPage.module.css";
@@ -87,15 +87,32 @@ const EventPage = (props) => {
   });
 
    useEffect(() => {
-      let eventQueryID = window.location.pathname.split("/")[2];
-      axios.get("/events?eventid=" + eventQueryID)
-        .then((response) => {
-        console.log('successfully get event: ', response.data);
-        setEvent(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+     console.log(props)
+      if (props.location.state) {
+        const eventState = props.location.state.eventState;
+        setEvent(eventState);
+        // setLoading(prevState => {
+        //   ...prevState,
+        //   event: false
+        // });
+      }
+      else {
+        let eventQueryID = window.location.pathname.split("/")[2];
+
+        axios.get("/events?eventid=" + eventQueryID)
+          .then((response) => {
+          console.log('successfully get event: ', response.data);
+          setEvent(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+        // setLoading(prevState => {
+        //   ...prevState,
+        //   event: false
+        // });
+      }
   }, []);
 
   let addUnverified = (e) => {
@@ -479,4 +496,4 @@ const EventPage = (props) => {
   return <div>{eventPage}</div>;
 };
 
-export default EventPage;
+export default withRouter(EventPage);

@@ -25,7 +25,7 @@ router.get("/", (req, res, next) => {
     });
 });
 
-//for adding a new attendee to event
+// for adding a new attendee to event
 //JOANNE: created separate post route in order to use express-validator
 router.post("/newAttendee", body('name').isEmail(), (req, res) => {
     const errors = validationResult(req);
@@ -48,7 +48,7 @@ router.post("/", (req, res, next) => {
     console.log("post request on route /events for event with id " + id);
     const query = {_id: id}
     
-    //for creating new event
+    // for creating new event
     if (req.query.new) {
         Event.create(req.body, (err, event) => {
             if (err) {
@@ -61,7 +61,7 @@ router.post("/", (req, res, next) => {
             }
         })
     } else {
-        //for when an unverified user signs up after joining an event as an attendee
+        // for when an unverified user signs up after joining an event as an attendee
         if (req.body.attendee) {
             Event.findById(req.body._id, (err, event) => {
                 if (err || !event) {
@@ -81,7 +81,7 @@ router.post("/", (req, res, next) => {
                                 }
                             })
                             
-                            //https://stackoverflow.com/questions/46190153/update-object-inside-the-array-in-mongodb-using-mongoose
+                            // https://stackoverflow.com/questions/46190153/update-object-inside-the-array-in-mongodb-using-mongoose
                             Event.findOneAndUpdate({_id: req.body._id, "attendees.name":req.body.email}, {$set: {"attendees.$.name":name, "attendees.$.id":id}})
                                 .then(updatedEvent => {
                                     res.send("200 OK: Successfully updated event");
@@ -95,7 +95,7 @@ router.post("/", (req, res, next) => {
                 }
             });
         }
-        //for just regular ole event updating 
+        // for just regular ole event updating 
         Event.updateOne(query, req.body)
             .then(updatedEvent => {
                 res.send("200 OK: Successfully updated event");
