@@ -202,7 +202,7 @@
 
   .CardAttendee {
     text-align: center;
-    width: 100%;
+    width: 90%;
     border: transparent;
     display: flex;
     flex-flow: column;

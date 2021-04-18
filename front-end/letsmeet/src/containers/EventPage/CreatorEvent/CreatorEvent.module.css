@@ -74,12 +74,12 @@
 
 .CardAttendee {
   text-align: center;
-    width: 90%;
-    border: transparent;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    margin: 20px; /* space b/t each card */
+  width: 90%;
+  border: transparent;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin: 20px; /* space b/t each card */
 }
 
 .CardBorder {
@@ -203,7 +203,7 @@
 
   .CardAttendee {
     text-align: center;
-    width: 100%;
+    width: 90%;
     border: transparent;
     display: flex;
     flex-flow: column;

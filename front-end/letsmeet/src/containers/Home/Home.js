@@ -25,28 +25,45 @@ const Home = (props) => {
     const [upcomingEventsState, setUpcomingEventsState] = useState([]);
     const id = localStorage.getItem("userID");
 
+    const urlParams = new URLSearchParams(window.location.search);
+    let eventParam = urlParams.get('event');
+
     useEffect(() => {
-        axios.get("/?userid=" + id)
-            .then(response => {
-                // invites
-                let list = response.data.invites;
-                setInvitesState(list);
+        //JOANNE: this code for when an unverified user signs up after joining an event as attendee
+        //the home page should now display the event the user just joined in the upcoming events section
+        if (eventParam) {
+            axios.get("/events?eventid="+eventParam)
+                .then(response => {
+                    setUpcomingEventsState([response.data]);
+                    // disable spinner
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        } else {
+            axios.get("/?userid=" + id)
+                .then(response => {
+                    // invites
+                    let list = response.data.invites;
+                    setInvitesState(list);
 
-                // my events
-                list = response.data.myEvents;
-                setMyEventsState(list);
-                
-                // upcoming events
-                list = response.data.upcomingEvents;
-                setUpcomingEventsState(list);
-
-                // disable spinner
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error.response.data);
-                setLoading(false);
-            });
+                    // my events
+                    list = response.data.myEvents;
+                    setMyEventsState(list);
+                    
+                    // upcoming events
+                    list = response.data.upcomingEvents;
+                    setUpcomingEventsState(list);
+                    
+                    // disable spinner
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                    setLoading(false);
+                });
+        }
     }, [id]);
 
     const pendingInvites = invitesState.map(e => {
