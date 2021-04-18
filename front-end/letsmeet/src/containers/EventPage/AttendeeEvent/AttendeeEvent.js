@@ -28,6 +28,7 @@ import CardGroup from "react-bootstrap/CardGroup";
 */
 
 const AttendeeEvent = (props) => {
+
   return (
     <div>
       <Row className={classes.EventTitle}>
@@ -37,6 +38,9 @@ const AttendeeEvent = (props) => {
           date={props.event.finalDate}
           time={props.event.finalTime}
           location={props.event.eventLocation}
+          creator={props.event.creator}
+          event={props.event}
+          showCreator={true}
         />
       </Row>
       <hr />
