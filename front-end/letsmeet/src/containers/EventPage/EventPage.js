@@ -12,6 +12,8 @@ import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
 import CreatorEvent from "./CreatorEvent/CreatorEvent";
 import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
 
+import { Select } from "antd";
+
 /*
   This component displays the event pages for the following users: event creator, event attendee, and unverfied user.
 
@@ -36,15 +38,8 @@ const EventPage = (props) => {
     eventLocation: "New York, NY",
     description:
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-    attendees: [
-      "Angela Tim",
-      "Matthew Fishman",
-      "Timothy Sanders",
-      "Spike Spiegel",
-      "Faye Valentine",
-    ],
+    attendees: [],
     creator: "Angela Tim",
-    roles: [],
     suggestedTimes: [
       { "Day": "Saturday", "Date": "10/30/2020", "Time": "2:09 AM" },
       { "Day": "Saturday", "Date": "04/27/2021", "Time": "7:15 AM" },
@@ -86,19 +81,14 @@ const EventPage = (props) => {
     description: "",
   });
 
-   useEffect(() => {
+  useEffect(() => {
      console.log(props)
       if (props.location.state) {
         const eventState = props.location.state.eventState;
         setEvent(eventState);
-        // setLoading(prevState => {
-        //   ...prevState,
-        //   event: false
-        // });
       }
       else {
         let eventQueryID = window.location.pathname.split("/")[2];
-
         axios.get("/events?eventid=" + eventQueryID)
           .then((response) => {
           console.log('successfully get event: ', response.data);
@@ -107,13 +97,27 @@ const EventPage = (props) => {
         .catch((error) => {
           console.log(error);
         });
-
-        // setLoading(prevState => {
-        //   ...prevState,
-        //   event: false
-        // });
       }
-  }, []);
+  }, [props]);
+
+  //get avis of all attendees
+  useEffect(() => {
+    // event.attendees.filter(attendee => {
+      if (event.attendees.length > 0) {
+        axios.post("profile/avis", {attendees: [...event.attendees]})
+          .then((response) => {
+            setEvent((prevState) => ({
+              ...prevState,
+              avis: response.data,
+            }))
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    //})
+  }, [event.attendees])
 
   let addUnverified = (e) => {
     let attendeesCopy = [...event.attendees]; //make a shallow copy first
@@ -125,10 +129,10 @@ const EventPage = (props) => {
 
     if (newAttendee.name.includes('@')) {
       setEvent((prevState) => ({
-      ...prevState,
-      attendees: attendeesCopy,
-      unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
-    }))
+        ...prevState,
+        attendees: attendeesCopy,
+        unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
+      }))
     }
   
     axios.post("/events/newAttendee", newAttendee)
@@ -244,53 +248,96 @@ const EventPage = (props) => {
         show: false,
       }));
     }
-  }, [event.finalDay]); // TODO: check warnings
+  }, [event.finalDay, event.finalDate, event.finalTime]);
 
-  let addVerified = (e) => {
-    let attendeesCopy = [...event.attendees]; //make a shallow copy first
-    let rolesCopy = [...event.roles];
-    if (invitees.length > 0) {
-      for (let i = 0; i < invitees.length; i++) {
-        attendeesCopy.splice(1, 0, invitees[i]);
-        rolesCopy.splice(1, 0, "Attendee");
+  
+  const { Option } = Select;
+  let addVerified = (values) => {
+    //extract names of invitees
+    let invitees = [];
+    let inviteeNames = [];
+    values.friends.forEach(friend => {
+      invitees.push(JSON.parse(friend));
+      inviteeNames.push(JSON.parse(friend).name);
+    })
+    
+    //update friends list so that friend that was just invited does not appear
+    let friends = [];
+    let friendsList = {};
+    event.friendsList.forEach(friend => {
+      if (!inviteeNames.includes(friend.props.children)) {
+        let temp = user.friends.filter(temp => {return temp.name === friend.props.children})
+        friends.push(temp[0]);
       }
-      console.log(invitees);
+      return;
+    })
+    friendsList = friends.map(test => (
+      <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
+    ))
+    setEvent((prevState) => ({
+      ...prevState,
+      friendsList: friendsList,
+    }));
 
-      setInvitees(null);
-      setEvent((prevState) => ({
-        ...prevState,
-        attendees: attendeesCopy,
-        roles: rolesCopy,
-      }));
+    //add friends as invitees to database
+    console.log(invitees);
+    // eventCopy.attendees = attendeesCopy;
+    //   axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+    //   .then((response) => {
+    //     console.log('successfully posted new attendee: ', response);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
+  };
 
-      let eventCopy = event;
-      eventCopy.attendees = attendeesCopy;
-      axios.post("/events?eventid=" + event.id.$oid, eventCopy)
-      .then((response) => {
-        console.log('successfully posted new attendee: ', response);
+  //for populating list of friends to invite to event (exclude any friends already attending or invited)
+  useEffect(() => {
+    let friendsList;
+    if(user.friends && event.title) {
+      let test = [];
+      let eventInvitees = false;
+      let eventAttendees = false;
+      user.friends.forEach(friend => {
+        event.invitees.forEach(invitee => {
+          if (invitee.name === friend.name) {
+            eventInvitees = true;
+          }
+        })
+        event.attendees.forEach(attendee => {
+          if (attendee.name === friend.name) {
+            eventAttendees = true;
+          }
+        })
+        if (!eventInvitees && !eventAttendees) {
+          test.push(friend);
+        }
+      })
+      friendsList = test.map(test => (
+        <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
+      ))
+    }
+    setEvent((prevState) => ({
+      ...prevState,
+      friendsList: friendsList,
+    }));
+  }, [user.friends, event.title, event.attendees, event.invitees]);
+
+  useEffect(() => {
+    //get currently logged in user info
+    const id = localStorage.getItem("userID");
+    if (id) {
+      axios.get("/profile?userid=" + id)
+        .then((response) => {
+        setUser(response.data);
+        
       })
       .catch((error) => {
         console.log(error);
       });
     }
-  };
-
-  useEffect(() => {
-    //get currently logged in user info
-    // TODO: change id to currently logged in user
-    const id = localStorage.getItem("userID");
-    axios.get("/profile?userid=" + id)
-        .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }, []);
-
-  // useEffect(() => {
-  //   console.log(user.name);
-  // }, [user.name]);
 
   //for canceling event
   const [show, setShow] = useState(false);
@@ -402,8 +449,6 @@ const EventPage = (props) => {
             attendee: true
           }));
         }
-        // console.log(user.name);
-        // console.log(event.creator);
       }
     } else {
       if (event.creator) {
@@ -411,14 +456,11 @@ const EventPage = (props) => {
           ...prevState,
           unverified: true
         }));
-        // console.log(event.creator);
       }
     }
-  }, [event.title, user.name, props.isAuthenticated]);
+  }, [event.title, user.name, props.isAuthenticated, event.creator]);
 
   useEffect(() => {
-    //console.log(event);
-    //console.log(state);
     if (
       state.creator === true ||
       state.attendee === true ||
@@ -477,6 +519,7 @@ const EventPage = (props) => {
             show={show}
             handleClose={handleClose}
             handleDelete={handleDelete}
+            user={user}
           />
         </Container>
       );

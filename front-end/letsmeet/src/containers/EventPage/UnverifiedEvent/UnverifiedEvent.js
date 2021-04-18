@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -26,14 +26,28 @@ const UnverifiedEvent = (props) => {
   return (
     <div>
       <Row className={classes.EventTitle}>
-        <EventTitle
-          title={props.event.title}
-          event={props.event}
-          day={props.event.finalDay}
-          date={props.event.finalDate}
-          time={props.event.finalTime}
-          location={props.event.eventLocation}
-        />
+        {props.event.creator !== ""
+            ? <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={true}
+            />
+            : <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={false}
+            />
+        }
       </Row>
       <hr />
       <br />

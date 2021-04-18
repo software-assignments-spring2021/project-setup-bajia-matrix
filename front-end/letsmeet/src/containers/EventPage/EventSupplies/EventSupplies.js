@@ -21,6 +21,10 @@ import axios from '../../../axios';
 
 const EventSupplies = (props) => {
   const [suppliesState, setSuppliesState] = useState({ supplies: [] });
+  const [suppliesListName, setSuppliesListName] = useState();
+  const [suppliesListPrice, setSuppliesListPrice] = useState();
+  const [suppliesListPerson, setSuppliesListPerson] = useState();
+  const [suppliesListOwed, setSuppliesListOwed] = useState();
 
   useEffect(() => {
     setSuppliesState(props.event);
@@ -33,34 +37,46 @@ const EventSupplies = (props) => {
     });
   };
 
-  const suppliesListName = suppliesState.supplies.map((supplies, index) => (
-    <>
-      <p key={index}>
-        {supplies.supply}
-      </p>
-    </>
-  ));
-  const suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
-    <>
-      <p key={index}>
-        $ {supplies.amount}
-      </p>
-    </>
-  ));
-  const suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
-    <>
-      <p key={index}>
-        {supplies.name}
-      </p>
-    </>
-  ));
-  const suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
-    <>
-      <p key={index}>
-       $ {supplies.owed} 
-      </p>
-    </>
-  ));
+  useEffect(() => {
+    let suppliesListName;
+    let suppliesListPrice;
+    let suppliesListPerson;
+    let suppliesListOwed;
+    if (suppliesState.supplies) {
+      suppliesListName = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+            {supplies.supply}
+          </p>
+        </>
+      ));
+      setSuppliesListName(suppliesListName);
+      suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+            $ {supplies.amount}
+          </p>
+        </>
+      ));
+      setSuppliesListPrice(suppliesListPrice);
+      suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+            {supplies.name}
+          </p>
+        </>
+      ));
+      setSuppliesListPerson(suppliesListPerson);
+      suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+           $ {supplies.owed} 
+          </p>
+        </>
+      ));
+      setSuppliesListOwed(suppliesListOwed);
+    }
+  }, [suppliesState.supplies])
 
   const splitCosts = (e) => {
     const url = '/splitCosts';

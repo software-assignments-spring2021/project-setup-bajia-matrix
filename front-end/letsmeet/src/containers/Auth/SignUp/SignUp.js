@@ -176,7 +176,6 @@ const SignUp = (props) => {
                 //JOANNE: sliding in here to add code for when an unverified user signs up after creating an event
                 if (urlParams.get('id')) {
                     //send post call to event to update event attendee list and update their attendee id
-                    console.log(urlParams.get('id'));
                     axios.post("/events", {_id: urlParams.get('id'), attendee: response.data.uid, email: emailParam})
                         .then(response => {
                             console.log('event attendee list updated baby');
@@ -186,10 +185,14 @@ const SignUp = (props) => {
                         })
                 }
 
-                // console.log(response);
                 localStorage.setItem('userID', response.data.uid);
                 localStorage.setItem('isAuthenticated', true);
-                props.history.push("/"); 
+                if (emailParam) {
+                    props.history.push("/?event=" + urlParams.get('id'));
+                } else {
+                    props.history.push("/"); 
+                }
+                
             })
             .catch(function (error) {
                 localStorage.setItem("userID", "");

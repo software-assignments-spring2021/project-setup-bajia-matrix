@@ -9,6 +9,7 @@ const User = require("../../models/User");
 const Event = require("../../models/Event");
 
 router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
 
 router.get("/", (req, res, next) => {
     const userId = req.query.userid;
