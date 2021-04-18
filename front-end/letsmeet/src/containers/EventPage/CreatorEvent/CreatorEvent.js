@@ -10,15 +10,12 @@ import EventSupplies from "../EventSupplies/EventSupplies";
 import EventModal from "../../../components/EventParts/EventModal/EventModal";
 
 import { Form, Select } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import CardGroup from "react-bootstrap/CardGroup";
 import FormB from "react-bootstrap/Form";
-
-const { Option } = Select;
 
 /*
   This component displays the event page for the event creator user.
@@ -48,12 +45,18 @@ const { Option } = Select;
 */
 
 const CreatorEvent = (props) => {
+  const [form] = Form.useForm();
+
+  const onFinish = (values) => {
+    form.resetFields();
+    props.addVerified(values);
+  };
+
   return (
     <div>
       <Row className={classes.EventTitle}>
         <EventTitle
           title={props.event.title}
-          day={props.event.day}
           day={props.event.finalDay}
           date={props.event.finalDate}
           time={props.event.finalTime}
@@ -137,39 +140,29 @@ const CreatorEvent = (props) => {
                     <EventAttendees
                       attendees={props.event.attendees}
                       roles={props.event.roles}
-                      isAuthenticated={props.state.isAuthenticated}
                       event={props.event}
                     ></EventAttendees>
                   </Card.Body>
                   <Card.Body>
                     <Row className="justify-content-center">
-                      <div className={classes.Div}>
-                        <Form.Item
-                          label="Invite Friends"
-                          tooltip={{
-                            title:
-                              "Invite people from your friends list. You can add more friends later.",
-                            icon: <InfoCircleOutlined />,
-                          }}
-                        >
+                      <div className={classes.SelectDiv}>
+                      <Form form={form} name="control-hooks" onFinish={onFinish}>
+                        <Form.Item name="friends" label="Invite Friends">
                           <Select
-                            mode="multiple"
-                            placeholder="Select from Friends List"
-                            className={classes.dropdown}
+                            placeholder="Select a option and change input text above"
                             onChange={(value) => props.setInvitees(value)}
-                            value={props.event.invitees}
+                            allowClear
+                            mode="multiple"
                           >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {props.event.friendsList}
                           </Select>
-                          <Button
-                            onClick={props.addVerified}
-                            className={classes.AddVerified}
-                          >
-                            Invite Friend
+                        </Form.Item>
+                        <Form.Item >
+                          <Button type="primary" htmltype="submit" className={classes.AddVerified}>
+                            Send Invite
                           </Button>
                         </Form.Item>
+                      </Form>
                       </div>
                     </Row>
                   </Card.Body>

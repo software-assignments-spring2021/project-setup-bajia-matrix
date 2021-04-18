@@ -33,7 +33,6 @@ const AttendeeEvent = (props) => {
       <Row className={classes.EventTitle}>
         <EventTitle
           title={props.event.title}
-          day={props.event.day}
           day={props.event.finalDay}
           date={props.event.finalDate}
           time={props.event.finalTime}
