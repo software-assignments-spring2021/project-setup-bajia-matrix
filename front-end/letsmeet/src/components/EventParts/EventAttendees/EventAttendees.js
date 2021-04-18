@@ -27,8 +27,10 @@ const eventAttendees = (props) => {
         <ListGroup.Item key={index} className={classes.Border}>
           <Card className={classes.CardHeader}>
             <Card.Img src={red} className={classes.Avatar} />
-            <Card.Body className={classes.Name}><p>{attendee.name}</p></Card.Body>
-            <Card.Body className={classes.Role}><p>Attendee</p></Card.Body>
+            <Card.Body className={classes.Name}>
+              <p>{attendee.name}</p>
+              <p className={classes.Role}>Attendee</p>
+            </Card.Body>
           </Card>
         </ListGroup.Item>
     );
@@ -39,8 +41,10 @@ const eventAttendees = (props) => {
     creatorItem = <ListGroup.Item key={props.event.creator.id} className={classes.Border}>
         <Card className={classes.CardHeader}>
           <Card.Img src={red} className={classes.Avatar} />
-          <Card.Body className={classes.Name}><p>{props.event.creator}</p></Card.Body>
-          <Card.Body className={classes.Role}><p>Creator</p></Card.Body>
+          <Card.Body className={classes.Name}>
+            <p>{props.event.creator}</p>
+            <p className={classes.Role}>Creator</p>
+          </Card.Body>
         </Card>
       </ListGroup.Item>
   }

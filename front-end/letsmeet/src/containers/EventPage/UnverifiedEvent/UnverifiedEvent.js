@@ -26,14 +26,28 @@ const UnverifiedEvent = (props) => {
   return (
     <div>
       <Row className={classes.EventTitle}>
-        <EventTitle
-          title={props.event.title}
-          event={props.event}
-          day={props.event.finalDay}
-          date={props.event.finalDate}
-          time={props.event.finalTime}
-          location={props.event.eventLocation}
-        />
+        {props.event.creator !== ""
+            ? <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={true}
+            />
+            : <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={false}
+            />
+        }
       </Row>
       <hr />
       <br />

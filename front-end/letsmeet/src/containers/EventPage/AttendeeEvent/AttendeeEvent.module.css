@@ -220,6 +220,7 @@
 
   .AttendeesBody {
     width: 130%;
+    text-align: left;
   }
 
   .AttendeeTitle {
