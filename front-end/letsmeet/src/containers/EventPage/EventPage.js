@@ -38,15 +38,8 @@ const EventPage = (props) => {
     eventLocation: "New York, NY",
     description:
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-    attendees: [
-      "Angela Tim",
-      "Matthew Fishman",
-      "Timothy Sanders",
-      "Spike Spiegel",
-      "Faye Valentine",
-    ],
+    attendees: [],
     creator: "Angela Tim",
-    roles: [],
     suggestedTimes: [
       { "Day": "Saturday", "Date": "10/30/2020", "Time": "2:09 AM" },
       { "Day": "Saturday", "Date": "04/27/2021", "Time": "7:15 AM" },
@@ -88,7 +81,7 @@ const EventPage = (props) => {
     description: "",
   });
 
-   useEffect(() => {
+  useEffect(() => {
      console.log(props)
       if (props.location.state) {
         const eventState = props.location.state.eventState;
@@ -107,6 +100,25 @@ const EventPage = (props) => {
       }
   }, [props]);
 
+  //get avis of all attendees
+  useEffect(() => {
+    // event.attendees.filter(attendee => {
+      if (event.attendees.length > 0) {
+        axios.post("profile/avis", {attendees: [...event.attendees]})
+          .then((response) => {
+            setEvent((prevState) => ({
+              ...prevState,
+              avis: response.data,
+            }))
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    //})
+  }, [event.attendees])
+
   let addUnverified = (e) => {
     let attendeesCopy = [...event.attendees]; //make a shallow copy first
     let newAttendee = {
@@ -117,10 +129,10 @@ const EventPage = (props) => {
 
     if (newAttendee.name.includes('@')) {
       setEvent((prevState) => ({
-      ...prevState,
-      attendees: attendeesCopy,
-      unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
-    }))
+        ...prevState,
+        attendees: attendeesCopy,
+        unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
+      }))
     }
   
     axios.post("/events/newAttendee", newAttendee)
@@ -315,7 +327,8 @@ const EventPage = (props) => {
   useEffect(() => {
     //get currently logged in user info
     const id = localStorage.getItem("userID");
-    axios.get("/profile?userid=" + id)
+    if (id) {
+      axios.get("/profile?userid=" + id)
         .then((response) => {
         setUser(response.data);
         
@@ -323,6 +336,7 @@ const EventPage = (props) => {
       .catch((error) => {
         console.log(error);
       });
+    }
   }, []);
 
   //for canceling event

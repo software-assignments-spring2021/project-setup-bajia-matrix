@@ -102,4 +102,24 @@ router.post(
         });
 });
 
+//JOANNE: to get all event attendees' avis
+router.post("/avis", (req, res, next) => {
+    User.find({}, (err, users) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({message: "ERROR 500: Issue with getting all users"});
+        } else {
+            let avis = [];
+            req.body.attendees.forEach(attendee => {
+                let temp = users.filter(user => {if (attendee.id === user.id) return user})
+                if (temp[0]) {
+                    avis.push(temp[0].avatar);
+                } 
+            })
+            console.log(avis);
+            res.status(200).json(avis);
+        }
+    })
+})
+
 module.exports = router;

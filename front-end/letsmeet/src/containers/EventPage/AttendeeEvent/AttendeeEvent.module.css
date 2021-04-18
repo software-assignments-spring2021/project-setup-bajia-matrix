@@ -37,7 +37,8 @@
   display: flex;
   flex-flow: column;
   overflow: scroll;
-  height: 200px;
+  min-height: 10vh;
+  max-height: 200px;
   overflow-x: hidden;
 }
 
