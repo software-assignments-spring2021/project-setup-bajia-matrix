@@ -6,12 +6,9 @@ const request = require("supertest");
 const app = express();
 app.use("/splitCosts", require("../routes/events/splitCosts"));
 
-
-describe("Split costs algorithm", () => {
-    
-
-    describe("Post request to database, reuturns the correct costs", () => {
-        it("should save a JSON object to database and return 200 OK", async () => {
+describe("SplitCosts routes", () => {
+    describe("Algorithm to split the cost of supplies", () => {
+        it("should put a list of supplies through an algorithm and get the cost each person owes", async () => {
             const data = 
             {title: "Lunch Date",
             description: "dATE",
@@ -30,7 +27,6 @@ describe("Split costs algorithm", () => {
                 { id: 3, name: "supply3", price: 9, person: "attendee3", owed: "-3.60"},
                 { id: 4, name: "supply4", price: 1, person: "attendee4", owed: "4.40" },
                 { id: 5, name: "supply5", price: 0, person: "attendee5", owed: "5.40" },
-
             ]);
         });
     });
