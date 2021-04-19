@@ -1,23 +1,30 @@
 const express = require("express");
 const expect = require("chai").expect;
-const request = require("supertest");
+const nock = require("nock");
+const axios = require("axios");
+
+const mockEvent = require("./mocks/event");
+const url = require("./mocks/url");
 
 // create new app separate to avoid testing on the server app
 const app = express();
 app.use("/", require("../routes/home/home"));
 
 describe("Home routes", () => {
-    describe("Get request to database", () => {
-        it("should return a JSON object", async () => {
-            const response = await request(app).get("/?userid=123");
-            expect(response.body).to.not.equal({});
-        });
+    beforeEach(() => {
+        nock(url)
+            .get("/")
+            .reply(200, mockEvent);
     });
 
-    describe("Delete request to database", () => {
-        it("should delete a JSON object from database and return 200 OK", async () => {
-            const response = await request(app).delete("/?userid=123&eventid=123");
-            expect(response.statusCode).to.equal(200);
+    describe("Get request to database", () => {
+        it("should return an Event object", async () => {
+            axios.get(url)
+                .then(response => {
+                    expect(typeof response.data).to.equal("object");
+                    expect(response.data.title).to.equal("Birthday Party");
+                    expect(response.data.creator).to.equal("Cara Lyndon");
+                });
         });
     });
 });

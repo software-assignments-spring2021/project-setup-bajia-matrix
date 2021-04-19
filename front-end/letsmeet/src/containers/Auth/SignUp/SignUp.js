@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import classes from "../SignIn/SignIn.module.css";
@@ -39,6 +39,22 @@ const SignUp = (props) => {
     });
 
     const [errorMessage, setErrorMessage] = useState("");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    let emailParam = urlParams.get('email');
+    //this is to prefill the value of email if an email query exists in the url
+    useEffect(() => {
+        if (emailParam) {
+            let emailCopy = {
+                value: emailParam,
+                valid: true
+            }
+            setAuthState((prevState) => ({
+                ...prevState,
+                email: emailCopy
+            }))
+        }
+    }, [emailParam]);
     
     const myChangeHandler = (event) => {
         // update state immutably to do validation correctly
@@ -149,6 +165,7 @@ const SignUp = (props) => {
     const [submitting, setSubmitting] = useState(false);
 
     const onSubmit = (e) => {
+
         e.preventDefault();
         console.log("submitting");
 
@@ -156,10 +173,26 @@ const SignUp = (props) => {
 
         axios.post("/auth/signup" , authState)
             .then(response => {
-                // console.log(response);
+                //JOANNE: sliding in here to add code for when an unverified user signs up after creating an event
+                if (urlParams.get('id')) {
+                    //send post call to event to update event attendee list and update their attendee id
+                    axios.post("/events", {_id: urlParams.get('id'), attendee: response.data.uid, email: emailParam})
+                        .then(response => {
+                            console.log('event attendee list updated baby');
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                }
+
                 localStorage.setItem('userID', response.data.uid);
                 localStorage.setItem('isAuthenticated', true);
-                props.history.push("/"); 
+                if (emailParam) {
+                    props.history.push("/?event=" + urlParams.get('id'));
+                } else {
+                    props.history.push("/"); 
+                }
+                
             })
             .catch(function (error) {
                 localStorage.setItem("userID", "");
@@ -209,16 +242,29 @@ const SignUp = (props) => {
 
                 <div className="form-group">
                     <label>Email address</label>
-                    <input
-                        type="email"
-                        id="exampleInputEmail1"
-                        className="form-control"
-                        placeholder="Enter email"
-                        name="email"
-                        value={authState.email.value}
-                        onChange={myChangeHandler}
-                        required
-                    />
+                    {emailParam 
+                    ? <input
+                    type="email"
+                    id="exampleInputEmail1"
+                    className="form-control"
+                    placeholder={emailParam}
+                    name="email"
+                    value={emailParam}
+                    onChange={myChangeHandler}
+                    required
+                />
+                : <input
+                type="email"
+                id="exampleInputEmail1"
+                className="form-control"
+                placeholder="Enter email"
+                name="email"
+                value={authState.email.value}
+                onChange={myChangeHandler}
+                required
+            />
+                    
+                    }
                 </div>
 
                 <div className="form-group">

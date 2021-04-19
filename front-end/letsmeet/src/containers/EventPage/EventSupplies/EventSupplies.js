@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-// import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -16,70 +16,94 @@ import axios from '../../../axios';
   TODO: comment about component
 
   Props:
-    This component does not accept any custom props
+    event: event state
 */
 
-const EventSupplies = () => {
-  const [suppliesState, setSuppliesState] = useState({
-    _id: "",
-    title: "Lunch Date",
-    description: "dATE",
-    supplies: [
-      { id: 1, name: "supply1", price: 12, person: "attendee1", owed: 0 },
-      { id: 2, name: "supply2", price: 5, person: "attendee2", owed: 0 },
-      { id: 3, name: "supply3", price: 9, person: "attendee3", owed: 0 },
-      { id: 4, name: "supply4", price: 1, person: "attendee4", owed: 0 },
-      { id: 5, name: "supply5", price: 0, person: "attendee5", owed: 0 },
-    ],
-  });
+// <<<<<<< AuthErrorHandle
+// const EventSupplies = () => {
+//   const [suppliesState, setSuppliesState] = useState({
+//     _id: "",
+//     title: "Lunch Date",
+//     description: "dATE",
+//     supplies: [
+//       { id: 1, name: "supply1", price: 12, person: "attendee1", owed: 0 },
+//       { id: 2, name: "supply2", price: 5, person: "attendee2", owed: 0 },
+//       { id: 3, name: "supply3", price: 9, person: "attendee3", owed: 0 },
+//       { id: 4, name: "supply4", price: 1, person: "attendee4", owed: 0 },
+//       { id: 5, name: "supply5", price: 0, person: "attendee5", owed: 0 },
+//     ],
+//   });
+// =======
+const EventSupplies = (props) => {
+  const [suppliesState, setSuppliesState] = useState({ supplies: [] });
+  const [suppliesListName, setSuppliesListName] = useState();
+  const [suppliesListPrice, setSuppliesListPrice] = useState();
+  const [suppliesListPerson, setSuppliesListPerson] = useState();
+  const [suppliesListOwed, setSuppliesListOwed] = useState();
 
-  //update state to reflect changes made to the name and/or location fields
-  //gotta use callback functions to update objects for state hooks apparently https://reactjs.org/docs/hooks-state.html
-  let handleChange = (e) => {
-    if (e.target.name === "supplies") {
-      setSuppliesState((prevState) => ({
-        ...prevState,
-        location: e.target.value,
-      }));
-    }
-  };
-  let suppliesListName = suppliesState.supplies.map(supplies => (
-    <>
-      <p key={supplies.id}>
-        {supplies.name}
-      </p>
-    </>
-  ));
-  let suppliesListPrice = suppliesState.supplies.map(supplies => (
-    <>
-      <p key={supplies.id}>
-        $ {supplies.price}
-      </p>
-    </>
-  ));
-  let suppliesListPerson = suppliesState.supplies.map(supplies => (
-    <>
-      <p key={supplies.id}>
-        {supplies.person}
-      </p>
-    </>
-  ));
-  let suppliesListOwed = suppliesState.supplies.map(supplies => (
-    <>
-      <p key={supplies.id}>
-       $ {supplies.owed} 
-      </p>
-    </>
-  ));
 
-  //TODO: handle updating user's information in backend
-  let saveSupplies = (e) => {
-    console.log(suppliesState);
+  useEffect(() => {
+    setSuppliesState(props.event);
+  }, [props.event]);
+
+  const editSuppliesHandler = () => {
+    props.history.push({
+      pathname: "/editsupplies",
+      state: { suppliesState: suppliesState }
+    });
   };
-  let splitCosts = (e) => {
-    let url = '/splitCosts';
-    suppliesState._id = window.location.pathname.split("/")[2];
+// <<<<<<< AuthErrorHandle
+//   let splitCosts = (e) => {
+//     let url = '/splitCosts';
+//     suppliesState._id = window.location.pathname.split("/")[2];
        
+// =======
+
+  useEffect(() => {
+    let suppliesListName;
+    let suppliesListPrice;
+    let suppliesListPerson;
+    let suppliesListOwed;
+    if (suppliesState.supplies) {
+      suppliesListName = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+            {supplies.supply}
+          </p>
+        </>
+      ));
+      setSuppliesListName(suppliesListName);
+      suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+            $ {supplies.amount}
+          </p>
+        </>
+      ));
+      setSuppliesListPrice(suppliesListPrice);
+      suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+            {supplies.name}
+          </p>
+        </>
+      ));
+      setSuppliesListPerson(suppliesListPerson);
+      suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
+        <>
+          <p key={index}>
+           $ {supplies.owed} 
+          </p>
+        </>
+      ));
+      setSuppliesListOwed(suppliesListOwed);
+    }
+  }, [suppliesState.supplies])
+
+  const splitCosts = (e) => {
+    const url = '/splitCosts';
+   
+
         // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
         axios.post(url , suppliesState)
             .then(response => {
@@ -126,12 +150,12 @@ const EventSupplies = () => {
               <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
-            <div class="table-responsive">
-              <Table striped bordered hover size="sm" class="table table-fixed" >
+            <div className="table-responsive">
+              <Table striped bordered hover size="sm" className="table table-fixed" >
                 <thead>
                   <tr>
-                    <th>Product</th>
-                    <th>Price</th>
+                    <th>Supply</th>
+                    <th>Amount</th>
                     <th>Name</th>
                     <th>Owed</th>
                    </tr>
@@ -151,7 +175,7 @@ const EventSupplies = () => {
               <Button
                 variant="outline-primary"
                 className={classes.Button}
-                href="/editsupplies"
+                onClick={editSuppliesHandler}
               >
                 Edit Supplies
               </Button>
@@ -166,4 +190,4 @@ const EventSupplies = () => {
   );
 };
 
-export default EventSupplies;
+export default withRouter(EventSupplies);

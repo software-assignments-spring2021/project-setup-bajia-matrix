@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const { body, validationResult } = require("express-validator");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 const router = express.Router();
@@ -74,7 +75,17 @@ router.get("/", async (req, res, next) => {
     }
 });
 
-router.post("/", (req, res, next) => {
+router.post(
+    "/", 
+    body("name").not().isEmpty().trim().escape(),
+    body("city").trim().escape(),
+    body("state").trim().escape(),
+    (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(500).send(errors.array()[0]);
+    }
+
     const id = req.body._id;
     console.log("post request on route /profile with user id " + id);
     
@@ -87,8 +98,28 @@ router.post("/", (req, res, next) => {
         .catch(error => {
             console.log("ERROR: Unable to update user.");
             console.log(error);
-            res.status(500).json({message: "ERROR 500: Issue updating user"});
+            res.status(500).send("ERROR 500: Issue updating user");
         });
 });
+
+//JOANNE: to get all event attendees' avis
+router.post("/avis", (req, res, next) => {
+    User.find({}, (err, users) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({message: "ERROR 500: Issue with getting all users"});
+        } else {
+            let avis = [];
+            req.body.attendees.forEach(attendee => {
+                let temp = users.filter(user => {if (attendee.id === user.id) return user})
+                if (temp[0]) {
+                    avis.push(temp[0].avatar);
+                } 
+            })
+            console.log(avis);
+            res.status(200).json(avis);
+        }
+    })
+})
 
 module.exports = router;

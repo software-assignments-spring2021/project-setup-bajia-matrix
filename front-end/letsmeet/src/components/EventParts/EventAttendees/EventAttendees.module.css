@@ -18,17 +18,18 @@
 }
 
 .Group {
-  width: 100%;
+  width: 110%;
 }
 
 .Name {
-  margin-top: 0px;
-  width: 100%;
+  margin-top: -2vh;
   overflow-wrap: break-word;
-  display: block;
+  font-size: 12pt;
 }
 
 .Role {
-  color: lightgray
+  color: lightgray;
+  display: block;
+  margin-top: -2vh;
 }
 

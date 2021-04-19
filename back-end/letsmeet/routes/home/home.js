@@ -9,6 +9,7 @@ const User = require("../../models/User");
 const Event = require("../../models/Event");
 
 router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json());
 
 router.get("/", (req, res, next) => {
     const userId = req.query.userid;
@@ -55,27 +56,6 @@ router.get("/", (req, res, next) => {
             console.log(error);
             res.status(500).send("ERROR 500: Issue retrieving pending invites");
         });
-});
-
-router.delete("/", (req, res, next) => {
-    const userId = req.query.userid;
-    const eventId = req.query.eventid;
-    console.log("delete request on route / with user id " + userId + " and for event with id " + eventId);
-    
-    // find event and remove the user from list of invitees
-    Event.findOneAndUpdate({ _id: eventId }, {$pull: {
-        invitees : { 
-            id: userId 
-        } 
-    }})
-    .then(response => {
-        res.send("200 OK: Successfully removed invite from user");
-    })
-    .catch(error => {
-        console.log("ERROR: Unable to find and delete invite.");
-        console.log(error);
-        res.status(500).json({message: "ERROR 500: Issue deleting invite"});
-    });
 });
 
 module.exports = router;

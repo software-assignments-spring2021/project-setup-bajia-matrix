@@ -7,7 +7,7 @@ const app = express();
 app.use("/suggestedTimes", require("../routes/events/suggestedTimes"));
 
 describe("SuggestedTimes routes", () => {
-    describe("get best times with input of 2 repeating times (size < 5) ", () => {
+    describe("Get best times with input of 2 repeating times (size < 5) ", () => {
         it("should return 2 suggestions", async () => {
             const data = {
                 availability: [
@@ -26,7 +26,7 @@ describe("SuggestedTimes routes", () => {
         });
     });
 
-    describe("get best times with input containing no repeating times (pretending to contain times for only 1 user)", () => {
+    describe("Get best times with input containing no repeating times (pretending to contain times for only 1 user)", () => {
         it("should return an empty JSON array", async () => {
             const data = {
                 availability: [
@@ -46,7 +46,7 @@ describe("SuggestedTimes routes", () => {
         });
     });
 
-    describe("get best times with input containing repeating times of 2, 2, and 4 (varied amounts of repeating times) (size >= 5) (most common use case)", () => {
+    describe("Get best times with input containing repeating times of 2, 2, and 4 (varied amounts of repeating times) (size >= 5) (most common use case)", () => {
         it("should return the times that repeated 4 times, 2 times, and 2 times", async () => {
             const data = {
                 availability: [

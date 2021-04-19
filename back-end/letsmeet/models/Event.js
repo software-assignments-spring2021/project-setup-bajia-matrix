@@ -3,18 +3,20 @@ const mongoose = require("mongoose");
 const EventSchema = new mongoose.Schema({
   title: {type: String, required: true},
   availability: [
-    {type: String, required: true}
+    {type: String}
   ],
   eventLocation: {type: String, required: true},
-  description: {type: String},
-  creator: {type: String},
+  description: {type: String, default: ""},
+  creator: {type: String, default: ""},
   creatorID: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-  startDate: {type: String},
-  finalDate: {type: Date},
+  startDate: {type: String, default: ""},
+  finalDate: {type: String, default: ""},
+  finalDay: {type: String, default: ""},
+  finalTime: {type: String, default: ""},
   attendees: [
     {
       _id: false,
-      id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "User", default: mongoose.mongo.ObjectId()},
       name: {type: String}
     }
   ],
@@ -27,8 +29,8 @@ const EventSchema = new mongoose.Schema({
   ],
   supplies: [
     {
+      name: {type: String},
       supply: {type: String},
-      name: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
       amount: {type: Number},
       owed: {type: Number}
     }

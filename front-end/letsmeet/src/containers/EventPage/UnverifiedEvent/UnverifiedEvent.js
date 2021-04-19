@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -26,13 +26,28 @@ const UnverifiedEvent = (props) => {
   return (
     <div>
       <Row className={classes.EventTitle}>
-        <EventTitle
-          title={props.event.title}
-          day={props.event.day}
-          date={props.event.date}
-          time={props.event.time}
-          location={props.event.eventLocation}
-        />
+        {props.event.creator !== ""
+            ? <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={true}
+            />
+            : <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={false}
+            />
+        }
       </Row>
       <hr />
       <br />
@@ -52,6 +67,7 @@ const UnverifiedEvent = (props) => {
       <h5 className="ml-2">Event Attendees</h5>
       <div className={classes.UnverifiedAttendees}>
         <EventAttendees
+          event={props.event}
           attendees={props.event.attendees}
           roles={props.event.roles}
           isAuthenticated={props.state.isAuthenticated}
@@ -66,7 +82,7 @@ const UnverifiedEvent = (props) => {
               ref={props.state.unverifiedInput}
               aria-label="Large"
               aria-describedby="inputGroup-sizing-sm"
-              placeholder="Enter Your Name"
+              placeholder="Enter Your Email"
             />
             <Button className="ml-3" onClick={props.addUnverified}>
               Join Event
@@ -84,9 +100,14 @@ const UnverifiedEvent = (props) => {
           <Card.Body>
             <Card.Title>Want to unlock all features?</Card.Title>
             <Card.Text>Create an account now!</Card.Text>
-            <Button href="/signup" variant="primary">
-              Create Account
-            </Button>
+            {props.event.unverifiedURL
+              ? <Button href={props.event.unverifiedURL} variant="primary">
+                  Create Account
+                </Button>
+              : <Button href='/signup' variant="primary">
+                  Create Account
+                </Button>
+            }
           </Card.Body>
           <Card.Footer className="text-muted"></Card.Footer>
         </Card>

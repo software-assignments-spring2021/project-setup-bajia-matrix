@@ -33,12 +33,14 @@
 }
 
 .UnverifiedAttendees {
-  width: 90%;
+  width: 110%;
   display: flex;
   flex-flow: column;
   overflow: scroll;
-  height: 200px;
+  min-height: 10vh;
+  max-height: 200px;
   overflow-x: hidden;
+  margin-left: -5vw;
 }
 
 .UnverifiedAttendees::-webkit-scrollbar {
@@ -202,7 +204,7 @@
 
   .CardAttendee {
     text-align: center;
-    width: 100%;
+    width: 90%;
     border: transparent;
     display: flex;
     flex-flow: column;

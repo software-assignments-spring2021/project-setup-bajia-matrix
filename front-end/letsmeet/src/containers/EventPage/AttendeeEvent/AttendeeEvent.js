@@ -28,16 +28,32 @@ import CardGroup from "react-bootstrap/CardGroup";
 */
 
 const AttendeeEvent = (props) => {
+
   return (
     <div>
       <Row className={classes.EventTitle}>
-        <EventTitle
-          title={props.event.title}
-          day={props.event.day}
-          date={props.event.date}
-          time={props.event.time}
-          location={props.event.eventLocation}
-        />
+        {props.event.creator !== ""
+            ? <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={true}
+            />
+            : <EventTitle
+            title={props.event.title}
+            event={props.event}
+            day={props.event.finalDay}
+            date={props.event.finalDate}
+            time={props.event.finalTime}
+            location={props.event.eventLocation}
+            creator={props.event.creator}
+            showCreator={false}
+            />
+        }
       </Row>
       <hr />
       <br />
@@ -68,7 +84,7 @@ const AttendeeEvent = (props) => {
                     <EventAttendees
                       attendees={props.event.attendees}
                       roles={props.event.roles}
-                      isAuthenticated={props.state.isAuthenticated}
+                      event={props.event}
                     ></EventAttendees>
                   </Card.Body>
                   <Card.Body>
@@ -80,7 +96,7 @@ const AttendeeEvent = (props) => {
           </Container>
         </Card>
         <Card className={classes.CardBorder}>
-          <EventSupplies />
+          <EventSupplies event={props.event} />
         </Card>
       </CardGroup>
 

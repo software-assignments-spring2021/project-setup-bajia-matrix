@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./EventPage.module.css";
@@ -8,10 +8,11 @@ import Container from "react-bootstrap/Container";
 import axios from "../../axios";
 
 import Spinner from "../../components/UI/Spinner/Spinner";
-// import EventInvitees from "../../components/EventParts/EventInvitees/EventInvitees";
 import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
 import CreatorEvent from "./CreatorEvent/CreatorEvent";
 import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
+
+import { Select } from "antd";
 
 /*
   This component displays the event pages for the following users: event creator, event attendee, and unverfied user.
@@ -20,8 +21,7 @@ import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
     This component does not accept any custom props
 */
 
-const EventPage = () => {
-  const key = "57a7ac80";
+const EventPage = (props) => {
 
   const [loading, setLoading] = useState({
     event: true,
@@ -38,15 +38,8 @@ const EventPage = () => {
     eventLocation: "New York, NY",
     description:
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
-    attendees: [
-      "Angela Tim",
-      "Matthew Fishman",
-      "Timothy Sanders",
-      "Spike Spiegel",
-      "Faye Valentine",
-    ],
+    attendees: [],
     creator: "Angela Tim",
-    roles: new Array(),
     suggestedTimes: [
       { "Day": "Saturday", "Date": "10/30/2020", "Time": "2:09 AM" },
       { "Day": "Saturday", "Date": "04/27/2021", "Time": "7:15 AM" },
@@ -88,35 +81,61 @@ const EventPage = () => {
     description: "",
   });
 
-   useEffect(() => {
-      let eventQueryID = window.location.pathname.split("id:")[1];
-      axios.get("/events?eventid=" + eventQueryID)
-        .then((response) => {
-        //console.log('successfully get event: ', response.data);
-        setEvent(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  useEffect(() => {
+     console.log(props)
+      if (props.location.state) {
+        const eventState = props.location.state.eventState;
+        setEvent(eventState);
+      }
+      else {
+        let eventQueryID = window.location.pathname.split("/")[2];
+        axios.get("/events?eventid=" + eventQueryID)
+          .then((response) => {
+          console.log('successfully get event: ', response.data);
+          setEvent(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+  }, [props]);
+
+  //get avis of all attendees
+  useEffect(() => {
+    // event.attendees.filter(attendee => {
+      if (event.attendees.length > 0) {
+        axios.post("profile/avis", {attendees: [...event.attendees]})
+          .then((response) => {
+            setEvent((prevState) => ({
+              ...prevState,
+              avis: response.data,
+            }))
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    //})
+  }, [event.attendees])
 
   let addUnverified = (e) => {
-    console.log(e.target.previousElementSibling.inputValue);
-    let newAttendee = state.unverifiedInput.current.value;
-    let newAttendees = [...event.attendees]; //make a shallow copy first
-    newAttendees.splice(1, 0, newAttendee);
-    let newRoles = [...event.roles];
-    newRoles.splice(1, 0, "Attendee");
-    let eventCopy = event;
-    eventCopy.attendees = newAttendees;
+    let attendeesCopy = [...event.attendees]; //make a shallow copy first
+    let newAttendee = {
+      name: state.unverifiedInput.current.value,
+      eventID: event._id
+    };
+    attendeesCopy.push(newAttendee);
 
-    setEvent((prevState) => ({
-      ...prevState,
-      attendees: newAttendees,
-      roles: newRoles,
-    }))
-
-    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+    if (newAttendee.name.includes('@')) {
+      setEvent((prevState) => ({
+        ...prevState,
+        attendees: attendeesCopy,
+        unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
+      }))
+    }
+  
+    axios.post("/events/newAttendee", newAttendee)
       .then((response) => {
         console.log('successfully posted new attendee: ', response);
       })
@@ -124,18 +143,6 @@ const EventPage = () => {
         console.log(error);
       });
   };
-  useEffect(() => {
-    //for attendees list & attendee roles
-    if (event.attendees) {
-      event.attendees.filter((attendee) => {
-        if (event.creator === attendee) {
-          event.roles.push("Creator");
-        } else {
-          event.roles.push("Attendee");
-        }
-      });
-    }
-  }, [event.attendees]); // TODO: check warnings
 
   const [showLink, setShowLink] = useState(false);
   const handleShowLink = () => setShowLink(true);
@@ -143,7 +150,7 @@ const EventPage = () => {
   useEffect(() => {
     //for generating event url
     if (event.id) {
-      let eventURL = window.location.origin + "/event/id:" + event.id.$oid;
+      let eventURL = window.location.origin + "/event/" + event.id;
       setEvent((prevState) => ({
         ...prevState,
         url: eventURL,
@@ -230,7 +237,6 @@ const EventPage = () => {
 
   useEffect(() => {
     if (event.finalDay) {
-      console.log("finalDay changed!");
       setEvent((prevState) => ({
         ...prevState,
         day: event.finalDay,
@@ -242,66 +248,96 @@ const EventPage = () => {
         show: false,
       }));
     }
-  }, [event.finalDay]); // TODO: check warnings
+  }, [event.finalDay, event.finalDate, event.finalTime]);
 
-  let addVerified = (e) => {
-    let attendeesCopy = [...event.attendees]; //make a shallow copy first
-    let rolesCopy = [...event.roles];
-    if (invitees.length > 0) {
-      for (let i = 0; i < invitees.length; i++) {
-        attendeesCopy.splice(1, 0, invitees[i]);
-        rolesCopy.splice(1, 0, "Attendee");
+  
+  const { Option } = Select;
+  let addVerified = (values) => {
+    //extract names of invitees
+    let invitees = [];
+    let inviteeNames = [];
+    values.friends.forEach(friend => {
+      invitees.push(JSON.parse(friend));
+      inviteeNames.push(JSON.parse(friend).name);
+    })
+    
+    //update friends list so that friend that was just invited does not appear
+    let friends = [];
+    let friendsList = {};
+    event.friendsList.forEach(friend => {
+      if (!inviteeNames.includes(friend.props.children)) {
+        let temp = user.friends.filter(temp => {return temp.name === friend.props.children})
+        friends.push(temp[0]);
       }
-      console.log(invitees);
+      return;
+    })
+    friendsList = friends.map(test => (
+      <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
+    ))
+    setEvent((prevState) => ({
+      ...prevState,
+      friendsList: friendsList,
+    }));
 
-      setInvitees(null);
-      setEvent((prevState) => ({
-        ...prevState,
-        attendees: attendeesCopy,
-        roles: rolesCopy,
-      }));
+    //add friends as invitees to database
+    console.log(invitees);
+    // eventCopy.attendees = attendeesCopy;
+    //   axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+    //   .then((response) => {
+    //     console.log('successfully posted new attendee: ', response);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
+  };
 
-      let eventCopy = event;
-      eventCopy.attendees = attendeesCopy;
-      axios.post("/events?eventid=" + event.id.$oid, eventCopy)
-      .then((response) => {
-        console.log('successfully posted new attendee: ', response);
+  //for populating list of friends to invite to event (exclude any friends already attending or invited)
+  useEffect(() => {
+    let friendsList;
+    if(user.friends && event.title) {
+      let test = [];
+      let eventInvitees = false;
+      let eventAttendees = false;
+      user.friends.forEach(friend => {
+        event.invitees.forEach(invitee => {
+          if (invitee.name === friend.name) {
+            eventInvitees = true;
+          }
+        })
+        event.attendees.forEach(attendee => {
+          if (attendee.name === friend.name) {
+            eventAttendees = true;
+          }
+        })
+        if (!eventInvitees && !eventAttendees) {
+          test.push(friend);
+        }
+      })
+      friendsList = test.map(test => (
+        <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
+      ))
+    }
+    setEvent((prevState) => ({
+      ...prevState,
+      friendsList: friendsList,
+    }));
+  }, [user.friends, event.title, event.attendees, event.invitees]);
+
+  useEffect(() => {
+    //get currently logged in user info
+    const id = localStorage.getItem("userID");
+    if (id) {
+      axios.get("/profile?userid=" + id)
+        .then((response) => {
+        setUser(response.data);
+        
       })
       .catch((error) => {
         console.log(error);
       });
     }
-  };
-
-  useEffect(() => {
-    // setState((prevState) => ({
-    //   ...prevState,
-    //   name: "Angela Tim",
-    //   friends: [
-    //     { value: "friend_first1 friend_last1" },
-    //     { value: "friend_first2 friend_last2" },
-    //     { value: "friend_first3 friend_last3" },
-    //     { value: "friend_first4 friend_last4" },
-    //     { value: "friend_first5 friend_last5" },
-    //   ],
-    // }));
-    // setLoading({ user: false });
-
-    //get currently logged in user info
-    // TODO: change id to currently logged in user
-    const id = "6071f92b7278a8a7c6d70217";
-    axios.get("/profile?userid=" + id)
-        .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }, []);
-
-  // useEffect(() => {
-  //   console.log(user.friends);
-  // }, [user.friends]);
 
   //for canceling event
   const [show, setShow] = useState(false);
@@ -324,7 +360,6 @@ const EventPage = () => {
   //for withdrawing from event
   const handleWithdraw = () => {
     let eventCopy = event;
-    let attendeesCopy = [...event.attendees];
     //TODO: remove user from event attendees & eventCopy attendees
 
     let withdrawnCopy = [...event.withdrawn];
@@ -395,37 +430,37 @@ const EventPage = () => {
   };
 
   useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      //unverified: true,
-      //creator: true,
-      attendee: true
-    }));
-    // if (user.name !== "" && event.creator) {
-    //   console.log(user.name);
-    //   console.log(event.creator);
-    //   if (user.name === event.creator) {
-    //     setState(prevState => ({
-    //       ...prevState,
-    //       creator: true
-    //     }));
-    //   } else {
-    //     setState(prevState => ({
-    //       ...prevState,
-    //       attendee: true
-    //     }));
-    //   }
-    // } else {
-    //   setState(prevState => ({
-    //     ...prevState,
-    //     unverified: true
-    //   }));
-    // }
-  }, [event, user]);
+    // setState((prevState) => ({
+    //   ...prevState,
+    //   unverified: true,
+    //   //creator: true,
+    //   //attendee: true
+    // }));
+    if (props.isAuthenticated) {
+      if (user.name && event.title) {
+        if (user.name === event.creator) {
+          setState(prevState => ({
+            ...prevState,
+            creator: true
+          }));
+        } else {
+          setState(prevState => ({
+            ...prevState,
+            attendee: true
+          }));
+        }
+      }
+    } else {
+      if (event.creator) {
+        setState(prevState => ({
+          ...prevState,
+          unverified: true
+        }));
+      }
+    }
+  }, [event.title, user.name, props.isAuthenticated, event.creator]);
 
   useEffect(() => {
-    //console.log(event);
-    //console.log(state);
     if (
       state.creator === true ||
       state.attendee === true ||
@@ -484,6 +519,7 @@ const EventPage = () => {
             show={show}
             handleClose={handleClose}
             handleDelete={handleDelete}
+            user={user}
           />
         </Container>
       );
@@ -503,4 +539,4 @@ const EventPage = () => {
   return <div>{eventPage}</div>;
 };
 
-export default EventPage;
+export default withRouter(EventPage);
