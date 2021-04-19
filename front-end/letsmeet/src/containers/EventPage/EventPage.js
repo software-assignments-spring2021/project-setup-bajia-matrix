@@ -360,20 +360,26 @@ const EventPage = (props) => {
   //for withdrawing from event
   const handleWithdraw = () => {
     let eventCopy = event;
-    //TODO: remove user from event attendees & eventCopy attendees
-
+    let attendeesCopy = [...event.attendees];
+    attendeesCopy.forEach((attendee, index) => {
+      if (user._id === attendee.id) {
+        attendeesCopy.splice(index, 1);
+      }
+    })
     let withdrawnCopy = [...event.withdrawn];
-    withdrawnCopy.push(user);
+    withdrawnCopy.push({id: user._id, name: user.name});
     setEvent((prevState) => ({
       ...prevState,
+      attendees: attendeesCopy,
       withdrawn: withdrawnCopy
     }))
-
+    eventCopy.attendees = attendeesCopy;
     eventCopy.withdrawn = withdrawnCopy;
+
     //axios post to update event withdrawn array
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully updated event\'s withdrawn array: ', response);
+        console.log('successfully withdrew attendee from event: ', response);
       })
       .catch((error) => {
         console.log(error);
