@@ -26,7 +26,7 @@ const EditSupplies = (props) => {
     const [profileState, setProfileState] = useState({});
 
     useEffect(() => {
-        const suppliesState = props.location.state.suppliesState;
+        const suppliesState = JSON.parse(props.location.state.suppliesState);
         setSuppliesState(suppliesState);
        
         const id = localStorage.getItem("userID");

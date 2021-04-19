@@ -31,10 +31,10 @@ const EventSupplies = (props) => {
   }, [props.event]);
 
   const editSuppliesHandler = () => {
-    props.history.push({
-      pathname: "/editsupplies",
-      state: { suppliesState: suppliesState }
-    });
+      props.history.push({
+        pathname: "/editsupplies",
+        state: { suppliesState: JSON.stringify(suppliesState) }
+      });
   };
 
   useEffect(() => {
