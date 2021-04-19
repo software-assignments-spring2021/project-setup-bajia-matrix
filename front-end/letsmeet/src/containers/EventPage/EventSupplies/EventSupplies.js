@@ -21,6 +21,7 @@ import axios from '../../../axios';
 
 const EventSupplies = () => {
   const [suppliesState, setSuppliesState] = useState({
+    _id: "",
     title: "Lunch Date",
     description: "dATE",
     supplies: [
@@ -77,7 +78,8 @@ const EventSupplies = () => {
   };
   let splitCosts = (e) => {
     let url = '/splitCosts';
-   
+    suppliesState._id = window.location.pathname.split("/")[2];
+       
         // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
         axios.post(url , suppliesState)
             .then(response => {

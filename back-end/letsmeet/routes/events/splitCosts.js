@@ -24,6 +24,8 @@ router.post("/", (req, res, next) => {
     console.log("post request on route /splitCosts");
     // extract data from the request 
     const costs = req.body;
+    console.log(req.body._id);
+
     // initialize response
     const splits = split(costs)
     //console.log(splits.supplies);

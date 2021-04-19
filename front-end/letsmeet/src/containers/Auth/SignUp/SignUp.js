@@ -165,6 +165,7 @@ const SignUp = (props) => {
                 localStorage.setItem("userID", "");
                 localStorage.setItem("isAuthenticated", false)
                 console.log(error.response.data.message);
+                alert(error.response.data.message);
                 window.location.reload(false);
 
                 // Bing to Rahul: you should display some message after reloading if account creation fails.

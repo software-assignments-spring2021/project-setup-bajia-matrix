@@ -49,6 +49,7 @@ const SignIn = (props) => {
                 else {
                     // TODO: if auth failed, should change so page reloads and displays this message 
                     setErrorMessage(<strong>Either your email is incorrect or your password does not match!</strong>);
+                    alert("Either your email is incorrect or your password does not match!");
                     localStorage.setItem("userID", "");
                     localStorage.setItem("isAuthenticated", false)
                     console.log(response.data.message);
@@ -59,6 +60,7 @@ const SignIn = (props) => {
                 localStorage.setItem("userID", "");
                 localStorage.setItem("isAuthenticated", false)
                 console.log(error.response.data.message);
+                alert("Either your email is incorrect or your password does not match!");
                 window.location.reload(false);
             });      
     }
