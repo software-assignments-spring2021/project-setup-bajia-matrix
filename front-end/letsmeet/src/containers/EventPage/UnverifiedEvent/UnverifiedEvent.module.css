@@ -185,6 +185,14 @@
   width: 100%;
 }
 
+.EmailMessage {
+  color: red;
+  font-weight: 500;
+  margin-bottom: 5px;
+  width: 80vw;
+  margin-left: -3vw;
+}
+
 @media (max-width: 460px) {
   .Row {
     position: relative;

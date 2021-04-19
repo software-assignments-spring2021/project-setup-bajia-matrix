@@ -77,6 +77,10 @@ const UnverifiedEvent = (props) => {
 
       <Row className="justify-content-center">
         <div className={classes.Div}>
+          { props.event.emailMessage 
+            ? <div key="idk why this needs a key tf" className={classes.EmailMessage}>{props.event.emailMessage}</div>
+            : null
+          }
           <InputGroup className={classes.Input}>
             <FormControl
               ref={props.state.unverifiedInput}

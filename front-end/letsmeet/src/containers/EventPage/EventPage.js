@@ -120,28 +120,48 @@ const EventPage = (props) => {
   }, [event.attendees])
 
   let addUnverified = (e) => {
-    let attendeesCopy = [...event.attendees]; //make a shallow copy first
-    let newAttendee = {
-      name: state.unverifiedInput.current.value,
-      eventID: event._id
-    };
-    attendeesCopy.push(newAttendee);
-
-    if (newAttendee.name.includes('@')) {
-      setEvent((prevState) => ({
-        ...prevState,
-        attendees: attendeesCopy,
-        unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
-      }))
-    }
-  
-    axios.post("/events/newAttendee", newAttendee)
+    //check if unverified email already exists in database
+    axios.get('/profile?findUser=true&searchEmail='+state.unverifiedInput.current.value)
       .then((response) => {
-        console.log('successfully posted new attendee: ', response);
+        if (response.data.length === 0) {
+          let attendeesCopy = [...event.attendees];
+          let newAttendee = {
+            name: state.unverifiedInput.current.value,
+            eventID: event._id
+          };
+          attendeesCopy.push(newAttendee);
+
+          if (newAttendee.name.includes('@')) {
+            setEvent((prevState) => ({
+              ...prevState,
+              attendees: attendeesCopy,
+              unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value,
+              emailMessage: null
+            }))
+            axios.post("/events/newAttendee", newAttendee)
+            .then((response) => {
+              console.log('successfully posted new attendee: ', response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          } else {
+            setEvent((prevState) => ({
+              ...prevState,
+              emailMessage: "The email address you entered is not valid. Please try again."
+            }))
+          }
+        
+        } else {
+          setEvent((prevState) => ({
+            ...prevState, 
+            emailMessage: "An account with the email already exists. Please enter another email or log in."
+          }))
+        }
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
   };
 
   const [showLink, setShowLink] = useState(false);
