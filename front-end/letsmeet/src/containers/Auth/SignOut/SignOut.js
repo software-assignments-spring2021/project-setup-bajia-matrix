@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Redirect} from 'react-router-dom';
 
 /*
     This component updates the variables in localStorage to indicate
@@ -11,8 +12,7 @@ import React, { useState } from 'react';
 const SignOut = (props) => {
     localStorage.setItem('userID', "");
     localStorage.setItem('isAuthenticated', false);
-    props.history.push("/");
-    return <></>;    
+    return <><Redirect to="/"/></>;    
 };
 
 export default SignOut;

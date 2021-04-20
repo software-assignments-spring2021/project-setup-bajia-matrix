@@ -120,28 +120,48 @@ const EventPage = (props) => {
   }, [event.attendees])
 
   let addUnverified = (e) => {
-    let attendeesCopy = [...event.attendees]; //make a shallow copy first
-    let newAttendee = {
-      name: state.unverifiedInput.current.value,
-      eventID: event._id
-    };
-    attendeesCopy.push(newAttendee);
-
-    if (newAttendee.name.includes('@')) {
-      setEvent((prevState) => ({
-        ...prevState,
-        attendees: attendeesCopy,
-        unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value
-      }))
-    }
-  
-    axios.post("/events/newAttendee", newAttendee)
+    //check if unverified email already exists in database
+    axios.get('/profile?findUser=true&searchEmail='+state.unverifiedInput.current.value)
       .then((response) => {
-        console.log('successfully posted new attendee: ', response);
+        if (response.data.length === 0) {
+          let attendeesCopy = [...event.attendees];
+          let newAttendee = {
+            name: state.unverifiedInput.current.value,
+            eventID: event._id
+          };
+          attendeesCopy.push(newAttendee);
+
+          if (newAttendee.name.includes('@')) {
+            setEvent((prevState) => ({
+              ...prevState,
+              attendees: attendeesCopy,
+              unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value,
+              emailMessage: null
+            }))
+            axios.post("/events/newAttendee", newAttendee)
+            .then((response) => {
+              console.log('successfully posted new attendee: ', response);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          } else {
+            setEvent((prevState) => ({
+              ...prevState,
+              emailMessage: "The email address you entered is not valid. Please try again."
+            }))
+          }
+        
+        } else {
+          setEvent((prevState) => ({
+            ...prevState, 
+            emailMessage: "An account with the email already exists. Please enter another email or log in."
+          }))
+        }
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
   };
 
   const [showLink, setShowLink] = useState(false);
@@ -360,20 +380,26 @@ const EventPage = (props) => {
   //for withdrawing from event
   const handleWithdraw = () => {
     let eventCopy = event;
-    //TODO: remove user from event attendees & eventCopy attendees
-
+    let attendeesCopy = [...event.attendees];
+    attendeesCopy.forEach((attendee, index) => {
+      if (user._id === attendee.id) {
+        attendeesCopy.splice(index, 1);
+      }
+    })
     let withdrawnCopy = [...event.withdrawn];
-    withdrawnCopy.push(user);
+    withdrawnCopy.push({id: user._id, name: user.name});
     setEvent((prevState) => ({
       ...prevState,
+      attendees: attendeesCopy,
       withdrawn: withdrawnCopy
     }))
-
+    eventCopy.attendees = attendeesCopy;
     eventCopy.withdrawn = withdrawnCopy;
+
     //axios post to update event withdrawn array
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully updated event\'s withdrawn array: ', response);
+        console.log('successfully withdrew attendee from event: ', response);
       })
       .catch((error) => {
         console.log(error);
