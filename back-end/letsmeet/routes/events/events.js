@@ -132,7 +132,7 @@ router.delete("/", (req, res, next) => {
         const eventid = req.query.eventid;
         console.log("delete request on route /events for event with id " + eventid);
 
-        Event.findByIdAndDelete(id)
+        Event.findByIdAndDelete(eventid)
             .then(deletedEvent => {
                 res.send("200 OK: Successfully deleted event");
             })

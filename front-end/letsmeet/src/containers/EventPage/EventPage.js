@@ -76,7 +76,6 @@ const EventPage = (props) => {
   });
 
   useEffect(() => {
-     console.log(props)
       if (props.location.state) {
         const eventState = props.location.state.eventState;
         setEvent(eventState);
@@ -96,7 +95,6 @@ const EventPage = (props) => {
 
   //get avis of all attendees
   useEffect(() => {
-    // event.attendees.filter(attendee => {
       if (event.attendees.length > 0) {
         axios.post("profile/avis", {attendees: [...event.attendees]})
           .then((response) => {
@@ -104,13 +102,11 @@ const EventPage = (props) => {
               ...prevState,
               avis: response.data,
             }))
-            console.log(response.data);
           })
           .catch((error) => {
             console.log(error);
           })
       }
-    //})
   }, [event.attendees])
 
   let addUnverified = (e) => {
@@ -165,7 +161,6 @@ const EventPage = (props) => {
     //for generating event url
     if (event._id) {
       let eventURL = window.location.origin + "/event/" + event._id;
-      console.log(eventURL);
       setEvent((prevState) => ({
         ...prevState,
         url: eventURL,
@@ -336,7 +331,7 @@ const EventPage = (props) => {
   //for canceling event
   const [show, setShow] = useState(false);
   const handleDelete = () => {
-    axios.delete("/events?eventid=" + event.id.$oid)
+    axios.delete("/events?eventid=" + event._id)
       .then(response => {
         console.log("canceled event");
         console.log(response);
