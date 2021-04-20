@@ -23,11 +23,12 @@ Let's Meet aims to allow users to create, accept, and schedule public events. Th
 
 
 ## Team Members & Github Links
+* [Bing Chen](https://github.com/bingychen)
 * [Rahul Das](https://github.com/rahulbdas1)
 * [Joanne Han](https://github.com/jkh394)
-* [Bing Chen](https://github.com/bingychen)
-* [Forzana Rime](https://github.com/forzana)
 * [Crystal Lee](https://github.com/leecrystal)
+* [Forzana Rime](https://github.com/forzana)
+
 
 ## History
 We wanted to develop an app that would not only make our lives much more convenient, but also increase our exposure to new libraries and technologies, which ultimately led us to decide on an application that relies on communication among users. We were inspired by apps such as Doodle and when2meet, but we felt like they could be improved upon. So, we decided to implement new features of our own that would make our app stand out and be more attractive to potential users. 
