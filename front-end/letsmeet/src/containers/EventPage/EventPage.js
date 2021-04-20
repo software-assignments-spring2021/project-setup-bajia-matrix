@@ -121,20 +121,37 @@ const EventPage = (props) => {
           };
           attendeesCopy.push(newAttendee);
 
-          if (newAttendee.name.includes('@')) {
-            setEvent((prevState) => ({
-              ...prevState,
-              attendees: attendeesCopy,
-              unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value,
-              emailMessage: null
-            }))
-            axios.post("/events/newAttendee", newAttendee)
-            .then((response) => {
-              console.log('successfully posted new attendee: ', response);
+          //check if unverified email is correct email format
+          const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+          const isValid = pattern.test(newAttendee.name);
+          if (isValid) {
+            //check if unverified email is already in attendee list
+            let duplicate = false;
+            attendeesCopy.forEach(attendee => {
+              if (attendee.email === newAttendee.email) {
+                duplicate = true;
+              }
             })
-            .catch((error) => {
-              console.log(error);
-            });
+            if (duplicate) {
+              setEvent((prevState) => ({
+                ...prevState,
+                emailMessage: "The email address already exists in the event attendee list. Please enter another email."
+              }))
+            } else {
+              setEvent((prevState) => ({
+                ...prevState,
+                attendees: attendeesCopy,
+                unverifiedURL: "/signup?id=" + event._id + "&email=" + state.unverifiedInput.current.value,
+                emailMessage: null
+              }))
+              axios.post("/events/newAttendee", newAttendee)
+              .then((response) => {
+                console.log('successfully posted new attendee: ', response);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+            }
           } else {
             setEvent((prevState) => ({
               ...prevState,
