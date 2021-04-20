@@ -80,11 +80,12 @@ const EventSupplies = (props) => {
 
   const splitCosts = (e) => {
     const url = '/splitCosts';
+    console.log(suppliesState);
    
         // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
         axios.post(url , suppliesState)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 setSuppliesState({supplies: response.data})
             })
             .catch(function (error) {

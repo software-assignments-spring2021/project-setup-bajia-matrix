@@ -36,6 +36,7 @@ const SignUp = (props) => {
             value: "",
             valid: false
         }
+
     });
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -198,7 +199,8 @@ const SignUp = (props) => {
                 localStorage.setItem("userID", "");
                 localStorage.setItem("isAuthenticated", false)
                 console.log(error.response.data.message);
-                window.location.reload(false);
+                //window.location.reload(false);
+                setErrorMessage("Another account is using " + authState.email.value);
 
                 // Bing to Rahul: you should display some message after reloading if account creation fails.
                 // such as: "There is already an account associated with that Email address!"

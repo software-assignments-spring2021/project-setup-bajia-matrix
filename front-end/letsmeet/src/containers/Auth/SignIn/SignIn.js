@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import classes from './SignIn.module.css';
 import axios from '../../../axios';
@@ -59,7 +59,9 @@ const SignIn = (props) => {
                 localStorage.setItem("userID", "");
                 localStorage.setItem("isAuthenticated", false)
                 console.log(error.response.data.message);
-                window.location.reload(false);
+                setErrorMessage(error.response.data.message);
+
+                //window.location.reload(false);
             });      
     }
 
@@ -98,6 +100,8 @@ const SignIn = (props) => {
                         <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
                     </div>
                 </div>
+                <div className="text-danger">{errorMessage}</div>
+
 
                 <div>
                     <button type="submit" onClick={onSubmit} className="btn btn-primary btn-block">Submit</button>
