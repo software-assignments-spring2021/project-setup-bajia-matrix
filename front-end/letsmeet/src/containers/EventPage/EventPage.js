@@ -40,12 +40,6 @@ const EventPage = (props) => {
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
     attendees: [],
     creator: "Angela Tim",
-    suggestedTimes: [
-      { "Day": "Saturday", "Date": "10/30/2020", "Time": "2:09 AM" },
-      { "Day": "Saturday", "Date": "04/27/2021", "Time": "7:15 AM" },
-      { "Day": "Saturday", "Date": "09/16/2020", "Time": "4:52 AM" },
-      { "Day": "Saturday", "Date": "01/21/2021", "Time": "3:30 AM" },
-    ],
     finalDay: null,
     finalDate: null,
     finalTime: null,
@@ -179,7 +173,6 @@ const EventPage = (props) => {
     }
   }, [event._id]);
 
-  let suggestedTimes;
   let onChecked = (e) => {
     setChosenTime((prevState) => ({
       ...prevState,
@@ -192,33 +185,12 @@ const EventPage = (props) => {
   const handleShowSuggested = () => {
     
     // BING: retrieve suggested times and update event.suggestedTimes from backend
-        
     // get browser's current timezone
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     
-    const ev = {
-      availability: [
-        "Mon Apr 02 2001 11:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Wed Apr 04 2001 14:00:00 GMT-0500 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Fri Apr 06 2001 18:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 11:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 12:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 13:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 12:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Wed Apr 04 2001 19:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Mon Apr 02 2001 11:00:00 GMT-0400 (Eastern Daylight Time)",
-        "Thu Apr 05 2001 14:00:00 GMT-0400 (Eastern Daylight Time)"
-      ],
-      timezone: tz
-    }
-    
-    // TODO JOANNE: once we have database, send this info from the state instead of hardcoding
-    // aka change ev to event and remove ev above
-    // no need to link to specific event since just passing the times to perform the algorithm with
-    axios.post("/suggestedTimes", ev)
+    let eventCopy = event;
+    eventCopy.timezone = tz;
+    axios.post("/suggestedTimes", {availability: eventCopy.availability, timezone: eventCopy.timezone})
       .then(response => {
         setEvent((prevState) => ({
           ...prevState,
@@ -234,26 +206,28 @@ const EventPage = (props) => {
   const handleCloseSuggested = (e) => setShowSuggested(false);
   const handleFinal = () => {
     console.log("chosen time: ", chosenTime);
-    setEvent((prevState) => ({
-      ...prevState,
-      finalDay: chosenTime.day,
-      finalDate: chosenTime.date,
-      finalTime: chosenTime.time,
-    }));
+    if (chosenTime.date !== "test" && chosenTime.date !== "") {
+      setEvent((prevState) => ({
+        ...prevState,
+        finalDay: chosenTime.day,
+        finalDate: chosenTime.date,
+        finalTime: chosenTime.time
+      }));
+  
+      let eventCopy = event;
+      eventCopy.finalDay = chosenTime.day;
+      eventCopy.finalDate = chosenTime.date;
+      eventCopy.finalTime = chosenTime.time;
+      //axios post call to update event's final time details
+      axios.post("/events", eventCopy)
+        .then((response) => {
+          console.log('successfully updated event\'s final time: ', response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     setShowSuggested(false);
-
-    let eventCopy = event;
-    eventCopy.finalDay = chosenTime.day;
-    eventCopy.finalDate = chosenTime.date;
-    eventCopy.finalTime = chosenTime.time;
-    //axios post call to update event's final time details
-    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
-      .then((response) => {
-        console.log('successfully updated event\'s final time: ', response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   useEffect(() => {
@@ -284,7 +258,7 @@ const EventPage = (props) => {
     
     //update friends list so that friend that was just invited does not appear
     let friends = [];
-    let friendsList = {};
+    let friendsList = [];
     event.friendsList.forEach(friend => {
       if (!inviteeNames.includes(friend.props.children)) {
         let temp = user.friends.filter(temp => {return temp.name === friend.props.children})
@@ -292,13 +266,12 @@ const EventPage = (props) => {
       }
       return;
     })
-    friendsList = friends.map(test => (
-      <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
-    ))
+    friends.forEach((test,index) => {
+      friendsList.push(<Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>)
+    })
     setEvent((prevState) => ({
       ...prevState,
       friendsList: friendsList,
-      invitees: invitees
     }));
 
     //add friends as invitees to database

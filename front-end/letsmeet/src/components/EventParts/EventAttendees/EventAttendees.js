@@ -26,8 +26,6 @@ import purple from '../../../assets/Avatars/purpleavi.png';
 
 const eventAttendees = (props) => {
 
-  console.log(props.event.avis);
-
   let attendeesList;
   if(props.attendees && props.event.avis) {
     attendeesList = props.attendees.map((attendee, index) =>
