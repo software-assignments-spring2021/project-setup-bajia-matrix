@@ -13,29 +13,14 @@
   place-content : center;
 }
 
-/* .auth-wrapper h3 {
-  text-align: center;
-  margin: 0;
-  line-height: 1;
-  padding-bottom: 20px;
-} */
-
 .custom-control-label {
   font-weight: 400;
 }
 
-/* .forgot-password,
-.forgot-password a {
-  text-align: center;
-  font-size: 13px;
-  padding-top: 10px;
-  color: #7f7d7d;
-  margin: 0;
+.Error {
+  margin: 10px 0px 10px 0px;
+  color: red;
 }
-
-.forgot-password a {
-  color: #167bff;
-} */
 
 .form-control:focus {
   border-color: #167bff;

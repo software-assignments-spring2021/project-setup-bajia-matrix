@@ -43,25 +43,22 @@ const SignIn = (props) => {
                 if (response.data.success) {
                     localStorage.setItem('userID', response.data.uid);
                     localStorage.setItem('isAuthenticated', true);
-                   
+                    setSubmitting(false);
                     props.history.push("/");
                 }
                 else {
-                    // TODO: if auth failed, should change so page reloads and displays this message 
-                    setErrorMessage(<strong>Either your email is incorrect or your password does not match!</strong>);
                     localStorage.setItem("userID", "");
                     localStorage.setItem("isAuthenticated", false)
                     console.log(response.data.message);
-                    window.location.reload(false);
-                }
+                    setSubmitting(false);
+                    setErrorMessage(<strong>Either your email or password does not match!</strong>);                }
             })
             .catch(error => {
                 localStorage.setItem("userID", "");
                 localStorage.setItem("isAuthenticated", false)
                 console.log(error.response.data.message);
-                setErrorMessage(error.response.data.message);
-
-                //window.location.reload(false);
+                setSubmitting(false);
+                setErrorMessage(<strong>Either your email or password does not match!</strong>);
             });      
     }
 
@@ -100,8 +97,7 @@ const SignIn = (props) => {
                         <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
                     </div>
                 </div>
-                <div className="text-danger">{errorMessage}</div>
-
+                <div className={classes.Error}>{errorMessage}</div>
 
                 <div>
                     <button type="submit" onClick={onSubmit} className="btn btn-primary btn-block">Submit</button>
