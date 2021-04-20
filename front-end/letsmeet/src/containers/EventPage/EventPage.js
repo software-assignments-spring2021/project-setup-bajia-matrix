@@ -298,19 +298,19 @@ const EventPage = (props) => {
     setEvent((prevState) => ({
       ...prevState,
       friendsList: friendsList,
+      invitees: invitees
     }));
 
     //add friends as invitees to database
-    console.log(invitees);
-    // eventCopy.attendees = attendeesCopy;
-    //   axios.post("/events?eventid=" + event.id.$oid, eventCopy)
-    //   .then((response) => {
-    //     console.log('successfully posted new attendee: ', response);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // }
+    let eventCopy = event;
+    eventCopy.invitees = invitees;
+    axios.post("/events", eventCopy)
+      .then((response) => {
+        console.log('successfully posted new attendee: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   //for populating list of friends to invite to event (exclude any friends already attending or invited)
