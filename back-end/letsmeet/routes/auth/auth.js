@@ -22,7 +22,7 @@ router.post("/signup", async (req, res, next) => {
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "User already exists."
+        message: "ERROR 409: User already exists"
       });
     }
     const hash =   await bcrypt.hash(verifiedPassword.value, 12);
@@ -36,18 +36,18 @@ router.post("/signup", async (req, res, next) => {
       avatar: "red",
       friends: []
     });
-    const user = await User.findOne({ email: email_val } );
+    const user = await User.findOne({ email: email_val });
 
     return res.status(200).json({
       success: true,
       uid: user.id,
-      message: "Signup successful.",
+      message: "200 OK: Signup successful",
     });
   } 
   catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Signup failed."
+      message: "ERROR 500: Signup failed"
     });
   }    
 });
@@ -63,7 +63,7 @@ router.post("/signin", async (req, res, next) => {
     if (!user) {
       return res.status(500).json({
         success: false,
-        message: "No member exists.",
+        message: "ERROR 500: No user exists",
       });
     }
     const user_id = user.id;
@@ -84,13 +84,13 @@ router.post("/signin", async (req, res, next) => {
       return res.status(200).json({
         success: true,
         uid: user.id,
-        message: "Login Successful",
+        message: "200 OK: Login successful",
       });
     } 
     else {
       return res.status(401).json({
         success: false,
-        message: "Password's don't match.",
+        message: "ERROR 401: Passwords don't match",
       });
     }
   } 
@@ -98,7 +98,7 @@ router.post("/signin", async (req, res, next) => {
     console.error(error);
     res.status(401).json({
       success: false,
-      message: "Login Error",
+      message: "ERROR 401: Login failed",
     });
   }
 });

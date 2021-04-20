@@ -36,13 +36,14 @@ const SignUp = (props) => {
             value: "",
             valid: false
         }
+
     });
 
     const [errorMessage, setErrorMessage] = useState("");
 
     const urlParams = new URLSearchParams(window.location.search);
     let emailParam = urlParams.get('email');
-    //this is to prefill the value of email if an email query exists in the url
+    // this is to prefill the value of email if an email query exists in the url
     useEffect(() => {
         if (emailParam) {
             let emailCopy = {
@@ -165,10 +166,7 @@ const SignUp = (props) => {
     const [submitting, setSubmitting] = useState(false);
 
     const onSubmit = (e) => {
-
         e.preventDefault();
-        console.log("submitting");
-
         setSubmitting(true);
 
         axios.post("/auth/signup" , authState)
@@ -182,7 +180,8 @@ const SignUp = (props) => {
                         })
                         .catch(error => {
                             console.log(error);
-                        })
+                        });
+                    setSubmitting(false);
                 }
 
                 localStorage.setItem('userID', response.data.uid);
@@ -192,19 +191,13 @@ const SignUp = (props) => {
                 } else {
                     props.history.push("/"); 
                 }
-                
             })
             .catch(function (error) {
                 localStorage.setItem("userID", "");
                 localStorage.setItem("isAuthenticated", false)
                 console.log(error.response.data.message);
-                window.location.reload(false);
-
-                // Bing to Rahul: you should display some message after reloading if account creation fails.
-                // such as: "There is already an account associated with that Email address!"
-                // Something that might help: First attempt at signup, localStorage will have nothing
-                // Second attempt, localStorage will have isAuthenticated: false, userID: ""
-                // Same thing for sign in page
+                setErrorMessage(<strong>There is already an account associated with {authState.email.value}!</strong>);
+                setSubmitting(false);
             });;
     };
 
@@ -290,9 +283,8 @@ const SignUp = (props) => {
                         onChange={myChangeHandler}
                         required
                     />
-                    <div className="text-danger">{errorMessage}</div>
                 </div>
-
+                <div className={classes.Error}>{errorMessage}</div>
                 <div>
                     <button
                         type="submit"
