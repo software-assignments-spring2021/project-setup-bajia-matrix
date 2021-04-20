@@ -169,14 +169,15 @@ const EventPage = (props) => {
   const handleCloseLink = () => setShowLink(false);
   useEffect(() => {
     //for generating event url
-    if (event.id) {
-      let eventURL = window.location.origin + "/event/" + event.id;
+    if (event._id) {
+      let eventURL = window.location.origin + "/event/" + event._id;
+      console.log(eventURL);
       setEvent((prevState) => ({
         ...prevState,
         url: eventURL,
       }));
     }
-  }, [event.id]);
+  }, [event._id]);
 
   let suggestedTimes;
   let onChecked = (e) => {
@@ -434,7 +435,7 @@ const EventPage = (props) => {
     let eventCopy = event;
     eventCopy.description = description.description;
     //axios post to update event description
-    axios.post("/events?eventid=" + event.id.$oid, eventCopy)
+    axios.post("/events", eventCopy)
       .then((response) => {
         console.log('successfully updated event\'s description: ', response);
       })
