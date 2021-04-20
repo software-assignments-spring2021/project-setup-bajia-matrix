@@ -28,7 +28,7 @@ const EditSupplies = (props) => {
     useEffect(() => {
         const suppliesState = JSON.parse(props.location.state.suppliesState);
         setSuppliesState(suppliesState);
-       
+    
         const id = localStorage.getItem("userID");
         axios.get("/profile?userid=" + id)
             .then(response => {
@@ -103,7 +103,6 @@ const EditSupplies = (props) => {
                 <Row>
                     <Col className="md-12">
                         <Navbar>
-                            {/* TODO: update link to myevent */}
                             <Link to={{ pathname: "/event/" + suppliesState._id }} exact>
                                 <Navbar.Text>Cancel</Navbar.Text>
                             </Link>
@@ -122,9 +121,10 @@ const EditSupplies = (props) => {
                     <div className={classes.EditSupplies}>
                         <EventTitle 
                             title={suppliesState.title}
-                            day={suppliesState.day}
-                            date={suppliesState.date}
-                            time={suppliesState.time} />
+                            day={suppliesState.finalDay}
+                            date={suppliesState.finalDate}
+                            time={suppliesState.finalTime}
+                            event={suppliesState} />
 
                         <h5>Current Supplies</h5>
                         <div className={classes.Supplies}>

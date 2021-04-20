@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
-import { Button, DatePicker, Divider, Form, Space, TimePicker} from 'antd';
-import { InfoCircleOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Tab, Tabs } from 'react-bootstrap'
+import { Button, Divider, Form } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import ScheduleSelector  from 'react-schedule-selector';
 // import moment from 'moment';
 
@@ -19,7 +18,8 @@ import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 
 const AcceptInvite = (props) => {
 
-    const [loading, setLoading] = useState(true);
+    // BING: will this be used? If not, can delete
+    // const [loading, setLoading] = useState(true);
 
     // default event state
     const [event, setEvent] = useState({
@@ -61,7 +61,7 @@ const AcceptInvite = (props) => {
             .catch((error) => {
                 console.log(error.response.data)
             });
-    }, []);
+    }, [ props.history, props.location.state ]);
 
     // Variables for the form
     const [form] = Form.useForm()

@@ -29,10 +29,10 @@ const Home = (props) => {
     let eventParam = urlParams.get('event');
 
     useEffect(() => {
-        //JOANNE: this code for when an unverified user signs up after joining an event as attendee
-        //the home page should now display the event the user just joined in the upcoming events section
+        // this code for when an unverified user signs up after joining an event as attendee
+        // the home page should now display the event the user just joined in the upcoming events section
         if (eventParam) {
-            axios.get("/events?eventid="+eventParam)
+            axios.get("/events?eventid=" + eventParam)
                 .then(response => {
                     setUpcomingEventsState([response.data]);
                     // disable spinner
@@ -40,8 +40,10 @@ const Home = (props) => {
                 })
                 .catch(error => {
                     console.log(error);
+                    setLoading(false);
                 })
-        } else {
+        } 
+        else {
             axios.get("/?userid=" + id)
                 .then(response => {
                     // invites
@@ -64,7 +66,7 @@ const Home = (props) => {
                     setLoading(false);
                 });
         }
-    }, [id]);
+    }, [id, eventParam]);
 
     const pendingInvites = invitesState.map(e => {
         return (
@@ -80,48 +82,7 @@ const Home = (props) => {
         );
     });
 
-    // accepts a datetime (Date object) and converts it into day, date, and time
-    const formatDateTime = (datetime) => {
-        const finalDate = datetime.toLocaleString("en-US",  {
-            hour12: true,
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-
-        const dt = finalDate.split(", ");
-
-        // get day
-        const weekday = [
-            "Sun",
-            "Mon",
-            "Tues",
-            "Wed",
-            "Thurs",
-            "Fri",
-            "Sat"
-        ];
-        const day = weekday[datetime.getDay()];
-        const date = dt[0];
-        const time = dt[1];
-
-        return [day, date, time];
-    };
-
-    const myEvents = myEventsState.map(e => {
-        let day = null;
-        let date = null;
-        let time = null;
-
-        // TODO remove the ! when finalDate exists again
-        if (!e.finalDate) {
-            // TODO: replace mockDate with e.finalDate
-            const mockDate = new Date("2021-04-19T13:00:00.000Z");
-            [day, date, time] = formatDateTime(mockDate);
-        }
-        
+    const myEvents = myEventsState.map(e => {        
         const attendeesList = e.attendees.map(a => {
             return a.name;
         });
@@ -131,9 +92,9 @@ const Home = (props) => {
                 key={e._id}
                 id={e._id}
                 title={e.title}
-                day={day}
-                date={date}
-                time={time}
+                day={e.finalDay}
+                date={e.finalDate}
+                time={e.finalTime}
                 myCreatedEvent={true}
                 description={e.description}
                 attendees={attendeesList}
@@ -143,17 +104,6 @@ const Home = (props) => {
     }, []);
 
     const upcomingEvents = upcomingEventsState.map((e) => {
-        let day = null;
-        let date = null;
-        let time = null;
-
-        // TODO remove the ! when finalDate exists again
-        if (!e.finalDate) {
-            // TODO: replace mockDate with e.finalDate
-            const mockDate = new Date("2021-04-19T13:00:00.000Z");
-            [day, date, time] = formatDateTime(mockDate);
-        }
-        
         const attendeesList = e.attendees.map(a => {
             return a.name;
         });
@@ -163,9 +113,9 @@ const Home = (props) => {
                 key={e._id}
                 id={e._id}
                 title={e.title}
-                day={day}
-                date={date}
-                time={time}
+                day={e.finalDay}
+                date={e.finalDate}
+                time={e.finalTime}
                 myCreatedEvent={false}
                 description={e.description}
                 attendees={attendeesList}
