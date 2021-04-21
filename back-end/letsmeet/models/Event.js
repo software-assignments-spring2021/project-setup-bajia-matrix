@@ -17,7 +17,8 @@ const EventSchema = new mongoose.Schema({
     {
       _id: false,
       id: {type: mongoose.Schema.Types.ObjectId, ref: "User", default: mongoose.mongo.ObjectId()},
-      name: {type: String}
+      name: {type: String},
+      announcement: {type: Boolean, default: false}
     }
   ],
   withdrawn: [

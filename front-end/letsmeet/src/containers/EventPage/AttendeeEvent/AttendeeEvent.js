@@ -13,6 +13,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import CardGroup from "react-bootstrap/CardGroup";
+import Alert from "react-bootstrap/Alert";
 
 /*
   This component displays the event page for the event attendee user.
@@ -28,9 +29,21 @@ import CardGroup from "react-bootstrap/CardGroup";
 */
 
 const AttendeeEvent = (props) => {
-
   return (
     <div>
+      <Alert show={props.announcement} variant="primary">
+        <Alert.Heading>Hey there!</Alert.Heading>
+        <p className="h6">
+          This event's time has been finalized since the last time you've viewed this event.
+        </p>
+        <hr />
+        <div className="d-flex justify-content-end">
+          <Button onClick={() => props.closeAnnouncement()} variant="outline-primary">
+            Ok got it!
+          </Button>
+        </div>
+      </Alert>
+
       <Row className={classes.EventTitle}>
         {props.event.creator !== ""
             ? <EventTitle

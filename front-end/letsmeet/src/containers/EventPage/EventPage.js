@@ -75,6 +75,11 @@ const EventPage = (props) => {
     description: "",
   });
 
+  //scroll to top of page when rendering
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   useEffect(() => {
       if (props.location.state) {
         const eventState = props.location.state.eventState;
@@ -230,6 +235,9 @@ const EventPage = (props) => {
       eventCopy.finalDay = chosenTime.day;
       eventCopy.finalDate = chosenTime.date;
       eventCopy.finalTime = chosenTime.time;
+      eventCopy.attendees.forEach(attendee => {
+        attendee.announcement = true
+      })
       //axios post call to update event's final time details
       axios.post("/events", eventCopy)
         .then((response) => {
@@ -441,6 +449,36 @@ const EventPage = (props) => {
     }));
   };
 
+  //for alerting attendee the final event time has been set
+  const [announcement, setAnnouncement] = useState();
+  let closeAnnouncement = () => {
+    setAnnouncement(false);
+    let eventCopy = event;
+    eventCopy.attendees.forEach(attendee => {
+      if (attendee.name === user.name) {
+        attendee.announcement = false;
+      }
+    })
+    axios.post("/events", eventCopy)
+      .then((response) => {
+        console.log('successfully updated attendee\'s announcement: ', response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  useEffect(() => {
+    event.attendees.forEach(attendee => {
+      if (attendee.name === user.name) {
+        if (attendee.announcement === true) {
+          setAnnouncement(true);
+        } else {
+          setAnnouncement(false);
+        }
+      }
+    })
+  }, [event.attendees, user.name]);
+
   useEffect(() => {
     // setState((prevState) => ({
     //   ...prevState,
@@ -501,6 +539,8 @@ const EventPage = (props) => {
             show={show}
             handleClose={handleClose}
             handleDelete={handleWithdraw}
+            closeAnnouncement={closeAnnouncement}
+            announcement={announcement}
             role="attendee"
           />
         </Container>

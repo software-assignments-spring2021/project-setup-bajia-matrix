@@ -39,14 +39,15 @@ const eventModalTimes = (props) => {
       </div>
       )
     } else {
-      badge = <div><p className="text-primary">No suggestions available. Either no availabilities match up or wait for more invitees to respond.</p></div>;
+      badge = <div><p className="text-primary h6">No suggestions available. Either no availabilities match up or wait for more invitees to respond.</p></div>;
     }
   } else {
-    badge = <div><p className="text-primary">No suggestions available. Either no availabilities match up or wait for more invitees to respond.</p></div>;
+    badge = <div><p className="text-primary h6">No suggestions available. Either no availabilities match up or wait for more invitees to respond.</p></div>;
   }
 
   return (
     <div>
+      <hr />
       {badge}
     </div>
   )
