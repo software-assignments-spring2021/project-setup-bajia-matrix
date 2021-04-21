@@ -71,8 +71,8 @@ const EventModal = (props) => {
             <Modal.Title className="pl-4">Choose Final Event Time</Modal.Title>
           </Modal.Header>
           <Modal.Body className="px-5 pt-4">
-            <p>The following are suggested final times from most popular (top) to least popular (bottom). </p>
-            <p>Please select a finalized time for your event:</p>
+            <p className="h6 mb-3">The following are suggested final times from most popular (top) to least popular (bottom). </p>
+            <p className="h6">Please select a finalized time:<br/><span className="small text-danger"><em>* Final time can only be chosen once!</em></span></p>
             <EventModalTimes
               suggestedTimes={props.suggestedTimes}
               onChecked={props.onChecked}

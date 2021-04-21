@@ -87,7 +87,6 @@ const CreatorEvent = (props) => {
       <hr />
       <br />
 
-      {/* TODO: check warnings about href */}
       <Row className="justify-content-center">
         <Card className={classes.CardInfo}>
           <Card.Body className={classes.CardDetail}>
