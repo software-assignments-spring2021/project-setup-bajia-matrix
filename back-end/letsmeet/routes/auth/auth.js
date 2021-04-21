@@ -12,56 +12,59 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.post("/signup",
-    body("firstName").notEmpty(),
-    body("lastName").notEmpty(),
-    body("email").notEmpty(),
-    body("password").notEmpty(),
-    body("verifiedPassword").notEmpty(),
-     async (req, res, next) => {
-      const errors = validationResult(req);
+  body("firstName").notEmpty(),
+  body("lastName").notEmpty(),
+  body("email").notEmpty(),
+  body("password").notEmpty(),
+  body("verifiedPassword").notEmpty(),
+  async (req, res, next) => {
+  
+    const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
         return res.status(500).send(errors.array()[0]);
     }
-  const { firstName, lastName, email, password, verifiedPassword } = req.body;
-
-  try {
-    // Check if the email is duplicating
-    const email_val = email.value;
-
-    const existingUser = await User.findOne({email: email_val} );
     
-    if (existingUser) {
-      return res.status(409).json({
-        success: false,
-        message: "ERROR 409: User already exists"
-      });
-    }
-    const hash =   await bcrypt.hash(verifiedPassword.value, 12);
-    const name1 = firstName.value + " " + lastName.value;
-    await User.create({
-      email: email.value,
-      name: name1,
-      passwordHash: hash,
-      city: "",
-      state: "",
-      avatar: "red",
-      friends: []
-    });
-    const user = await User.findOne({ email: email_val });
+    const { firstName, lastName, email, password, verifiedPassword } = req.body;
 
-    return res.status(200).json({
-      success: true,
-      uid: user.id,
-      message: "200 OK: Signup successful",
-    });
-  } 
-  catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "ERROR 500: Signup failed"
-    });
-  }    
-});
+    try {
+      // Check if the email is duplicating
+      const email_val = email.value;
+
+      const existingUser = await User.findOne({email: email_val} );
+      
+      if (existingUser) {
+        return res.status(409).json({
+          success: false,
+          message: "ERROR 409: User already exists"
+        });
+      }
+      const hash =   await bcrypt.hash(verifiedPassword.value, 12);
+      const name1 = firstName.value + " " + lastName.value;
+      await User.create({
+        email: email.value,
+        name: name1,
+        passwordHash: hash,
+        city: "",
+        state: "",
+        avatar: "red",
+        friends: []
+      });
+      const user = await User.findOne({ email: email_val });
+
+      return res.status(200).json({
+        success: true,
+        uid: user.id,
+        message: "200 OK: Signup successful",
+      });
+    } 
+    catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "ERROR 500: Signup failed"
+      });
+    }    
+  });
 
 // Create token and return to user (httpOnly cookies)
 router.post("/signin",
