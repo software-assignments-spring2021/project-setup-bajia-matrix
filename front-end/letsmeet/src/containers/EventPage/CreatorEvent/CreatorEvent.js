@@ -73,13 +73,16 @@ const CreatorEvent = (props) => {
         >
           Generate Event Link
         </Button>
-        <Button
-          variant="outline-primary"
-          className={classes.SuggestedBtn}
-          onClick={props.handleShowSuggested}
-        >
-          Choose Final Time
-        </Button>
+        {props.event.finalDate === "" 
+          ? <Button
+              variant="outline-primary"
+              className={classes.SuggestedBtn}
+              onClick={props.handleShowSuggested}
+            >
+              Choose Final Time
+            </Button>
+          : null
+        }
       </Row>
       <hr />
       <br />

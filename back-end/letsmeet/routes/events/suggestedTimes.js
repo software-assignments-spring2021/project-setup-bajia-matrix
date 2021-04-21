@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require("axios");
 const bodyParser = require("body-parser");
 
+router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 /* 
@@ -80,12 +81,16 @@ const formatInput = (datetimes) => {
     const output = [];
 
     datetimes.forEach(datetime => {
-        const dt = datetime.split(" ");
-        const dateString = `${dt[3]}/${dt[1]}/${dt[2]} ${dt[4]} ${dt[5]}`;
+        const dateTimeSplit = datetime.split("T");
+        const dateSplit = dateTimeSplit[0].split("-");
+        const timeSplit = dateTimeSplit[1].split(".");
+
+        //format: year / month / day 00:00:00 GMT-040
+        const dateString = `${dateSplit[0]}/${dateSplit[1]}/${dateSplit[2]} ${timeSplit[0]} ${timeSplit[1]}`;
 
         // convert to UTC timezone
         const stdTime = standardizeTime(dateString, "UTC");
-        output.push(stdTime);
+        output.push(dateString);
     })
 
     return output;
@@ -150,12 +155,26 @@ router.post("/", (req, res, next) => {
 
     // convert best times to client's timezone
     output.forEach(dt => {
-        const currDateTime = standardizeTime(dt + " GMT-0000", currentTimezone);
-        const [ day, date, time ] = generateResponse(new Date(currDateTime));
+
+        //format: 2021-04-21T19:00:00.000Z
+        let dtSplit = dt.split(" ");
+        let dateSplit = dtSplit[0].split("/");
+        let isoFormat = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${dtSplit[1]}.${dtSplit[2]}`;
+        const [ day, date, time ] = generateResponse(new Date(isoFormat));
+
+        let reformatTime;
+        let splitTime = time.split(":");
+        if (parseInt(splitTime[0]) < 10) {
+            splitTime[0] = splitTime[0].charAt('1');
+            reformatTime = splitTime[0] + ':' + splitTime[1];
+        } else {
+            reformatTime = time
+        }
+
         response.push({
             Day: day,
             Date: date,
-            Time: time
+            Time: reformatTime
         });
     });
 

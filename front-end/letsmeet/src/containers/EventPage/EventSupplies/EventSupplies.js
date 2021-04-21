@@ -4,13 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Table from 'react-bootstrap/Table'
-// import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-// import Navbar from "react-bootstrap/Navbar";
 import Card from "react-bootstrap/Card";
 
 import classes from "./EventSupplies.module.css";
-import axios from '../../../axios';
 
 /*
   TODO: comment about component
@@ -79,42 +76,7 @@ const EventSupplies = (props) => {
   }, [suppliesState.supplies])
 
   const splitCosts = (e) => {
-    // const url = '/splitCosts';
-    // console.log(suppliesState);
-   
-    //     // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
-    //     axios.post(url , suppliesState)
-    //         .then(response => {
-    //             //console.log(response);
-    //             setSuppliesState({supplies: response.data})
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });;
-            
-           
-    /*var total = 0;
-
-    for (var index = 0; index < suppliesState.supplies.length; index++) {
-      total += suppliesState.supplies[index].price;
-    }
-
-    var finalAmount = (total / suppliesState.supplies.length);
-
-    let suppliesCopy = [...suppliesState.supplies];
-//negative owed values mean that the person is owed something and doesnt have to pay more
-//positive values means that teh person owes an amount
-    for (var index = 0; index < suppliesState.supplies.length; index++) {
-      var owe = finalAmount - suppliesState.supplies[index].price;
-      //console.log(suppliesState.supplies[index].owed);
-      suppliesCopy[index].owed = owe.toFixed(2);
-    }
-    setSuppliesState((prevState) => ({
-      ...prevState,
-      supplies: suppliesCopy,
-    }));
-*/
-    //alert("This is the final split amount: " + finalAmount);
+    //TODO: split costs
   };
 
   return (

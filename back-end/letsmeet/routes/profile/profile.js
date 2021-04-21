@@ -116,7 +116,6 @@ router.post("/avis", (req, res, next) => {
                     avis.push(temp[0].avatar);
                 } 
             })
-            console.log(avis);
             res.status(200).json(avis);
         }
     })
