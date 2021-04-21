@@ -3,15 +3,17 @@ const router = express.Router();
 const axios = require("axios");
 const bodyParser = require("body-parser");
 const Event = require("../../models/Event");
-
+const { body, validationResult } = require("express-validator");
 router.use(bodyParser.json());
 
 const split = (body) => {
     var total = 0;
     for (var index = 0; index < body.supplies.length; index++) {
-      total += body.supplies[index].amount;
+      total += parseInt(body.supplies[index].amount);
     }
+
     var finalAmount = (total / body.supplies.length);
+    //console.log(total)
 //positive owed values mean that the person is owed something and doesnt have to pay more
 //negative values means that teh person owes an amount
     for (var index = 0; index < body.supplies.length; index++) {
@@ -21,7 +23,13 @@ const split = (body) => {
     }
     return body;
 };
-router.post("/", (req, res, next) => {
+router.post("/",
+    body("supplies").notEmpty(),
+  (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(500).send(errors.array()[0]);
+      }
     console.log("post request on route /splitCosts");
     //console.log(req.body);
     //console.log(req.body._id);
@@ -37,13 +45,13 @@ router.post("/", (req, res, next) => {
           console.log(err);
           res.status(500).send("ERROR 500: Issue updating event");
       } else {
-          console.log(event);
+          //console.log(event);
           res.json(splits.supplies);
           //res.status(200).send("200 OK: Sucessfully added attendee to event");
       }
   });
     //console.log(splits.supplies);
-    res.json(splits.supplies);
+    //res.json(splits.supplies);
 });
 
 module.exports = router;

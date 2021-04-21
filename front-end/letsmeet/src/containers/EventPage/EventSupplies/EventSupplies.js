@@ -6,8 +6,8 @@ import Row from "react-bootstrap/Row";
 import Table from 'react-bootstrap/Table'
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-
 import classes from "./EventSupplies.module.css";
+import axios from '../../../axios';
 
 /*
   TODO: comment about component
@@ -77,6 +77,19 @@ const EventSupplies = (props) => {
 
   const splitCosts = (e) => {
     //TODO: split costs
+    const url = '/splitCosts';
+    console.log(suppliesState);
+
+        // "/users/" + userID + ".json?key=fe6891f0&__method=POST"
+        axios.post(url , suppliesState)
+            .then(response => {
+                //console.log(response);
+                setSuppliesState({supplies: response.data})
+            })
+            .catch(function (error) {
+                console.log(error);
+            });;
+
   };
 
   return (

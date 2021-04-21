@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require("axios");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const { body, validationResult } = require("express-validator");
 const User = require("../../models/User");
 const jwt = require('jsonwebtoken')
 require("dotenv").config({ silent: true }); // save private data in .env file
@@ -10,7 +11,17 @@ const bcrypt = require("bcryptjs");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-router.post("/signup", async (req, res, next) => {
+router.post("/signup",
+    body("firstName").notEmpty(),
+    body("lastName").notEmpty(),
+    body("email").notEmpty(),
+    body("password").notEmpty(),
+    body("verifiedPassword").notEmpty(),
+     async (req, res, next) => {
+      const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(500).send(errors.array()[0]);
+    }
   const { firstName, lastName, email, password, verifiedPassword } = req.body;
 
   try {
@@ -53,7 +64,14 @@ router.post("/signup", async (req, res, next) => {
 });
 
 // Create token and return to user (httpOnly cookies)
-router.post("/signin", async (req, res, next) => {
+router.post("/signin",
+    body("email").notEmpty(),
+    body("password").notEmpty(),
+     async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(500).send(errors.array()[0]);
+      }
   const { email, password } = req.body;
   const email_val = email;
 
