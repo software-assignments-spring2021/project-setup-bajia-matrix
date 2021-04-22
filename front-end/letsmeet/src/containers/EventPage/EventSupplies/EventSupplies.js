@@ -22,6 +22,7 @@ const EventSupplies = (props) => {
   const [suppliesListPrice, setSuppliesListPrice] = useState();
   const [suppliesListPerson, setSuppliesListPerson] = useState();
   const [suppliesListOwed, setSuppliesListOwed] = useState();
+   
 
   useEffect(() => {
     setSuppliesState(props.event);
@@ -39,41 +40,45 @@ const EventSupplies = (props) => {
     let suppliesListPrice;
     let suppliesListPerson;
     let suppliesListOwed;
+   
     if (suppliesState.supplies) {
       suppliesListName = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
+        <div className="rows">
+          <td key={index} >
             {supplies.supply}
-          </p>
-        </>
+          </td>
+        </div>
       ));
       setSuppliesListName(suppliesListName);
       suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
+        <div className="rows">
+          <td key={index}>
             $ {supplies.amount}
-          </p>
-        </>
+          </td>
+        </div>
       ));
       setSuppliesListPrice(suppliesListPrice);
       suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
+        <div className="rows">
+          <td key={index}>
             {supplies.name}
-          </p>
-        </>
+          </td>
+        </div>
       ));
       setSuppliesListPerson(suppliesListPerson);
       suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
+        <div className="rows">
+          <td key={index}>
            $ {supplies.owed} 
-          </p>
-        </>
+          </td>
+        </div>
       ));
       setSuppliesListOwed(suppliesListOwed);
     }
   }, [suppliesState.supplies])
+  const suppliesList = suppliesState.supplies.map((sup, index) => {
+    return <li key={index}>{sup.supply} (${sup.amount}) - {sup.name} - (${sup.owed})</li>;
+});
 
   const splitCosts = (e) => {
     //TODO: split costs
@@ -103,26 +108,10 @@ const EventSupplies = (props) => {
               <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
-            <div className="table-responsive">
-              <Table striped bordered hover size="sm" className="table table-fixed" >
-                <thead>
-                  <tr>
-                    <th>Supply</th>
-                    <th>Amount</th>
-                    <th>Name</th>
-                    <th>Owed</th>
-                   </tr>
-                  </thead>
-                <tbody>
-                    <tr>
-                      <td>{suppliesListName}</td>
-                      <td>{suppliesListPrice}</td>
-                      <td>{suppliesListPerson}</td>
-                      <td>{suppliesListOwed}</td>
-                    </tr>
-                  </tbody>
-                </Table> 
-              </div>
+              <ul>
+                {suppliesList}
+              </ul>
+    
             </Card.Body>
             <Card.Body className={classes.Buttons}>
               <Button
