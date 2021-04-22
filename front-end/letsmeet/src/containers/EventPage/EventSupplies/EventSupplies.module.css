@@ -88,4 +88,29 @@
     .Card {
         margin: 0px;
     }
+    
+
 }
+.students {
+    text-align: center;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+  }
+  .students td, .students th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .students tr:nth-child(even){background-color: #f2f2f2;}
+  
+  .students tr:hover {background-color: #ddd;}
+  
+  .students th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #1d38ed;
+    color: white;
+  }
+  
