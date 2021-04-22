@@ -18,10 +18,10 @@ import axios from '../../../axios';
 
 const EventSupplies = (props) => {
   const [suppliesState, setSuppliesState] = useState({ supplies: [] });
-  const [suppliesListName, setSuppliesListName] = useState();
-  const [suppliesListPrice, setSuppliesListPrice] = useState();
-  const [suppliesListPerson, setSuppliesListPerson] = useState();
-  const [suppliesListOwed, setSuppliesListOwed] = useState();
+  // const [suppliesListName, setSuppliesListName] = useState();
+  // const [suppliesListPrice, setSuppliesListPrice] = useState();
+  // const [suppliesListPerson, setSuppliesListPerson] = useState();
+  // const [suppliesListOwed, setSuppliesListOwed] = useState();
    
 
   useEffect(() => {
@@ -36,49 +36,69 @@ const EventSupplies = (props) => {
   };
 
   useEffect(() => {
-    let suppliesListName;
-    let suppliesListPrice;
-    let suppliesListPerson;
-    let suppliesListOwed;
+    // let suppliesListName;
+    // let suppliesListPrice;
+    // let suppliesListPerson;
+    // let suppliesListOwed;
    
-    if (suppliesState.supplies) {
-      suppliesListName = suppliesState.supplies.map((supplies, index) => (
-        <div className="rows">
-          <td key={index} >
-            {supplies.supply}
-          </td>
-        </div>
-      ));
-      setSuppliesListName(suppliesListName);
-      suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
-        <div className="rows">
-          <td key={index}>
-            $ {supplies.amount}
-          </td>
-        </div>
-      ));
-      setSuppliesListPrice(suppliesListPrice);
-      suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
-        <div className="rows">
-          <td key={index}>
-            {supplies.name}
-          </td>
-        </div>
-      ));
-      setSuppliesListPerson(suppliesListPerson);
-      suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
-        <div className="rows">
-          <td key={index}>
-           $ {supplies.owed} 
-          </td>
-        </div>
-      ));
-      setSuppliesListOwed(suppliesListOwed);
-    }
+    // if (suppliesState.supplies) {
+    //   suppliesListName = suppliesState.supplies.map((supplies, index) => (
+    //     <div className="rows">
+    //       <td key={index} >
+    //         {supplies.supply}
+    //       </td>
+    //     </div>
+    //   ));
+    //   setSuppliesListName(suppliesListName);
+    //   suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
+    //     <div className="rows">
+    //       <td key={index}>
+    //         $ {supplies.amount}
+    //       </td>
+    //     </div>
+    //   ));
+    //   setSuppliesListPrice(suppliesListPrice);
+    //   suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
+    //     <div className="rows">
+    //       <td key={index}>
+    //         {supplies.name}
+    //       </td>
+    //     </div>
+    //   ));
+    //   setSuppliesListPerson(suppliesListPerson);
+    //   suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
+    //     <div className="rows">
+    //       <td key={index}>
+    //        $ {supplies.owed} 
+    //       </td>
+    //     </div>
+    //   ));
+    //   setSuppliesListOwed(suppliesListOwed);
+    // }
   }, [suppliesState.supplies])
-  const suppliesList = suppliesState.supplies.map((sup, index) => {
-    return <li key={index}>{sup.supply} (${sup.amount}) - {sup.name} - (${sup.owed})</li>;
+const supplies = suppliesState.supplies.map((sup, index) => {
+  return (
+    <tr key={index}>
+               <td>{sup.supply}</td>
+               <td>${sup.amount}</td>
+               <td>{sup.name}</td>
+               <td>${sup.owed}</td>
+            </tr>
+  )
+  ;
 });
+
+const header = (e) => {
+  return (
+    <>
+    <th>Supply</th>
+    <th>Amount</th>
+    <th>Name</th>
+    <th>Owed</th>
+    </>
+    );
+};
+
 
   const splitCosts = (e) => {
     //TODO: split costs
@@ -108,9 +128,18 @@ const EventSupplies = (props) => {
               <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
-              <ul>
-                {suppliesList}
-              </ul>
+            <table className={classes.students}>
+               <tbody>
+                <tr>
+                  <th>Supply</th>
+                  <th>Amount</th>
+                  <th>Name</th>
+                  <th>Owed</th>
+                </tr>
+                  {supplies}
+               </tbody>
+              </table>
+              
     
             </Card.Body>
             <Card.Body className={classes.Buttons}>
