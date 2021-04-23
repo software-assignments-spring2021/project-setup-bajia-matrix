@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Container, Row, Col, Button, Navbar, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './EditSupplies.module.css';
@@ -101,19 +100,18 @@ const EditSupplies = (props) => {
         editSuppliesPage = (
             <Container fluid>
                 <Row>
-                    <Col className="md-12">
-                        <Navbar>
-                            <Link to={{ pathname: "/event/" + suppliesState._id }} exact>
-                                <Navbar.Text>Cancel</Navbar.Text>
-                            </Link>
-                            
-                            <Navbar.Collapse className="justify-content-center">
-                                <Navbar.Brand>
-                                <h4>Edit Event Supplies</h4>
-                                </Navbar.Brand>
-                            </Navbar.Collapse>
-                        </Navbar>
-                        <hr />
+                    <Col className={classes.Header}>
+                        <div class="d-flex align-items-center justify-content-between">
+                        <div class="align-self-baseline">
+                            <a href={"/event/" + suppliesState._id}>Cancel</a>
+                        </div>
+                        <div class="align-self-baseline">
+                            <h6>Edit Supplies</h6>
+                        </div>
+                        <div className={classes.FlexPadding}>Cancel</div>
+                        {/* This is invisible text to center the header */}
+                    </div>
+                    <hr />
                     </Col>
                 </Row>
 
@@ -138,7 +136,7 @@ const EditSupplies = (props) => {
                         </div>
 
                         <form onSubmit={submitHandler}>
-                            <h5>Enter a new supply and the amount spent on it</h5>
+                            <h5 className={classes.H5}>Enter a new supply and the amount spent on it</h5>
                             <div className={classes.Form}>
                                 <fieldset>
                                     <input 
@@ -146,6 +144,7 @@ const EditSupplies = (props) => {
                                         type="text" 
                                         name="addSupply" 
                                         placeholder="Supply" 
+                                        maxLength="50"
                                         required 
                                         onChange={(event) => inputChangedHandler(event)} 
                                     />
@@ -160,6 +159,7 @@ const EditSupplies = (props) => {
                                         step="0.01" 
                                         onChange={(event) => inputChangedHandler(event)} 
                                     />
+                                    {/* <input className={classes.Reset} type="reset" defaultValue="Reset" /> */}
                                 </fieldset>
                             </div>
                             <div className={classes.Submit}>

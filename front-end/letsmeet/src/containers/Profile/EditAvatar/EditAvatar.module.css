@@ -1,3 +1,10 @@
+.Button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
 .CardImg {
     display: block;
     margin-left: auto;
@@ -7,15 +14,16 @@
     background-color: #dce5e2;
 }
 
-.Button {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-}
-
 .Col {
    border: 1px solid black;
+}
+
+.FlexPadding {
+    color: white;
+}
+
+.Header {
+    padding: 10px 30px 0px 30px;
 }
 
 @media (max-width: 460px) {
