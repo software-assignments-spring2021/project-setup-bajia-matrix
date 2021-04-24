@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import classes from './SignIn.module.css';
 import axios from '../../../axios';
@@ -63,7 +63,7 @@ const SignIn = (props) => {
     }
 
     return (
-        <div class="row justify-content-center">
+        <div className="row justify-content-center">
             <form className={classes.Authform}>
                 <h3>Sign In</h3>
 

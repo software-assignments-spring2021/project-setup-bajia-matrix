@@ -273,7 +273,7 @@ const SignUp = (props) => {
                 </div>
 
                 <div className="form-group">
-                    <label for="password">Confirm password</label>
+                    <label htmlFor="password">Confirm password</label>
                     <input
                         type="password"
                         className="form-control"

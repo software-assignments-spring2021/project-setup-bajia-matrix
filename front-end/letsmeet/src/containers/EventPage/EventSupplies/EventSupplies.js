@@ -62,7 +62,6 @@ const header = (e) => {
 
 
   const splitCosts = (e) => {
-    //TODO: split costs
     const url = '/splitCosts';
     console.log(suppliesState);
 
