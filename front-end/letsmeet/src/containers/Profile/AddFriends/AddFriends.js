@@ -24,7 +24,6 @@ const AddFriends = (props) => {
 
     // Get profile of current user
     useEffect(() => {
-        // TODO: change user id to currently logged in user
         const id = localStorage.getItem("userID");
 
         axios.get("/profile?userid=" + id)

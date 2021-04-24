@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
-import { Input, InputNumber } from 'antd';
+// import { Input, InputNumber } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './EditSupplies.module.css';
@@ -17,7 +17,6 @@ import Spinner from '../../../../components/UI/Spinner/Spinner';
 
     Props:
         This component does not accept any custom props
-        TODO: in the future, accept props for event id
 */
 
 const EditSupplies = (props) => {
@@ -67,6 +66,7 @@ const EditSupplies = (props) => {
     }
 
     const inputChangedHandler = (e) => {
+        console.log(e.target)
         setFormData({
             // this is the "name" and "value" formReducer use to update formData
             name: e.target.name,
@@ -102,7 +102,10 @@ const EditSupplies = (props) => {
             console.log(error.response.data);
         });
 
-        props.history.push("/event/" + suppliesState._id)
+        props.history.push({
+            pathname: "/event/" + suppliesState._id,
+            state: {eventState: suppliesState}
+        });
     }
 
     let editSuppliesPage = <Spinner />;
@@ -149,8 +152,8 @@ const EditSupplies = (props) => {
                         <form onSubmit={submitHandler}>
                             <h5 className={classes.H5}>Enter a new supply and the amount spent on it</h5>
                             <div className={classes.Form}>
-                                <Input.Group compact>
-                                {/* <fieldset>
+                                {/* <Input.Group compact> */}
+                                <fieldset>
                                     <input 
                                         className={classes.Input} 
                                         type="text" 
@@ -160,8 +163,19 @@ const EditSupplies = (props) => {
                                         autoFocus
                                         required 
                                         onChange={(event) => inputChangedHandler(event)} 
-                                    /> */}
-                                    <Input 
+                                    />
+                                    <input
+                                        className={classes.Input} 
+                                        type="number" 
+                                        name="amount" 
+                                        placeholder="Amount"
+                                        required
+                                        min="0.00" 
+                                        max="1000.00" 
+                                        step="0.01" 
+                                        onChange={(event) => inputChangedHandler(event)} 
+                                    />
+                                    {/* <Input 
                                         //className={classes.Input}
                                         type="text" 
                                         name="addSupply" 
@@ -173,8 +187,8 @@ const EditSupplies = (props) => {
                                         style={{ width: '45%' }} 
                                         allowClear
                                         onChange={(event) => inputChangedHandler(event)} 
-                                    />
-                                    <InputNumber 
+                                    /> */}
+                                    {/* <InputNumber 
                                         //className={classes.Input}
                                         type="number"
                                         name="amount"
@@ -187,21 +201,10 @@ const EditSupplies = (props) => {
                                         allowClear
                                         //defaultValue={1.00} 
                                         onChange={(event) => inputChangedHandler(event)} 
-                                    />
-                                    {/* <input
-                                        className={classes.Input} 
-                                        type="number" 
-                                        name="amount" 
-                                        placeholder="Amount"
-                                        required
-                                        min="0.00" 
-                                        max="1000.00" 
-                                        step="0.01" 
-                                        onChange={(event) => inputChangedHandler(event)} 
                                     /> */}
                                     {/* <input className={classes.Reset} type="reset" defaultValue="Reset" /> */}
-                                {/* </fieldset> */}
-                                </Input.Group>
+                                </fieldset>
+                                {/* </Input.Group> */}
                             </div>
                             <div className={classes.Submit}>
                                 <Button className={classes.Button} variant="secondary" type="submit">Add</Button>
