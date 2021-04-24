@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Button, Divider, Form } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ScheduleSelector  from 'react-schedule-selector';
 // import moment from 'moment';
 
@@ -124,11 +125,18 @@ const AcceptInvite = (props) => {
 
     return (
         <div>
-            <div className={classes.subheader}>
-                <center><h6>Accept Event Invitation</h6></center>
-                <div className={classes.cancelButton}>
-                    <a href="/">Cancel</a>
+            <div className={classes.Header}>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="align-self-baseline">
+                        <a href="/">Cancel</a>
+                    </div>
+                    <div class="align-self-baseline">
+                        <h6>Accept Event Invitation</h6>
+                    </div>
+                    <div className={classes.FlexPadding}>Cancel</div>
+                    {/* This is invisible text to center the header */}
                 </div>
+                <hr/>
             </div>
             <div className={classes.container}>
                 <Form

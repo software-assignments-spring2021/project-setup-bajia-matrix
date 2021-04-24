@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { Alert, Button, DatePicker, Divider, Form, Input, Modal, Select, TimePicker, Tag} from 'antd';
 import { CopyOutlined, EnvironmentOutlined, InfoCircleOutlined} from '@ant-design/icons';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ScheduleSelector  from 'react-schedule-selector';
 import moment from 'moment';
@@ -178,12 +179,20 @@ const NewEvent = (props) => {
 
     return (
         <div>
-            <div className={classes.subheader}>
-                <center><h6>Create a New Event</h6></center>
-                <div className={classes.cancelButton}>
-                    <a href="/">Cancel</a>
+            <div className={classes.Header}>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="align-self-baseline">
+                        <a href="/">Cancel</a>
+                    </div>
+                    <div class="align-self-baseline">
+                        <h6>Create a New Event</h6>
+                    </div>
+                    <div className={classes.FlexPadding}>Cancel</div>
+                    {/* This is invisible text to center the header */}
                 </div>
+                <hr/>
             </div>
+
             <div className={classes.container}>
                 <Form
                     form={form}

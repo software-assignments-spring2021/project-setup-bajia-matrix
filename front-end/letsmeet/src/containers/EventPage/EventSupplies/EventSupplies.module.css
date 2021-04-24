@@ -23,7 +23,7 @@
     flex-flow: column;
     overflow: scroll;
     height: 200px;
-    overflow-x: hidden;
+    overflow-x: scroll;
 }
 
 .SuppliesBody::-webkit-scrollbar {
@@ -91,12 +91,15 @@
     
 
 }
+
 .students {
     text-align: center;
     border-collapse: collapse;
     border: 3px solid #ddd;
     width: 100%;
+    /* overflow-x: scroll; */
   }
+
   .students td, .students th {
     border: 1px solid #ddd;
     padding: 8px;

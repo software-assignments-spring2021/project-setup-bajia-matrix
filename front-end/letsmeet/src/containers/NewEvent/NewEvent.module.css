@@ -49,9 +49,17 @@
     color: #777;
 }
 
+.FlexPadding {
+    color: white;
+}
+
 .formButton {
     display: block;
     margin: 20px auto;
+}
+
+.Header {
+    padding: 10px 15px 0px 15px;
 }
 
 .space {
@@ -61,17 +69,4 @@
 
 .spacing {
     height: 20px;
-}
-
-.subheader {
-    display: block;
-    width: 100%;
-    background-color: white;
-    border-bottom: 1px solid #777;
-    margin-top: -17px;
-    padding: 10px;
-}
-
-.subheader h6 {
-    padding-top: 5px;
 }
