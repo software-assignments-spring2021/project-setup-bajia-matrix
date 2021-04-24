@@ -15,10 +15,12 @@ async function send(res, event) {
     const attendees = event.attendees;
     const invitees = event.invitees;
     const withdrawns = event.withdrawn;
+    const supplies = event.supplies;
 
     let updatedAttendees = [];
     let updatedInvitees = [];
     let updatedWithdrawn = [];
+    let updatedSupplies = [];
 
     // need to update names because users can change them
     const promises = attendees.map(async attendee => {
@@ -96,6 +98,31 @@ async function send(res, event) {
         }
     })
 
+    const promises4 = supplies.map(async supply => {
+        const updatedSupply = await User.findById(supply.id)
+                                .then(user => {
+                                    let supplyObj;
+                                    if (user) {
+                                        supplyObj = {
+                                            id: user._id,
+                                            name: user.name,
+                                            supply: supply.supply,
+                                            amount: supply.amount,
+                                            owed: supply.owed
+                                        }
+                                        return supplyObj;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+
+        updatedSupplies.push(updatedSupply);
+        if(updatedSupplies.length === supplies.length) {
+            return updatedSupplies;
+        }
+    })
+
     let promiseCreator;
     if (event.creatorID) {
         promiseCreator = await User.findById(event.creatorID)
@@ -114,6 +141,7 @@ async function send(res, event) {
     let promiseAttendees = await Promise.all(promises);
     let promiseInvitees = await Promise.all(promises2);
     let promiseWithdrawns = await Promise.all(promises3);
+    let promiseSupplies = await Promise.all(promises4);
 
     if (promiseAttendees.length !== 0) {
         promiseAttendees.forEach(promise => {
@@ -133,6 +161,13 @@ async function send(res, event) {
         promiseWithdrawns.forEach(promise => {
             if (promise) {
                 event.withdrawn = promise;
+            }
+        })
+    }
+    if (promiseSupplies.length !== 0) {
+        promiseSupplies.forEach(promise => {
+            if (promise) {
+                event.supplies = promise;
             }
         })
     }
