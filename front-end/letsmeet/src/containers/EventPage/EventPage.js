@@ -484,7 +484,7 @@ const EventPage = (props) => {
   useEffect(() => {
     if (props.isAuthenticated) {
       if (user.name && event.title) {
-        if (user._id === event.creatorID) {
+        if (user._id === event.creatorID && event.creator !== "") {
           setState(prevState => ({
             ...prevState,
             creator: true
