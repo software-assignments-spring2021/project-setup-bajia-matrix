@@ -19,7 +19,7 @@ async function send(res, event) {
 
     let updatedAttendees = [];
     let updatedInvitees = [];
-    let updatedWithdrawn = [];
+    let updatedWithdrawns = [];
     let updatedSupplies = [];
 
     // need to update names because users can change them
@@ -92,9 +92,9 @@ async function send(res, event) {
                                     console.log(error);
                                 });
 
-        updatedWithdrawn.push(updatedWithdrawn);
-        if(updatedWithdrawn.length === invitees.length) {
-            return updatedWithdrawn;
+        updatedWithdrawns.push(updatedWithdrawn);
+        if(updatedWithdrawns.length === invitees.length) {
+            return updatedWithdrawns;
         }
     })
 
