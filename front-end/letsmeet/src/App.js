@@ -42,9 +42,9 @@ const App = (props) => {
         <Switch>
             <Route path="/signin" component={SignIn} />]
             <Route path="/signup" component={SignUp} />]
-            <Route path="/" component={Landing} />
             <Route path="/newevent" component={NewEvent}/>
             <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={isAuthenticated} history={props.history} />} />
+            <Route path="/" component={Landing} />
         </Switch>
     );
 

@@ -130,13 +130,15 @@ const EditSupplies = (props) => {
 
                 <Row>
                     <div className={classes.EditSupplies}>
+                        <div className={classes.EditTitle}>
                         <EventTitle 
                             title={suppliesState.title}
                             day={suppliesState.finalDay}
                             date={suppliesState.finalDate}
                             time={suppliesState.finalTime}
-                            event={suppliesState} />
-
+                            event={suppliesState} 
+                        />
+                        </div>
                         <h5>Current Supplies</h5>
                         <h6>(You can always <b>click</b> on a supply to remove it)</h6>
                         <div className={classes.Supplies}>

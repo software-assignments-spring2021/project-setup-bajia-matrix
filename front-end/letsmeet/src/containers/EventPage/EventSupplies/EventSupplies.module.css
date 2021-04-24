@@ -23,12 +23,11 @@
     flex-flow: column;
     overflow: scroll;
     height: 200px;
-    overflow-x: scroll;
 }
 
 .SuppliesBody::-webkit-scrollbar {
     width: 8px;
-    height: 16px;
+    height: 8px;
 }
 
 .SuppliesBody::-webkit-scrollbar-button {
