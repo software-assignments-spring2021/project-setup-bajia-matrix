@@ -48,10 +48,22 @@ const EditSupplies = (props) => {
     };
 
     const [formData, setFormData] = useReducer(formReducer, {});
-    
+
     const suppliesList = suppliesState.supplies.map((sup, index) => {
-        return <li key={index}>{sup.supply} (${sup.amount}) - {sup.name}</li>;
+        return <li key={index} id={index} onClick={(e) => removeHandler(e)}>{sup.supply} (${sup.amount}) - {sup.name}</li>;
     });
+
+    const removeHandler = (e) => {
+        const deleteIndex = e.target.getAttribute("id");
+
+        // delete the selected list item from the array and save it to suppliesState
+        const copySupplies = { ...suppliesState };
+        const list = copySupplies.supplies;
+        
+        list.splice(deleteIndex, 1);
+
+        setSuppliesState(copySupplies);
+    }
 
     const inputChangedHandler = (e) => {
         setFormData({
@@ -67,7 +79,7 @@ const EditSupplies = (props) => {
         // update supplies list immutably using a copy
         const copySupplies = { ...suppliesState };
         const list = copySupplies.supplies;
-
+     
         list.push({
             supply: formData.addSupply,
             name: profileState.name,
@@ -79,7 +91,7 @@ const EditSupplies = (props) => {
     };
 
     const saveHandler = () => {
-       
+        
         // send to database
         axios.post("/events", suppliesState)
         .then(response => {
@@ -89,10 +101,7 @@ const EditSupplies = (props) => {
             console.log(error.response.data);
         });
 
-        props.history.push({
-            pathname: "/event/" + suppliesState._id,
-            state: {eventState: suppliesState}
-        });
+        props.history.push("/event/" + suppliesState._id)
     }
 
     let editSuppliesPage = <Spinner />;
@@ -101,11 +110,11 @@ const EditSupplies = (props) => {
             <Container fluid>
                 <Row>
                     <Col className={classes.Header}>
-                        <div class="d-flex align-items-center justify-content-between">
-                        <div class="align-self-baseline">
+                        <div className="d-flex align-items-center justify-content-between">
+                        <div className="align-self-baseline">
                             <a href={"/event/" + suppliesState._id}>Cancel</a>
                         </div>
-                        <div class="align-self-baseline">
+                        <div className="align-self-baseline">
                             <h6>Edit Supplies</h6>
                         </div>
                         <div className={classes.FlexPadding}>Cancel</div>
@@ -125,6 +134,7 @@ const EditSupplies = (props) => {
                             event={suppliesState} />
 
                         <h5>Current Supplies</h5>
+                        <h6>(You can always <b>click</b> on a supply to remove it)</h6>
                         <div className={classes.Supplies}>
                             <Card className={classes.Card} >
                                 <Card.Body className={classes.CardBody}>
@@ -145,6 +155,7 @@ const EditSupplies = (props) => {
                                         name="addSupply" 
                                         placeholder="Supply" 
                                         maxLength="50"
+                                        autoFocus
                                         required 
                                         onChange={(event) => inputChangedHandler(event)} 
                                     />
@@ -164,7 +175,7 @@ const EditSupplies = (props) => {
                             </div>
                             <div className={classes.Submit}>
                                 <Button className={classes.Button} variant="secondary" type="submit">Add</Button>
-                                <Button className={classes.Button} variant="secondary" onClick={saveHandler}>Save Supplies</Button>
+                                <Button className={classes.Button} variant="secondary" onClick={saveHandler}>Save Changes</Button>
                             </div>
                         </form>
                     </div>

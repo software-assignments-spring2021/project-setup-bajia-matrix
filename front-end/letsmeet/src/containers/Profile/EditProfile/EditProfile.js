@@ -98,11 +98,11 @@ const EditProfile = (props) => {
         <Container fluid>
             <Row>
                 <Col className={classes.Header}>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="align-self-baseline">
+                    <div className="d-flex align-items-center justify-content-between">
+                        <div className="align-self-baseline">
                             <a href="/profile">Cancel</a>
                         </div>
-                        <div class="align-self-baseline">
+                        <div className="align-self-baseline">
                             <h6>Edit Profile</h6>
                         </div>
                         <div className={classes.FlexPadding}>Cancel</div>

@@ -17,10 +17,10 @@ import classes from './NavigationItem.module.css';
 
 const navigationItem = (props) => (
     <li className={classes.NavigationItem}>
-        <Link 
-            to={props.link}
-            exact={props.exact}>{props.children}
-        </Link>
+        {props.exact ? 
+            <Link to={props.link} exact>{props.children}</Link> : 
+            <Link to={props.link}>{props.children}</Link>
+        }
     </li>
 );
 
