@@ -39,6 +39,7 @@
 .Form {
     width: 100%;
     text-align: center;
+    overflow: wrap;
 }
 
 .H5 {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { Input, InputNumber } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './EditSupplies.module.css';
@@ -159,7 +160,28 @@ const EditSupplies = (props) => {
                                         required 
                                         onChange={(event) => inputChangedHandler(event)} 
                                     />
-                                    <input 
+                                    {/* <Input.TextArea 
+                                        className={classes.Input}
+                                        type="text" 
+                                        name="addSupply" 
+                                        placeholder="Supply" 
+                                        showCount 
+                                        maxLength={20} 
+                                        autoFocus
+                                        required 
+                                        onChange={(event) => inputChangedHandler(event)} />
+                                    <InputNumber 
+                                        className={classes.Input}
+                                        type="number"
+                                        name="amount"
+                                        placeholder="amount"
+                                        required
+                                        min={0.00} 
+                                        max={1000.00} 
+                                        step={0.01}
+                                        defaultValue={1.00} 
+                                        onChange={(event) => inputChangedHandler(event)} /> */}
+                                    <input
                                         className={classes.Input} 
                                         type="number" 
                                         name="amount" 
