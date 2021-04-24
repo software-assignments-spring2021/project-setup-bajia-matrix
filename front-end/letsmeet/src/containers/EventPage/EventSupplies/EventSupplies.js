@@ -18,11 +18,7 @@ import axios from '../../../axios';
 
 const EventSupplies = (props) => {
   const [suppliesState, setSuppliesState] = useState({ supplies: [] });
-  // const [suppliesListName, setSuppliesListName] = useState();
-  // const [suppliesListPrice, setSuppliesListPrice] = useState();
-  // const [suppliesListPerson, setSuppliesListPerson] = useState();
-  // const [suppliesListOwed, setSuppliesListOwed] = useState();
-   
+  const [supplies, setSupplies] = useState();
 
   useEffect(() => {
     setSuppliesState(props.event);
@@ -36,57 +32,22 @@ const EventSupplies = (props) => {
   };
 
   useEffect(() => {
-    // let suppliesListName;
-    // let suppliesListPrice;
-    // let suppliesListPerson;
-    // let suppliesListOwed;
-   
-    // if (suppliesState.supplies) {
-    //   suppliesListName = suppliesState.supplies.map((supplies, index) => (
-    //     <div className="rows">
-    //       <td key={index} >
-    //         {supplies.supply}
-    //       </td>
-    //     </div>
-    //   ));
-    //   setSuppliesListName(suppliesListName);
-    //   suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
-    //     <div className="rows">
-    //       <td key={index}>
-    //         $ {supplies.amount}
-    //       </td>
-    //     </div>
-    //   ));
-    //   setSuppliesListPrice(suppliesListPrice);
-    //   suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
-    //     <div className="rows">
-    //       <td key={index}>
-    //         {supplies.name}
-    //       </td>
-    //     </div>
-    //   ));
-    //   setSuppliesListPerson(suppliesListPerson);
-    //   suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
-    //     <div className="rows">
-    //       <td key={index}>
-    //        $ {supplies.owed} 
-    //       </td>
-    //     </div>
-    //   ));
-    //   setSuppliesListOwed(suppliesListOwed);
-    // }
+    let suppliesEntry;
+    if (suppliesState.supplies) {
+      suppliesEntry = suppliesState.supplies.map((sup, index) => {
+        return (
+          <tr key={index}>
+                     <td>{sup.supply}</td>
+                     <td>${sup.amount}</td>
+                     <td>{sup.name}</td>
+                     <td>${sup.owed}</td>
+                  </tr>
+        )
+        ;
+      });
+      setSupplies(suppliesEntry);
+    }
   }, [suppliesState.supplies])
-const supplies = suppliesState.supplies.map((sup, index) => {
-  return (
-    <tr key={index}>
-               <td>{sup.supply}</td>
-               <td>${sup.amount}</td>
-               <td>{sup.name}</td>
-               <td>${sup.owed}</td>
-            </tr>
-  )
-  ;
-});
 
 const header = (e) => {
   return (
