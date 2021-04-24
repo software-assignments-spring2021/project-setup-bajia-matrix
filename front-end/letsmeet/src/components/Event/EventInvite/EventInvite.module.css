@@ -31,3 +31,9 @@
     flex-flow: column;
     margin: -20px 0;
 }
+
+@media (max-width: 375px) {
+    .Button {
+        margin: 15px;
+    }
+}

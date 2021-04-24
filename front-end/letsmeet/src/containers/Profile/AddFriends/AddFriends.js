@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Alert, Button, Divider, Input } from 'antd';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import classes from './AddFriends.module.css';
 import axios from '../../../axios';
@@ -155,21 +156,30 @@ const AddFriends = (props) => {
 
     return (   
         <>
-            <div className={classes.subheader}>
-                    <center><h6>Edit Friends</h6></center>
-                    <div className={classes.cancelButton}>
+            <div className={classes.Header}>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="align-self-baseline">
                         <a href="/profile">Cancel</a>
                     </div>
-            </div>     
+                    <div class="align-self-baseline">
+                        <h6>Edit Friends</h6>
+                    </div>
+                    <div className={classes.FlexPadding}>Cancel</div>
+                    {/* This is invisible text to center the header */}
+                </div>
+                <hr/>
+            </div>
+            
             <div className={classes.container}>
                 <div className>
-                    <Divider orientation="center">Add Friends</Divider>
+                    {/* <Divider orientation="center"></Divider> */}
                     <p>Search for a user by email address</p>
                     <Search
                         name="search"
                         placeholder="Add user by email"
                         onSearch={handleChange}
                         enterButton
+                        allowClear
                     />
                     {(searchTerm && error) &&
                         <p className={classes.errorMessage}>{error}</p>

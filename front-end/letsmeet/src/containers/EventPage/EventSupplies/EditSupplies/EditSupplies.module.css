@@ -28,9 +28,21 @@
     font-weight: 700;
 }
 
+.FlexPadding {
+    color: white;
+}
+
 .Form {
     width: 100%;
     text-align: center;
+}
+
+.H5 {
+    padding: 0 20px;
+}
+
+.Header {
+    padding: 10px 30px 0px 30px;
 }
 
 .Input {
@@ -38,6 +50,18 @@
     width: 42%;
     height: 40px;
 }
+/* 
+.Reset {
+    border: none;
+    margin: 10px 0px;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    
+    background: transparent;
+    outline: none;
+    
+} */
 
 .Submit {
     display: flex;

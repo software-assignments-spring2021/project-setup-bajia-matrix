@@ -128,19 +128,17 @@ const header = (e) => {
               <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
-            <table className={classes.students}>
-               <tbody>
-                <tr>
-                  <th>Supply</th>
-                  <th>Amount</th>
-                  <th>Name</th>
-                  <th>Owed</th>
-                </tr>
+              <table className={classes.students}>
+                <tbody>
+                  <tr>
+                    <th>Supply</th>
+                    <th>Amount</th>
+                    <th>Name</th>
+                    <th>Owed</th>
+                  </tr>
                   {supplies}
-               </tbody>
+                </tbody>
               </table>
-              
-    
             </Card.Body>
             <Card.Body className={classes.Buttons}>
               <Button
