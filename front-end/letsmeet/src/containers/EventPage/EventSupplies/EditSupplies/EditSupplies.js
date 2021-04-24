@@ -149,7 +149,8 @@ const EditSupplies = (props) => {
                         <form onSubmit={submitHandler}>
                             <h5 className={classes.H5}>Enter a new supply and the amount spent on it</h5>
                             <div className={classes.Form}>
-                                <fieldset>
+                                <Input.Group compact>
+                                {/* <fieldset>
                                     <input 
                                         className={classes.Input} 
                                         type="text" 
@@ -159,29 +160,35 @@ const EditSupplies = (props) => {
                                         autoFocus
                                         required 
                                         onChange={(event) => inputChangedHandler(event)} 
-                                    />
-                                    {/* <Input.TextArea 
-                                        className={classes.Input}
+                                    /> */}
+                                    <Input 
+                                        //className={classes.Input}
                                         type="text" 
                                         name="addSupply" 
-                                        placeholder="Supply" 
+                                        placeholder="Supply Name" 
                                         showCount 
                                         maxLength={20} 
                                         autoFocus
                                         required 
-                                        onChange={(event) => inputChangedHandler(event)} />
+                                        style={{ width: '45%' }} 
+                                        allowClear
+                                        onChange={(event) => inputChangedHandler(event)} 
+                                    />
                                     <InputNumber 
-                                        className={classes.Input}
+                                        //className={classes.Input}
                                         type="number"
                                         name="amount"
-                                        placeholder="amount"
+                                        placeholder="Cost"
                                         required
                                         min={0.00} 
                                         max={1000.00} 
                                         step={0.01}
-                                        defaultValue={1.00} 
-                                        onChange={(event) => inputChangedHandler(event)} /> */}
-                                    <input
+                                        style={{ width: '35%' }} 
+                                        allowClear
+                                        //defaultValue={1.00} 
+                                        onChange={(event) => inputChangedHandler(event)} 
+                                    />
+                                    {/* <input
                                         className={classes.Input} 
                                         type="number" 
                                         name="amount" 
@@ -191,9 +198,10 @@ const EditSupplies = (props) => {
                                         max="1000.00" 
                                         step="0.01" 
                                         onChange={(event) => inputChangedHandler(event)} 
-                                    />
+                                    /> */}
                                     {/* <input className={classes.Reset} type="reset" defaultValue="Reset" /> */}
-                                </fieldset>
+                                {/* </fieldset> */}
+                                </Input.Group>
                             </div>
                             <div className={classes.Submit}>
                                 <Button className={classes.Button} variant="secondary" type="submit">Add</Button>
