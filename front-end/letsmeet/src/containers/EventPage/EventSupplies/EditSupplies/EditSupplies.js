@@ -159,7 +159,7 @@ const EditSupplies = (props) => {
                                         type="text" 
                                         name="addSupply" 
                                         placeholder="Supply" 
-                                        maxLength="50"
+                                        maxLength="20"
                                         autoFocus
                                         required 
                                         onChange={(event) => inputChangedHandler(event)} 
