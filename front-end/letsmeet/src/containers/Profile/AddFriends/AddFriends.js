@@ -179,6 +179,7 @@ const AddFriends = (props) => {
                         placeholder="Add user by email"
                         onSearch={handleChange}
                         enterButton
+                        allowClear
                     />
                     {(searchTerm && error) &&
                         <p className={classes.errorMessage}>{error}</p>
