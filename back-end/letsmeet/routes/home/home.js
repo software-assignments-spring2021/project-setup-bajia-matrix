@@ -36,7 +36,7 @@ router.get("/", (req, res, next) => {
                                 myEvents: myEvents,
                                 upcomingEvents: upcomingEvents
                             }
-
+                            
                             res.json(allEvents);
                         })
                         .catch(error => {
