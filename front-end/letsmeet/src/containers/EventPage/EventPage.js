@@ -286,9 +286,9 @@ const EventPage = (props) => {
       }
       return;
     })
-    friends.forEach((test,index) => {
-      friendsList.push(<Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>)
-    })
+    friendsList = friends.map(friend => (
+        <Option value={JSON.stringify(friend)} key={friend.id}>{friend.name}</Option>
+    ))
     setEvent((prevState) => ({
       ...prevState,
       friendsList: friendsList,
@@ -311,9 +311,10 @@ const EventPage = (props) => {
     let friendsList;
     if(user.friends && event.title) {
       let test = [];
-      let eventInvitees = false;
-      let eventAttendees = false;
-      user.friends.forEach(friend => {
+      if (event.invitees && event.attendees) {
+        user.friends.forEach(friend => {
+        let eventInvitees = false;
+        let eventAttendees = false;
         event.invitees.forEach(invitee => {
           if (invitee.name === friend.name) {
             eventInvitees = true;
@@ -324,13 +325,14 @@ const EventPage = (props) => {
             eventAttendees = true;
           }
         })
-        if (!eventInvitees && !eventAttendees) {
+        if (eventInvitees === false && eventAttendees === false) {
           test.push(friend);
         }
       })
       friendsList = test.map(test => (
         <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
       ))
+      }
     }
     setEvent((prevState) => ({
       ...prevState,
@@ -480,15 +482,9 @@ const EventPage = (props) => {
   }, [event.attendees, user.name]);
 
   useEffect(() => {
-    // setState((prevState) => ({
-    //   ...prevState,
-    //   unverified: true,
-    //   //creator: true,
-    //   //attendee: true
-    // }));
     if (props.isAuthenticated) {
       if (user.name && event.title) {
-        if (user.name === event.creator) {
+        if (user._id === event.creatorID) {
           setState(prevState => ({
             ...prevState,
             creator: true
