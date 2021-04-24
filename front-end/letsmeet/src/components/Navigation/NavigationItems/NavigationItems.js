@@ -14,7 +14,7 @@ import NavigationItem from './NavigationItem/NavigationItem';
 const navigationItems = (props) => {
     let navItems = (
         <ul className={classes.NavigationItems}>
-            <NavigationItem link="/" exact>Landing</NavigationItem>
+            <NavigationItem link="/">Landing</NavigationItem>
             <NavigationItem link="/signup">Sign Up</NavigationItem>
             <NavigationItem link="/signin">Sign In</NavigationItem>
         </ul>
@@ -23,9 +23,9 @@ const navigationItems = (props) => {
     if (props.isAuthenticated === true) {
         navItems = (
             <ul className={classes.NavigationItems}>
-                <NavigationItem link="/" exact>Home</NavigationItem>
+                <NavigationItem link="/">Home</NavigationItem>
                 <NavigationItem link="/profile">My Profile</NavigationItem>
-                <NavigationItem link="/signout" exact>Sign Out</NavigationItem>    
+                <NavigationItem link="/signout">Sign Out</NavigationItem>    
             </ul>
         );
     }

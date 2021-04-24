@@ -11,16 +11,12 @@ import classes from './NavigationItem.module.css';
     
     Props:
         - link: the route path to redirect to
-        - exact: whether or not the route path should be exact
         - children: what text the link should display
 */
 
 const navigationItem = (props) => (
     <li className={classes.NavigationItem}>
-        {props.exact ? 
-            <Link to={props.link} exact>{props.children}</Link> : 
-            <Link to={props.link}>{props.children}</Link>
-        }
+        <Link to={props.link}>{props.children}</Link>
     </li>
 );
 

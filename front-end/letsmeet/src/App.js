@@ -42,7 +42,7 @@ const App = (props) => {
         <Switch>
             <Route path="/signin" component={SignIn} />]
             <Route path="/signup" component={SignUp} />]
-            <Route path="/" exact component={Landing} />
+            <Route path="/" component={Landing} />
             <Route path="/newevent" component={NewEvent}/>
             <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={isAuthenticated} history={props.history} />} />
         </Switch>
@@ -51,16 +51,16 @@ const App = (props) => {
     if (isAuthenticated === true) {
         routes = (
             <Switch>
-                <Route path="/profile" exact component={Profile}/>
+                <Route path="/profile" component={Profile}/>
                 <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={isAuthenticated} />} />
-                <Route path="/editsupplies" exact component={EditSupplies} />
-                <Route path="/user/newevent" exact component={() => <NewEvent isAuthenticated={isAuthenticated} />} />
-                <Route path="/editfriends" exact component={AddFriends} />
-                <Route path="/user/acceptinvite" exact component={AcceptInvite}/>
-                <Route path="/signout" exact component={SignOut} />
-                <Route path="/editavatar" exact component={EditAvatar} />
-                <Route path="/editprofile" exact component={EditProfile} />
-                <Route path="/" exact component={Home} />
+                <Route path="/editsupplies"  component={EditSupplies} />
+                <Route path="/user/newevent" component={() => <NewEvent isAuthenticated={isAuthenticated} />} />
+                <Route path="/editfriends" component={AddFriends} />
+                <Route path="/user/acceptinvite" component={AcceptInvite}/>
+                <Route path="/signout" component={SignOut} />
+                <Route path="/editavatar" component={EditAvatar} />
+                <Route path="/editprofile" component={EditProfile} />
+                <Route path="/" component={Home} />
                 <Redirect to="/" />
             </Switch>
         );
