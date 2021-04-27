@@ -1,11 +1,45 @@
+.Button {
+    margin-right: 20px;
+}
+
 .Card {
     text-align: center;
     width: 90%;
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin: 20px; /* space b/t each card */
+    margin: 20px;
+    /* space b/t each card */
     border: transparent;
+}
+
+.students {
+    text-align: center;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+    /* overflow-x: scroll; */
+}
+
+.students td, .students th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.students tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.students tr:hover {
+    background-color: #ddd;
+}
+
+.students th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #1d38ed;
+    color: white;
 }
 
 .Supplies {
@@ -14,7 +48,8 @@
     width: 100%;
     align-items: center;
     flex-flow: column;
-    padding: 0 0 20px 0; /* top and bottom, left and right */
+    padding: 0 0 20px 0;
+    /* top and bottom, left and right */
 }
 
 .SuppliesBody {
@@ -52,34 +87,12 @@
     padding-top: 10px;
 }
 
-.Button {
-    margin-right: 20px;
-}
-
-
-
-
 @media (max-width: 460px) {
-    .Supplies {
-        border-top: thin solid lightgray;
-        margin-top: -60px;
-    }
-
-    .Hr {
-        width: 50%;
-        border: 1px solid blue;
-    }
-
-    .SuppliesBody {
-        width: 140%;
-        text-align: left;
-    }
-
     .Button {
         margin-right: 0px;
         float: left;
     }
-    
+
     .Buttons {
         margin-left: 20px;
         width: 120%;
@@ -88,32 +101,20 @@
     .Card {
         margin: 0px;
     }
-    
 
+    .Hr {
+        width: 50%;
+        border: 1px solid blue;
+    }
+
+    .Supplies {
+        border-top: thin solid lightgray;
+        margin-top: -60px;
+    }
+    
+    .SuppliesBody {
+        width: 140%;
+        text-align: left;
+    } 
 }
 
-.students {
-    text-align: center;
-    border-collapse: collapse;
-    border: 3px solid #ddd;
-    width: 100%;
-    /* overflow-x: scroll; */
-  }
-
-  .students td, .students th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  .students tr:nth-child(even){background-color: #f2f2f2;}
-  
-  .students tr:hover {background-color: #ddd;}
-  
-  .students th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: center;
-    background-color: #1d38ed;
-    color: white;
-  }
-  

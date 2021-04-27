@@ -59,11 +59,6 @@
     letter-spacing: 2px;
 }
 
-.section {
-    display: flex;
-    padding: 0px 20px 10px;
-}
-
 .LandingTable, .LandingTH, .LandingTD {
     border: 1px solid #939cf1;
     border-collapse: collapse;
@@ -77,6 +72,17 @@
 .LandingTH {
     border: 1px solid black;
     background-color: #939cf1;
+}
+
+.SecondLine {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    color: #939cf1;
+}
+
+.section {
+    display: flex;
+    padding: 0px 20px 10px;
 }
 
 .TagLine {
@@ -95,8 +101,3 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-.SecondLine {
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    color: #939cf1;
-}

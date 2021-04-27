@@ -1,5 +1,6 @@
 import React from 'react';
 
+// import custom files
 import classes from './Spinner.module.css';
 
 /*

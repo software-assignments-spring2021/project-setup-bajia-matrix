@@ -1,5 +1,6 @@
 import React from 'react';
 
+// import custom files 
 import classes from './Text.module.css';
 
 /*
@@ -21,7 +22,7 @@ const text = (props) => {
         return (null);
     }
 
-    let lines = [];
+    const lines = [];
     let start = 0;
     let end = 49;
     

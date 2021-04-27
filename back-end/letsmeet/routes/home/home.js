@@ -1,11 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
-const User = require("../../models/User");
 const Event = require("../../models/Event");
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -40,19 +38,19 @@ router.get("/", (req, res, next) => {
                             res.json(allEvents);
                         })
                         .catch(error => {
-                            console.log("ERROR: Unable to retrieve upcoming events.");
+                            console.log("ERROR: Unable to retrieve upcoming events");
                             console.log(error);
                             res.status(500).send("ERROR 500: Issue retrieving upcoming events");
                         });
                 })
                 .catch(error => {
-                    console.log("ERROR: Unable to retrieve my events.");
+                    console.log("ERROR: Unable to retrieve my events");
                     console.log(error);
                     res.status(500).send("ERROR 500: Issue retrieving my events");
                 });
         })
         .catch(error => {
-            console.log("ERROR: Unable to retrieve pending invites.");
+            console.log("ERROR: Unable to retrieve pending invites");
             console.log(error);
             res.status(500).send("ERROR 500: Issue retrieving pending invites");
         });

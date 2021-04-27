@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    // baseURL: 'https://my.api.mockaroo.com'
+    // TODO: replace url with backend server url
     baseURL: 'http://localhost:4000'
 });
 

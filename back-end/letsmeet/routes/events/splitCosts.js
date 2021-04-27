@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const bodyParser = require("body-parser");
-const Event = require("../../models/Event");
 const { body, validationResult } = require("express-validator");
+
+const Event = require("../../models/Event");
+
 router.use(bodyParser.json());
 
 const split = (body) => {
@@ -14,8 +15,8 @@ const split = (body) => {
 
     var finalAmount = (total / body.supplies.length);
     //console.log(total)
-//positive owed values mean that the person is owed something and doesnt have to pay more
-//negative values means that teh person owes an amount
+// positive owed values mean that the person is owed something and doesnt have to pay more
+// negative values means that teh person owes an amount
     for (var index = 0; index < body.supplies.length; index++) {
       var owe = body.supplies[index].amount - finalAmount;
       //console.log(suppliesState.supplies[index].owed);

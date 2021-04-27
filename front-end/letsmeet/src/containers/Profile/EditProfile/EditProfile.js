@@ -6,9 +6,9 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
+// import custom files and components
 import classes from './EditProfile.module.css';
 import axios from '../../../axios';
-
 import red from '../../../assets/Avatars/redavi.png';
 import blue from '../../../assets/Avatars/blueavi.png';
 import green from '../../../assets/Avatars/greenavi.png';

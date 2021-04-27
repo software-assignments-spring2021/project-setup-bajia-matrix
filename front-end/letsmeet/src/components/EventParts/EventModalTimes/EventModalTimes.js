@@ -1,14 +1,14 @@
 import React from 'react';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Badge from 'react-bootstrap/Badge';
 
 /*
-  TODO: comment what this component is
+  This component displays the modal of suggested times for an event when the
+  creator clicks on the Choose Final Time button on the Event page. The creator
+  can choose the final time from the list of suggested times. 
 
   Props: 
-    - suggestedTimes: TODO
+    - suggestedTimes: a list of suggested times
     - onChecked: TODO
 */
 
@@ -50,7 +50,7 @@ const eventModalTimes = (props) => {
       <hr />
       {badge}
     </div>
-  )
+  );
 };
 
 export default eventModalTimes;

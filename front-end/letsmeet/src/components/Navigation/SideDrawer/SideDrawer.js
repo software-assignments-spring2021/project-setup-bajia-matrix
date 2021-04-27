@@ -1,5 +1,6 @@
 import React from 'react';
 
+// import custom files and components
 import classes from './SideDrawer.module.css';
 import Logo from '../../../assets/NavbarLogo.png';
 import NavigationItems from '../NavigationItems/NavigationItems';
