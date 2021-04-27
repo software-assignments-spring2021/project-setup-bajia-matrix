@@ -50,11 +50,13 @@ const AddFriends = (props) => {
      * @param {*} e 
      */
     const handleChange = e => {
+        const lowercaseSearchTerm = e.toLowerCase()
         setButtonText("Add Friend")
         setDisabled(false)
-        setSearchTerm(e)
-        validateFriend(e)
-        checkFriendship(e)
+        setIsFriend(false)
+        setSearchTerm(lowercaseSearchTerm)
+        validateFriend(lowercaseSearchTerm)
+        checkFriendship(lowercaseSearchTerm)
     }
 
     // Exclude these cols when searching term
@@ -94,14 +96,17 @@ const AddFriends = (props) => {
     const [isFriend, setIsFriend] = useState(false)
 
     function checkFriendship(e) {
+        // console.log("Im checking friendship with " + e)
         for (let friend of user.friends) {
             if(friend.email === e) {
+                // console.log("already friends with " + e)
                 setIsFriend(true)
                 return
             }
         }
         // Check MongoDB to see if email is associated with a user
         if (!isFriend) {
+            // console.log("Im checking Mongo for " + e)
             axios.get("/profile?findUser=true&searchEmail=" + e.trim())
                 .then(response => {
                     setData(response.data)
