@@ -18,7 +18,8 @@
 
 .eventDetails {
     display: block;
-    max-width: 750px;
+    overflow-wrap: anywhere;
+    max-width: 90%;
 }
 
 .FlexPadding {
