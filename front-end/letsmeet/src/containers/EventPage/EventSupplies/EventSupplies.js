@@ -97,7 +97,7 @@ const header = (e) => {
                 <tbody>
                   <tr>
                     <th>Supply</th>
-                    <th>Amount</th>
+                    <th>Cost</th>
                     <th>Name</th>
                     <th>Owed</th>
                   </tr>

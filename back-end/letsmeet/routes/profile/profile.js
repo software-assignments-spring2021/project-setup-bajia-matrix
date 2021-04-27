@@ -1,27 +1,28 @@
 const express = require("express");
+const router = express.Router();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
-const router = express.Router();
+const User = require("../../models/User");
+
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-const User = require("../../models/User");
-
+// helper method for get request to update names on friends list and send to client
 async function send(res, user) {
     const list = user.friends;
 
     // need to update names because users can change them
     const promises = list.map(async item => {
         const updatedName = await User.findById(item.id)
-                                .then(user => {
-                                    return user.name;
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                });
+            .then(user => {
+                return user.name;
+            })
+            .catch(error => {
+                console.log(error);
+            });
         const updatedItem = {
             id: item.id,
             name: updatedName,
@@ -32,10 +33,10 @@ async function send(res, user) {
     })
 
     // wait until all promises (search user's by id) are done 
-    user.friends = await Promise.all(promises)
-    
+    user.friends = await Promise.all(promises);
+
     // all async calls done, can send to app now
-    res.json(user);  
+    res.json(user);
 };
 
 router.get("/", async (req, res, next) => {
@@ -45,30 +46,29 @@ router.get("/", async (req, res, next) => {
         const searchEmail = req.query.searchEmail;
         console.log("get request on route /profile to find user with email " + searchEmail);
 
-        User.find({ email : searchEmail })
+        User.find({ email: searchEmail })
             .then(newFriend => {
-                res.json(newFriend)
+                res.json(newFriend);
             })
             .catch(error => {
-                console.log("ERROR: Unable to retrieve user with searched email.")
+                console.log("ERROR: Unable to retrieve user with searched email");
                 console.log(error);
                 res.status(500).send("ERROR 500: Issue finding user with searched email");
-            })
+            });
     }
-
     // Find current user
     else {
         const id = req.query.userid;
         console.log("get request on route /profile with user id " + id);
-        
-        // find user, replace friends with list of names instead of ObjectIds, and send
+
+        // find user, update names on friends list in case friends changed their names, then send to client
         User.findById(id)
             .then(user => {
-                let viewedUser = JSON.parse(JSON.stringify(user));
+                const viewedUser = JSON.parse(JSON.stringify(user));
                 send(res, viewedUser);
             })
             .catch(error => {
-                console.log("ERROR: Unable to retrieve user.");
+                console.log("ERROR: Unable to retrieve user");
                 console.log(error);
                 res.status(500).send("ERROR 500: Issue finding user");
             });
@@ -76,46 +76,47 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post(
-    "/", 
+    "/",
     body("name").not().isEmpty().trim().escape(),
     body("city").trim().escape(),
     body("state").trim().escape(),
     (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(500).send(errors.array()[0]);
-    }
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(500).send(errors.array()[0]);
+        }
 
-    const id = req.body._id;
-    console.log("post request on route /profile with user id " + id);
-    
-    // update by id
-    const query = {_id: id};
-    User.updateOne(query, req.body)
-        .then(updatedUser => {
-            res.send("200 OK: Successfully updated user");
-        })
-        .catch(error => {
-            console.log("ERROR: Unable to update user.");
-            console.log(error);
-            res.status(500).send("ERROR 500: Issue updating user");
-        });
-});
+        const id = req.body._id;
+        console.log("post request on route /profile with user id " + id);
 
-//JOANNE: to get all event attendees' avis
+        // update by id
+        const query = { _id: id };
+        User.updateOne(query, req.body)
+            .then(updatedUser => {
+                res.send("200 OK: Successfully updated user");
+            })
+            .catch(error => {
+                console.log("ERROR: Unable to update user");
+                console.log(error);
+                res.status(500).send("ERROR 500: Issue updating user");
+            });
+    });
+
+// to get all event attendees' avis
 router.post("/avis", (req, res, next) => {
     User.find({}, (err, users) => {
         if (err) {
             console.log(err);
-            res.status(500).json({message: "ERROR 500: Issue with getting all users"});
-        } else {
-            let avis = [];
+            res.status(500).json({ message: "ERROR 500: Issue getting all users" });
+        }
+        else {
+            const avis = [];
             req.body.attendees.forEach(attendee => {
-                let temp = users.filter(user => {if (attendee.id === user.id) return user})
+                const temp = users.filter(user => { if (attendee.id === user.id) return user });
                 if (temp[0]) {
                     avis.push(temp[0].avatar);
-                } 
-            })
+                }
+            });
             res.status(200).json(avis);
         }
     })

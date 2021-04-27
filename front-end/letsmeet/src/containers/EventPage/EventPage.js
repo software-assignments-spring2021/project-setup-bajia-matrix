@@ -69,42 +69,42 @@ const EventPage = (props) => {
   }, [])
 
   useEffect(() => {
-      if (props.location.state) {
-        const eventState = props.location.state.eventState;
-        setEvent(eventState);
-      }
-      else {
-        let eventQueryID = window.location.pathname.split("/")[2];
-        axios.get("/events?eventid=" + eventQueryID)
-          .then((response) => {
+    if (props.location.state) {
+      const eventState = props.location.state.eventState;
+      setEvent(eventState);
+    }
+    else {
+      let eventQueryID = window.location.pathname.split("/")[2];
+      axios.get("/events?eventid=" + eventQueryID)
+        .then((response) => {
           console.log('successfully get event: ', response.data);
           setEvent(response.data);
         })
         .catch((error) => {
           console.log(error);
         });
-      }
+    }
   }, [props]);
 
   //get avis of all attendees
   useEffect(() => {
-      if (event.attendees.length > 0) {
-        axios.post("profile/avis", {attendees: [...event.attendees]})
-          .then((response) => {
-            setEvent((prevState) => ({
-              ...prevState,
-              avis: response.data,
-            }))
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      }
+    if (event.attendees.length > 0) {
+      axios.post("profile/avis", { attendees: [...event.attendees] })
+        .then((response) => {
+          setEvent((prevState) => ({
+            ...prevState,
+            avis: response.data,
+          }))
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
   }, [event.attendees])
 
   let addUnverified = (e) => {
     //check if unverified email already exists in database
-    axios.get('/profile?findUser=true&searchEmail='+state.unverifiedInput.current.value)
+    axios.get('/profile?findUser=true&searchEmail=' + state.unverifiedInput.current.value)
       .then((response) => {
         if (response.data.length === 0) {
           let attendeesCopy = [...event.attendees];
@@ -138,12 +138,12 @@ const EventPage = (props) => {
                 emailMessage: null
               }))
               axios.post("/events/newAttendee", newAttendee)
-              .then((response) => {
-                console.log('successfully posted new attendee: ', response);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
+                .then((response) => {
+                  console.log('successfully posted new attendee: ', response);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             }
           } else {
             setEvent((prevState) => ({
@@ -151,10 +151,10 @@ const EventPage = (props) => {
               emailMessage: "The email address you entered is not valid. Please try again."
             }))
           }
-        
+
         } else {
           setEvent((prevState) => ({
-            ...prevState, 
+            ...prevState,
             emailMessage: "An account with the email already exists. Please enter another email or log in."
           }))
         }
@@ -188,14 +188,14 @@ const EventPage = (props) => {
   };
   const [showSuggested, setShowSuggested] = useState(false);
   const handleShowSuggested = () => {
-    
+
     // BING: retrieve suggested times and update event.suggestedTimes from backend
     // get browser's current timezone
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    
-    let eventCopy = event;
-    eventCopy.timezone = tz;
-    axios.post("/suggestedTimes", {availability: eventCopy.availability, timezone: eventCopy.timezone})
+    // const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // BING: it seems the browser handles timezone conversion by itself, so we don't need to do this manually
+
+    const eventCopy = event;
+    axios.post("/suggestedTimes", { availability: eventCopy.availability })
       .then(response => {
         setEvent((prevState) => ({
           ...prevState,
@@ -218,12 +218,12 @@ const EventPage = (props) => {
         finalDate: chosenTime.date,
         finalTime: chosenTime.time
       }));
-  
+
       let eventCopy = event;
       eventCopy.finalDay = chosenTime.day;
       eventCopy.finalDate = chosenTime.date;
       eventCopy.finalTime = chosenTime.time;
-      eventCopy.attendees.forEach(attendee => {
+      eventCopy.attendees.forEach(attendee => {
         attendee.announcement = true
       })
       //axios post call to update event's final time details
@@ -253,7 +253,7 @@ const EventPage = (props) => {
     }
   }, [event.finalDay, event.finalDate, event.finalTime]);
 
-  
+
   const { Option } = Select;
   let addVerified = (values) => {
     //extract names of invitees
@@ -263,13 +263,13 @@ const EventPage = (props) => {
       invitees.push(JSON.parse(friend));
       inviteeNames.push(JSON.parse(friend).name);
     })
-    
+
     //update friends list so that friend that was just invited does not appear
     let friends = [];
     let friendsList = [];
     event.friendsList.forEach(friend => {
       if (!inviteeNames.includes(friend.props.children)) {
-        let temp = user.friends.filter(temp => {return temp.name === friend.props.children})
+        let temp = user.friends.filter(temp => { return temp.name === friend.props.children })
         friends.push(temp[0]);
       }
       return;
@@ -297,29 +297,29 @@ const EventPage = (props) => {
   //for populating list of friends to invite to event (exclude any friends already attending or invited)
   useEffect(() => {
     let friendsList;
-    if(user.friends && event.title) {
+    if (user.friends && event.title) {
       let test = [];
       if (event.invitees && event.attendees) {
         user.friends.forEach(friend => {
-        let eventInvitees = false;
-        let eventAttendees = false;
-        event.invitees.forEach(invitee => {
-          if (invitee.name === friend.name) {
-            eventInvitees = true;
+          let eventInvitees = false;
+          let eventAttendees = false;
+          event.invitees.forEach(invitee => {
+            if (invitee.name === friend.name) {
+              eventInvitees = true;
+            }
+          })
+          event.attendees.forEach(attendee => {
+            if (attendee.name === friend.name) {
+              eventAttendees = true;
+            }
+          })
+          if (eventInvitees === false && eventAttendees === false) {
+            test.push(friend);
           }
         })
-        event.attendees.forEach(attendee => {
-          if (attendee.name === friend.name) {
-            eventAttendees = true;
-          }
-        })
-        if (eventInvitees === false && eventAttendees === false) {
-          test.push(friend);
-        }
-      })
-      friendsList = test.map(test => (
-        <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
-      ))
+        friendsList = test.map(test => (
+          <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
+        ))
       }
     }
     setEvent((prevState) => ({
@@ -335,12 +335,12 @@ const EventPage = (props) => {
     if (id) {
       axios.get("/profile?userid=" + id)
         .then((response) => {
-        setUser(response.data);
-        
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          setUser(response.data);
+
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, []);
 
@@ -356,9 +356,9 @@ const EventPage = (props) => {
           ...prevState,
           redirect: true,
         }));
-    }).catch((error) => {
-      console.log(error);
-    });
+      }).catch((error) => {
+        console.log(error);
+      });
   };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -372,7 +372,7 @@ const EventPage = (props) => {
       }
     })
     let withdrawnCopy = [...event.withdrawn];
-    withdrawnCopy.push({id: user._id, name: user.name});
+    withdrawnCopy.push({ id: user._id, name: user.name });
     setEvent((prevState) => ({
       ...prevState,
       attendees: attendeesCopy,

@@ -161,7 +161,7 @@ const EditSupplies = (props) => {
                                         className={classes.Input} 
                                         type="text" 
                                         name="addSupply" 
-                                        placeholder="Supply" 
+                                        placeholder="Supply Name" 
                                         maxLength="20"
                                         autoFocus
                                         required 
@@ -171,7 +171,7 @@ const EditSupplies = (props) => {
                                         className={classes.Input} 
                                         type="number" 
                                         name="amount" 
-                                        placeholder="Amount"
+                                        placeholder="Cost"
                                         required
                                         min="0.00" 
                                         max="1000.00" 
