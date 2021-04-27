@@ -30,19 +30,8 @@ const EventPage = (props) => {
 
   //for event
   const [event, setEvent] = useState({
-    id: "1-i-am-random-event-id",
-    title: "Study Dateeeeeeeeeeeeeeeeeeeeee",
-    day: "Wed",
-    date: "Mar 10",
-    time: "5:00 pm",
-    eventLocation: "New York, NY",
-    description:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
     attendees: [],
-    creator: "Angela Tim",
-    finalDay: null,
-    finalDate: null,
-    finalTime: null,
+    supplies: []
   });
 
   //for current user info
@@ -269,7 +258,7 @@ const EventPage = (props) => {
   const { Option } = Select;
   let addVerified = (values) => {
     //extract names of invitees
-    let invitees = [];
+    let invitees = [...event.invitees];
     let inviteeNames = [];
     values.friends.forEach(friend => {
       invitees.push(JSON.parse(friend));
