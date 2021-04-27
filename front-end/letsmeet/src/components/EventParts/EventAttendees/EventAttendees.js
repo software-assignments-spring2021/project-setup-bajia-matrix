@@ -51,7 +51,13 @@ const eventAttendees = (props) => {
   if (props.event.creator) {
     creatorItem = <ListGroup.Item key={props.event.creator.id} className={classes.Border}>
         <Card className={classes.CardHeader}>
-          <Card.Img src={red} className={classes.Avatar} />
+            {props.event.creatorAvi === "purple" ? <Card.Img src={purple} className={classes.Avatar} />
+              : props.event.creatorAvi === "orange" ? <Card.Img src={orange} className={classes.Avatar} />
+              : props.event.creatorAvi === "yellow" ? <Card.Img src={yellow} className={classes.Avatar} />
+              : props.event.creatorAvi === "green" ? <Card.Img src={green} className={classes.Avatar} />
+              : props.event.creatorAvi === "blue" ? <Card.Img src={blue} className={classes.Avatar} />
+              : <Card.Img src={red} className={classes.Avatar} />
+            }
           <Card.Body className={classes.Name}>
             <p>{props.event.creator}</p>
             <p className={classes.Role}>Creator</p>

@@ -79,6 +79,16 @@ const EventPage = (props) => {
           .then((response) => {
           console.log('successfully get event: ', response.data);
           setEvent(response.data);
+          axios.get("/profile?userid=" + response.data.creatorID)
+            .then(response => {
+              setEvent((prevState) => ({
+                ...prevState,
+                creatorAvi: response.data.avatar,
+              }))
+            })
+            .catch(error => {
+              console.log(error);
+            })
         })
         .catch((error) => {
           console.log(error);
@@ -112,7 +122,7 @@ const EventPage = (props) => {
             name: state.unverifiedInput.current.value,
             eventID: event._id
           };
-          attendeesCopy.push(newAttendee);
+          console.log(attendeesCopy);
 
           //check if unverified email is correct email format
           const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
@@ -120,6 +130,7 @@ const EventPage = (props) => {
           if (isValid) {
             //check if unverified email is already in attendee list
             let duplicate = false;
+<<<<<<< HEAD
             // attendeesCopy.forEach(attendee => {
             //   if (attendee.email === newAttendee.email) {
             //     duplicate = true;
@@ -131,6 +142,22 @@ const EventPage = (props) => {
             //     emailMessage: "The email address already exists in the event attendee list. Please enter another email."
             //   }))
             // } else {
+=======
+            attendeesCopy.forEach(attendee => {
+              if (attendee.eventID) {
+                if (attendee.name === newAttendee.name) {
+                  duplicate = true;
+                }
+              }
+            })
+            if (duplicate === true) {
+              setEvent((prevState) => ({
+                ...prevState,
+                emailMessage: "The email address already exists in the event attendee list. Please enter another email."
+              }))
+            } else {
+              attendeesCopy.push(newAttendee);
+>>>>>>> 89ad54cc7756ac8d04f8907ce22b481885dd827c
               setEvent((prevState) => ({
                 ...prevState,
                 attendees: attendeesCopy,
