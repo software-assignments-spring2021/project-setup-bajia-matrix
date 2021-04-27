@@ -190,8 +190,8 @@ const AddFriends = (props) => {
         })
 
         transporter.sendMail({
-            from: '"Let\'s Meet" <' + process.env.GMAIL + '>', 
-            to: "cl4336@nyu.edu", // replace for testing
+            from: process.env.GMAIL, 
+            to: searchTerm, // change this for testing
             subject: user.name.split(' ') + ' invited you to join Let\'s Meet', 
             text: 'Hello ' + searchTerm, 
             html: "<h1>Hello " + searchTerm + "</h1>",
