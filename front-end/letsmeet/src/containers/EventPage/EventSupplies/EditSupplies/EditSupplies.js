@@ -64,7 +64,7 @@ const EditSupplies = (props) => {
     }
 
     const inputChangedHandler = (e) => {
-        console.log(e.target)
+       
         setFormData({
             // this is the "name" and "value" formReducer use to update formData
             name: e.target.name,

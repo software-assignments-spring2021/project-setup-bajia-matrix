@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 
 router.use(bodyParser.json());
 
-// This formats the input before sending it into the algorithm called calcBestTimes
+// This formats the input before sending it into the algorithm called calcBestTimes.
 const formatInput = (datetimes) => {
     const output = [];
 
@@ -24,7 +24,7 @@ const formatInput = (datetimes) => {
     return output;
 };
 
-// Sorts an array of strings containing datetime (key) and count (val) in decreasing order by count
+// Sorts an array of strings containing datetime (key) and count (val) in decreasing order by count.
 const sortIt = (array) => {
     return (array.sort((a, b) => {
         const [key1, val1] = a;
@@ -43,7 +43,7 @@ const sortIt = (array) => {
 
 /*
     This algorithm counts the occurrence of each datetime and returns
-    the most frequent datatimes
+    the most frequent datatimes.
 */
 const calcBestTimes = (datetimes) => {
     const counts = {};
@@ -84,7 +84,7 @@ const calcBestTimes = (datetimes) => {
 
 /*
     This formats the different parts of the response (a Date object) to return
-    the day of the week, the date, and time (in AM/PM)
+    the day of the week, the date, and time (in AM/PM).
 */
 const generateResponse = (datetime) => {
 

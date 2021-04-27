@@ -69,6 +69,7 @@ const EventPage = (props) => {
   useEffect(() => {
     if (props.location.state) {
       const eventState = props.location.state.eventState;
+      console.log(props.location.state.eventState)
       setEvent(eventState);
     }
     else {
