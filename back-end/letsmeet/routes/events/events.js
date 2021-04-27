@@ -11,6 +11,183 @@ router.use(bodyParser.json());
 const Event = require("../../models/Event");
 const User = require("../../models/User");
 
+async function send(res, event) {
+    const attendees = event.attendees;
+    const invitees = event.invitees;
+    const withdrawns = event.withdrawn;
+    const supplies = event.supplies;
+
+    let updatedAttendees = [];
+    let updatedInvitees = [];
+    let updatedWithdrawns = [];
+    let updatedSupplies = [];
+
+    // need to update names because users can change them
+    const promises = attendees.map(async attendee => {
+        const updatedAttendee = await User.findById(attendee.id)
+                                .then(user => {
+                                    let userObj;
+                                    if (user) {
+                                        userObj = {
+                                            id: user._id,
+                                            name: user.name,
+                                            announcement: attendee.announcement
+                                        }
+                                        return userObj;
+                                    }
+                                    else {
+                                        userObj = {
+                                            id: attendee.id,
+                                            name: attendee.name,
+                                            announcement: attendee.announcement
+                                        }
+                                        return userObj;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+
+        updatedAttendees.push(updatedAttendee);
+        if(updatedAttendees.length === attendees.length) {
+            return updatedAttendees;
+        }
+    })
+    
+    const promises2 = invitees.map(async invitee => {
+        const updatedInvitee = await User.findById(invitee.id)
+                                .then(user => {
+                                    let userObj;
+                                    if (user) {
+                                        userObj = {
+                                            id: user._id,
+                                            name: user.name
+                                        }
+                                        return userObj;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+
+        updatedInvitees.push(updatedInvitee);
+        if(updatedInvitees.length === invitees.length) {
+            return updatedInvitees;
+        }
+    })
+
+    const promises3 = withdrawns.map(async withdrawn => {
+        const updatedWithdrawn = await User.findById(withdrawn.id)
+                                .then(user => {
+                                    let userObj;
+                                    if (user) {
+                                        userObj = {
+                                            id: user._id,
+                                            name: user.name
+                                        }
+                                        return userObj;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+
+        updatedWithdrawns.push(updatedWithdrawn);
+        if(updatedWithdrawns.length === invitees.length) {
+            return updatedWithdrawns;
+        }
+    })
+
+    const promises4 = supplies.map(async supply => {
+        const updatedSupply = await User.findById(supply.id)
+                                .then(user => {
+                                    let supplyObj;
+                                    if (user) {
+                                        supplyObj = {
+                                            id: user._id,
+                                            name: user.name,
+                                            supply: supply.supply,
+                                            amount: supply.amount,
+                                            owed: supply.owed
+                                        }
+                                        return supplyObj;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                });
+
+        updatedSupplies.push(updatedSupply);
+        if(updatedSupplies.length === supplies.length) {
+            return updatedSupplies;
+        }
+    })
+
+    let promiseCreator;
+    if (event.creatorID) {
+        promiseCreator = await User.findById(event.creatorID)
+        .then(user => {
+            let updateCreator = {
+                name: user.name
+            }
+            return updateCreator;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    // wait until all promises (search user's by id) are done 
+    let promiseAttendees = await Promise.all(promises);
+    let promiseInvitees = await Promise.all(promises2);
+    let promiseWithdrawns = await Promise.all(promises3);
+    let promiseSupplies = await Promise.all(promises4);
+
+    if (promiseAttendees.length !== 0) {
+        promiseAttendees.forEach(promise => {
+            if (promise) {
+                event.attendees = promise;
+            }
+        })
+    }
+    if (promiseInvitees.length !== 0) {
+        promiseInvitees.forEach(promise => {
+            if (promise) {
+                event.invitees = promise;
+            }
+        })
+    }
+    if (promiseWithdrawns.length !== 0) {
+        promiseWithdrawns.forEach(promise => {
+            if (promise) {
+                event.withdrawn = promise;
+            }
+        })
+    }
+    if (promiseSupplies.length !== 0) {
+        promiseSupplies.forEach(promise => {
+            if (promise) {
+                event.supplies = promise;
+            }
+        })
+    }
+    if (promiseCreator) {
+        event.creator = promiseCreator.name;
+    }
+
+    //console.log(event);
+    Event.findOneAndUpdate({_id: event._id}, event)
+        .then(update => {
+            //console.log(update);
+        })
+        .catch(err => {
+            console.log(error);
+        })
+    
+    // all async calls done, can send to app now
+    res.json(event);  
+};
+
 router.get("/", (req, res, next) => {
     const id = req.query.eventid;
     console.log("get request on route /events for event with id " + id);
@@ -20,7 +197,8 @@ router.get("/", (req, res, next) => {
             res.status(500).send("ERROR 500: Issue finding event");
         }
         else {
-            res.json(event);
+            send(res, event);
+            //res.json(event);
         }
     });
 });
