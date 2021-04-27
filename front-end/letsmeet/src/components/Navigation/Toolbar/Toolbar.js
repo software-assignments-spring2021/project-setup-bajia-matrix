@@ -19,7 +19,7 @@ import Hamburger from '../SideDrawer/Hamburger/Hamburger';
 const toolbar = (props) => (
     <header className={classes.Toolbar}>
         <Hamburger clicked={props.drawerToggleClicked} />
-        <Link to="/" exact>
+        <Link to="/">
             <img className={classes.Logo} src={Logo} alt="Let's Meet" />
         </Link>
         <nav className={classes.Medium}>

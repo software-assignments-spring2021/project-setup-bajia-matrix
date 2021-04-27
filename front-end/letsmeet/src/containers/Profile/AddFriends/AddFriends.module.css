@@ -10,7 +10,8 @@
 }
 
 .cancelButton {
-    margin-top: -27px;
+    /* margin-top: -27px; */
+    /* margin-right: 31.5%; */
     float: left;
     width: 15%;
 }
@@ -23,6 +24,10 @@
 
 .errorMessage {
     color: red;
+}
+
+.FlexPadding {
+    color: white;
 }
 
 .friendsList {
@@ -42,6 +47,10 @@
 
 .inviteButton {
     margin: 50% 0;
+}
+
+.Header {
+    padding: 10px 30px 0px 30px;
 }
 
 .nameContainer {
@@ -73,19 +82,6 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-}
-
-.subheader {
-    display: block;
-    width: 100%;
-    background-color: white;
-    border-bottom: 1px solid #777;
-    margin-top: -17px;
-    padding: 10px;
-}
-
-.subheader h6 {
-    padding-top: 5px;
 }
 
 .subtitle {

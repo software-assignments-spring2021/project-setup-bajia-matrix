@@ -18,10 +18,12 @@ import axios from '../../../axios';
 
 const EventSupplies = (props) => {
   const [suppliesState, setSuppliesState] = useState({ supplies: [] });
-  const [suppliesListName, setSuppliesListName] = useState();
-  const [suppliesListPrice, setSuppliesListPrice] = useState();
-  const [suppliesListPerson, setSuppliesListPerson] = useState();
-  const [suppliesListOwed, setSuppliesListOwed] = useState();
+  const [supplies, setSupplies] = useState();
+  // const [suppliesListName, setSuppliesListName] = useState();
+  // const [suppliesListPrice, setSuppliesListPrice] = useState();
+  // const [suppliesListPerson, setSuppliesListPerson] = useState();
+  // const [suppliesListOwed, setSuppliesListOwed] = useState();
+   
 
   useEffect(() => {
     setSuppliesState(props.event);
@@ -35,48 +37,36 @@ const EventSupplies = (props) => {
   };
 
   useEffect(() => {
-    let suppliesListName;
-    let suppliesListPrice;
-    let suppliesListPerson;
-    let suppliesListOwed;
+    let suppliesEntry;
     if (suppliesState.supplies) {
-      suppliesListName = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
-            {supplies.supply}
-          </p>
-        </>
-      ));
-      setSuppliesListName(suppliesListName);
-      suppliesListPrice = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
-            $ {supplies.amount}
-          </p>
-        </>
-      ));
-      setSuppliesListPrice(suppliesListPrice);
-      suppliesListPerson = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
-            {supplies.name}
-          </p>
-        </>
-      ));
-      setSuppliesListPerson(suppliesListPerson);
-      suppliesListOwed = suppliesState.supplies.map((supplies, index) => (
-        <>
-          <p key={index}>
-           $ {supplies.owed} 
-          </p>
-        </>
-      ));
-      setSuppliesListOwed(suppliesListOwed);
+      suppliesEntry = suppliesState.supplies.map((sup, index) => {
+        return (
+          <tr key={index}>
+                     <td>{sup.supply}</td>
+                     <td>${sup.amount}</td>
+                     <td>{sup.name}</td>
+                     <td>${sup.owed}</td>
+                  </tr>
+        )
+        ;
+      });
+      setSupplies(suppliesEntry);
     }
   }, [suppliesState.supplies])
 
+const header = (e) => {
+  return (
+    <>
+    <th>Supply</th>
+    <th>Amount</th>
+    <th>Name</th>
+    <th>Owed</th>
+    </>
+    );
+};
+
+
   const splitCosts = (e) => {
-    //TODO: split costs
     const url = '/splitCosts';
     console.log(suppliesState);
 
@@ -103,26 +93,17 @@ const EventSupplies = (props) => {
               <hr className={classes.Hr}/>
             </Card.Title>
             <Card.Body className={classes.SuppliesBody}>
-            <div className="table-responsive">
-              <Table striped bordered hover size="sm" className="table table-fixed" >
-                <thead>
+              <table className={classes.students}>
+                <tbody>
                   <tr>
                     <th>Supply</th>
                     <th>Amount</th>
                     <th>Name</th>
                     <th>Owed</th>
-                   </tr>
-                  </thead>
-                <tbody>
-                    <tr>
-                      <td>{suppliesListName}</td>
-                      <td>{suppliesListPrice}</td>
-                      <td>{suppliesListPerson}</td>
-                      <td>{suppliesListOwed}</td>
-                    </tr>
-                  </tbody>
-                </Table> 
-              </div>
+                  </tr>
+                  {supplies}
+                </tbody>
+              </table>
             </Card.Body>
             <Card.Body className={classes.Buttons}>
               <Button

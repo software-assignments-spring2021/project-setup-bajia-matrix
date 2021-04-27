@@ -24,13 +24,30 @@
 }
 
 .EditSupplies h5 {
-    margin: 20px 0 20px 0;
+    margin: 20px 0 10px 0;
     font-weight: 700;
+}
+
+.EditSupplies h6 {
+    text-align: center;
+}
+
+.FlexPadding {
+    color: white;
 }
 
 .Form {
     width: 100%;
     text-align: center;
+    overflow: wrap;
+}
+
+.H5 {
+    padding: 0 20px;
+}
+
+.Header {
+    padding: 10px 30px 0px 30px;
 }
 
 .Input {
@@ -38,6 +55,18 @@
     width: 42%;
     height: 40px;
 }
+/* 
+.Reset {
+    border: none;
+    margin: 10px 0px;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    
+    background: transparent;
+    outline: none;
+    
+} */
 
 .Submit {
     display: flex;
@@ -54,6 +83,11 @@
     flex-flow: column;
     flex-direction: column; 
     margin: 0 0 20px 0;
+}
+
+.EditTitle {
+    max-width: 90%;
+    overflow-wrap: anywhere;
 }
 
 

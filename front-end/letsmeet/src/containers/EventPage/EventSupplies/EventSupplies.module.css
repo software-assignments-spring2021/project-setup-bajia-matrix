@@ -23,12 +23,11 @@
     flex-flow: column;
     overflow: scroll;
     height: 200px;
-    overflow-x: hidden;
 }
 
 .SuppliesBody::-webkit-scrollbar {
     width: 8px;
-    height: 16px;
+    height: 8px;
 }
 
 .SuppliesBody::-webkit-scrollbar-button {
@@ -44,6 +43,7 @@
 .SuppliesBody::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
     -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
 }
 
 .SuppliesTitle {
@@ -88,4 +88,32 @@
     .Card {
         margin: 0px;
     }
+    
+
 }
+
+.students {
+    text-align: center;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+    /* overflow-x: scroll; */
+  }
+
+  .students td, .students th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .students tr:nth-child(even){background-color: #f2f2f2;}
+  
+  .students tr:hover {background-color: #ddd;}
+  
+  .students th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #1d38ed;
+    color: white;
+  }
+  

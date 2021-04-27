@@ -18,7 +18,12 @@
 
 .eventDetails {
     display: block;
-    max-width: 750px;
+    overflow-wrap: anywhere;
+    max-width: 90%;
+}
+
+.FlexPadding {
+    color: white;
 }
 
 .formButton {
@@ -26,21 +31,11 @@
     margin: 20px auto;
 }
 
+.Header {
+    padding: 10px 15px 0px 15px;
+}
+
 .space {
     display: flex;
     align-content: center;
-}
-
-.subheader {
-    display: block;
-    width: 100%;
-    background-color: white;
-    border-bottom: 1px solid #777;
-    margin-top: -17px;
-    margin-bottom: 20px;
-    padding: 10px;
-}
-
-.subheader h6 {
-    padding-top: 5px;
 }

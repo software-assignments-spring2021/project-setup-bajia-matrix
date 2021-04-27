@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import Navbar from 'react-bootstrap/Navbar';
 import Card from 'react-bootstrap/Card';
 
 import classes from './EditProfile.module.css';
@@ -99,26 +97,24 @@ const EditProfile = (props) => {
     const editProfilePage = (
         <Container fluid>
             <Row>
-                <Col className="md-12">
-                    <Navbar>
-                        <Link to="/profile" exact>
-                            <Navbar.Text>Cancel</Navbar.Text>
-                        </Link>
-                        
-                        <Navbar.Collapse className="justify-content-center">
-                            <Navbar.Brand>
-                            <h4>Edit Profile</h4>
-                            </Navbar.Brand>
-                        </Navbar.Collapse>
-                    </Navbar>
+                <Col className={classes.Header}>
+                    <div className="d-flex align-items-center justify-content-between">
+                        <div className="align-self-baseline">
+                            <a href="/profile">Cancel</a>
+                        </div>
+                        <div className="align-self-baseline">
+                            <h6>Edit Profile</h6>
+                        </div>
+                        <div className={classes.FlexPadding}>Cancel</div>
+                        {/* This is invisible text to center the header */}
+                    </div>
                     <hr />
                 </Col>
             </Row>
 
             <Row>
             <div className={classes.Profile}>
-                <Card className={classes.Card} >
-                    
+                <Card className={classes.Card} >  
                     <Card.Body className={classes.CardBody}>
                         <Card.Title className={classes.Title}>
                             <Button onClick={editAvatar} className={classes.LinkButton}>Edit</Button>

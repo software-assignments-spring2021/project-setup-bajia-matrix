@@ -47,7 +47,7 @@ const SignUp = (props) => {
     useEffect(() => {
         if (emailParam) {
             let emailCopy = {
-                value: emailParam,
+                value: emailParam.toLowerCase(),
                 valid: true
             }
             setAuthState((prevState) => ({
@@ -139,7 +139,7 @@ const SignUp = (props) => {
             updatedAuthState[nam] = updatedLastName;
         }
         else if (nam === "email") {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            const pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
             const isValid = pattern.test(val);
             (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Please enter a valid email address!</strong>);
 
@@ -147,7 +147,7 @@ const SignUp = (props) => {
                 ...updatedAuthState[nam]
             }
 
-            updatedEmail.value = val;
+            updatedEmail.value = val.toLowerCase();
             updatedEmail.valid = isValid;
 
             updatedAuthState[nam] = updatedEmail;
@@ -174,7 +174,7 @@ const SignUp = (props) => {
                 //JOANNE: sliding in here to add code for when an unverified user signs up after creating an event
                 if (urlParams.get('id')) {
                     //send post call to event to update event attendee list and update their attendee id
-                    axios.post("/events", {_id: urlParams.get('id'), attendee: response.data.uid, email: emailParam})
+                    axios.post("/events", {_id: urlParams.get('id'), attendee: response.data.uid, email: emailParam.toLowerCase()})
                         .then(response => {
                             console.log('event attendee list updated baby');
                         })
@@ -273,7 +273,7 @@ const SignUp = (props) => {
                 </div>
 
                 <div className="form-group">
-                    <label for="password">Confirm password</label>
+                    <label htmlFor="password">Confirm password</label>
                     <input
                         type="password"
                         className="form-control"

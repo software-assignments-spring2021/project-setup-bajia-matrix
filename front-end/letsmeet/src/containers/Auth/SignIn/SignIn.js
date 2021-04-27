@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import classes from './SignIn.module.css';
 import axios from '../../../axios';
@@ -66,7 +66,7 @@ const SignIn = (props) => {
     }
 
     return (
-        <div class="row justify-content-center">
+        <div className="row justify-content-center">
             <form className={classes.Authform}>
                 <h3>Sign In</h3>
 
@@ -94,12 +94,7 @@ const SignIn = (props) => {
                         required />
                 </div>
 
-                <div className="form-group">
-                    <div className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                        <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                    </div>
-                </div>
+                
                 <div className={classes.Error}>{errorMessage}</div>
 
                 <div>
