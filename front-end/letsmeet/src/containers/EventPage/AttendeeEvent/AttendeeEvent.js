@@ -31,21 +31,18 @@ import Alert from "react-bootstrap/Alert";
 const AttendeeEvent = (props) => {
   return (
     <div>
-      {props.announcement 
-      ? <Alert show={props.announcement} variant="primary">
-          <Alert.Heading>Hey there!</Alert.Heading>
-          <p className="h6">
-            This event's time has been finalized since the last time you've viewed this event.
-          </p>
-          <hr />
-          <div className="d-flex justify-content-end">
-            <Button onClick={() => props.closeAnnouncement()} variant="outline-primary">
-              Ok got it!
-            </Button>
-          </div>
-        </Alert>
-      : null
-      }
+      <Alert show={props.announcement} variant="primary">
+        <Alert.Heading>Hey there!</Alert.Heading>
+        <p className="h6">
+          This event's time has been finalized since the last time you've viewed this event.
+        </p>
+        <hr />
+        <div className="d-flex justify-content-end">
+          <Button onClick={() => props.closeAnnouncement()} variant="outline-primary">
+            Ok got it!
+          </Button>
+        </div>
+      </Alert>
 
       <Row className={classes.EventTitle}>
         {props.event.creator !== ""
