@@ -13,20 +13,21 @@ describe("SplitCosts routes", () => {
                 title: "Lunch Date",
                 description: "Lunch date!",
                 supplies: [
-                    { id: 1, name: "supply1", price: 12, person: "attendee1", owed: 0 },
-                    { id: 2, name: "supply2", price: 5, person: "attendee2", owed: 0 },
-                    { id: 3, name: "supply3", price: 9, person: "attendee3", owed: 0 },
-                    { id: 4, name: "supply4", price: 1, person: "attendee4", owed: 0 },
-                    { id: 5, name: "supply5", price: 0, person: "attendee5", owed: 0 },
+                    { id: 1, supply: "supply1", amount: 12, name: "attendee1", owed: 0 },
+                    { id: 2, supply: "supply2", amount: 5, name: "attendee2", owed: 0 },
+                    { id: 3, supply: "supply3", amount: 9, name: "attendee3", owed: 0 },
+                    { id: 4, supply: "supply4", amount: 1, name: "attendee4", owed: 0 },
+                    { id: 5, supply: "supply5", amount: 0, name: "attendee5", owed: 0 }
                 ]
             };
+
             const response = await request(app).post("/splitCosts").send(data);
             expect(response.body).to.eql([
-                { id: 1, name: "supply1", price: 12, person: "attendee1", owed: "-6.60" },
-                { id: 2, name: "supply2", price: 5, person: "attendee2", owed: "0.40" },
-                { id: 3, name: "supply3", price: 9, person: "attendee3", owed: "-3.60"},
-                { id: 4, name: "supply4", price: 1, person: "attendee4", owed: "4.40" },
-                { id: 5, name: "supply5", price: 0, person: "attendee5", owed: "5.40" },
+                { id: 1, supply: "supply1", amount: 12, name: "attendee1", owed: 6.60 },
+                { id: 2, supply: "supply2", amount: 5, name: "attendee2", owed: -0.40 },
+                { id: 3, supply: "supply3", amount: 9, name: "attendee3", owed: 3.60},
+                { id: 4, supply: "supply4", amount: 1, name: "attendee4", owed: -4.40 },
+                { id: 5, supply: "supply5", amount: 0, name: "attendee5", owed: -5.40 }
             ]);
         });
     });

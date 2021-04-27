@@ -40,9 +40,9 @@ const EventSupplies = (props) => {
       suppliesEntry = suppliesState.supplies.map((sup, index) => {
         return (
           <tr key={index}>
+                     <td>{sup.name}</td>
                      <td>{sup.supply}</td>
                      <td>${sup.amount}</td>
-                     <td>{sup.name}</td>
                      <td>${sup.owed}</td>
                   </tr>
         )
@@ -51,6 +51,25 @@ const EventSupplies = (props) => {
       setSupplies(suppliesEntry);
     }
   }, [suppliesState.supplies])
+
+
+const header = (e) => {
+  return (
+    <>
+    <th>Name</th>
+    <th>Supply</th>
+    <th>Amount</th>
+    <th>Owed</th>
+    </>
+    );
+};
+const splits = () => {
+  
+   
+
+
+}
+
 
   const splitCosts = (e) => {
     const url = '/splitCosts';
@@ -82,9 +101,9 @@ const EventSupplies = (props) => {
               <table className={classes.students}>
                 <tbody>
                   <tr>
+                    <th>Name</th>
                     <th>Supply</th>
                     <th>Cost</th>
-                    <th>Name</th>
                     <th>Owed</th>
                   </tr>
                   {supplies}
