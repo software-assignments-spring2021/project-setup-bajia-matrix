@@ -22,7 +22,6 @@ import Text from '../../UI/Text/Text';
 */
 
 const eventInvite = (props) => {
-
     const acceptEventHandler = () => {
         props.history.push({
             pathname: "/user/acceptinvite",

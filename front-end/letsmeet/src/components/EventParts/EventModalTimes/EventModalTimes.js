@@ -1,7 +1,5 @@
 import React from 'react';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Badge from 'react-bootstrap/Badge';
 
 /*
@@ -50,7 +48,7 @@ const eventModalTimes = (props) => {
       <hr />
       {badge}
     </div>
-  )
+  );
 };
 
 export default eventModalTimes;

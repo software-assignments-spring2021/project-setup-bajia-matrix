@@ -11,16 +11,15 @@ import image2 from '../../assets/LandingImages/holding-phone-colour-800px.png';
 import image3 from '../../assets/LandingImages/reading-corner-colour-800px.png';
 import image4 from '../../assets/LandingImages/drawkit-list-app-colour-800px.png';
 
-// The template for the app walkthrough containing image, header, paragraph
-
-// This is the landing page
-
-/* Function to display cards with images and short feature descriptions on landing  page
+/*  
+    Function to display cards with images and short feature descriptions on landing  page
+    
     Props:
-        - img = picture
-        - title = short header
-        - lead = one or two sentences describing a feature of the app
+        - img: picture
+        - title: short header
+        - lead: one or two sentences describing a feature of the app
 */
+
 const Step = (props) => {
     return (
         <Card className={classes.article}>
@@ -35,12 +34,15 @@ const Step = (props) => {
     )
 }
 
-/* Function for the table format
+/* 
+    Function for the table format
+    
     Props:
-    - feature = feature description
-    - with = text to put in the with column
-    - without = text to put in the without column
+        - feature: feature description
+        - with: text to put in the with column
+        - without: text to put in the without column
 */
+
 const Row = (props) => {
     return (
         <tr>
@@ -51,8 +53,15 @@ const Row = (props) => {
     )
 }
 
-// Clicking on Panel displays feature table
+// clicking on Panel displays feature table
 const { Panel } = Collapse;
+
+/* 
+    This component displays the landing page
+    
+    Props:
+        This component does not accept any custom props
+*/
 
 const landing = () => {
     return (

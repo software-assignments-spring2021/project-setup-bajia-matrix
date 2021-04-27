@@ -1,14 +1,12 @@
 import React from "react";
-
 import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./EventModal.module.css";
-
-import EventModalTimes from "../EventModalTimes/EventModalTimes";
-
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
+
+import classes from "./EventModal.module.css";
+import EventModalTimes from "../EventModalTimes/EventModalTimes";
 
 const handleCopy = (e, url) => {
   navigator.clipboard.writeText(url);
