@@ -132,17 +132,17 @@ const EventPage = (props) => {
           if (isValid) {
             //check if unverified email is already in attendee list
             let duplicate = false;
-            attendeesCopy.forEach(attendee => {
-              if (attendee.email === newAttendee.email) {
-                duplicate = true;
-              }
-            })
-            if (duplicate) {
-              setEvent((prevState) => ({
-                ...prevState,
-                emailMessage: "The email address already exists in the event attendee list. Please enter another email."
-              }))
-            } else {
+            // attendeesCopy.forEach(attendee => {
+            //   if (attendee.email === newAttendee.email) {
+            //     duplicate = true;
+            //   }
+            // })
+            // if (duplicate) {
+            //   setEvent((prevState) => ({
+            //     ...prevState,
+            //     emailMessage: "The email address already exists in the event attendee list. Please enter another email."
+            //   }))
+            // } else {
               setEvent((prevState) => ({
                 ...prevState,
                 attendees: attendeesCopy,
@@ -156,7 +156,7 @@ const EventPage = (props) => {
               .catch((error) => {
                 console.log(error);
               });
-            }
+           // }
           } else {
             setEvent((prevState) => ({
               ...prevState,

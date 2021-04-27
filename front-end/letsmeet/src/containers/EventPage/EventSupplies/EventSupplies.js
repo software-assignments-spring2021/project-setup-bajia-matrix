@@ -22,7 +22,7 @@ const EventSupplies = (props) => {
   // const [suppliesListPrice, setSuppliesListPrice] = useState();
   // const [suppliesListPerson, setSuppliesListPerson] = useState();
   // const [suppliesListOwed, setSuppliesListOwed] = useState();
-   
+  
 
   useEffect(() => {
     setSuppliesState(props.event);
@@ -79,9 +79,9 @@ const EventSupplies = (props) => {
 const supplies = suppliesState.supplies.map((sup, index) => {
   return (
     <tr key={index}>
+               <td>{sup.name}</td>
                <td>{sup.supply}</td>
                <td>${sup.amount}</td>
-               <td>{sup.name}</td>
                <td>${sup.owed}</td>
             </tr>
   )
@@ -91,13 +91,19 @@ const supplies = suppliesState.supplies.map((sup, index) => {
 const header = (e) => {
   return (
     <>
+    <th>Name</th>
     <th>Supply</th>
     <th>Amount</th>
-    <th>Name</th>
     <th>Owed</th>
     </>
     );
 };
+const splits = () => {
+  
+   
+
+
+}
 
 
   const splitCosts = (e) => {
@@ -130,9 +136,9 @@ const header = (e) => {
               <table className={classes.students}>
                 <tbody>
                   <tr>
+                    <th>Name</th>
                     <th>Supply</th>
                     <th>Amount</th>
-                    <th>Name</th>
                     <th>Owed</th>
                   </tr>
                   {supplies}
