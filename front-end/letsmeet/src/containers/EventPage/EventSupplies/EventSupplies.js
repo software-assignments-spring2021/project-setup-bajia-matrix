@@ -42,9 +42,9 @@ const EventSupplies = (props) => {
       suppliesEntry = suppliesState.supplies.map((sup, index) => {
         return (
           <tr key={index}>
+                     <td>{sup.name}</td>
                      <td>{sup.supply}</td>
                      <td>${sup.amount}</td>
-                     <td>{sup.name}</td>
                      <td>${sup.owed}</td>
                   </tr>
         )
