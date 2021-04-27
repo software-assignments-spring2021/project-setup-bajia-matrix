@@ -30,6 +30,8 @@ const EventSchema = new mongoose.Schema({
   ],
   supplies: [
     {
+      _id: false,
+      id: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
       name: {type: String},
       supply: {type: String},
       amount: {type: Number},

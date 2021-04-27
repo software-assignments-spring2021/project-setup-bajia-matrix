@@ -30,24 +30,12 @@ const EventPage = (props) => {
 
   //for event
   const [event, setEvent] = useState({
-    id: "1-i-am-random-event-id",
-    title: "Study Dateeeeeeeeeeeeeeeeeeeeee",
-    day: "Wed",
-    date: "Mar 10",
-    time: "5:00 pm",
-    eventLocation: "New York, NY",
-    description:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, ",
     attendees: [],
-    creator: "Angela Tim",
-    finalDay: null,
-    finalDate: null,
-    finalTime: null,
+    supplies: []
   });
 
   //for current user info
-  const [user, setUser] = useState({
-  });
+  const [user, setUser] = useState({});
 
   //for general state of current event page
   const [state, setState] = useState({
@@ -269,7 +257,7 @@ const EventPage = (props) => {
   const { Option } = Select;
   let addVerified = (values) => {
     //extract names of invitees
-    let invitees = [];
+    let invitees = [...event.invitees];
     let inviteeNames = [];
     values.friends.forEach(friend => {
       invitees.push(JSON.parse(friend));
@@ -286,9 +274,9 @@ const EventPage = (props) => {
       }
       return;
     })
-    friends.forEach((test,index) => {
-      friendsList.push(<Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>)
-    })
+    friendsList = friends.map(friend => (
+      <Option value={JSON.stringify(friend)} key={friend.id}>{friend.name}</Option>
+    ))
     setEvent((prevState) => ({
       ...prevState,
       friendsList: friendsList,
@@ -311,9 +299,10 @@ const EventPage = (props) => {
     let friendsList;
     if(user.friends && event.title) {
       let test = [];
-      let eventInvitees = false;
-      let eventAttendees = false;
-      user.friends.forEach(friend => {
+      if (event.invitees && event.attendees) {
+        user.friends.forEach(friend => {
+        let eventInvitees = false;
+        let eventAttendees = false;
         event.invitees.forEach(invitee => {
           if (invitee.name === friend.name) {
             eventInvitees = true;
@@ -324,19 +313,21 @@ const EventPage = (props) => {
             eventAttendees = true;
           }
         })
-        if (!eventInvitees && !eventAttendees) {
+        if (eventInvitees === false && eventAttendees === false) {
           test.push(friend);
         }
       })
       friendsList = test.map(test => (
         <Option value={JSON.stringify(test)} key={test.id}>{test.name}</Option>
       ))
+      }
     }
     setEvent((prevState) => ({
       ...prevState,
       friendsList: friendsList,
     }));
   }, [user.friends, event.title, event.attendees, event.invitees]);
+
 
   useEffect(() => {
     //get currently logged in user info
@@ -480,15 +471,9 @@ const EventPage = (props) => {
   }, [event.attendees, user.name]);
 
   useEffect(() => {
-    // setState((prevState) => ({
-    //   ...prevState,
-    //   unverified: true,
-    //   //creator: true,
-    //   //attendee: true
-    // }));
     if (props.isAuthenticated) {
       if (user.name && event.title) {
-        if (user.name === event.creator) {
+        if (user._id === event.creatorID && event.creator !== "") {
           setState(prevState => ({
             ...prevState,
             creator: true
@@ -508,7 +493,7 @@ const EventPage = (props) => {
         }));
       }
     }
-  }, [event.title, user.name, props.isAuthenticated, event.creator]);
+  }, [event.title, user.name, props.isAuthenticated, event.creator, event.creatorID, user._id]);
 
   useEffect(() => {
     if (

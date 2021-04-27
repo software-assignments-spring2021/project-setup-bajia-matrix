@@ -82,6 +82,7 @@ const EditSupplies = (props) => {
         const list = copySupplies.supplies;
      
         list.push({
+            id: profileState._id,
             supply: formData.addSupply,
             name: profileState.name,
             amount: formData.amount,
