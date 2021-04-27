@@ -32,6 +32,11 @@
     text-align: center;
 }
 
+.EditTitle {
+    max-width: 90%;
+    overflow-wrap: anywhere;
+}
+
 .FlexPadding {
     color: white;
 }
@@ -55,18 +60,6 @@
     width: 42%;
     height: 40px;
 }
-/* 
-.Reset {
-    border: none;
-    margin: 10px 0px;
-    padding: 0;
-    width: auto;
-    overflow: visible;
-    
-    background: transparent;
-    outline: none;
-    
-} */
 
 .Submit {
     display: flex;
@@ -84,10 +77,3 @@
     flex-direction: column; 
     margin: 0 0 20px 0;
 }
-
-.EditTitle {
-    max-width: 90%;
-    overflow-wrap: anywhere;
-}
-
-

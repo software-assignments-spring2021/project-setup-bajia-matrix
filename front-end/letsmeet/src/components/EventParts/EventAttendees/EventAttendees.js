@@ -3,6 +3,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './EventAttendees.module.css';
 import red from '../../../assets/Avatars/redavi.png';
 import orange from '../../../assets/Avatars/orangeavi.png';

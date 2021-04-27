@@ -5,8 +5,24 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 
+// import custom files and components
 import classes from "./EventModal.module.css";
 import EventModalTimes from "../EventModalTimes/EventModalTimes";
+
+/* 
+  This component ...TODO.
+
+  Props: 
+    - show: TODO
+    - close: TODO
+    - role: TODO
+    - type: TODO
+    - delete: TODO
+    - url: TODO
+    - suggestedTimes: TODO
+    - onChecked: TODO
+    - handleFinal: TODO
+*/
 
 const handleCopy = (e, url) => {
   navigator.clipboard.writeText(url);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// import custom files and components
 import classes from './Toolbar.module.css';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import Logo from '../../../assets/NavbarLogo.png';
@@ -8,7 +9,7 @@ import Hamburger from '../SideDrawer/Hamburger/Hamburger';
 
 /*
     This component is the navbar on larger screens. It will
-    shift to a format that includes a hamburger menu and moving
+    shift to a format that includes a hamburger menu and move
     the navigationItems to the hamburger menu when it is on a smaller screen.
     
     Props: 

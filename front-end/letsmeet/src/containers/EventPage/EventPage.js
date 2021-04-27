@@ -1,69 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, withRouter } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import { Select } from "antd";
 import "antd/dist/antd.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+// import custom files and components
 import classes from "./EventPage.module.css";
-import Container from "react-bootstrap/Container";
-
 import axios from "../../axios";
-
 import Spinner from "../../components/UI/Spinner/Spinner";
 import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
 import CreatorEvent from "./CreatorEvent/CreatorEvent";
 import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
 
-import { Select } from "antd";
-
 /*
-  This component displays the event pages for the following users: event creator, event attendee, and unverfied user.
+  This component displays the Event pages for the following users: event creator, event attendee, and unverfied user.
 
   Props:
     This component does not accept any custom props
 */
 
 const EventPage = (props) => {
-
   const [loading, setLoading] = useState({
     event: true,
     user: true,
   });
 
-  //for event
+  // for event
   const [event, setEvent] = useState({
     attendees: [],
     supplies: []
   });
 
-  //for current user info
+  // for current user info
   const [user, setUser] = useState({});
 
-  //for general state of current event page
+  // for general state of current event page
   const [state, setState] = useState({
-    unverifiedInput: React.createRef(), //used to reference to name input by unverified user
+    unverifiedInput: React.createRef(), // used to reference to name input by unverified user
     descriptionInput: React.createRef(),
     creator: false,
     attendee: false,
     unverified: false,
-    redirect: false, //if true, page will redirect back to home
+    redirect: false, // if true, page will redirect back to home
   });
 
-  //for suggested times & final time
+  // for suggested times & final time
   const [chosenTime, setChosenTime] = useState({
     day: "test",
     date: "test",
     time: "test",
   });
 
-  //for inviting friends
+  // for inviting friends
   const [invitees, setInvitees] = useState();
 
-  //for edit description
+  // for edit description
   const [description, setDescription] = useState({
     edit: false,
     description: "",
   });
 
-  //scroll to top of page when rendering
+  // scroll to top of page when rendering
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -86,7 +84,7 @@ const EventPage = (props) => {
     }
   }, [props]);
 
-  //get avis of all attendees
+  // get avis of all attendees
   useEffect(() => {
     if (event.attendees.length > 0) {
       axios.post("profile/avis", { attendees: [...event.attendees] })
@@ -103,7 +101,7 @@ const EventPage = (props) => {
   }, [event.attendees])
 
   let addUnverified = (e) => {
-    //check if unverified email already exists in database
+    // check if unverified email already exists in database
     axios.get('/profile?findUser=true&searchEmail=' + state.unverifiedInput.current.value)
       .then((response) => {
         if (response.data.length === 0) {
@@ -114,11 +112,11 @@ const EventPage = (props) => {
           };
           attendeesCopy.push(newAttendee);
 
-          //check if unverified email is correct email format
+          // check if unverified email is correct email format
           const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
           const isValid = pattern.test(newAttendee.name);
           if (isValid) {
-            //check if unverified email is already in attendee list
+            // check if unverified email is already in attendee list
             let duplicate = false;
             attendeesCopy.forEach(attendee => {
               if (attendee.email === newAttendee.email) {
@@ -168,7 +166,7 @@ const EventPage = (props) => {
   const handleShowLink = () => setShowLink(true);
   const handleCloseLink = () => setShowLink(false);
   useEffect(() => {
-    //for generating event url
+    // for generating event url
     if (event._id) {
       let eventURL = window.location.origin + "/event/" + event._id;
       setEvent((prevState) => ({
@@ -188,11 +186,9 @@ const EventPage = (props) => {
   };
   const [showSuggested, setShowSuggested] = useState(false);
   const handleShowSuggested = () => {
-
-    // BING: retrieve suggested times and update event.suggestedTimes from backend
-    // get browser's current timezone
-    // const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // BING: it seems the browser handles timezone conversion by itself, so we don't need to do this manually
+    // TODO bing to joanne: it seems the browser handles timezone conversion by itself so I got rid of the code
+    // if this affects this in such a way that you no longer need to pass in an event copy to the backend, feel free
+    // to just pass availability: event.availability with the post request and get rid of eventCopy
 
     const eventCopy = event;
     axios.post("/suggestedTimes", { availability: eventCopy.availability })
@@ -226,7 +222,7 @@ const EventPage = (props) => {
       eventCopy.attendees.forEach(attendee => {
         attendee.announcement = true
       })
-      //axios post call to update event's final time details
+      // axios post call to update event's final time details
       axios.post("/events", eventCopy)
         .then((response) => {
           console.log('successfully updated event\'s final time: ', response);
@@ -256,7 +252,7 @@ const EventPage = (props) => {
 
   const { Option } = Select;
   let addVerified = (values) => {
-    //extract names of invitees
+    // extract names of invitees
     let invitees = [...event.invitees];
     let inviteeNames = [];
     values.friends.forEach(friend => {
@@ -264,7 +260,7 @@ const EventPage = (props) => {
       inviteeNames.push(JSON.parse(friend).name);
     })
 
-    //update friends list so that friend that was just invited does not appear
+    // update friends list so that friend that was just invited does not appear
     let friends = [];
     let friendsList = [];
     event.friendsList.forEach(friend => {
@@ -282,7 +278,7 @@ const EventPage = (props) => {
       friendsList: friendsList,
     }));
 
-    //add friends as invitees to database
+    // add friends as invitees to database
     let eventCopy = event;
     eventCopy.invitees = invitees;
     axios.post("/events", eventCopy)
@@ -294,7 +290,7 @@ const EventPage = (props) => {
       });
   };
 
-  //for populating list of friends to invite to event (exclude any friends already attending or invited)
+  // for populating list of friends to invite to event (exclude any friends already attending or invited)
   useEffect(() => {
     let friendsList;
     if (user.friends && event.title) {
@@ -330,7 +326,7 @@ const EventPage = (props) => {
 
 
   useEffect(() => {
-    //get currently logged in user info
+    // get currently logged in user info
     const id = localStorage.getItem("userID");
     if (id) {
       axios.get("/profile?userid=" + id)
@@ -344,7 +340,7 @@ const EventPage = (props) => {
     }
   }, []);
 
-  //for canceling event
+  // for canceling event
   const [show, setShow] = useState(false);
   const handleDelete = () => {
     axios.delete("/events?eventid=" + event._id)
@@ -362,7 +358,7 @@ const EventPage = (props) => {
   };
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  //for withdrawing from event
+  // for withdrawing from event
   const handleWithdraw = () => {
     let eventCopy = event;
     let attendeesCopy = [...event.attendees];
@@ -381,7 +377,7 @@ const EventPage = (props) => {
     eventCopy.attendees = attendeesCopy;
     eventCopy.withdrawn = withdrawnCopy;
 
-    //axios post to update event withdrawn array
+    // axios post to update event withdrawn array
     axios.post("/events", eventCopy)
       .then((response) => {
         console.log('successfully withdrew attendee from event: ', response);
@@ -396,7 +392,7 @@ const EventPage = (props) => {
     }));
   }
 
-  //for editing description
+  // for editing description
   let editDescription = () => {
     setDescription((prevState) => ({
       ...prevState,
@@ -418,7 +414,7 @@ const EventPage = (props) => {
 
     let eventCopy = event;
     eventCopy.description = description.description;
-    //axios post to update event description
+    // axios post to update event description
     axios.post("/events", eventCopy)
       .then((response) => {
         console.log('successfully updated event\'s description: ', response);
@@ -440,7 +436,7 @@ const EventPage = (props) => {
     }));
   };
 
-  //for alerting attendee the final event time has been set
+  // for alerting attendee the final event time has been set
   const [announcement, setAnnouncement] = useState();
   let closeAnnouncement = () => {
     setAnnouncement(false);

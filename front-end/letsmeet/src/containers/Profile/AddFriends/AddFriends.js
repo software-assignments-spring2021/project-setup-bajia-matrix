@@ -3,11 +3,14 @@ import 'antd/dist/antd.css';
 import { Alert, Button, Divider, Input } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './AddFriends.module.css';
 import axios from '../../../axios';
 
 /*
-    TODO: comment about component
+    This component displays the Add Friends page where users
+    can search for existing users and add them as friends or invite
+    users without an account to try out the app.
 
     Props:
         This component does not accept any custom props

@@ -3,14 +3,17 @@ import { withRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Table from 'react-bootstrap/Table'
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+
+// import custom files and components
 import classes from "./EventSupplies.module.css";
 import axios from '../../../axios';
 
 /*
-  TODO: comment about component
+  This component displays the event supplies on the Event page.
+  It includes a button that will direct the user to the Edit Supplies page
+  and a button to calculate the cost per person of the event supplies.
 
   Props:
     event: event state
@@ -19,11 +22,6 @@ import axios from '../../../axios';
 const EventSupplies = (props) => {
   const [suppliesState, setSuppliesState] = useState({ supplies: [] });
   const [supplies, setSupplies] = useState();
-  // const [suppliesListName, setSuppliesListName] = useState();
-  // const [suppliesListPrice, setSuppliesListPrice] = useState();
-  // const [suppliesListPerson, setSuppliesListPerson] = useState();
-  // const [suppliesListOwed, setSuppliesListOwed] = useState();
-   
 
   useEffect(() => {
     setSuppliesState(props.event);
@@ -53,18 +51,6 @@ const EventSupplies = (props) => {
       setSupplies(suppliesEntry);
     }
   }, [suppliesState.supplies])
-
-const header = (e) => {
-  return (
-    <>
-    <th>Supply</th>
-    <th>Amount</th>
-    <th>Name</th>
-    <th>Owed</th>
-    </>
-    );
-};
-
 
   const splitCosts = (e) => {
     const url = '/splitCosts';

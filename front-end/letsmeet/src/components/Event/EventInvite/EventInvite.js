@@ -3,13 +3,14 @@ import { Card, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './EventInvite.module.css';
 import axios from '../../../axios';
 import Text from '../../UI/Text/Text';
 
 /*
     This component displays a pending invitation and buttons to accept
-    or decline the invite on the home page. Accepting will redirect the user to the acceptInvite
+    or decline the invite on the home page. Accepting will redirect the user to the Accept Invite
     page. Declining will remove the invite from the user's list in the database.
 
     Props: 

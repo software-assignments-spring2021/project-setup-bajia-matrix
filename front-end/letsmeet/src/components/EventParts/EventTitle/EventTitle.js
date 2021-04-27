@@ -1,6 +1,7 @@
 import React from 'react';
 import { EnvironmentOutlined } from '@ant-design/icons';
 
+// import custom files 
 import classes from './EventTitle.module.css';
 
 /*

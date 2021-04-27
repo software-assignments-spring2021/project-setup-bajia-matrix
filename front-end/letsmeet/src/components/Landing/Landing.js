@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Collapse } from 'antd';
 
+// import custom files and components
 import classes from './Landing.module.css';
 import Logo from '../../assets/Logo.png';
 import image1 from '../../assets/LandingImages/calendar-colour-800px.png';
@@ -57,7 +58,7 @@ const Row = (props) => {
 const { Panel } = Collapse;
 
 /* 
-    This component displays the landing page
+    This component displays the Landing page.
     
     Props:
         This component does not accept any custom props
