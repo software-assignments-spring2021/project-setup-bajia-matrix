@@ -6,8 +6,10 @@ import classes from './AddFriends.module.css';
 import axios from '../../../axios';
 
 require('dotenv').config()
+
 /*
-    TODO: comment about component
+    This component displays the user's friends list and allows the user to add a user
+    and invite if the user is not registered
 
     Props:
         This component does not accept any custom props
@@ -15,7 +17,7 @@ require('dotenv').config()
 
 const AddFriends = (props) => {
     
-    const [data, setData] = useState() // all the emails
+    const [data, setData] = useState() // References all the registered users
     const [user, setUser] = useState({
         name: "",
         friends: [],
@@ -24,7 +26,6 @@ const AddFriends = (props) => {
 
     // Get profile of current user
     useEffect(() => {
-        // TODO: change user id to currently logged in user
         const id = localStorage.getItem("userID");
 
         axios.get("/profile?userid=" + id)
@@ -39,9 +40,14 @@ const AddFriends = (props) => {
 
     const { Search } = Input;
     const [searchTerm, setSearchTerm] = useState("")
-    const [error, setError] = useState()
-    const [disabled, setDisabled] = useState(false);
 
+    const [error, setError] = useState() // Error for displaying searched user
+    const [disabled, setDisabled] = useState(false); // Displayed when searched user is already a friend
+
+    /**
+     * Called when searching items (onSearch)
+     * @param {*} e 
+     */
     const handleChange = e => {
         setButtonText("Add Friend")
         setDisabled(false)
@@ -53,6 +59,11 @@ const AddFriends = (props) => {
     // Exclude these cols when searching term
     const excludeColumns = ["id", "name"];
 
+    /** 
+     * Confirms if the search term is in valid email format and exists in the user's current friend list
+     * 
+     * @param {*} e searchTerm when triggered in onSearch
+     */
     const validateFriend = (e) => {
         const lowercaseSearch = e.toLowerCase().trim()
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
@@ -73,6 +84,12 @@ const AddFriends = (props) => {
         }
     }
 
+    /**
+     * Searches through current user's friends and sets 'setIsFriend' state to be true
+     * if the searchTerm matches with e
+     * 
+     * @param {*} e searchTerm when triggered in onSearch
+     */
     const [isFriend, setIsFriend] = useState(false)
 
     function checkFriendship(e) {
@@ -82,7 +99,6 @@ const AddFriends = (props) => {
                 return
             }
         }
-
         // Check MongoDB to see if email is associated with a user
         if (!isFriend) {
             axios.get("/profile?findUser=true&searchEmail=" + e.trim())
@@ -96,16 +112,22 @@ const AddFriends = (props) => {
         }
     }
 
+    // Add friend button
     const [buttonText, setButtonText] = useState("Add Friend")
     const changeText = (text) => setButtonText(text)
 
     const userFriends = user.friends.map(i => <div key={i.id}> {i.name} </div>);
 
+    /**
+     * Called when add friend button is clicked; adds new friend to the user's friend list
+     * 
+     * @param {*} param 
+     */
     let addFriend = param => e => {
         changeText("Added")
         setDisabled(true);
         
-        // update friends list immutably
+        // Update friends list immutably
         const userCopy = { ...user };
         const friendsList = [ ...userCopy.friends ];
         
@@ -148,12 +170,14 @@ const AddFriends = (props) => {
             .catch(error => {
                 console.log(error.response.data);
             })
-
     }
 
     // Line for alert
     let description = "Would you like to invite " + searchTerm + "?"
 
+    /**
+     * Sends email when invite button is clicked via nodemailer
+     */
     const nodemailer = require("nodemailer")
 
     function sendEmail () {
@@ -231,7 +255,7 @@ const AddFriends = (props) => {
                         </div>
                     }
                 </div>
-                <br />
+                <br/>
                 <Divider orientation="center">Current Friends List</Divider>
                 <div className={classes.friendsList}>
                     {userFriends}
