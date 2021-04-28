@@ -12,6 +12,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
 import CreatorEvent from "./CreatorEvent/CreatorEvent";
 import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
+import EventContext from '../../store/event-context';
 
 /*
   This component displays the Event pages for the following users: event creator, event attendee, and unverfied user.
@@ -31,7 +32,7 @@ const EventPage = (props) => {
     attendees: [],
     supplies: []
   });
-
+  
   // for current user info
   const [user, setUser] = useState({});
 
@@ -47,12 +48,13 @@ const EventPage = (props) => {
 
   // for suggested times & final time
   const [chosenTime, setChosenTime] = useState({
-    day: "test",
-    date: "test",
-    time: "test",
+    day: "",
+    date: "",
+    time: "",
   });
 
   // for inviting friends
+  // eslint-disable-next-line
   const [invitees, setInvitees] = useState();
 
   // for edit description
@@ -69,6 +71,7 @@ const EventPage = (props) => {
   useEffect(() => {
     if (props.location.state) {
       const eventState = props.location.state.eventState;
+      console.log(props.location.state.eventState)
       setEvent(eventState);
     }
     else {
@@ -77,6 +80,8 @@ const EventPage = (props) => {
         .then((response) => {
           console.log('successfully get event: ', response.data);
           setEvent(response.data);
+
+          // set global event context
           axios.get("/profile?userid=" + response.data.creatorID)
             .then(response => {
               setEvent((prevState) => ({
@@ -521,53 +526,64 @@ const EventPage = (props) => {
   if (state.redirect === true) {
     return <Redirect to="/" />;
   }
+
+  // set global event context to event and its updater to setEvent
+  const contextValue = {
+    eventContext: event,
+    setEventContext: setEvent
+  };
+
   let eventPage = <Spinner />;
   if (!loading.event && !loading.user) {
     if (state.attendee === true) {
       eventPage = (
-        <Container fluid className={classes.Container}>
-          <AttendeeEvent
-            event={event}
-            state={state}
-            handleShow={handleShow}
-            show={show}
-            handleClose={handleClose}
-            handleDelete={handleWithdraw}
-            closeAnnouncement={closeAnnouncement}
-            announcement={announcement}
-            role="attendee"
-          />
-        </Container>
+        <EventContext.Provider value={contextValue}>
+          <Container fluid className={classes.Container}>
+            <AttendeeEvent
+              event={event}
+              state={state}
+              handleShow={handleShow}
+              show={show}
+              handleClose={handleClose}
+              handleDelete={handleWithdraw}
+              closeAnnouncement={closeAnnouncement}
+              announcement={announcement}
+              role="attendee"
+            />
+          </Container>
+        </EventContext.Provider>
       );
     } else if (state.creator === true) {
       eventPage = (
-        <Container fluid className={classes.Container}>
-          <CreatorEvent
-            event={event}
-            state={state}
-            role="creator"
-            handleShowLink={handleShowLink}
-            handleShowSuggested={handleShowSuggested}
-            description={description}
-            editDescription={editDescription}
-            descriptionChange={descriptionChange}
-            cancelDescription={cancelDescription}
-            handleDescription={handleDescription}
-            setInvitees={setInvitees}
-            addVerified={addVerified}
-            handleShow={handleShow}
-            showLink={showLink}
-            handleCloseLink={handleCloseLink}
-            showSuggested={showSuggested}
-            handleCloseSuggested={handleCloseSuggested}
-            onChecked={onChecked}
-            handleFinal={handleFinal}
-            show={show}
-            handleClose={handleClose}
-            handleDelete={handleDelete}
-            user={user}
-          />
-        </Container>
+        <EventContext.Provider value={contextValue}>
+          <Container fluid className={classes.Container}>
+            <CreatorEvent
+              event={event}
+              state={state}
+              role="creator"
+              handleShowLink={handleShowLink}
+              handleShowSuggested={handleShowSuggested}
+              description={description}
+              editDescription={editDescription}
+              descriptionChange={descriptionChange}
+              cancelDescription={cancelDescription}
+              handleDescription={handleDescription}
+              setInvitees={setInvitees}
+              addVerified={addVerified}
+              handleShow={handleShow}
+              showLink={showLink}
+              handleCloseLink={handleCloseLink}
+              showSuggested={showSuggested}
+              handleCloseSuggested={handleCloseSuggested}
+              onChecked={onChecked}
+              handleFinal={handleFinal}
+              show={show}
+              handleClose={handleClose}
+              handleDelete={handleDelete}
+              user={user}
+            />
+          </Container>
+        </EventContext.Provider>
       );
     } else {
       eventPage = (

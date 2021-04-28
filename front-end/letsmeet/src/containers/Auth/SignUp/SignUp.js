@@ -187,6 +187,7 @@ const SignUp = (props) => {
 
                 localStorage.setItem('userID', response.data.uid);
                 localStorage.setItem('isAuthenticated', true);
+                
                 if (emailParam) {
                     props.history.push("/?event=" + urlParams.get('id'));
                 } else {
