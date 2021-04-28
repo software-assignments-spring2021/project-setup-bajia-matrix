@@ -76,13 +76,13 @@ const EventSupplies = (props) => {
                                         <th>Name</th>
                                         <th>Supply</th>
                                         <th>Cost</th>
-                                        <th>Owed*</th>
+                                        <th>Owed<span className={classes.Red}>*</span></th>
                                     </tr>
                                     {supplies}
                                 </tbody>
                             </table>
                         </Card.Body>
-                        <p>*A positive balance is how much this person is owed. A negative balance is how much this person owes others.</p>
+                        <p className={classes.Message}><span className={classes.Red}>*</span> A positive balance is how much this person is owed. A negative balance is how much this person owes others.</p>
                         <Card.Body className={classes.Buttons}>
                             <Button
                                 variant="outline-primary"
