@@ -21,10 +21,12 @@ const EditSupplies = (props) => {
     const [loading, setLoading] = useState(true);
     const [suppliesState, setSuppliesState] = useState({ supplies: [] });
     const [profileState, setProfileState] = useState({});
+    const [eventID, setEventID] = useState();
 
     useEffect(() => {
         const suppliesState = JSON.parse(props.location.state.suppliesState);
         setSuppliesState(suppliesState);
+        setEventID(JSON.parse(props.location.state.suppliesState)._id);
     
         const id = localStorage.getItem("userID");
         axios.get("/profile?userid=" + id)
@@ -102,7 +104,7 @@ const EditSupplies = (props) => {
         });
 
         props.history.push({
-            pathname: "/event/" + suppliesState._id,
+            pathname: "/event/" + eventID,
             state: {eventState: suppliesState}
         });
     }
