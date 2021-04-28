@@ -25,7 +25,7 @@ const formatInput = (datetimes) => {
 };
 
 // Sorts an array of strings containing datetime (key) and count (val) in decreasing order by count.
-const sortIt = (array) => {
+const sorter = (array) => {
     return (array.sort((a, b) => {
         const [key1, val1] = a;
         const [key2, val2] = b;
@@ -59,7 +59,7 @@ const calcBestTimes = (datetimes) => {
     });
 
     // sort counts by most to least
-    const sortedCounts = sortIt(Object.entries(counts));
+    const sortedCounts = sorter(Object.entries(counts));
   
     // take the top 5 (or less if size is < 5) most popular datetimes
     const top = Math.min(sortedCounts.length, 5);
