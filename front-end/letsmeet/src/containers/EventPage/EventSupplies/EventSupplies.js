@@ -22,13 +22,10 @@ import EventContext from "../../../store/event-context";
 
 const EventSupplies = (props) => {
     const [suppliesState, setSuppliesState] = useState({ supplies: [] });
-    // const [localSupplies, setLocalSupplies] = useState([]);
-
     const { eventContext, setEventContext } = useContext(EventContext);
 
     useEffect(() => {
         setSuppliesState(eventContext);
-        console.log(eventContext);
     }, [props.event]);
 
     const editSuppliesHandler = () => {
@@ -50,23 +47,12 @@ const EventSupplies = (props) => {
     });
 
     const splitCosts = () => {
-        console.log(suppliesState)
-        
-
         axios.post("/splitCosts" , suppliesState)
             .then(response => {
                 const copySuppliesState = { ...suppliesState };
                 copySuppliesState.supplies = response.data;
-                // setSuppliesState({ supplies: response.data });
-                // console.log(response.data);
-                // props.location.state.eventState = response.data;
-                // console.log(props.location.state)
-                // setLocalSupplies(response.data);
-                // copySuppliesState.supplies = response.data;
 
                 setSuppliesState(copySuppliesState);
-                setEventContext(copySuppliesState);
-                // props.setState({ supplies: response.data });
             })
             .catch(error => {
                 console.log(error);

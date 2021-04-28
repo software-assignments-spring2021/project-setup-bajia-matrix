@@ -98,7 +98,6 @@ const EventPage = (props) => {
     }
   }, [props]);
 
-  console.log(event)
   // get avis of all attendees
   useEffect(() => {
     if (event.attendees.length > 0) {
