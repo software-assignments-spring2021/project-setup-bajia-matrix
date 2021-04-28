@@ -104,8 +104,8 @@ const NewEvent = (props) => {
       }, []);
 
     //JOANNE: i did JSON.stringify here bc i want to store the entire friend object as the value and React won't let me do that unless I pass it in as a JSON string...rude
-    let friendsList = profileState.friends.map(friend => (
-        <Option value={JSON.stringify(friend)}>{friend.name}</Option>
+    let friendsList = profileState.friends.map((friend, index) => (
+        <Option key={index} value={JSON.stringify(friend)}>{friend.name}</Option>
     ))
 
     const [newCreatedEvent, setNewCreatedEvent] = useState({

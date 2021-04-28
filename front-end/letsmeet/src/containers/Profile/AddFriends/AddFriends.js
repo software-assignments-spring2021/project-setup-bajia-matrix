@@ -173,7 +173,7 @@ const AddFriends = (props) => {
             </div>
             
             <div className={classes.container}>
-                <div className>
+                <div>
                     {/* <Divider orientation="center"></Divider> */}
                     <p>Search for a user by email address</p>
                     <Search

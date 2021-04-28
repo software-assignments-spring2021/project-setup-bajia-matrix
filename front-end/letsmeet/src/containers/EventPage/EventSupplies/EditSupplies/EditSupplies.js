@@ -105,7 +105,7 @@ const EditSupplies = (props) => {
 
         props.history.push({
             pathname: "/event/" + eventID,
-            state: {eventState: suppliesState}
+            state: {eventState: JSON.stringify(suppliesState)}
         });
     }
 
