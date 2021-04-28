@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const bodyParser = require("body-parser");
+const { body, validationResult } = require("express-validator");
+
 const Event = require("../../models/Event");
 
-const { body, validationResult } = require("express-validator");
 router.use(bodyParser.json());
 
 

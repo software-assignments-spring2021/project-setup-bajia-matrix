@@ -1,20 +1,19 @@
 import React from "react";
-
-import "antd/dist/antd.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./UnverifiedEvent.module.css";
-
-import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
-import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
-
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import "antd/dist/antd.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// import custom files and components
+import classes from "./UnverifiedEvent.module.css";
+import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
+import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
 
 /*
-  This component displays the event page for the unverfied user.
+  This component displays the Event page for the unverfied user.
 
   Props:
     - event: contains info about current event
@@ -81,7 +80,7 @@ const UnverifiedEvent = (props) => {
             ? <div key="idk why this needs a key tf" className={classes.EmailMessage}>{props.event.emailMessage}</div>
             : null
           }
-          <InputGroup className={classes.Input}>
+          <InputGroup>
             <FormControl
               ref={props.state.unverifiedInput}
               aria-label="Large"

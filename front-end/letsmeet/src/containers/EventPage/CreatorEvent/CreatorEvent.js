@@ -1,14 +1,4 @@
 import React from "react";
-
-import "antd/dist/antd.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./CreatorEvent.module.css";
-
-import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
-import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
-import EventSupplies from "../EventSupplies/EventSupplies";
-import EventModal from "../../../components/EventParts/EventModal/EventModal";
-
 import { Form, Select } from "antd";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
@@ -16,9 +6,18 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import CardGroup from "react-bootstrap/CardGroup";
 import FormB from "react-bootstrap/Form";
+import "antd/dist/antd.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// import custom files and components
+import classes from "./CreatorEvent.module.css";
+import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
+import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
+import EventSupplies from "../EventSupplies/EventSupplies";
+import EventModal from "../../../components/EventParts/EventModal/EventModal";
 
 /*
-  This component displays the event page for the event creator user.
+  This component displays the Event page for the event creator user.
 
   Props:
     - event: contains info about current event

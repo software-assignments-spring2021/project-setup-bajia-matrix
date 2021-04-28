@@ -1,39 +1,13 @@
-.Profile {
-    margin: auto;
-    display: flex;
-    width: 100%;
-    overflow: scroll;
-    /* enable scrolling if too long */
-    align-items: center;
-    flex-flow: column;
-    padding: 0 0 20px 0;
-    /* top and bottom, left and right */
-}
-
 .Card {
     text-align: center;
     background-color: #dce5e2;
     width: 50%;
-    border: thin solid #d2dad9;
-    /* width, style, color */
-    border-radius: 25px;
-    /* rounded borders */
+    border: thin solid #d2dad9; /* width, style, color */
+    border-radius: 25px; /* rounded borders */
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin: 20px;
-    /* space b/t each card */
-}
-
-.CardImg {
-    height: 75%;
-    width: 75%;
-}
-
-.FriendsTitle {
-    margin: 20px 0 0 0;
-    width: 100%;
-    padding-top: 10px;
+    margin: 20px; /* space b/t each card */
 }
 
 .CardBody {
@@ -45,8 +19,19 @@
     margin-top: -20px;
 }
 
+.CardImg {
+    height: 75%;
+    width: 75%;
+}
+
 .FlexPadding {
     color: white;
+}
+
+.FriendsTitle {
+    margin: 20px 0 0 0;
+    width: 100%;
+    padding-top: 10px;
 }
 
 .FriendsBody {
@@ -96,12 +81,6 @@
     margin-bottom: -3px;
 }
 
-.Title {
-    margin-top: 30px;
-    position: absolute;
-    width: 100%;
-}
-
 .LinkButton {
     background-color: transparent;
     color: rgb(4, 189, 235);
@@ -122,10 +101,26 @@
     flex-shrink: 3;
 }
 
+.Profile {
+    margin: auto;
+    display: flex;
+    width: 100%;
+    overflow: scroll; /* enable scrolling if too long */
+    align-items: center;
+    flex-flow: column;
+    padding: 0 0 20px 0; /* top and bottom, left and right */
+}
+
 .Textarea {
     overflow: hidden;
     resize: both;
     height: 100%;
+}
+
+.Title {
+    margin-top: 30px;
+    position: absolute;
+    width: 100%;
 }
 
 @media (max-width: 375px) {

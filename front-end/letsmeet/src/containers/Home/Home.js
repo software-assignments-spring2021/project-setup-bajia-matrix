@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './Home.module.css';
 import axios from '../../axios';
 import Event from '../../components/Event/Event';
@@ -9,10 +10,10 @@ import EventInvite from '../../components/Event/EventInvite/EventInvite';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 /*
-    This component displays the home page with a signed in user.
-    This will show a notification if the user has pending invitations
-    for an event. It will also show a list of events the user is currently
-    signed up for. The user can also create new events from this page.
+    This component displays the Home page with a signed in user.
+    This will display any pending event invitations for the user. 
+    It will also show a list of events the user is currently
+    a part of. The user can also create new events from this page.
 
     Props: 
         This component does not accept any custom props
@@ -139,7 +140,7 @@ const Home = (props) => {
                     {pendingInvites}
                 </div>
                 <br />
-                <Button className={classes.Button} variant="outline-dark" onClick={newEventHandler}>Create New Event</Button>
+                <Button variant="outline-dark" onClick={newEventHandler}>Create New Event</Button>
                 <h5>Your Events</h5>
                 <div className={classes.Event}>
                     {(myEvents.length === 0) ? <p>You do not have any created events at the moment.</p> : null}

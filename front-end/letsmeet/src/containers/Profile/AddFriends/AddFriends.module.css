@@ -45,12 +45,12 @@
     text-align: center;
 }
 
-.inviteButton {
-    margin: 50% 0;
-}
-
 .Header {
     padding: 10px 30px 0px 30px;
+}
+
+.inviteButton {
+    margin: 50% 0;
 }
 
 .nameContainer {

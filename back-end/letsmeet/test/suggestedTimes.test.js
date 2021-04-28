@@ -11,17 +11,16 @@ describe("SuggestedTimes routes", () => {
         it("should return 2 suggestions", async () => {
             const data = {
                 availability: [
-                    "Tue Apr 13 2021 09:00:00 GMT-0400 (Eastern Daylight Time)",
-                    "Sun Apr 11 2021 13:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Sun Apr 11 2021 13:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 09:00:00 GMT-0400 (Eastern Daylight Time)"
-                ],
-                timezone: "America/New_York"
+                    "2021-04-23T16:00:00.000Z",
+                    "2021-04-24T16:00:00.000Z",
+                    "2021-04-23T16:00:00.000Z",
+                    "2021-04-24T16:00:00.000Z"
+                ]
             };
             const response = await request(app).post("/suggestedTimes").send(data);
             expect(response.body).to.eql([
-                {Day: "Tuesday", Date: "04/13/2021", Time: "09:00 AM"},
-                {Day: "Sunday", Date: "04/11/2021", Time: "01:00 PM"}
+                { Day: 'Friday', Date: '04/23/2021', Time: '12:00 PM' },
+                { Day: 'Saturday', Date: '04/24/2021', Time: '12:00 PM' }
             ]);
         });
     });
@@ -30,15 +29,14 @@ describe("SuggestedTimes routes", () => {
         it("should return an empty JSON array", async () => {
             const data = {
                 availability: [
-                    "Fri Apr 09 2021 11:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 16:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Sun Apr 11 2021 13:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Mon Apr 12 2021 16:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 15:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Mon Apr 12 2021 15:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 09:00:00 GMT-0400 (Eastern Daylight Time)"
-                ],
-                timezone: "America/New_York"
+                    "2021-04-23T15:00:00.000Z",
+                    "2021-04-24T15:00:00.000Z",
+                    "2021-04-25T15:00:00.000Z",
+                    "2021-04-26T15:00:00.000Z",
+                    "2021-04-27T15:00:00.000Z",
+                    "2021-04-28T15:00:00.000Z",
+                    "2021-04-29T15:00:00.000Z",
+                ]
             };
             
             const response = await request(app).post("/suggestedTimes").send(data);
@@ -50,26 +48,25 @@ describe("SuggestedTimes routes", () => {
         it("should return the times that repeated 4 times, 2 times, and 2 times", async () => {
             const data = {
                 availability: [
-                    "Fri Apr 09 2021 11:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 16:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Sun Apr 11 2021 13:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Mon Apr 12 2021 16:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Mon Apr 12 2021 16:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 15:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Mon Apr 12 2021 15:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Mon Apr 12 2021 16:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Fri Apr 09 2021 11:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 09:00:00 GMT-0400 (Eastern Daylight Time)",
-                    "Mon Apr 12 2021 16:00:00 GMT-0400 (Eastern Daylight Time)", 
-                    "Tue Apr 13 2021 09:00:00 GMT-0400 (Eastern Daylight Time)"
-                ],
-                timezone: "America/New_York"
+                    "2021-04-23T16:00:00.000Z",
+                    "2021-04-24T16:00:00.000Z",
+                    "2021-04-25T16:00:00.000Z",
+                    "2021-04-26T16:00:00.000Z",
+                    "2021-04-27T16:00:00.000Z",
+                    "2021-04-28T16:00:00.000Z",
+                    "2021-04-29T16:00:00.000Z",
+                    "2021-04-23T16:00:00.000Z",
+                    "2021-04-24T16:00:00.000Z",
+                    "2021-04-25T16:00:00.000Z",
+                    "2021-04-23T16:00:00.000Z",
+                    "2021-04-23T16:00:00.000Z"
+                ]
             };
             const response = await request(app).post("/suggestedTimes").send(data);
             expect(response.body).to.eql([
-                {Day: "Monday", Date: "04/12/2021", Time: "04:00 PM"},
-                {Day: "Friday", Date: "04/09/2021", Time: "11:00 AM"},
-                {Day: "Tuesday", Date: "04/13/2021", Time: "09:00 AM"}
+                { Day: 'Friday', Date: '04/23/2021', Time: '12:00 PM' },
+                { Day: 'Saturday', Date: '04/24/2021', Time: '12:00 PM' },
+                { Day: 'Sunday', Date: '04/25/2021', Time: '12:00 PM' }
             ]);
         });
     });
