@@ -53,6 +53,11 @@ const EventSupplies = (props) => {
                 copySuppliesState.supplies = response.data;
 
                 setSuppliesState(copySuppliesState);
+
+                props.history.push({
+                    pathname: "/event/" + copySuppliesState._id,
+                    state: {eventState: JSON.stringify(copySuppliesState)}
+                });
             })
             .catch(error => {
                 console.log(error);

@@ -14,6 +14,7 @@ import Landing from './components/Landing/Landing';
 import Layout from './hoc/Layout/Layout';
 import NewEvent from './containers/NewEvent/NewEvent';
 import Profile from './containers/Profile/Profile';
+import ScrollToTop from './hoc/ScrollToTop/ScrollToTop';
 import SignIn from '../src/containers/Auth/SignIn/SignIn';
 import SignUp from '../src/containers/Auth/SignUp/SignUp';
 import SignOut from '../src/containers/Auth/SignOut/SignOut';
@@ -68,6 +69,7 @@ const App = (props) => {
     return (
         <div className="App">
             <Layout isAuthenticated={isAuthenticated}>
+                <ScrollToTop />
                 {routes}
             </Layout>
         </div>

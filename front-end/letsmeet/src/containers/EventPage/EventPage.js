@@ -63,15 +63,9 @@ const EventPage = (props) => {
     description: "",
   });
 
-  // scroll to top of page when rendering
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
   useEffect(() => {
     if (props.location.state) {
-      const eventState = props.location.state.eventState;
-      console.log(props.location.state.eventState)
+      const eventState = JSON.parse(props.location.state.eventState);
       setEvent(eventState);
     }
     else {
