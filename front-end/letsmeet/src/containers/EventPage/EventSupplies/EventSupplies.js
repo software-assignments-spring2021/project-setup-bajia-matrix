@@ -5,11 +5,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import { WindowsFilled } from "@ant-design/icons";
 
 // import custom files and components
 import classes from "./EventSupplies.module.css";
 import axios from '../../../axios';
-import { WindowsFilled } from "@ant-design/icons";
 
 /*
   This component displays the event supplies on the Event page.
@@ -22,10 +22,11 @@ import { WindowsFilled } from "@ant-design/icons";
 
 const EventSupplies = (props) => {
     const [suppliesState, setSuppliesState] = useState({ supplies: [] });
-    // const [supplies, setSupplies] = useState();
+    // const [localSupplies, setLocalSupplies] = useState([]);
 
     useEffect(() => {
         setSuppliesState(props.event);
+        // setLocalSupplies(props.event.supplies);
     }, [props.event]);
 
     const editSuppliesHandler = () => {
@@ -66,12 +67,18 @@ const EventSupplies = (props) => {
 
     const splitCosts = () => {
         console.log(suppliesState)
+        // const copySuppliesState = { ...suppliesState };
+        // copySuppliesState.supplies = localSupplies;
+
         axios.post("/splitCosts" , suppliesState)
             .then(response => {
-                setSuppliesState(response.data);
-                console.log(response.data);
-                props.location.state.eventState = response.data;
-                console.log(props.location.state)
+                // setSuppliesState({ supplies: response.data });
+                // console.log(response.data);
+                // props.location.state.eventState = response.data;
+                // console.log(props.location.state)
+                // setLocalSupplies(response.data);
+                // copySuppliesState.supplies = response.data;
+                setSuppliesState({ supplies: response.data });
             })
             .catch(error => {
                 console.log(error);

@@ -97,7 +97,7 @@ router.post(
                 res.status(500).send("ERROR 500: Issue updating event");
             } 
             else {
-                res.json(event);
+                res.json(calculatedSupplies);
             }
         });
 });
