@@ -22,11 +22,11 @@ import EventContext from "../../../store/event-context";
 
 const EventSupplies = (props) => {
     const [suppliesState, setSuppliesState] = useState({ supplies: [] });
-    const { eventContext, setEventContext } = useContext(EventContext);
+    const ctx = useContext(EventContext);
 
     useEffect(() => {
-        setSuppliesState(eventContext);
-    }, [props.event]);
+        setSuppliesState(ctx.eventContext);
+    }, [ctx.eventContext]);
 
     const editSuppliesHandler = () => {
         props.history.push({
@@ -70,19 +70,19 @@ const EventSupplies = (props) => {
                             <hr className={classes.Hr}/>
                         </Card.Title>
                         <Card.Body className={classes.SuppliesBody}>
-                            <p>A positive amount owed is the amount this person is owed. A negative amount owed is the amount this person should give to those who are owed.</p>
                             <table className={classes.students}>
                                 <tbody>
                                     <tr>
                                         <th>Name</th>
                                         <th>Supply</th>
                                         <th>Cost</th>
-                                        <th>Owed</th>
+                                        <th>Owed*</th>
                                     </tr>
                                     {supplies}
                                 </tbody>
                             </table>
                         </Card.Body>
+                        <p>*A positive balance is how much this person is owed. A negative balance is how much this person owes others.</p>
                         <Card.Body className={classes.Buttons}>
                             <Button
                                 variant="outline-primary"

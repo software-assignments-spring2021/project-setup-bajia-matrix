@@ -54,6 +54,7 @@ const EventPage = (props) => {
   });
 
   // for inviting friends
+  // eslint-disable-next-line
   const [invitees, setInvitees] = useState();
 
   // for edit description
