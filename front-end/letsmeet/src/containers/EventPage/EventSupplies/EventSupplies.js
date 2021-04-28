@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import { WindowsFilled } from "@ant-design/icons";
 
 // import custom files and components
 import classes from "./EventSupplies.module.css";
-import axios from '../../../axios';
+import axios from "../../../axios";
+import EventContext from "../../../store/event-context";
 
 /*
   This component displays the event supplies on the Event page.
@@ -17,16 +17,18 @@ import axios from '../../../axios';
   and a button to calculate the cost per person of the event supplies.
 
   Props:
-    event: event state
+    This component does not accept any custom props.
 */
 
 const EventSupplies = (props) => {
     const [suppliesState, setSuppliesState] = useState({ supplies: [] });
     // const [localSupplies, setLocalSupplies] = useState([]);
 
+    const { eventContext, setEventContext } = useContext(EventContext);
+
     useEffect(() => {
-        setSuppliesState(props.event);
-        // setLocalSupplies(props.event.supplies);
+        setSuppliesState(eventContext);
+        console.log(eventContext);
     }, [props.event]);
 
     const editSuppliesHandler = () => {
@@ -35,24 +37,6 @@ const EventSupplies = (props) => {
             state: { suppliesState: JSON.stringify(suppliesState) }
         });
     };
-
-  // useEffect(() => {
-  //     let suppliesEntry;
-  //     console.log("hello")
-  //     if (suppliesState.supplies) {
-  //         suppliesEntry = suppliesState.supplies.map((sup, index) => {
-  //             return (
-  //                 <tr key={index}>
-  //                     <td>{sup.name}</td>
-  //                     <td>{sup.supply}</td>
-  //                     <td>${sup.amount}</td>
-  //                     <td>${sup.owed}</td>
-  //                 </tr>
-  //             );
-  //         });
-  //         setSupplies(suppliesEntry);
-  //     }
-  // }, [suppliesState]);
 
     const supplies = suppliesState.supplies.map((sup, index) => {
         return (
@@ -67,18 +51,22 @@ const EventSupplies = (props) => {
 
     const splitCosts = () => {
         console.log(suppliesState)
-        // const copySuppliesState = { ...suppliesState };
-        // copySuppliesState.supplies = localSupplies;
+        
 
         axios.post("/splitCosts" , suppliesState)
             .then(response => {
+                const copySuppliesState = { ...suppliesState };
+                copySuppliesState.supplies = response.data;
                 // setSuppliesState({ supplies: response.data });
                 // console.log(response.data);
                 // props.location.state.eventState = response.data;
                 // console.log(props.location.state)
                 // setLocalSupplies(response.data);
                 // copySuppliesState.supplies = response.data;
-                setSuppliesState({ supplies: response.data });
+
+                setSuppliesState(copySuppliesState);
+                setEventContext(copySuppliesState);
+                // props.setState({ supplies: response.data });
             })
             .catch(error => {
                 console.log(error);
