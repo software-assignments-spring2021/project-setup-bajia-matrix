@@ -322,7 +322,10 @@ const EventPage = (props) => {
             }
           })
           if (eventInvitees === false && eventAttendees === false) {
-            test.push(friend);
+            let duplicate = test.some(test => test.id === friend.id);
+            if (!duplicate) {
+              test.push(friend);
+            }
           }
         })
         friendsList = test.map(test => (
@@ -335,7 +338,6 @@ const EventPage = (props) => {
       friendsList: friendsList,
     }));
   }, [user.friends, event.title, event.attendees, event.invitees]);
-
 
   useEffect(() => {
     // get currently logged in user info
@@ -514,7 +516,7 @@ const EventPage = (props) => {
         event: false,
         user: false,
       }));
-    } // TODO: check warnings
+    }
   }, [state]);
 
   if (state.redirect === true) {
