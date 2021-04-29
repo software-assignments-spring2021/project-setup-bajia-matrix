@@ -5,9 +5,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
+// import custom files and components
 import classes from './EditAvatar.module.css';
 import axios from '../../../axios';
-
 import red from '../../../assets/Avatars/redavi.png';
 import blue from '../../../assets/Avatars/blueavi.png';
 import green from '../../../assets/Avatars/greenavi.png';

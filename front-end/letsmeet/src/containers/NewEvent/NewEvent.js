@@ -7,13 +7,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import ScheduleSelector  from 'react-schedule-selector';
 import moment from 'moment';
-import axios from '../../axios';
 
+// import custom files and components
 import classes from '../NewEvent/NewEvent.module.css';
+import axios from '../../axios';
 import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 
 /*
-    TODO: comment about component
+    This component displays the Create New Event page where the user can
+    create a new event and invite their friends to participate in that event.
 
     Props:
         - isAuthenticated: whether the user is signed in or not
@@ -29,7 +31,7 @@ const NewEvent = (props) => {
         setRequiredMarkType(requiredMarkValue);
     };
     
-    //Used to select date for non-users
+    // Used to select date for non-users
     const [finalDate, setFinalDate] = useState(Date())
     const [finalStartTime, setFinalStartTime] = useState(Date())
     const [finalEndTime, setFinalEndTime] = useState(Date())
@@ -102,8 +104,8 @@ const NewEvent = (props) => {
       }, []);
 
     //JOANNE: i did JSON.stringify here bc i want to store the entire friend object as the value and React won't let me do that unless I pass it in as a JSON string...rude
-    let friendsList = profileState.friends.map(friend => (
-        <Option value={JSON.stringify(friend)}>{friend.name}</Option>
+    let friendsList = profileState.friends.map((friend, index) => (
+        <Option key={index} value={JSON.stringify(friend)}>{friend.name}</Option>
     ))
 
     const [newCreatedEvent, setNewCreatedEvent] = useState({

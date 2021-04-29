@@ -2,22 +2,22 @@ import React from 'react';
 import { Route, Switch, withRouter, Redirect} from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import Layout from './hoc/Layout/Layout';
+// import custom files and components
+import AcceptInvite from './containers/AcceptInvite/AcceptInvite';
+import AddFriends from './containers/Profile/AddFriends/AddFriends';
+import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
+import EditProfile from './containers/Profile/EditProfile/EditProfile';
+import EditSupplies from './containers/EventPage/EventSupplies/EditSupplies/EditSupplies';
+import EventPage from './containers/EventPage/EventPage';
+import Home from './containers/Home/Home';
 import Landing from './components/Landing/Landing';
+import Layout from './hoc/Layout/Layout';
+import NewEvent from './containers/NewEvent/NewEvent';
+import Profile from './containers/Profile/Profile';
+import ScrollToTop from './hoc/ScrollToTop/ScrollToTop';
 import SignIn from '../src/containers/Auth/SignIn/SignIn';
 import SignUp from '../src/containers/Auth/SignUp/SignUp';
 import SignOut from '../src/containers/Auth/SignOut/SignOut';
-
-
-import Home from './containers/Home/Home';
-import Profile from './containers/Profile/Profile';
-import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
-import EditProfile from './containers/Profile/EditProfile/EditProfile';
-import AddFriends from './containers/Profile/AddFriends/AddFriends';
-import NewEvent from './containers/NewEvent/NewEvent';
-import AcceptInvite from './containers/AcceptInvite/AcceptInvite';
-import EditSupplies from './containers/EventPage/EventSupplies/EditSupplies/EditSupplies';
-import EventPage from './containers/EventPage/EventPage';
 
 /*
     This is the main component of our app, which is rendered
@@ -69,6 +69,7 @@ const App = (props) => {
     return (
         <div className="App">
             <Layout isAuthenticated={isAuthenticated}>
+                <ScrollToTop />
                 {routes}
             </Layout>
         </div>

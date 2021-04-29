@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-
 const bodyParser = require("body-parser");
+const { body, validationResult } = require('express-validator');
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -17,10 +16,10 @@ async function send(res, event) {
     const withdrawns = event.withdrawn;
     const supplies = event.supplies;
 
-    let updatedAttendees = [];
-    let updatedInvitees = [];
-    let updatedWithdrawns = [];
-    let updatedSupplies = [];
+    const updatedAttendees = [];
+    const updatedInvitees = [];
+    const updatedWithdrawns = [];
+    const updatedSupplies = [];
 
     // need to update names because users can change them
     const promises = attendees.map(async attendee => {
@@ -203,7 +202,7 @@ router.get("/", (req, res, next) => {
 });
 
 // for adding a new attendee to event
-//JOANNE: created separate post route in order to use express-validator
+// created separate post route in order to use express-validator
 router.post("/newAttendee", body('name').isEmail(), (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -268,7 +267,7 @@ router.post("/", (req, res, next) => {
                                     res.status(500).json({message: "ERROR 500: Issue updating event"});
                                 });
                         }
-                    })
+                    });
                 }
             });
         }
@@ -282,7 +281,6 @@ router.post("/", (req, res, next) => {
                 res.status(500).json({message: "ERROR 500: Issue updating event"});
             });
     }
-    
 });
 
 router.delete("/", (req, res, next) => {

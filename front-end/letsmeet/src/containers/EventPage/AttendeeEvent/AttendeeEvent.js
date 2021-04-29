@@ -1,22 +1,21 @@
 import React from "react";
-
-import "bootstrap/dist/css/bootstrap.min.css";
-import classes from "./AttendeeEvent.module.css";
-
-import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
-import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
-import EventSupplies from "../EventSupplies/EventSupplies";
-import EventModal from "../../../components/EventParts/EventModal/EventModal";
-
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import CardGroup from "react-bootstrap/CardGroup";
 import Alert from "react-bootstrap/Alert";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+// import custom files and components
+import classes from "./AttendeeEvent.module.css";
+import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
+import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
+import EventSupplies from "../EventSupplies/EventSupplies";
+import EventModal from "../../../components/EventParts/EventModal/EventModal";
 
 /*
-  This component displays the event page for the event attendee user.
+  This component displays the Event page for the event attendee user.
 
   Props:
     - event: contains info about current event
@@ -35,7 +34,7 @@ const AttendeeEvent = (props) => {
       ? <Alert show={props.announcement} variant="primary">
           <Alert.Heading>Hey there!</Alert.Heading>
           <p className="h6">
-            This event's time has been finalized since the last time you've viewed this event.
+            This event's time has been finalized since the last time you have viewed this event.
           </p>
           <hr />
           <div className="d-flex justify-content-end">

@@ -3,14 +3,16 @@ import 'antd/dist/antd.css';
 import { Alert, Button, Divider, Input } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './AddFriends.module.css';
 import axios from '../../../axios';
 
 require('dotenv').config()
 
 /*
-    This component displays the user's friends list and allows the user to add a user
-    and invite if the user is not registered
+    This component displays the Add Friends page where users
+    can search for existing users and add them as friends or invite
+    users without an account to try out the app.
 
     Props:
         This component does not accept any custom props
@@ -226,7 +228,7 @@ const AddFriends = (props) => {
             </div>
             
             <div className={classes.container}>
-                <div className>
+                <div>
                     {/* <Divider orientation="center"></Divider> */}
                     <p>Search for a user by email address</p>
                     <Search

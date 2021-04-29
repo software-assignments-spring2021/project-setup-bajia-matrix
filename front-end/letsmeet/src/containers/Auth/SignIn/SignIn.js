@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
+// import custom files and components
 import classes from './SignIn.module.css';
 import axios from '../../../axios';
 
 /*
-    This component renders the sign in page so
+    This component renders the Sign In page so
     a user can sign into their account.
 
     Props:

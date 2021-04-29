@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const bodyParser = require("body-parser");
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
-const User = require("../../models/User");
-const jwt = require('jsonwebtoken')
 require("dotenv").config({ silent: true }); // save private data in .env file
-const bcrypt = require("bcryptjs");
-router.use(bodyParser.urlencoded({ extended: false }));
+
+const User = require("../../models/User");
+
 router.use(bodyParser.json());
 
 router.post("/signup",
@@ -55,7 +55,7 @@ router.post("/signup",
       return res.status(200).json({
         success: true,
         uid: user.id,
-        message: "200 OK: Signup successful",
+        message: "200 OK: Signup successful"
       });
     } 
     catch (error) {
@@ -84,7 +84,7 @@ router.post("/signin",
     if (!user) {
       return res.status(500).json({
         success: false,
-        message: "ERROR 500: No user exists",
+        message: "ERROR 500: No user exists"
       });
     }
     const user_id = user.id;
@@ -105,13 +105,13 @@ router.post("/signin",
       return res.status(200).json({
         success: true,
         uid: user.id,
-        message: "200 OK: Login successful",
+        message: "200 OK: Login successful"
       });
     } 
     else {
       return res.status(401).json({
         success: false,
-        message: "ERROR 401: Passwords don't match",
+        message: "ERROR 401: Passwords don't match"
       });
     }
   } 
@@ -119,7 +119,7 @@ router.post("/signin",
     console.error(error);
     res.status(401).json({
       success: false,
-      message: "ERROR 401: Login failed",
+      message: "ERROR 401: Login failed"
     });
   }
 });

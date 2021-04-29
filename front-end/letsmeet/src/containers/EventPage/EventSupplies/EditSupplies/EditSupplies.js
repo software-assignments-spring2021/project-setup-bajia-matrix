@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
-// import { Input, InputNumber } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './EditSupplies.module.css';
 import axios from '../../../../axios';
 import EventTitle from '../../../../components/EventParts/EventTitle/EventTitle';
 import Spinner from '../../../../components/UI/Spinner/Spinner';
 
 /*
-    This component renders the EditSupplies page by fetching information
-    related to the event from the back-end using the current event id. It
-    also allows the current user the option to add to the event's supplies list
-    and will send the updated information to the backend. The user can navigate
-    to this page from the specific myEvents page.
+    This component renders the Edit Supplies page, which allows the current user the option 
+    to add to the event's supplies list or remove from it. Saving will update the supplies
+    list in the database for this event.
 
     Props:
         This component does not accept any custom props
@@ -23,10 +21,12 @@ const EditSupplies = (props) => {
     const [loading, setLoading] = useState(true);
     const [suppliesState, setSuppliesState] = useState({ supplies: [] });
     const [profileState, setProfileState] = useState({});
+    const [eventID, setEventID] = useState();
 
     useEffect(() => {
         const suppliesState = JSON.parse(props.location.state.suppliesState);
         setSuppliesState(suppliesState);
+        setEventID(JSON.parse(props.location.state.suppliesState)._id);
     
         const id = localStorage.getItem("userID");
         axios.get("/profile?userid=" + id)
@@ -66,7 +66,7 @@ const EditSupplies = (props) => {
     }
 
     const inputChangedHandler = (e) => {
-        console.log(e.target)
+       
         setFormData({
             // this is the "name" and "value" formReducer use to update formData
             name: e.target.name,
@@ -104,11 +104,12 @@ const EditSupplies = (props) => {
         });
 
         props.history.push({
-            pathname: "/event/" + suppliesState._id,
-            state: {eventState: suppliesState}
+            pathname: "/event/" + eventID,
+            state: {eventState: JSON.stringify(suppliesState)}
         });
     }
 
+    // render
     let editSuppliesPage = <Spinner />;
     if (!loading) {
         editSuppliesPage = (
@@ -155,13 +156,12 @@ const EditSupplies = (props) => {
                         <form onSubmit={submitHandler}>
                             <h5 className={classes.H5}>Enter a new supply and the amount spent on it</h5>
                             <div className={classes.Form}>
-                                {/* <Input.Group compact> */}
                                 <fieldset>
                                     <input 
                                         className={classes.Input} 
                                         type="text" 
                                         name="addSupply" 
-                                        placeholder="Supply" 
+                                        placeholder="Supply Name" 
                                         maxLength="20"
                                         autoFocus
                                         required 
@@ -171,43 +171,14 @@ const EditSupplies = (props) => {
                                         className={classes.Input} 
                                         type="number" 
                                         name="amount" 
-                                        placeholder="Amount"
+                                        placeholder="Cost"
                                         required
                                         min="0.00" 
                                         max="1000.00" 
                                         step="0.01" 
                                         onChange={(event) => inputChangedHandler(event)} 
-                                    />
-                                    {/* <Input 
-                                        //className={classes.Input}
-                                        type="text" 
-                                        name="addSupply" 
-                                        placeholder="Supply Name" 
-                                        showCount 
-                                        maxLength={20} 
-                                        autoFocus
-                                        required 
-                                        style={{ width: '45%' }} 
-                                        allowClear
-                                        onChange={(event) => inputChangedHandler(event)} 
-                                    /> */}
-                                    {/* <InputNumber 
-                                        //className={classes.Input}
-                                        type="number"
-                                        name="amount"
-                                        placeholder="Cost"
-                                        required
-                                        min={0.00} 
-                                        max={1000.00} 
-                                        step={0.01}
-                                        style={{ width: '35%' }} 
-                                        allowClear
-                                        //defaultValue={1.00} 
-                                        onChange={(event) => inputChangedHandler(event)} 
-                                    /> */}
-                                    {/* <input className={classes.Reset} type="reset" defaultValue="Reset" /> */}
+                                    />    
                                 </fieldset>
-                                {/* </Input.Group> */}
                             </div>
                             <div className={classes.Submit}>
                                 <Button className={classes.Button} variant="secondary" type="submit">Add</Button>

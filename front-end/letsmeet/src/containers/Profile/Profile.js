@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './Profile.module.css';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
-
 import red from '../../assets/Avatars/redavi.png';
 import blue from '../../assets/Avatars/blueavi.png';
 import green from '../../assets/Avatars/greenavi.png';
@@ -14,9 +14,8 @@ import purple from '../../assets/Avatars/purpleavi.png';
 import yellow from '../../assets/Avatars/yellowavi.png';
 
 /* 
-    This component displays the profile page based on the information
-    of the user that is signed in. The user can also navigate
-    to the edit profile page from here.
+    This component displays the Profile page based on the information
+    of the user that is signed in. 
 
     Props:
         This component does not accept any custom props

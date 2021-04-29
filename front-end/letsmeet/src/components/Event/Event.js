@@ -3,12 +3,13 @@ import { Card } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// import custom files and components
 import classes from './Event.module.css';
 import Text from '../UI/Text/Text';
 
 /*
     This component displays an event on the home page. Clicking on the event
-    will redirect the user to the event page of the event.
+    will redirect the user to the Event page of the event.
 
     Props: 
         - id: the id of the event

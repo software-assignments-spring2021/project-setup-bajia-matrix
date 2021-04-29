@@ -1,31 +1,90 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const bodyParser = require("body-parser");
 
-router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-/* 
-    Takes a date string in the form of "YYYY/Month-Short/DD hh:mm:ss GMT-####" or
-    "MM/DD/YYYY hh:mm GMT-0000" and a timezone to convert this date into. 
-    Then it returns a date string in the new timezone using 24 hour time format.
-*/
-const standardizeTime = (date, tz) => {
-    return (new Date(date)).toLocaleString("en-US", {
-        timeZone: tz, 
-        hour12: false, 
-        month: "2-digit",
-        day: "2-digit",
-        year: "numeric",
-        hour: "2-digit", 
-        minute: "2-digit"
+// This formats the input before sending it into the algorithm called calcBestTimes.
+const formatInput = (datetimes) => {
+    const output = [];
+
+    datetimes.forEach(datetime => {
+        const dateTimeSplit = datetime.split("T");
+        const dateSplit = dateTimeSplit[0].split("-");
+        const timeSplit = dateTimeSplit[1].split(".");
+
+        // format: year/month/day 00:00:00 GMT-000
+        const dateString = `${dateSplit[0]}/${dateSplit[1]}/${dateSplit[2]} ${timeSplit[0]} ${timeSplit[1]}`;
+
+        // convert to UTC timezone (input is already UTC)
+        // const stdTime = standardizeTime(dateString, "UTC");
+        output.push(dateString);
     });
+
+    return output;
+};
+
+// Sorts an array of strings containing datetime (key) and count (val) in decreasing order by count.
+const sorter = (array) => {
+    return (array.sort((a, b) => {
+        const [key1, val1] = a;
+        const [key2, val2] = b;
+        if (val2 > val1) {
+            return 1;
+        }
+        else if (val2 < val1) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    }));
+};
+
+/*
+    This algorithm counts the occurrence of each datetime and returns
+    the most frequent datatimes.
+*/
+const calcBestTimes = (datetimes) => {
+    const counts = {};
+
+    // count occurrences of each datetime
+    datetimes.forEach(dt => {
+        if (dt in counts) {
+            counts[dt] = counts[dt] + 1;
+        }
+        else {
+            counts[dt] = 1;
+        }
+    });
+
+    // sort counts by most to least
+    const sortedCounts = sorter(Object.entries(counts));
+  
+    // take the top 5 (or less if size is < 5) most popular datetimes
+    const top = Math.min(sortedCounts.length, 5);
+    
+    // initalize output
+    const output = [];
+
+    for (let i = 0; i < top; i++) {
+        const key = sortedCounts[i][0];
+        const value = sortedCounts[i][1];
+
+        // if only one person choose this datetime, no need to recommend
+        if (value === 1) {
+            break;
+        }
+
+        output.push(key);
+    }
+
+    return output;
 };
 
 /*
     This formats the different parts of the response (a Date object) to return
-    the day of the week, the date, and time (in AM/PM)
+    the day of the week, the date, and time (in AM/PM).
 */
 const generateResponse = (datetime) => {
 
@@ -58,91 +117,11 @@ const generateResponse = (datetime) => {
     return [ day, date, time ];
 };
 
-
-// Sorts an array of strings containing datetime (key) and count (val) in decreasing order by count
-const sortIt = (array) => {
-    return (array.sort((a, b) => {
-        const [key1, val1] = a;
-        const [key2, val2] = b;
-        if (val2 > val1) {
-            return 1;
-        }
-        else if (val2 < val1) {
-            return -1;
-        }
-        else {
-            return 0;
-        }
-    }));
-};
-
-// This formats the input before sending it into the algorithm called calcBestTimes
-const formatInput = (datetimes) => {
-    const output = [];
-
-    datetimes.forEach(datetime => {
-        const dateTimeSplit = datetime.split("T");
-        const dateSplit = dateTimeSplit[0].split("-");
-        const timeSplit = dateTimeSplit[1].split(".");
-
-        //format: year / month / day 00:00:00 GMT-040
-        const dateString = `${dateSplit[0]}/${dateSplit[1]}/${dateSplit[2]} ${timeSplit[0]} ${timeSplit[1]}`;
-
-        // convert to UTC timezone
-        const stdTime = standardizeTime(dateString, "UTC");
-        output.push(dateString);
-    })
-
-    return output;
-};
-
-/*
-    This algorithm counts the occurrence of each datetime and returns
-    the most frequent datatimes
-*/
-const calcBestTimes = (datetimes) => {
-    const counts = {};
-
-    // count occurrences of each datetime
-    datetimes.forEach(dt => {
-        if (dt in counts) {
-            counts[dt] = counts[dt] + 1;
-        }
-        else {
-            counts[dt] = 1;
-        }
-    });
-
-    // sort counts by most to least
-    const sortedCounts = sortIt(Object.entries(counts));
-  
-    // take the top 5 (or less if size is < 5) most popular datetimes
-    const top = Math.min(sortedCounts.length, 5);
-    
-    // initalize output
-    const output = [];
-
-    for (let i = 0; i < top; i++) {
-        const key = sortedCounts[i][0];
-        const value = sortedCounts[i][1];
-
-        // if only one person choose this datetime, no need to recommend
-        if (value === 1) {
-            break;
-        }
-
-        output.push(key);
-    }
-
-    return output;
-};
-
 router.post("/", (req, res, next) => {
     console.log("post request on route /suggestedTimes");
 
     // extract data from the request 
     const requestData = req.body.availability;
-    const currentTimezone = req.body.timezone;
 
     // initialize response
     const response = [];
@@ -153,21 +132,22 @@ router.post("/", (req, res, next) => {
     // calculate the best times
     const output = calcBestTimes(input);
 
-    // convert best times to client's timezone
+    // convert best times to client's timezone before sending back
     output.forEach(dt => {
 
-        //format: 2021-04-21T19:00:00.000Z
-        let dtSplit = dt.split(" ");
-        let dateSplit = dtSplit[0].split("/");
-        let isoFormat = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${dtSplit[1]}.${dtSplit[2]}`;
+        // format: 2021-04-21T19:00:00.000Z
+        const dtSplit = dt.split(" ");
+        const dateSplit = dtSplit[0].split("/");
+        const isoFormat = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}T${dtSplit[1]}.${dtSplit[2]}`;
         const [ day, date, time ] = generateResponse(new Date(isoFormat));
 
         let reformatTime;
-        let splitTime = time.split(":");
+        const splitTime = time.split(":");
         if (parseInt(splitTime[0]) < 10) {
             splitTime[0] = splitTime[0].charAt('1');
             reformatTime = splitTime[0] + ':' + splitTime[1];
-        } else {
+        } 
+        else {
             reformatTime = time
         }
 

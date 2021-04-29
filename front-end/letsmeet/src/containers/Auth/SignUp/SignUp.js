@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// import custom files and components
 import classes from "../SignIn/SignIn.module.css";
 import axios from '../../../axios';
 
 /* 
-    This component renders the sign up page so
-    a user can create an account and log in
+    This component renders the Sign Up page so
+    a user can create an account and log in.
 
     Props:
         This component does not accept any custom props
@@ -186,6 +187,7 @@ const SignUp = (props) => {
 
                 localStorage.setItem('userID', response.data.uid);
                 localStorage.setItem('isAuthenticated', true);
+                
                 if (emailParam) {
                     props.history.push("/?event=" + urlParams.get('id'));
                 } else {

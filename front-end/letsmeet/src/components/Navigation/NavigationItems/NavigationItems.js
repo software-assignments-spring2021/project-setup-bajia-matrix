@@ -1,10 +1,11 @@
 import React from 'react';
 
+// import custom files
 import classes from './NavigationItems.module.css';
 import NavigationItem from './NavigationItem/NavigationItem';
 
 /* 
-    This component displays a list of navigationItem, the contents of which,
+    This component displays a list of navigationItem, the contents of which
     depends on whether the user is authenticated or not.
 
     Props:

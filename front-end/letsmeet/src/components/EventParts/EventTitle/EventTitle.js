@@ -1,6 +1,7 @@
 import React from 'react';
 import { EnvironmentOutlined } from '@ant-design/icons';
 
+// import custom files 
 import classes from './EventTitle.module.css';
 
 /*
@@ -23,11 +24,11 @@ import classes from './EventTitle.module.css';
 const EventTitle = (props) => (
     <div className={classes.EventTitle}>
         <h1>{props.title}</h1>
-        {props.day === "" 
-        ? <h5>Week of {props.event.startDate} @ TBA</h5>
-        : [(!props.newEventAuthentication
-            ? <h5 key="idk why this needs a key but okay go off react">{props.day}, {props.date} @ {props.time}</h5>
-            : null
+        {props.day === "" ? 
+            <h5>Week of {props.event.startDate} @ TBA</h5> : 
+            [(!props.newEventAuthentication ? 
+                <h5 key="key">{props.day}, {props.date} @ {props.time}</h5> : 
+                null
             )]
         }
         {props.showCreator && <p>Event creator: <b>{props.creator}</b></p>}

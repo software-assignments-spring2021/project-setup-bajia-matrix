@@ -1,5 +1,5 @@
-.Modal {
-  margin-top: 100px;
+.Footer {
+  border: transparent;
 }
 
 .Header {
@@ -8,6 +8,9 @@
   color: white;
 }
 
-.Footer {
-  border: transparent;
+.Modal {
+  margin-top: 100px;
 }
+
+
+

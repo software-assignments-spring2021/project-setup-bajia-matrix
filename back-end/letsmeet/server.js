@@ -12,6 +12,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFind
     .then(resolved => console.log("Successfully connected with MongoDB"))
     .catch(err => console.log(err));
 
+// setup server
 const listener = server.listen(port, () => {
     console.log("Server running on port: " + port);
 });

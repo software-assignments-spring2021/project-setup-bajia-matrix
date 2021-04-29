@@ -4,23 +4,22 @@ import { Button, Divider, Form } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ScheduleSelector  from 'react-schedule-selector';
-// import moment from 'moment';
 
+// import custom files and components
 import classes from '../AcceptInvite/AcceptInvite.module.css';
 import axios from '../../axios';
 import EventTitle from '../../components/EventParts/EventTitle/EventTitle';
 
 /*
-    TODO: comment what this component is
+    This component displays the Accept Invite page where the user 
+    inputs their availability to be added to the event's 
+    attendee list.
 
     Props:
         This component does not accept any custom props
 */
 
 const AcceptInvite = (props) => {
-
-    // BING: will this be used? If not, can delete
-    // const [loading, setLoading] = useState(true);
 
     // default event state
     const [event, setEvent] = useState({
