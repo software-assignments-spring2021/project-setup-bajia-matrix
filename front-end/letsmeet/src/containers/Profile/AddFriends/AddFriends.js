@@ -183,32 +183,17 @@ const AddFriends = (props) => {
     // Line for alert
     let description = "Would you like to invite " + searchTerm + "?"
 
-    /**
-     * Sends email when invite button is clicked via nodemailer
-     */
-    const nodemailer = require("nodemailer")
-
-    function sendEmail () {
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.GMAIL, 
-                pass: process.env.GMAIL_PASSWORD
-            }
-        })
-
-        transporter.sendMail({
-            from: process.env.GMAIL, 
-            to: searchTerm, // change this for testing
-            subject: user.name.split(' ') + ' invited you to join Let\'s Meet', 
-            text: 'Hello ' + searchTerm, 
-            html: "<h1>Hello " + searchTerm + "</h1>",
-        }, (err, data) => {
-            if (err) {
-                console.log('Error occured');
-            }
-            console.log('Email sent');
-        })
+    const [inviteText, setInviteText] = useState("Invite")
+    function sendEmail() {
+        // Send email
+        axios.post("/profile/sendmail?searchTerm=" + searchTerm + "&name=" + user.name.split(' ')[0])
+            .then(response => {
+                console.log(response.data);
+                setInviteText("Sent!")
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }  
 
     return (   
@@ -263,8 +248,8 @@ const AddFriends = (props) => {
                                     description={description}
                                     type="error"
                                     action={
-                                        <Button size="small" danger className={classes.inviteButton} onClick={sendEmail()}>
-                                          Invite
+                                        <Button size="small" danger className={classes.inviteButton} onClick={sendEmail}>
+                                          {inviteText}
                                         </Button>
                                     }
                                 />
