@@ -131,17 +131,7 @@ const AddFriends = (props) => {
         setRemoveButtonText("Removed")
         setDisabled(true)
 
-        console.log(user._id)
-        console.log(param)
-        axios.delete("/removefriend?userAccount=" + param)
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error.response.data);
-            })
-        
-        axios.delete("/removefriend?friendAccount=" + user._id)
+        axios.delete("/profile/removefriend?userAccount=" + param + "&friendAccount=" + user._id)
             .then(response => {
                 console.log(response.data);
             })
