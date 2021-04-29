@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
+const path = require("path");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 const User = require("../../models/User");
@@ -118,6 +119,61 @@ router.post("/avis", (req, res, next) => {
                 }
             });
             res.status(200).json(avis);
+        }
+    })
+})
+
+// to get all event attendees' avis
+router.post("/sendmail", (req, res, next) => {
+    /**
+     * Sends email when invite button is clicked via nodemailer
+     */
+    const nodemailer = require("nodemailer")
+    console.log(process.env.GMAIL_PASSWORD)
+
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            type: "login",
+            user: process.env.GMAIL, 
+            pass: process.env.GMAIL_PASSWORD
+        }
+    })
+
+    console.log(req.query)
+    let imagePath = path.join(__dirname, '/Logo.png');
+
+    transporter.sendMail({
+        from: process.env.GMAIL, 
+        to: req.query.searchTerm, // change this for testing
+        // to: process.env.GMAIL,
+        subject: req.query.name.split(' ')[0] + " Invites You to Join Let\'s Meet", 
+        text: "Hello " + req.query.searchTerm, 
+        generateTextFromHTML: true,
+        html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
+        <img src="cid:LetsMeetLogo" style="width: 100%; margin: 0 auto;"/> \
+        <h1 style="color: #1d38ed;">Hey there!</h1> \
+        <p style="font-size: 18px;">You\'ve been invited by ' + req.query.name + ' to join Let\'s Meet! \
+        Let\'s Meet is a web application designed to help people like you easily coordinate and plan out events. \
+        Join us and start creating, accepting, and scheduling events today!</p> \
+        <p style="font-size: 18px;">Sign up using this link: <a style="color: #939cf1;" href="http://localhost:3000/signup">http://localhost:3000/signup</a></p> \
+        <p style="font-size: 18px;">Love,</p> \
+        <p style="font-size: 18px;">The Let\'s Meet Team</p> \
+        <p>&nbsp;</p> \
+        </div> \
+        <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Want to learn more? Visit us at </span><a style="color: #939cf1;" href="http://localhost:3000">http://localhost:3000</a></p>',
+        attachments: [{
+                filename: 'Logo.png',
+                path: imagePath,
+                cid: 'LetsMeetLogo' //same cid value as in the html img src
+            }]
+    }, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
+        } else {
+            console.log("Email sent");
+            res.status(200).send("Email successfully sent");
         }
     })
 })

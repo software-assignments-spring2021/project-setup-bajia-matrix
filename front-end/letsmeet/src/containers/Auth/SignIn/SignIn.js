@@ -28,6 +28,9 @@ const SignIn = (props) => {
 
         let nam = event.target.name;
         let val = event.target.value;
+        if (event.target.name == "email") {
+            val = val.toLowerCase();
+        }
 
         updatedAuthState[nam] = val;
         setauthState(updatedAuthState);
