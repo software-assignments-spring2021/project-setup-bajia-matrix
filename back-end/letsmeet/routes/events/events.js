@@ -359,11 +359,11 @@ router.post("/emailInvitee", (req, res, next) => {
                 console.log(err);
                 res.status(500).send("ERROR 550: Issue sending email to " + invitee.name);
             } else {
-                console.log("Email sent");
-                res.status(200).send("Email successfully sent");
+                console.log("Email sent to " + invitee.name);
             }
         })
     })
+    res.status(200).send("Email successfully sent");
 })
 
 module.exports = router;
