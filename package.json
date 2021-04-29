@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "clipboard-copy": "^4.0.1",
-    "express": "^4.17.1",
-    "nodemailer": "^6.6.0",
-    "react-toggle-display": "^2.2.1"
-  }
-}
