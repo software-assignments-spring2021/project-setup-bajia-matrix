@@ -9,7 +9,7 @@ import Badge from 'react-bootstrap/Badge';
 
   Props: 
     - suggestedTimes: a list of suggested times
-    - onChecked: TODO
+    - onChecked: function that handles when user checks a suggested final time
 */
 
 const eventModalTimes = (props) => {

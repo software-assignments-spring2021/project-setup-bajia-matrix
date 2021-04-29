@@ -119,7 +119,6 @@ const EventPage = (props) => {
             name: state.unverifiedInput.current.value,
             eventID: event._id
           };
-          console.log(attendeesCopy);
 
           // check if unverified email is correct email format
           const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
@@ -218,7 +217,6 @@ const EventPage = (props) => {
 
   const handleCloseSuggested = (e) => setShowSuggested(false);
   const handleFinal = () => {
-    console.log("chosen time: ", chosenTime);
     if (chosenTime.date !== "test" && chosenTime.date !== "") {
       setEvent((prevState) => ({
         ...prevState,
