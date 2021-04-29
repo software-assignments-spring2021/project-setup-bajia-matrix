@@ -45,7 +45,8 @@ const AddFriends = (props) => {
     const [disabled, setDisabled] = useState(false);
 
     const handleChange = e => {
-        setButtonText("Add Friend")
+        setAddButtonText("Add Friend")
+        setRemoveButtonText("Remove Friend")
         setDisabled(false)
         setSearchTerm(e)
         validateFriend(e)
@@ -98,13 +99,18 @@ const AddFriends = (props) => {
         }
     }
 
-    const [buttonText, setButtonText] = useState("Add Friend")
-    const changeText = (text) => setButtonText(text)
+    const [addButtonText, setAddButtonText] = useState("Add Friend")
+    const [removeButtonText, setRemoveButtonText] = useState("Remove Friend")
 
-    const userFriends = user.friends.map(i => <div key={i.id}> {i.name} </div>);
+    const userFriends = user.friends.map(i => <div key={i.id}> {i.name}</div>);
+
+    let removeFriend = param => e => {
+        setRemoveButtonText("Removed")
+        setDisabled(true)
+    }
 
     let addFriend = param => e => {
-        changeText("Added")
+        setAddButtonText("Added")
         setDisabled(true);
         
         // update friends list immutably
@@ -193,7 +199,10 @@ const AddFriends = (props) => {
                                     <div key={i} className={classes.nameContainer}>
                                         <div className={classes.nameDisplay}> {d.name} <br/>
                                             {!isFriend &&
-                                                <button size="small" type="primary" className={classes.addButton} disabled={disabled} onClick={addFriend(d)}>{buttonText}</button>
+                                                <button size="small" type="primary" className={classes.addButton} disabled={disabled} onClick={addFriend(d)}>{addButtonText}</button>
+                                            }
+                                            {isFriend &&
+                                                <button size="small" type="primary" className={classes.removeButton} disabled={disabled} onClick={removeFriend(d)}>{removeButtonText}</button>
                                             }
                                             <div>{d.email}</div>
                                             <br/>                      
