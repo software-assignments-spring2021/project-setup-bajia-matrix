@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
 const { body, validationResult } = require('express-validator');
+const path = require("path");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -174,7 +175,6 @@ async function send(res, event) {
         event.creator = promiseCreator.name;
     }
 
-    //console.log(event);
     Event.findOneAndUpdate({_id: event._id}, event)
         .then(update => {
             //console.log(update);
@@ -213,7 +213,6 @@ router.post("/newAttendee", body('name').isEmail(), (req, res) => {
             console.log(err);
             res.status(500).send("ERROR 500: Issue updating event");
         } else {
-            console.log(event);
             res.status(200).send("200 OK: Sucessfully added attendee to event");
         }
     });
@@ -317,5 +316,54 @@ router.delete("/", (req, res, next) => {
             });
     }
 });
+
+//send email to invitee when a creator invites a friend
+router.post("/emailInvitee", (req, res, next) => {
+    /**
+     * Sends email when invite button is clicked via nodemailer
+     */
+    const nodemailer = require("nodemailer")
+
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            type: "login",
+            user: process.env.GMAIL, 
+            pass: process.env.GMAIL_PASSWORD
+        }
+    })
+
+    let imagePath = path.join(__dirname, '/Logo.png');
+
+    req.body.invitees.forEach(invitee => {
+        transporter.sendMail({
+            from: process.env.GMAIL, 
+            to: invitee.email,
+            subject: req.body.creator + " wants you at their event!",
+            generateTextFromHTML: true,
+            html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
+                        <img style="width: 100%; margin: 0 auto;" src="cid:LetsMeetLogo" /> \
+                        <h1 style="color: #1d38ed;">Hey ' + invitee.name + ',</h1> \
+                        <p style="font-size: 18px;">You\'ve been invited by ' + req.body.creator + ' to their event. <a style="color: #939cf1;" href="http://localhost:3000/login">Log in</a> now to either accept (or deny) their unrequited invite!</p> \
+                        <p style="font-size: 18px;">Love,</p> \
+                        <p style="font-size: 18px;">The Let\'s Meet Team</p> \
+                        <p>&nbsp;</p> \
+                    </div>',
+            attachments: [{
+                    filename: 'Logo.png',
+                    path: imagePath,
+                    cid: 'LetsMeetLogo'
+                }]
+        }, (err, data) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("ERROR 550: Issue sending email to " + invitee.name);
+            } else {
+                console.log("Email sent to " + invitee.name);
+            }
+        })
+    })
+    res.status(200).send("Email successfully sent");
+})
 
 module.exports = router;
