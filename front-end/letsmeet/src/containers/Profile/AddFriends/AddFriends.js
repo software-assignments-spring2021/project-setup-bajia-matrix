@@ -54,6 +54,7 @@ const AddFriends = (props) => {
     const handleChange = e => {
         const lowercaseSearchTerm = e.toLowerCase()
         setButtonText("Add Friend")
+        setInviteText("Invite")
         setDisabled(false)
         setIsFriend(false)
         setSearchTerm(lowercaseSearchTerm)
@@ -123,8 +124,10 @@ const AddFriends = (props) => {
     // Add friend button
     const [buttonText, setButtonText] = useState("Add Friend")
     const changeText = (text) => setButtonText(text)
-
     const userFriends = user.friends.map(i => <div key={i.id}> {i.name} </div>);
+
+    // Invite button
+    const [inviteText, setInviteText] = useState("Invite")
 
     /**
      * Called when add friend button is clicked; adds new friend to the user's friend list
@@ -183,10 +186,9 @@ const AddFriends = (props) => {
     // Line for alert
     let description = "Would you like to invite " + searchTerm + "?"
 
-    const [inviteText, setInviteText] = useState("Invite")
     function sendEmail() {
         // Send email
-        axios.post("/profile/sendmail?searchTerm=" + searchTerm + "&name=" + user.name.split(' ')[0])
+        axios.post("/profile/sendmail?searchTerm=" + searchTerm + "&name=" + user.name)
             .then(response => {
                 console.log(response.data);
                 setInviteText("Sent!")

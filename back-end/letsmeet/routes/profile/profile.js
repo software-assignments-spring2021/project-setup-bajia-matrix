@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
+const path = require("path");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 const User = require("../../models/User");
@@ -140,21 +141,32 @@ router.post("/sendmail", (req, res, next) => {
     })
 
     console.log(req.query)
+    let imagePath = path.join(__dirname, '/Logo.png');
+
     transporter.sendMail({
         from: process.env.GMAIL, 
         to: req.query.searchTerm, // change this for testing
         // to: process.env.GMAIL,
-        subject: req.query.name + " Invited You to Join Let\'s Meet", 
+        subject: req.query.name.split(' ')[0] + " Invites You to Join Let\'s Meet", 
         text: "Hello " + req.query.searchTerm, 
         generateTextFromHTML: true,
-        html: '<h1 style="color: #5e9ca0;">You can edit <span style="color: #2b2301;">this demo</span> text!</h1> \
-        <h2 style="color: #2e6c80;">How to use the editor:</h2> \
-        <p>Paste your documents in the visual editor on the left or your HTML code in the source editor in the right. <br />Edit any of the two areas and see the other changing in real time.&nbsp;</p> \
-        <p>Click the <span style="background-color: #2b2301; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Clean</span> button to clean your source code.</p> \
-        <h2 style="color: #2e6c80;">Some useful features:</h2> \
-        <ol style="list-style: none; font-size: 14px; line-height: 32px; font-weight: bold;"> \
-        <li style="clear: both;"><img style="float: left;" src="https://html-online.com/img/01-interactive-connection.png" alt="interactive connection" width="45" /> Interactive source editor</li> \
-        <li style="clear: both;"><img style="float: left;" src="https://html-online.com/img/02-html-clean.png" alt="html cleaner" width="45" /> HTML Cleaning</li>',
+        html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
+        <img src="cid:LetsMeetLogo" style="width: 100%; margin: 0 auto;"/> \
+        <h1 style="color: #1d38ed;">Hey there!</h1> \
+        <p style="font-size: 18px;">You\'ve been invited by ' + req.query.name + ' to join Let\'s Meet! \
+        Let\'s Meet is a web application designed to help people like you easily coordinate and plan out events. \
+        Join us and start creating, accepting, and scheduling events today!</p> \
+        <p style="font-size: 18px;">Sign up using this link: <a style="color: #939cf1;" href="http://localhost:3000/signup">http://localhost:3000/signup</a></p> \
+        <p style="font-size: 18px;">Love,</p> \
+        <p style="font-size: 18px;">The Let\'s Meet Team</p> \
+        <p>&nbsp;</p> \
+        </div> \
+        <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Want to learn more? Visit us at </span><a style="color: #939cf1;" href="http://localhost:3000">http://localhost:3000</a></p>',
+        attachments: [{
+                filename: 'Logo.png',
+                path: imagePath,
+                cid: 'LetsMeetLogo' //same cid value as in the html img src
+            }]
     }, (err, data) => {
         if (err) {
             console.log(err);
