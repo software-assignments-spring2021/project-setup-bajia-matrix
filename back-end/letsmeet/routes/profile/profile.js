@@ -122,4 +122,48 @@ router.post("/avis", (req, res, next) => {
     })
 })
 
+// to get all event attendees' avis
+router.post("/sendmail", (req, res, next) => {
+    /**
+     * Sends email when invite button is clicked via nodemailer
+     */
+    const nodemailer = require("nodemailer")
+    console.log(process.env.GMAIL_PASSWORD)
+
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            type: "login",
+            user: process.env.GMAIL, 
+            pass: process.env.GMAIL_PASSWORD
+        }
+    })
+
+    console.log(req.query)
+    transporter.sendMail({
+        from: process.env.GMAIL, 
+        to: req.query.searchTerm, // change this for testing
+        // to: process.env.GMAIL,
+        subject: req.query.name + " Invited You to Join Let\'s Meet", 
+        text: "Hello " + req.query.searchTerm, 
+        generateTextFromHTML: true,
+        html: '<h1 style="color: #5e9ca0;">You can edit <span style="color: #2b2301;">this demo</span> text!</h1> \
+        <h2 style="color: #2e6c80;">How to use the editor:</h2> \
+        <p>Paste your documents in the visual editor on the left or your HTML code in the source editor in the right. <br />Edit any of the two areas and see the other changing in real time.&nbsp;</p> \
+        <p>Click the <span style="background-color: #2b2301; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Clean</span> button to clean your source code.</p> \
+        <h2 style="color: #2e6c80;">Some useful features:</h2> \
+        <ol style="list-style: none; font-size: 14px; line-height: 32px; font-weight: bold;"> \
+        <li style="clear: both;"><img style="float: left;" src="https://html-online.com/img/01-interactive-connection.png" alt="interactive connection" width="45" /> Interactive source editor</li> \
+        <li style="clear: both;"><img style="float: left;" src="https://html-online.com/img/02-html-clean.png" alt="html cleaner" width="45" /> HTML Cleaning</li>',
+    }, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
+        } else {
+            console.log("Email sent");
+            res.status(200).send("Email successfully sent");
+        }
+    })
+})
+
 module.exports = router;
