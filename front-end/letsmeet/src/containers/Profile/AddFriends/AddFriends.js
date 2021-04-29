@@ -130,6 +130,24 @@ const AddFriends = (props) => {
     let removeFriend = param => e => {
         setRemoveButtonText("Removed")
         setDisabled(true)
+
+        console.log(user._id)
+        console.log(param)
+        axios.delete("/removefriend?userAccount=" + param)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            })
+        
+        axios.delete("/removefriend?friendAccount=" + user._id)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            })
     }
 
     // Invite button
@@ -194,6 +212,7 @@ const AddFriends = (props) => {
 
     function sendEmail() {
         // Send email
+        setDisabled(true)
         axios.post("/profile/sendmail?searchTerm=" + searchTerm + "&name=" + user.name)
             .then(response => {
                 console.log(response.data);
@@ -244,7 +263,7 @@ const AddFriends = (props) => {
                                                 <button size="small" type="primary" className={classes.addButton} disabled={disabled} onClick={addFriend(d)}>{addButtonText}</button>
                                             }
                                             {isFriend &&
-                                                <button size="small" type="primary" className={classes.removeButton} disabled={disabled} onClick={removeFriend(d)}>{removeButtonText}</button>
+                                                <button size="small" type="primary" className={classes.removeButton} disabled={disabled} onClick={removeFriend(d.id)}>{removeButtonText}</button>
                                             }
                                             <div>{d.email}</div>
                                             <br/>                      
@@ -259,7 +278,7 @@ const AddFriends = (props) => {
                                     description={description}
                                     type="error"
                                     action={
-                                        <Button size="small" danger className={classes.inviteButton} onClick={sendEmail}>
+                                        <Button size="small" danger className={classes.inviteButton} disabled={disabled} onClick={sendEmail}>
                                           {inviteText}
                                         </Button>
                                     }
