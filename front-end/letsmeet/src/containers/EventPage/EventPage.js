@@ -298,6 +298,13 @@ const EventPage = (props) => {
       .catch((error) => {
         console.log(error);
       });
+    axios.post("/events/emailInvitee", {invitees: invitees, creator: event.creator})
+      .then((response) => {
+        console.log('successfully sent email to invitee(s)', response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // for populating list of friends to invite to event (exclude any friends already attending or invited)
