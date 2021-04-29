@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import classes from './AddFriends.module.css';
 import axios from '../../../axios';
 
+require('dotenv').config()
+
 /*
     This component displays the Add Friends page where users
     can search for existing users and add them as friends or invite
@@ -18,7 +20,7 @@ import axios from '../../../axios';
 
 const AddFriends = (props) => {
     
-    const [data, setData] = useState()
+    const [data, setData] = useState() // References all the registered users
     const [user, setUser] = useState({
         name: "",
         friends: [],
@@ -41,21 +43,34 @@ const AddFriends = (props) => {
 
     const { Search } = Input;
     const [searchTerm, setSearchTerm] = useState("")
-    const [error, setError] = useState()
-    const [disabled, setDisabled] = useState(false);
 
+    const [error, setError] = useState() // Error for displaying searched user
+    const [disabled, setDisabled] = useState(false); // Displayed when searched user is already a friend
+
+    /**
+     * Called when searching items (onSearch)
+     * @param {*} e 
+     */
     const handleChange = e => {
         setAddButtonText("Add Friend")
         setRemoveButtonText("Remove Friend")
+        const lowercaseSearchTerm = e.toLowerCase()
+        setInviteText("Invite")
         setDisabled(false)
-        setSearchTerm(e)
-        validateFriend(e)
-        checkFriendship(e)
+        setIsFriend(false)
+        setSearchTerm(lowercaseSearchTerm)
+        validateFriend(lowercaseSearchTerm)
+        checkFriendship(lowercaseSearchTerm)
     }
 
     // Exclude these cols when searching term
     const excludeColumns = ["id", "name"];
 
+    /** 
+     * Confirms if the search term is in valid email format and exists in the user's current friend list
+     * 
+     * @param {*} e searchTerm when triggered in onSearch
+     */
     const validateFriend = (e) => {
         const lowercaseSearch = e.toLowerCase().trim()
         var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
@@ -76,18 +91,26 @@ const AddFriends = (props) => {
         }
     }
 
+    /**
+     * Searches through current user's friends and sets 'setIsFriend' state to be true
+     * if the searchTerm matches with e
+     * 
+     * @param {*} e searchTerm when triggered in onSearch
+     */
     const [isFriend, setIsFriend] = useState(false)
 
     function checkFriendship(e) {
+        // console.log("Im checking friendship with " + e)
         for (let friend of user.friends) {
             if(friend.email === e) {
+                // console.log("already friends with " + e)
                 setIsFriend(true)
                 return
             }
         }
-
         // Check MongoDB to see if email is associated with a user
         if (!isFriend) {
+            // console.log("Im checking Mongo for " + e)
             axios.get("/profile?findUser=true&searchEmail=" + e.trim())
                 .then(response => {
                     setData(response.data)
@@ -109,11 +132,19 @@ const AddFriends = (props) => {
         setDisabled(true)
     }
 
+    // Invite button
+    const [inviteText, setInviteText] = useState("Invite")
+
+    /**
+     * Called when add friend button is clicked; adds new friend to the user's friend list
+     * 
+     * @param {*} param 
+     */
     let addFriend = param => e => {
         setAddButtonText("Added")
         setDisabled(true);
         
-        // update friends list immutably
+        // Update friends list immutably
         const userCopy = { ...user };
         const friendsList = [ ...userCopy.friends ];
         
@@ -156,11 +187,22 @@ const AddFriends = (props) => {
             .catch(error => {
                 console.log(error.response.data);
             })
-
     }
 
     // Line for alert
     let description = "Would you like to invite " + searchTerm + "?"
+
+    function sendEmail() {
+        // Send email
+        axios.post("/profile/sendmail?searchTerm=" + searchTerm + "&name=" + user.name)
+            .then(response => {
+                console.log(response.data);
+                setInviteText("Sent!")
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }  
 
     return (   
         <>
@@ -217,8 +259,8 @@ const AddFriends = (props) => {
                                     description={description}
                                     type="error"
                                     action={
-                                        <Button size="small" danger className={classes.inviteButton}>
-                                          Invite
+                                        <Button size="small" danger className={classes.inviteButton} onClick={sendEmail}>
+                                          {inviteText}
                                         </Button>
                                     }
                                 />
@@ -226,7 +268,7 @@ const AddFriends = (props) => {
                         </div>
                     }
                 </div>
-                <br />
+                <br/>
                 <Divider orientation="center">Current Friends List</Divider>
                 <div className={classes.friendsList}>
                     {userFriends}
