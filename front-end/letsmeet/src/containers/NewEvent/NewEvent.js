@@ -37,12 +37,23 @@ const NewEvent = (props) => {
     const [finalEndTime, setFinalEndTime] = useState(Date())
     const [finalDay, setFinalDay] = useState(Date())
 
+    /**
+     * Handles the date for unregistered users so that the format matches "MM/DD/YYYY"
+     * 
+     * @param {*} date 
+     * @param {*} dateString 
+     */
     function handleFinalDate(date, dateString) {
         setFinalDate(date.format('LL'))
         setFinalDay(moment(dateString).format('dddd'))
         console.log(date)
     }
 
+    /**
+     * Handles time for unregistered users so that the format matches "h:mm A"
+     * 
+     * @param {*} date 
+     */
     function handleFinalTime(date) {
         setFinalStartTime(date[0].format('LT'))
         setFinalEndTime(date[1].format('LT'))
@@ -67,7 +78,7 @@ const NewEvent = (props) => {
         console.log(e)
     }
 
-    // when clicking submit
+    // When clicking submit
     function handleSubmit(e) {
         e.preventDefault()
     }
@@ -82,7 +93,7 @@ const NewEvent = (props) => {
 
     const [url, setUrl] = useState("");
 
-    let handleOk = () => {
+    let handleOk = () => { // Handles when 'OK' button is clicked on the pop-up modal
         setIsModalVisible(false);
         window.location.assign('/');
     }
@@ -103,18 +114,25 @@ const NewEvent = (props) => {
             })
       }, []);
 
-    //JOANNE: i did JSON.stringify here bc i want to store the entire friend object as the value and React won't let me do that unless I pass it in as a JSON string...rude
+    // Store the entire friend object as the value
     let friendsList = profileState.friends.map((friend, index) => (
         <Option key={index} value={JSON.stringify(friend)}>{friend.name}</Option>
     ))
 
-    const [newCreatedEvent, setNewCreatedEvent] = useState({
+    // For newly created event
+    const [newCreatedEvent, setNewCreatedEvent] = useState({ 
         title: "",
         eventLocation: "",
         description: "",
         invitees: []
     })
 
+    /**
+     * Once form is finished and submitted, the event is pushed to the backend
+     * 
+     * @param {*} param 
+     * @returns 
+     */
     let sendToBackend = param => e => {
         const inviteesList = (param.getFieldValue('Invited Friends')) ? param.getFieldValue('Invited Friends') : [];
 
@@ -128,8 +146,7 @@ const NewEvent = (props) => {
                 creator: profileState.name,
                 creatorID: profileState._id
             }))
-        }
-        else {
+        } else {
             setNewCreatedEvent(prevState => ({
                 ...prevState,
                 title: param.getFieldValue('Event Title'),
@@ -142,7 +159,6 @@ const NewEvent = (props) => {
         let inviteesCopy = [];
         if (inviteesList.length > 0) {
             inviteesList.map((invitee) => {
-                //JOANNE: i am undoing the converting to JSON string that i did earlier by using JSON.parse
                 inviteesCopy.push(JSON.parse(invitee));
             })
         }

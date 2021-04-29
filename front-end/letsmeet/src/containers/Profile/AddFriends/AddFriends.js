@@ -49,6 +49,7 @@ const AddFriends = (props) => {
 
     /**
      * Called when searching items (onSearch)
+     * 
      * @param {*} e 
      */
     const handleChange = e => {
@@ -127,6 +128,13 @@ const AddFriends = (props) => {
 
     const userFriends = user.friends.map(i => <div key={i.id}> {i.name}</div>);
 
+    /**
+     * Called when remove friend button is clicked; removes friends from friend list 
+     * in both users associated
+     * 
+     * @param {*} param 
+     * @returns 
+     */
     let removeFriend = param => e => {
         setRemoveButtonText("Removed")
         setDisabled(true)
