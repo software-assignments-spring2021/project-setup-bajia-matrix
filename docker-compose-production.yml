@@ -1,9 +1,8 @@
 version: "3"
 services:
     react-client:
-        image: react-client-production
+        image: react-client-production:${ENV}
         restart: unless-stopped # if app exits, docker will restart
-        stdin_open: true
         ports:
             - "80:80"
             - "443:443"
@@ -12,6 +11,7 @@ services:
     express-server:
         image: express-server
         restart: unless-stopped
+        env_file: ./back-end/letsmeet/config/${ENV}.env
         ports:
             - "4000:4000"
         networks:

@@ -20,9 +20,6 @@ services:
             - letsmeet-network
         depends_on:
             - mongo
-        # env_file: ./back-end/letsmeet/.env
-        # environment:
-        #     - NODE_ENV=development
         volumes:
             - ./back-end/letsmeet/:usr/src/app 
             - /usr/src/app/node_modules
