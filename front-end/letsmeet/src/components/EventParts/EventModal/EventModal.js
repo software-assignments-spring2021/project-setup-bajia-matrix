@@ -10,18 +10,22 @@ import classes from "./EventModal.module.css";
 import EventModalTimes from "../EventModalTimes/EventModalTimes";
 
 /* 
-  This component ...TODO.
+  This component displays the following modals associated with the event page:
+    - Withdraw from Event modal
+    - Generate Event URL modal
+    - Choose Final Time modal
+    - Cancel Event modal
 
   Props: 
-    - show: TODO
-    - close: TODO
-    - role: TODO
-    - type: TODO
-    - delete: TODO
-    - url: TODO
-    - suggestedTimes: TODO
-    - onChecked: TODO
-    - handleFinal: TODO
+    - show: state variable that displays the Withdraw from Event modal when true
+    - close: state variable that hides the Withdraw from Event modal when true
+    - role: state variable that determines whether current user is attendee or creator
+    - type: state variable that determins the specific modal to display
+    - delete: function that deletes the event or removes user from event attendee list 
+    - url: state variable that contains the current event's url
+    - suggestedTimes: state variable that contains the current event's suggested final times
+    - onChecked: function that handles when user checks a suggested final time
+    - handleFinal: function that update the event's time to the user selected final time
 */
 
 const handleCopy = (e, url) => {

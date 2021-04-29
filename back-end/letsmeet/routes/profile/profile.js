@@ -123,7 +123,6 @@ router.post("/avis", (req, res, next) => {
     })
 })
 
-// to get all event attendees' avis
 router.post("/sendmail", (req, res, next) => {
     /**
      * Sends email when invite button is clicked via nodemailer
