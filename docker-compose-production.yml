@@ -1,0 +1,24 @@
+version: "3"
+services:
+    react-client:
+        image: react-client-production
+        restart: unless-stopped # if app exits, docker will restart
+        stdin_open: true
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - letsmeet-network
+    express-server:
+        image: express-server
+        restart: unless-stopped
+        ports:
+            - "4000:4000"
+        networks:
+            - letsmeet-network
+networks:
+    letsmeet-network:
+        driver: bridge
+volumes:
+    mongo-data:
+        driver: local

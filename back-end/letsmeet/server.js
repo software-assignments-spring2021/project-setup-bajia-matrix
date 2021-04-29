@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const port = 4000;
 
 // setup mongodb
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@letsmeetcluster.bgycl.mongodb.net/LetsMeetDB?retryWrites=true&w=majority`;
+const uri = $process.env.MONGO_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
     .then(resolved => console.log("Successfully connected with MongoDB"))
     .catch(err => console.log(err));
