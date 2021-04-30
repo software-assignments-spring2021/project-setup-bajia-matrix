@@ -18,22 +18,23 @@ services:
             - "4000:4000"
         networks:
             - letsmeet-network
-        depends_on:
-            - mongo
+        env_file: ./back-end/letsmeet/config/dev.env
+        # depends_on:
+        #     - mongo
         volumes:
             - ./back-end/letsmeet/:usr/src/app 
             - /usr/src/app/node_modules
-    mongo:
-        image: mongo
-        port:
-            - "27017:27017"
-        networks:
-            - letsmeet-network
-        volumes:
-            - mongo-data:/data/db
+    # mongo:
+    #     image: mongo
+    #     port:
+    #         - "27017:27017"
+    #     networks:
+    #         - letsmeet-network
+    #     volumes:
+    #         - mongo-data:/data/db
 networks:
     letsmeet-network:
         driver: bridge
-volumes:
-    mongo-data:
-        driver: local
+# volumes:
+#     mongo-data:
+#         driver: local
