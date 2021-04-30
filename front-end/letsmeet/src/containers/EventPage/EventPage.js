@@ -119,7 +119,6 @@ const EventPage = (props) => {
             name: state.unverifiedInput.current.value,
             eventID: event._id
           };
-          console.log(attendeesCopy);
 
           // check if unverified email is correct email format
           const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
@@ -218,7 +217,6 @@ const EventPage = (props) => {
 
   const handleCloseSuggested = (e) => setShowSuggested(false);
   const handleFinal = () => {
-    console.log("chosen time: ", chosenTime);
     if (chosenTime.date !== "test" && chosenTime.date !== "") {
       setEvent((prevState) => ({
         ...prevState,
@@ -300,6 +298,13 @@ const EventPage = (props) => {
       .catch((error) => {
         console.log(error);
       });
+    axios.post("/events/emailInvitee", {invitees: invitees, creator: event.creator})
+      .then((response) => {
+        console.log('successfully sent email to invitee(s)', response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // for populating list of friends to invite to event (exclude any friends already attending or invited)
@@ -322,7 +327,10 @@ const EventPage = (props) => {
             }
           })
           if (eventInvitees === false && eventAttendees === false) {
-            test.push(friend);
+            let duplicate = test.some(test => test.id === friend.id);
+            if (!duplicate) {
+              test.push(friend);
+            }
           }
         })
         friendsList = test.map(test => (
@@ -335,7 +343,6 @@ const EventPage = (props) => {
       friendsList: friendsList,
     }));
   }, [user.friends, event.title, event.attendees, event.invitees]);
-
 
   useEffect(() => {
     // get currently logged in user info
@@ -514,7 +521,7 @@ const EventPage = (props) => {
         event: false,
         user: false,
       }));
-    } // TODO: check warnings
+    }
   }, [state]);
 
   if (state.redirect === true) {
