@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const port = 4000;
 
 // setup mongodb
-const uri = $process.env.MONGO_URI;
+const uri = process.env.MONGO_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
     .then(resolved => console.log("Successfully connected with MongoDB"))
     .catch(err => console.log(err));

@@ -1,7 +1,7 @@
 http://localhost:80 {
     root * /srv
     route {
-        reverse_proxy /api* express-server:4000
+        reverse_proxy /api* express-server:4000 # reverse proxy sets up so you can do localhost:80/api instead of express-server:4000
         try_files {path} {path}/ /index.html
         file_server
     }

@@ -12,5 +12,5 @@ build-production:
 	docker build \
 		-t react-client-production:production \
 		--build-arg CADDYFILE=Caddyfile.production \
-		--build-arg BASE_URL=https://letsmeet.com/api \
+		--build-arg BASE_URL=https://159.65.191.151/api \
 		-f Dockerfile.production .

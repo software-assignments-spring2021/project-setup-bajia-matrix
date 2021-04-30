@@ -8,6 +8,9 @@ services:
             - "443:443"
         networks:
             - letsmeet-network
+        volumes:
+            - caddy-data:/data
+            - caddy-config:/config
     express-server:
         image: express-server
         restart: unless-stopped
@@ -20,5 +23,9 @@ networks:
     letsmeet-network:
         driver: bridge
 volumes:
-    mongo-data:
+    # mongo-data:
+    #     driver: local
+    caddy-data:
+        driver: local
+    caddy-config:
         driver: local
