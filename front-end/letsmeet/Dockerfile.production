@@ -16,11 +16,11 @@ COPY . .
 
 ARG BASEURL
 ENV REACT_CLIENT_BASE_URL=${BASE_URL}
-RUN npm build
+RUN npm run build
 
 ### Stage 2: Copy into secondary Caddy stage
 # Caddy sets up https automatically
-From caddy:2.1.1-alpine
+FROM caddy:2.1.1-alpine
 
 # ARG is only available at build time, ENV is available to the entire container
 ARG CADDYFILE
