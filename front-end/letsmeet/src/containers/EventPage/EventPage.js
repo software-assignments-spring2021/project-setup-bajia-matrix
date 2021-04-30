@@ -265,9 +265,11 @@ const EventPage = (props) => {
     // extract names of invitees
     let invitees = [...event.invitees];
     let inviteeNames = [];
+    let emailInvitees = [];
     values.friends.forEach(friend => {
       invitees.push(JSON.parse(friend));
       inviteeNames.push(JSON.parse(friend).name);
+      emailInvitees.push(JSON.parse(friend));
     })
 
     // update friends list so that friend that was just invited does not appear
@@ -298,7 +300,7 @@ const EventPage = (props) => {
       .catch((error) => {
         console.log(error);
       });
-    axios.post("/events/emailInvitee", {invitees: invitees, creator: event.creator})
+    axios.post("/events/emailInvitee", {invitees: emailInvitees, creator: event.creator})
       .then((response) => {
         console.log('successfully sent email to invitee(s)', response);
       })

@@ -293,14 +293,14 @@ router.delete("/", (req, res, next) => {
                 id: userId 
             } 
         }})
-        .then(response => {
-            res.send("200 OK: Successfully removed user from invitee list");
-        })
-        .catch(error => {
-            console.log("ERROR: Unable to find and delete invitee");
-            console.log(error);
-            res.status(500).json({message: "ERROR 500: Issue deleting invitee"});
-        });
+            .then(response => {
+                res.send("200 OK: Successfully removed user from invitee list");
+            })
+            .catch(error => {
+                console.log("ERROR: Unable to find and delete invitee");
+                console.log(error);
+                res.status(500).json({message: "ERROR 500: Issue deleting invitee"});
+            });
     }
     else {
         const eventid = req.query.eventid;
@@ -341,13 +341,13 @@ router.post("/emailInvitee", (req, res, next) => {
             to: invitee.email,
             subject: req.body.creator + " wants you at their event!",
             generateTextFromHTML: true,
+            // TODO: update links
             html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
                         <img style="width: 100%; margin: 0 auto;" src="cid:LetsMeetLogo" /> \
                         <h1 style="color: #1d38ed;">Hey ' + invitee.name + ',</h1> \
                         <p style="font-size: 18px;">You\'ve been invited by ' + req.body.creator + ' to their event. <a style="color: #939cf1;" href="http://localhost:3000/login">Log in</a> now to either accept (or deny) their unrequited invite!</p> \
                         <p style="font-size: 18px;">Love,</p> \
                         <p style="font-size: 18px;">The Let\'s Meet Team</p> \
-                        <p>&nbsp;</p> \
                     </div>',
             attachments: [{
                     filename: 'Logo.png',
@@ -357,11 +357,61 @@ router.post("/emailInvitee", (req, res, next) => {
         }, (err, data) => {
             if (err) {
                 console.log(err);
-                res.status(500).send("ERROR 550: Issue sending email to " + invitee.name);
+                res.status(550).send("ERROR 550: Issue sending email to " + invitee.name);
             } else {
                 console.log("Email sent to " + invitee.name);
             }
         })
+    })
+    res.status(200).send("Email successfully sent");
+})
+
+//send email to creator when an invitee accepts the event
+router.post("/emailCreator", (req, res, next) => {
+    /**
+     * Sends email when submit button is clicked on accept invite page via nodemailer
+     */
+    const nodemailer = require("nodemailer")
+
+
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            type: "login",
+            user: process.env.GMAIL, 
+            pass: process.env.GMAIL_PASSWORD
+        }
+    })
+
+    let imagePath = path.join(__dirname, '/Logo.png');
+
+    transporter.sendMail({
+        from: process.env.GMAIL, 
+        to: req.body.creatorEmail,
+        subject: req.body.invitee.name.split(' ')[0] + " Accepted Your Event Invitation",
+        generateTextFromHTML: true,
+        // TODO: update links
+        html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
+                    <img style="width: 100%; margin: 0 auto;" src="cid:LetsMeetLogo" /> \
+                    <h1 style="color: #1d38ed;">Hey ' + req.body.event.creator.split(' ')[0] + ',</h1> \
+                    <p style="font-size: 18px;">' + req.body.invitee.name + ' has accepted your event invitation for ' + req.body.event.title + '. \
+                    <a style="color: #939cf1;" href="http://localhost:3000/event/' + req.body.event._id +'">Click here to view your updated attendees list.</p> \
+                    <p style="font-size: 18px;">Love,</p> \
+                    <p style="font-size: 18px;">The Let\'s Meet Team</p> \
+                </div> \
+                <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Log In to see all your events: </span><a style="color: #939cf1;" href="http://localhost:3000/signin">http://localhost:3000/signin</a></p>',
+        attachments: [{
+                filename: 'Logo.png',
+                path: imagePath,
+                cid: 'LetsMeetLogo'
+            }]
+    }, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.status(550).send("ERROR 550: Issue sending email to " + req.body.creatorEmail);
+        } else {
+            console.log("Email sent to " + req.body.creatorEmail);
+        }
     })
     res.status(200).send("Email successfully sent");
 })
