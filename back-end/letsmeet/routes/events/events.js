@@ -339,7 +339,6 @@ router.post("/emailInvitee", (req, res, next) => {
         transporter.sendMail({
             from: process.env.GMAIL, 
             to: invitee.email,
-            to: "rimef@bxscience.edu",
             subject: req.body.creator + " wants you at their event!",
             generateTextFromHTML: true,
             // TODO: update links
