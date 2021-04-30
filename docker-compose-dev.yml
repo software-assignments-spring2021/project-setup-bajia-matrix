@@ -2,10 +2,17 @@ version: "3"
 services:
     react-client:
         image: react-client
-        build: ./front-end/letsmeet
+        build: 
+            context: ./front-end/letsmeet
+            dockerfile: ./front-end/letsmeet/Dockerfile
+            args: 
+                API_BASE_URL: "http://localhost:4000"
         stdin_open: true
         ports:
             - "3000:3000"
+        env_file: ./front-end/letsmeet/config/dev.env
+        environment:
+            - "API_BASE_URL=http://localhost:4000"
         # networks:
         #     - letsmeet-network
         volumes:
