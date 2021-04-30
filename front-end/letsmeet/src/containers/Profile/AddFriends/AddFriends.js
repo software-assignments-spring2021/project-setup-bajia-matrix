@@ -139,7 +139,21 @@ const AddFriends = (props) => {
         setRemoveButtonText("Removed")
         setDisabled(true)
 
-        axios.delete("/profile/removefriend?userAccount=" + param + "&friendAccount=" + user._id)
+        // Update friends list immutably
+        const userCopy = { ...user };
+        const friendsList = [ ...userCopy.friends ];
+
+        const oldFriend = { // Friend to be removed
+            id: param._id,
+            name: param.name,
+            email: param.email
+        }
+        
+        friendsList.splice(friendsList.indexOf(oldFriend), 1)
+        userCopy.friends = friendsList
+        setUser(userCopy)
+        
+        axios.delete("/profile/removefriend?userAccount=" + user._id + "&friendAccount=" + param)
             .then(response => {
                 console.log(response.data);
             })

@@ -293,14 +293,14 @@ router.delete("/", (req, res, next) => {
                 id: userId 
             } 
         }})
-        .then(response => {
-            res.send("200 OK: Successfully removed user from invitee list");
-        })
-        .catch(error => {
-            console.log("ERROR: Unable to find and delete invitee");
-            console.log(error);
-            res.status(500).json({message: "ERROR 500: Issue deleting invitee"});
-        });
+            .then(response => {
+                res.send("200 OK: Successfully removed user from invitee list");
+            })
+            .catch(error => {
+                console.log("ERROR: Unable to find and delete invitee");
+                console.log(error);
+                res.status(500).json({message: "ERROR 500: Issue deleting invitee"});
+            });
     }
     else {
         const eventid = req.query.eventid;

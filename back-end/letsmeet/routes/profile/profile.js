@@ -188,29 +188,27 @@ router.delete("/removefriend", (req, res, next) => {
             id: friendAccount
         }
     }})
-    .then(user => {
-        res.send("200 OK: Successfully removed user from friend list");
-    })
-    .catch(error => {
-        console.log("ERROR: Unable to retrieve user");
-        console.log(error);
-        res.status(500).send("ERROR 500: Issue finding user");
-    });
-    
-    // Remove current user from friend's friend list as well
-    User.findByIdAndUpdate(friendAccount, {$pull : {
-        friends : {
-            id: userAccount
-        }
-    }})
-    .then(user => {
-        res.send("200 OK: Successfully removed user from friend list");
-    })
-    .catch(error => {
-        console.log("ERROR: Unable to retrieve user");
-        console.log(error);
-        res.status(500).send("ERROR 500: Issue finding user");
-    });
+        .then(user => {
+            // Remove current user from friend's friend list as well
+            User.findByIdAndUpdate(friendAccount, {$pull : {
+                friends : {
+                    id: userAccount
+                }
+            }})
+                .then(user => {
+                    res.send("200 OK: Successfully removed each other from friend's list");
+                })
+                .catch(error => {
+                    console.log("ERROR: Unable to retrieve friend");
+                    console.log(error);
+                    res.status(500).send("ERROR 500: Issue finding friend");
+                });
+        })
+        .catch(error => {
+            console.log("ERROR: Unable to retrieve user");
+            console.log(error);
+            res.status(500).send("ERROR 500: Issue finding user");
+        });
 })
 
 module.exports = router;
