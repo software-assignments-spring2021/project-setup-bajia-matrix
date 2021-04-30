@@ -49,11 +49,13 @@ const AddFriends = (props) => {
 
     /**
      * Called when searching items (onSearch)
+     * 
      * @param {*} e 
      */
     const handleChange = e => {
+        setAddButtonText("Add Friend")
+        setRemoveButtonText("Remove Friend")
         const lowercaseSearchTerm = e.toLowerCase()
-        setButtonText("Add Friend")
         setInviteText("Invite")
         setDisabled(false)
         setIsFriend(false)
@@ -121,10 +123,31 @@ const AddFriends = (props) => {
         }
     }
 
-    // Add friend button
-    const [buttonText, setButtonText] = useState("Add Friend")
-    const changeText = (text) => setButtonText(text)
-    const userFriends = user.friends.map(i => <div key={i.id}> {i.name} </div>);
+    const [addButtonText, setAddButtonText] = useState("Add Friend")
+    const [removeButtonText, setRemoveButtonText] = useState("Remove Friend")
+
+    const userFriends = user.friends.map(i => <div key={i.id}> {i.name}</div>);
+
+    /**
+     * Called when remove friend button is clicked; removes friends from friend list 
+     * in both users associated
+     * 
+     * @param {*} param 
+     * @returns 
+     */
+    let removeFriend = param => e => {
+        setRemoveButtonText("Removed")
+        setDisabled(true)
+        
+        axios.delete("/profile/removefriend?userAccount=" + user._id + "&friendAccount=" + param)
+            .then(response => {
+                console.log(response.data);
+                window.location.assign("/editfriends")
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            })
+    }
 
     // Invite button
     const [inviteText, setInviteText] = useState("Invite")
@@ -135,7 +158,7 @@ const AddFriends = (props) => {
      * @param {*} param 
      */
     let addFriend = param => e => {
-        changeText("Added")
+        setAddButtonText("Added")
         setDisabled(true);
         
         // Update friends list immutably
@@ -188,6 +211,7 @@ const AddFriends = (props) => {
 
     function sendEmail() {
         // Send email
+        setDisabled(true)
         axios.post("/profile/sendmail?searchTerm=" + searchTerm + "&name=" + user.name)
             .then(response => {
                 console.log(response.data);
@@ -217,7 +241,7 @@ const AddFriends = (props) => {
             <div className={classes.container}>
                 <div>
                     {/* <Divider orientation="center"></Divider> */}
-                    <p>Search for a user by email address</p>
+                    <p>Search for a user by email address to add or remove friend.</p>
                     <Search
                         name="search"
                         placeholder="Add user by email"
@@ -235,7 +259,10 @@ const AddFriends = (props) => {
                                     <div key={i} className={classes.nameContainer}>
                                         <div className={classes.nameDisplay}> {d.name} <br/>
                                             {!isFriend &&
-                                                <button size="small" type="primary" className={classes.addButton} disabled={disabled} onClick={addFriend(d)}>{buttonText}</button>
+                                                <button size="small" type="primary" className={classes.addButton} disabled={disabled} onClick={addFriend(d)}>{addButtonText}</button>
+                                            }
+                                            {isFriend &&
+                                                <button size="small" type="primary" className={classes.removeButton} disabled={disabled} onClick={removeFriend(d.id)}>{removeButtonText}</button>
                                             }
                                             <div>{d.email}</div>
                                             <br/>                      
@@ -250,7 +277,7 @@ const AddFriends = (props) => {
                                     description={description}
                                     type="error"
                                     action={
-                                        <Button size="small" danger className={classes.inviteButton} onClick={sendEmail}>
+                                        <Button size="small" danger className={classes.inviteButton} disabled={disabled} onClick={sendEmail}>
                                           {inviteText}
                                         </Button>
                                     }

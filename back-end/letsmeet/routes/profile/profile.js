@@ -7,6 +7,7 @@ const path = require("path");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 const User = require("../../models/User");
+const { remove } = require("../../models/User");
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -123,6 +124,7 @@ router.post("/avis", (req, res, next) => {
     })
 })
 
+// Use to send email invites
 router.post("/sendmail", (req, res, next) => {
     /**
      * Sends email when invite button is clicked via nodemailer
@@ -175,6 +177,40 @@ router.post("/sendmail", (req, res, next) => {
             res.status(200).send("Email successfully sent");
         }
     })
+})
+
+// Remove a friend from friends list of user and friend
+router.delete("/removefriend", (req, res, next) => {
+    const userAccount = req.query.userAccount
+    const friendAccount = req.query.friendAccount
+
+    // Remove friend from current user's friend list
+    User.findByIdAndUpdate(userAccount, {$pull: {
+        friends : {
+            id: friendAccount
+        }
+    }})
+        .then(user => {
+            // Remove current user from friend's friend list as well
+            User.findByIdAndUpdate(friendAccount, {$pull : {
+                friends : {
+                    id: userAccount
+                }
+            }})
+                .then(user => {
+                    res.send("200 OK: Successfully removed each other from friend's list");
+                })
+                .catch(error => {
+                    console.log("ERROR: Unable to retrieve friend");
+                    console.log(error);
+                    res.status(500).send("ERROR 500: Issue finding friend");
+                });
+        })
+        .catch(error => {
+            console.log("ERROR: Unable to retrieve user");
+            console.log(error);
+            res.status(500).send("ERROR 500: Issue finding user");
+        });
 })
 
 module.exports = router;
