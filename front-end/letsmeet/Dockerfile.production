@@ -14,7 +14,7 @@ RUN npm install --silent
 # Copy local files
 COPY . .
 
-ARG BASEURL
+ARG BASE_URL
 ENV REACT_CLIENT_BASE_URL=${BASE_URL}
 RUN npm run build
 

@@ -13,8 +13,8 @@ RUN npm install --silent
 # Copy local files
 COPY . .
 
-ENV API_BASE_URL="http://localhost:4000"
-# ENV PUBLIC_URL="http://localhost:4000"
+ENV REACT_APP_BASE_URL="http://localhost:4000"
+
 EXPOSE 3000
 
 CMD ["npm", "start"]
