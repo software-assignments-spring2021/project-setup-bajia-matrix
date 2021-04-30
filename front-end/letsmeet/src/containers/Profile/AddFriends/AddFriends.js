@@ -138,24 +138,11 @@ const AddFriends = (props) => {
     let removeFriend = param => e => {
         setRemoveButtonText("Removed")
         setDisabled(true)
-
-        // Update friends list immutably
-        const userCopy = { ...user };
-        const friendsList = [ ...userCopy.friends ];
-
-        const oldFriend = { // Friend to be removed
-            id: param._id,
-            name: param.name,
-            email: param.email
-        }
-        
-        friendsList.splice(friendsList.indexOf(oldFriend), 1)
-        userCopy.friends = friendsList
-        setUser(userCopy)
         
         axios.delete("/profile/removefriend?userAccount=" + user._id + "&friendAccount=" + param)
             .then(response => {
                 console.log(response.data);
+                window.location.assign("/editfriends")
             })
             .catch(error => {
                 console.log(error.response.data);
@@ -254,7 +241,7 @@ const AddFriends = (props) => {
             <div className={classes.container}>
                 <div>
                     {/* <Divider orientation="center"></Divider> */}
-                    <p>Search for a user by email address to add or remove.</p>
+                    <p>Search for a user by email address to add or remove friend.</p>
                     <Search
                         name="search"
                         placeholder="Add user by email"

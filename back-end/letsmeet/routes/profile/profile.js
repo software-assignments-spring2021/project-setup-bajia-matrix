@@ -124,6 +124,7 @@ router.post("/avis", (req, res, next) => {
     })
 })
 
+// Use to send email invites
 router.post("/sendmail", (req, res, next) => {
     /**
      * Sends email when invite button is clicked via nodemailer
@@ -178,6 +179,7 @@ router.post("/sendmail", (req, res, next) => {
     })
 })
 
+// Remove a friend from friends list of user and friend
 router.delete("/removefriend", (req, res, next) => {
     const userAccount = req.query.userAccount
     const friendAccount = req.query.friendAccount

@@ -150,7 +150,6 @@ const AcceptInvite = (props) => {
                     onFinish={goHome}
                 >
                 
-                    {/* TODO: import and display event details */}
                     <Form.Item className={classes.eventDetails}>
                         <EventTitle
                             title={event.title}
