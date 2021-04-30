@@ -181,6 +181,16 @@ const NewEvent = (props) => {
                 // TODO: Change to website
                 let eventURL = "http://localhost:3000/event/" + response.data.newEventURL
                 setUrl(eventURL)
+                // After new event is created, send invitation emails to invitees
+                if (props.isAuthenticated) {
+                    axios.post("/events/emailInvitee", {invitees: newEventCopy.invitees, creator: newEventCopy.creator})
+                        .then((response) => {
+                            console.log('successfully sent email to invitee(s)', response);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
             })
             .catch(error => {
                 console.log(error)
