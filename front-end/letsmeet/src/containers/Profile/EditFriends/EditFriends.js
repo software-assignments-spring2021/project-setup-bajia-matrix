@@ -4,7 +4,7 @@ import { Alert, Button, Divider, Input } from 'antd';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // import custom files and components
-import classes from './AddFriends.module.css';
+import classes from './EditFriends.module.css';
 import axios from '../../../axios';
 
 require('dotenv').config()
@@ -18,7 +18,7 @@ require('dotenv').config()
         This component does not accept any custom props
 */
 
-const AddFriends = (props) => {
+const EditFriends = (props) => {
     
     const [data, setData] = useState() // References all the registered users
     const [user, setUser] = useState({
@@ -296,4 +296,4 @@ const AddFriends = (props) => {
     )
 }
 
-export default AddFriends;
+export default EditFriends;
