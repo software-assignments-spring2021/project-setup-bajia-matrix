@@ -254,7 +254,7 @@ const AddFriends = (props) => {
             <div className={classes.container}>
                 <div>
                     {/* <Divider orientation="center"></Divider> */}
-                    <p>Search for a user by email address</p>
+                    <p>Search for a user by email address to add or remove.</p>
                     <Search
                         name="search"
                         placeholder="Add user by email"
