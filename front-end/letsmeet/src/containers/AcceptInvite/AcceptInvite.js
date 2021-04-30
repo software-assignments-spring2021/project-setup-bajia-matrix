@@ -81,11 +81,36 @@ const AcceptInvite = (props) => {
         axios.delete("/events?pending=true&userid=" + user._id + "&eventid=" + event._id)
             .then(response => {
                 console.log(response.data)
-                window.location.assign('/')
+                // TODO: axios call to email creator
+                console.log(user)
+                console.log(event)
+                // Get creator details
+                axios.get("/profile?userid=" + event.creatorID)
+                    .then(response => {
+                        console.log(response.data)
+                        const creatorEmail = response.data.email
+                        // Send email to creator
+                        emailCreator(creatorEmail)
+                    })
+                    .catch((error) => {
+                        console.log(error.response.data)
+                    });
             })
             .catch(error => {
                 console.log(error.response.data)
             })
+    }
+
+    function emailCreator(e) {
+        console.log(e)
+        axios.post("/events/emailCreator", {invitee: user, event: event, creatorEmail: e})
+            .then((response) => {
+                console.log('Successfully sent email to creator', response);
+                window.location.assign('/')
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     // After clicking submit, reroute back to home page

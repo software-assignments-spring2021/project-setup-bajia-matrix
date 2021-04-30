@@ -151,6 +151,7 @@ router.post("/sendmail", (req, res, next) => {
         subject: req.query.name.split(' ')[0] + " Invites You to Join Let\'s Meet", 
         text: "Hello " + req.query.searchTerm, 
         generateTextFromHTML: true,
+        // TODO: update links
         html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
         <img src="cid:LetsMeetLogo" style="width: 100%; margin: 0 auto;"/> \
         <h1 style="color: #1d38ed;">Hey there!</h1> \
@@ -160,7 +161,6 @@ router.post("/sendmail", (req, res, next) => {
         <p style="font-size: 18px;">Sign up using this link: <a style="color: #939cf1;" href="http://localhost:3000/signup">http://localhost:3000/signup</a></p> \
         <p style="font-size: 18px;">Love,</p> \
         <p style="font-size: 18px;">The Let\'s Meet Team</p> \
-        <p>&nbsp;</p> \
         </div> \
         <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Want to learn more? Visit us at </span><a style="color: #939cf1;" href="http://localhost:3000">http://localhost:3000</a></p>',
         attachments: [{
@@ -171,7 +171,7 @@ router.post("/sendmail", (req, res, next) => {
     }, (err, data) => {
         if (err) {
             console.log(err);
-            res.status(500).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
+            res.status(550).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
         } else {
             console.log("Email sent");
             res.status(200).send("Email successfully sent");
