@@ -103,7 +103,7 @@ const SignUp = (props) => {
 
             const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
             const isValid2 = pattern.test(val);
-            (isValid2) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match!</strong>);
+            (isValid2) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match or weak password!</strong>);
 
 
             const updatedVerifiedPassword = {
