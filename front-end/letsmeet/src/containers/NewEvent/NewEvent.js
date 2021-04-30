@@ -78,11 +78,6 @@ const NewEvent = (props) => {
         console.log(e)
     }
 
-    // When clicking submit
-    function handleSubmit(e) {
-        e.preventDefault()
-    }
-
     // Event pop-up after pressing submit
     const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -220,8 +215,8 @@ const NewEvent = (props) => {
                     }}
                     onValuesChange={onRequiredTypeChange}
                     requiredMark={requiredMark}
-                    submit={handleSubmit}
                     onFinish={sendToBackend(form)}
+                    scrollToFirstError
                 >
                     <Form.Item 
                         label="Event Title" 
