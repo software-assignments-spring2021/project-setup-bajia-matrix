@@ -1,5 +1,12 @@
+# build-dev:
+# 	docker build -t react-client .
 build-dev:
 	docker build -t react-client .
+
+run-dev: 
+	docker run --name react-client -p 3000:3000 \
+		-e "API_BASE_URL=http://localhost:4000" \
+		--rm react-client
 
 build-local:
 	docker build \
