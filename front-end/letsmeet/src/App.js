@@ -4,7 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 // import custom files and components
 import AcceptInvite from './containers/AcceptInvite/AcceptInvite';
-import AddFriends from './containers/Profile/AddFriends/AddFriends';
+import EditFriends from './containers/Profile/EditFriends/EditFriends';
 import EditAvatar from './containers/Profile/EditAvatar/EditAvatar';
 import EditProfile from './containers/Profile/EditProfile/EditProfile';
 import EditSupplies from './containers/EventPage/EventSupplies/EditSupplies/EditSupplies';
@@ -55,7 +55,7 @@ const App = (props) => {
                 <Route path="/event/:id" exact component={() => <EventPage isAuthenticated={isAuthenticated} />} />
                 <Route path="/editsupplies"  component={EditSupplies} />
                 <Route path="/user/newevent" component={() => <NewEvent isAuthenticated={isAuthenticated} />} />
-                <Route path="/editfriends" component={AddFriends} />
+                <Route path="/editfriends" component={EditFriends} />
                 <Route path="/user/acceptinvite" component={AcceptInvite}/>
                 <Route path="/signout" component={SignOut} />
                 <Route path="/editavatar" component={EditAvatar} />

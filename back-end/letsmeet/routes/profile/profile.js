@@ -7,6 +7,7 @@ const path = require("path");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
 const User = require("../../models/User");
+const { remove } = require("../../models/User");
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -123,6 +124,7 @@ router.post("/avis", (req, res, next) => {
     })
 })
 
+// Use to send email invites
 router.post("/sendmail", (req, res, next) => {
     /**
      * Sends email when invite button is clicked via nodemailer
@@ -149,6 +151,7 @@ router.post("/sendmail", (req, res, next) => {
         subject: req.query.name.split(' ')[0] + " Invites You to Join Let\'s Meet", 
         text: "Hello " + req.query.searchTerm, 
         generateTextFromHTML: true,
+        // TODO: update links
         html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
         <img src="cid:LetsMeetLogo" style="width: 100%; margin: 0 auto;"/> \
         <h1 style="color: #1d38ed;">Hey there!</h1> \
@@ -158,7 +161,6 @@ router.post("/sendmail", (req, res, next) => {
         <p style="font-size: 18px;">Sign up using this link: <a style="color: #939cf1;" href="http://localhost:3000/signup">http://localhost:3000/signup</a></p> \
         <p style="font-size: 18px;">Love,</p> \
         <p style="font-size: 18px;">The Let\'s Meet Team</p> \
-        <p>&nbsp;</p> \
         </div> \
         <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Want to learn more? Visit us at </span><a style="color: #939cf1;" href="http://localhost:3000">http://localhost:3000</a></p>',
         attachments: [{
@@ -169,12 +171,46 @@ router.post("/sendmail", (req, res, next) => {
     }, (err, data) => {
         if (err) {
             console.log(err);
-            res.status(500).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
+            res.status(550).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
         } else {
             console.log("Email sent");
             res.status(200).send("Email successfully sent");
         }
     })
+})
+
+// Remove a friend from friends list of user and friend
+router.delete("/removefriend", (req, res, next) => {
+    const userAccount = req.query.userAccount
+    const friendAccount = req.query.friendAccount
+
+    // Remove friend from current user's friend list
+    User.findByIdAndUpdate(userAccount, {$pull: {
+        friends : {
+            id: friendAccount
+        }
+    }})
+        .then(user => {
+            // Remove current user from friend's friend list as well
+            User.findByIdAndUpdate(friendAccount, {$pull : {
+                friends : {
+                    id: userAccount
+                }
+            }})
+                .then(user => {
+                    res.send("200 OK: Successfully removed each other from friend's list");
+                })
+                .catch(error => {
+                    console.log("ERROR: Unable to retrieve friend");
+                    console.log(error);
+                    res.status(500).send("ERROR 500: Issue finding friend");
+                });
+        })
+        .catch(error => {
+            console.log("ERROR: Unable to retrieve user");
+            console.log(error);
+            res.status(500).send("ERROR 500: Issue finding user");
+        });
 })
 
 module.exports = router;

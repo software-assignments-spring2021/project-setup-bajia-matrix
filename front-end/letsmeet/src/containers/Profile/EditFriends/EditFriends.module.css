@@ -84,6 +84,17 @@
     text-overflow: ellipsis;
 }
 
+.removeButton {
+    float: right;
+    font-size: 12px;
+    margin-top: -12px;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: red;
+    color: red;
+    background-color: #fff;
+}
+
 .subtitle {
     font-family: 'Karla', sans-serif;
 }

@@ -1,4 +1,4 @@
-159.65.191.151:443 {
+159.65.191.151:80 {
     root * /srv
     route {
         reverse_proxy /api* express-server:4000

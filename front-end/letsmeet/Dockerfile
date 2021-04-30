@@ -13,7 +13,11 @@ RUN npm install --silent
 # Copy local files
 COPY . .
 
+<<<<<<< HEAD
 ENV REACT_CLIENT_BASE_URL="http://localhost:4000"
+=======
+ENV REACT_APP_BASE_URL="http://localhost:4000"
+>>>>>>> 24d910632228629b23f1e4e005588b98b3ffca89
 
 EXPOSE 3000
 
