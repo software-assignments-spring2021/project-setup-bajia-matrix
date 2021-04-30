@@ -348,7 +348,6 @@ router.post("/emailInvitee", (req, res, next) => {
                         <p style="font-size: 18px;">You\'ve been invited by ' + req.body.creator + ' to their event. <a style="color: #939cf1;" href="http://localhost:3000/login">Log in</a> now to either accept (or deny) their unrequited invite!</p> \
                         <p style="font-size: 18px;">Love,</p> \
                         <p style="font-size: 18px;">The Let\'s Meet Team</p> \
-                        <p>&nbsp;</p> \
                     </div>',
             attachments: [{
                     filename: 'Logo.png',
@@ -370,7 +369,7 @@ router.post("/emailInvitee", (req, res, next) => {
 //send email to creator when an invitee accepts the event
 router.post("/emailCreator", (req, res, next) => {
     /**
-     * Sends email when invite button is clicked via nodemailer
+     * Sends email when submit button is clicked on accept invite page via nodemailer
      */
     const nodemailer = require("nodemailer")
 
