@@ -69,6 +69,9 @@ const SignUp = (props) => {
         let nam = event.target.name;
         let val = event.target.value;
 
+        // 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars
+
+
         if (nam === "password") {
             let isValid = val === authState.verifiedPassword.value;
             (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match!</strong>);
