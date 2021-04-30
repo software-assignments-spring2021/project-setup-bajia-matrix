@@ -76,10 +76,6 @@ const AcceptInvite = (props) => {
         console.log(e)
     }
 
-    function handleSubmit(e) {
-        e.preventDefault()
-    }
-
     function updateInvitee() {
         // Remove user from invitee list
         axios.delete("/events?pending=true&userid=" + user._id + "&eventid=" + event._id)
@@ -146,8 +142,8 @@ const AcceptInvite = (props) => {
                     }}
                     onValuesChange={onRequiredTypeChange}
                     requiredMark={requiredMark}
-                    submit={handleSubmit}
                     onFinish={goHome}
+                    scrollToFirstError
                 >
                 
                     <Form.Item className={classes.eventDetails}>
