@@ -345,7 +345,7 @@ router.post("/emailInvitee", (req, res, next) => {
             html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
                         <img style="width: 100%; margin: 0 auto;" src="cid:LetsMeetLogo" /> \
                         <h1 style="color: #1d38ed;">Hey ' + invitee.name + ',</h1> \
-                        <p style="font-size: 18px;">You\'ve been invited by ' + req.body.creator + ' to their event. <a style="color: #939cf1;" href="http://localhost:3000/login">Log in</a> now to either accept (or deny) their unrequited invite!</p> \
+                        <p style="font-size: 18px;">You\'ve been invited by ' + req.body.creator + ' to their event. <a style="color: #939cf1;" href="http://159.65.191.151/login">Log in</a> now to either accept (or deny) their unrequited invite!</p> \
                         <p style="font-size: 18px;">Love,</p> \
                         <p style="font-size: 18px;">The Let\'s Meet Team</p> \
                     </div>',
@@ -395,11 +395,11 @@ router.post("/emailCreator", (req, res, next) => {
                     <img style="width: 100%; margin: 0 auto;" src="cid:LetsMeetLogo" /> \
                     <h1 style="color: #1d38ed;">Hey ' + req.body.event.creator.split(' ')[0] + ',</h1> \
                     <p style="font-size: 18px;">' + req.body.invitee.name + ' has accepted your event invitation for ' + req.body.event.title + '. \
-                    <a style="color: #939cf1;" href="http://localhost:3000/event/' + req.body.event._id +'">Click here to view your updated attendees list.</p> \
+                    <a style="color: #939cf1;" href="http://159.65.191.151/event/' + req.body.event._id +'">Click here to view your updated attendees list.</p> \
                     <p style="font-size: 18px;">Love,</p> \
                     <p style="font-size: 18px;">The Let\'s Meet Team</p> \
                 </div> \
-                <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Log In to see all your events: </span><a style="color: #939cf1;" href="http://localhost:3000/signin">http://localhost:3000/signin</a></p>',
+                <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Log In to see all your events: </span><a style="color: #939cf1;" href="http://159.65.191.151/signin">http://159.65.191.151/signin</a></p>',
         attachments: [{
                 filename: 'Logo.png',
                 path: imagePath,

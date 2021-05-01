@@ -179,7 +179,7 @@ const NewEvent = (props) => {
                 console.log(response)
                 console.log(response.data.newEventURL)
                 // TODO: Change to website
-                let eventURL = "http://localhost:3000/event/" + response.data.newEventURL
+                let eventURL = process.env.REACT_APP_BASE_URL.replaceAll(":4000", "") + "/event/" + response.data.newEventURL
                 setUrl(eventURL)
                 // After new event is created, send invitation emails to invitees
                 if (props.isAuthenticated) {
@@ -279,6 +279,7 @@ const NewEvent = (props) => {
                                 onChange={handleFinalDate} 
                                 format="MM/DD/YYYY" 
                                 allowClear={false}
+                                inputReadOnly={true}
                             />
                         </Form.Item>
                         <Form.Item
@@ -290,6 +291,7 @@ const NewEvent = (props) => {
                                 format="h:mm A" use12Hours 
                                 allowClear={false}
                                 minuteStep={30}
+                                inputReadOnly={true}
                             />
                         </Form.Item>
                     </>}
@@ -341,7 +343,7 @@ const NewEvent = (props) => {
                                 },
                             ]}
                         >
-                            <DatePicker format={dateFormat} onChange={onChange} allowClear={false}/>
+                            <DatePicker format={dateFormat} onChange={onChange} allowClear={false} inputReadOnly={true}/>
                         </Form.Item>
                         <Form.Item
                             name="calendar select"

@@ -158,11 +158,11 @@ router.post("/sendmail", (req, res, next) => {
         <p style="font-size: 18px;">You\'ve been invited by ' + req.query.name + ' to join Let\'s Meet! \
         Let\'s Meet is a web application designed to help people like you easily coordinate and plan out events. \
         Join us and start creating, accepting, and scheduling events today!</p> \
-        <p style="font-size: 18px;">Sign up using this link: <a style="color: #939cf1;" href="http://localhost:3000/signup">http://localhost:3000/signup</a></p> \
+        <p style="font-size: 18px;">Sign up using this link: <a style="color: #939cf1;" href="http://159.65.191.151/signup">http://159.65.191.151/signup</a></p> \
         <p style="font-size: 18px;">Love,</p> \
         <p style="font-size: 18px;">The Let\'s Meet Team</p> \
         </div> \
-        <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Want to learn more? Visit us at </span><a style="color: #939cf1;" href="http://localhost:3000">http://localhost:3000</a></p>',
+        <p style="font-size: 12px; text-align: center;"><span style="color: #808080;">Want to learn more? Visit us at </span><a style="color: #939cf1;" href="http://159.65.191.151">http://159.65.191.151</a></p>',
         attachments: [{
                 filename: 'Logo.png',
                 path: imagePath,

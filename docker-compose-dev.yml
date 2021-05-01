@@ -3,19 +3,9 @@ services:
     react-client:
         image: react-client
         build: ./front-end/letsmeet
-        # build: 
-        #     context: ./front-end/letsmeet
-        #     dockerfile: ./front-end/letsmeet/Dockerfile
-        #     args: 
-        #         API_BASE_URL: "http://localhost:4000"
         stdin_open: true
         ports:
             - "3000:3000"
-        # env_file: ./front-end/letsmeet/config/dev.env
-        # environment:
-        #     - "API_BASE_URL=http://localhost:4000"
-        # networks:
-        #     - letsmeet-network
         volumes:
             - ./front-end/letsmeet/:/usr/src/app # mounts local directory so any code changes is reflected without having to rebuild
             - /usr/src/app/node_modules # tells docker to ignore local node_modules
@@ -24,26 +14,8 @@ services:
         build: ./back-end/letsmeet
         ports:
             - "4000:4000"
-        # networks:
-        #     - letsmeet-network
         env_file: ./back-end/letsmeet/config/dev.env
-        # depends_on:
-        #     - mongo
         volumes:
             - ./back-end/letsmeet/:/usr/src/app 
             - /usr/src/app/node_modules
-        # command: /usr/src/app/node_modules/.bin/nodemon server.js
-    # mongo:
-    #     image: mongo
-    #     port:
-    #         - "27017:27017"
-    #     networks:
-    #         - letsmeet-network
-    #     volumes:
-    #         - mongo-data:/data/db
-# networks:
-#     letsmeet-network:
-#         driver: bridge
-# volumes:
-#     mongo-data:
-#         driver: local
+        
