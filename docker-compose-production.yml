@@ -1,0 +1,29 @@
+version: "3"
+services:
+    react-client:
+        image: react-client-production:${ENV}
+        restart: unless-stopped # if app exits, docker will restart
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - letsmeet-network
+        volumes:
+            - caddy-data:/data
+            - caddy-config:/config
+    express-server:
+        image: express-server
+        restart: unless-stopped
+        env_file: ./back-end/letsmeet/config/${ENV}.env
+        ports:
+            - "4000:4000"
+        networks:
+            - letsmeet-network
+networks:
+    letsmeet-network:
+        driver: bridge
+volumes:
+    caddy-data:
+        driver: local
+    caddy-config:
+        driver: local

@@ -1,7 +1,8 @@
 .Card {
     text-align: center;
     background-color: #dce5e2;
-    width: 50%;
+    width: 75%;
+    max-width: 500px;
     border: thin solid #d2dad9; /* width, style, color */
     border-radius: 25px; /* rounded borders */
     display: flex;

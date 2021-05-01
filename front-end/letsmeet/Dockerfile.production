@@ -1,0 +1,33 @@
+# Dockerfile for React client: will build the client app TODO...
+
+### Stage 1: dependencies and build app
+FROM node:14.7-alpine AS builder
+
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json first for caching purposes
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --silent
+
+# Copy local files
+COPY . .
+
+ARG BASE_URL
+ENV REACT_APP_BASE_URL=${BASE_URL}
+RUN npm run build
+
+### Stage 2: Copy into secondary Caddy stage
+# Caddy sets up https automatically
+FROM caddy:2.1.1-alpine
+
+# ARG is only available at build time, ENV is available to the entire container
+ARG CADDYFILE
+COPY ${CADDYFILE} /etc/caddy/Caddyfile
+
+# Copy build files to /srv (root directory)
+COPY --from=builder /usr/src/app/build /srv
+
+EXPOSE 80
+EXPOSE 443

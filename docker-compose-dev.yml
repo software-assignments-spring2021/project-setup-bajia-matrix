@@ -1,0 +1,21 @@
+version: "3"
+services:
+    react-client:
+        image: react-client
+        build: ./front-end/letsmeet
+        stdin_open: true
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./front-end/letsmeet/:/usr/src/app # mounts local directory so any code changes is reflected without having to rebuild
+            - /usr/src/app/node_modules # tells docker to ignore local node_modules
+    express-server:
+        image: express-server
+        build: ./back-end/letsmeet
+        ports:
+            - "4000:4000"
+        env_file: ./back-end/letsmeet/config/dev.env
+        volumes:
+            - ./back-end/letsmeet/:/usr/src/app 
+            - /usr/src/app/node_modules
+        
