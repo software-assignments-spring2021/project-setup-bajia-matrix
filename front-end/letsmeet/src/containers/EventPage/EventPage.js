@@ -9,9 +9,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./EventPage.module.css";
 import axios from "../../axios";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
-import CreatorEvent from "./CreatorEvent/CreatorEvent";
-import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
+import AttendeeEvent from "../../components/EventPages/AttendeeEvent/AttendeeEvent";
+import CreatorEvent from "../../components/EventPages/CreatorEvent/CreatorEvent";
+import UnverifiedEvent from "../../components/EventPages/UnverifiedEvent/UnverifiedEvent";
 import EventContext from '../../store/event-context';
 
 /*

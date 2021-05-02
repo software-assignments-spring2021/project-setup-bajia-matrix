@@ -34,7 +34,7 @@ const AcceptInvite = (props) => {
     
     // Used to select availability
     // Week view
-    const [startDate, setDate] = useState("3/28")
+    const [startDate, setDate] = useState("")
     const [schedule, setSchedule] = useState()
 
     // Used to populate event details from database

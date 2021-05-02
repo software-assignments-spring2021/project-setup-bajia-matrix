@@ -9,10 +9,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // import custom files and components
 import classes from "./AttendeeEvent.module.css";
-import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
-import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
-import EventSupplies from "../EventSupplies/EventSupplies";
-import EventModal from "../../../components/EventParts/EventModal/EventModal";
+import EventTitle from "../../EventParts/EventTitle/EventTitle";
+import EventAttendees from "../../EventParts/EventAttendees/EventAttendees";
+import EventSupplies from "../../../containers/EventPage/EventSupplies/EventSupplies";
+import EventModal from "../../EventParts/EventModal/EventModal";
 
 /*
   This component displays the Event page for the event attendee user.
