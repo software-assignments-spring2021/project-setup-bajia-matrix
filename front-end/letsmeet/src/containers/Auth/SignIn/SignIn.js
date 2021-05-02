@@ -26,9 +26,10 @@ const SignIn = (props) => {
           ...authState
         }
 
-        let nam = event.target.name;
+        const nam = event.target.name;
         let val = event.target.value;
-        if (event.target.name == "email") {
+        
+        if (nam === "email") {
             val = val.toLowerCase();
         }
 

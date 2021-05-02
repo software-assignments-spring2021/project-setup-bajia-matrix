@@ -27,6 +27,15 @@
   box-shadow: none;
 }
 
+.Password {
+  text-align: left;
+}
+
+.Password ul {
+  list-style-position: outside;
+  /* font-weight: normal; */
+}
+
 @media (min-width: 600px) {
   .Authform {
       width: 500px;

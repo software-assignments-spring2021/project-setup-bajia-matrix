@@ -43,7 +43,8 @@ const SignUp = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const urlParams = new URLSearchParams(window.location.search);
-    let emailParam = urlParams.get('email');
+    const emailParam = urlParams.get('email');
+
     // this is to prefill the value of email if an email query exists in the url
     useEffect(() => {
         if (emailParam) {
@@ -61,30 +62,56 @@ const SignUp = (props) => {
     const myChangeHandler = (event) => {
         // update state immutably to do validation correctly
 
-        // first copy first layer of state
+        // copy first layer of state
         const updatedAuthState = {
             ...authState
         }
 
-        let nam = event.target.name;
-        let val = event.target.value;
+        const nam = event.target.name;
+        const val = event.target.value;
 
         // 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars
 
 
         if (nam === "password") {
-            let isValid = val === authState.verifiedPassword.value;
-            (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match!</strong>);
-            const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            const isValid = val === authState.verifiedPassword.value;
+            const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
             const isValid2 = pattern.test(val);
-            (isValid2) ? setErrorMessage("") : setErrorMessage(<strong>Your password is not strong enough: 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars</strong>);
-            
+
+            if (isValid && isValid2) {
+                // both valid => no error
+                setErrorMessage("");
+            }
+            else if (isValid && !isValid2) {
+                // password strength not valid 
+                const message = (
+                    <div className={classes.Password}>
+                        <strong>
+                            Your password needs to:
+                            <ul>
+                                <li>include both lower and upper case characters</li>
+                                <li>include at least one number</li>
+                                <li>include at least one special character</li>
+                                <li>be at least 8 characters long</li>
+                            </ul>
+                        </strong>
+                    </div>
+                )
+                // setErrorMessage(<strong>Your password is not strong enough: 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars</strong>);
+                setErrorMessage(message);
+            }
+            else {
+                // passwords don't match or 
+                // password strength not valid and passwords don't match
+                setErrorMessage(<strong>Your passwords do not match!</strong>);
+            }
+           
             const updatedPassword = {
                 ...updatedAuthState[nam]
             };
 
             updatedPassword.value = val;
-            updatedPassword.valid = isValid;
+            updatedPassword.valid = isValid && isValid2;
 
             updatedAuthState[nam] = updatedPassword;
 
@@ -93,25 +120,48 @@ const SignUp = (props) => {
                 ...updatedAuthState["verifiedPassword"]
             };
             
-            updatedVerifiedPassword.valid = isValid;
+            updatedVerifiedPassword.valid = isValid && isValid2;
 
             updatedAuthState["verifiedPassword"] = updatedVerifiedPassword;
         }
         else if (nam === "verifiedPassword") {
-            let isValid = val === authState.password.value;
-            (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match!</strong>);
-
-            const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            const isValid = val === authState.password.value;
+            const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
             const isValid2 = pattern.test(val);
-            (isValid2) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match or weak password!</strong>);
-
+            if (isValid && isValid2) {
+                // both valid => no error
+                setErrorMessage("");
+            }
+            else if (isValid && !isValid2) {
+                // password strength not valid 
+                const message = (
+                    <div className={classes.Password}>
+                        <strong>
+                            Your password needs to:
+                            <ul>
+                                <li>include both lower and upper case characters</li>
+                                <li>include at least one number</li>
+                                <li>include at least one special character</li>
+                                <li>be at least 8 characters long</li>
+                            </ul>
+                        </strong>
+                    </div>
+                );
+                // setErrorMessage(<strong>Your password is not strong enough: 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars</strong>);
+                setErrorMessage(message);
+            }
+            else {
+                // passwords don't match or 
+                // password strength not valid and passwords don't match
+                setErrorMessage(<strong>Your passwords do not match!</strong>);
+            }
 
             const updatedVerifiedPassword = {
                 ...updatedAuthState[nam]
             };
 
             updatedVerifiedPassword.value = val;
-            updatedVerifiedPassword.valid = isValid2;
+            updatedVerifiedPassword.valid = isValid && isValid2;
 
             updatedAuthState[nam] = updatedVerifiedPassword;
             
@@ -120,7 +170,7 @@ const SignUp = (props) => {
                 ...updatedAuthState["password"]
             };
 
-            updatedPassword.valid = isValid2;
+            updatedPassword.valid = isValid && isValid2;
 
             updatedAuthState["password"] = updatedPassword;
         }
@@ -185,9 +235,9 @@ const SignUp = (props) => {
 
         axios.post("/auth/signup" , authState)
             .then(response => {
-                //JOANNE: sliding in here to add code for when an unverified user signs up after creating an event
+                // when an unverified user signs up for an event
                 if (urlParams.get('id')) {
-                    //send post call to event to update event attendee list and update their attendee id
+                    // send post call to event to update event attendee list and update their attendee id
                     axios.post("/events", {_id: urlParams.get('id'), attendee: response.data.uid, email: emailParam.toLowerCase()})
                         .then(response => {
                             console.log('event attendee list updated baby');
