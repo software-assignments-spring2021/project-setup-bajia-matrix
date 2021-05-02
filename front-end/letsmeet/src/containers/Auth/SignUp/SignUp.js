@@ -69,9 +69,15 @@ const SignUp = (props) => {
         let nam = event.target.name;
         let val = event.target.value;
 
+        // 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars
+
+
         if (nam === "password") {
             let isValid = val === authState.verifiedPassword.value;
             (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match!</strong>);
+            const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            const isValid2 = pattern.test(val);
+            (isValid2) ? setErrorMessage("") : setErrorMessage(<strong>Your password is not strong enough: 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars</strong>);
             
             const updatedPassword = {
                 ...updatedAuthState[nam]
@@ -95,12 +101,17 @@ const SignUp = (props) => {
             let isValid = val === authState.password.value;
             (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match!</strong>);
 
+            const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            const isValid2 = pattern.test(val);
+            (isValid2) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match or weak password!</strong>);
+
+
             const updatedVerifiedPassword = {
                 ...updatedAuthState[nam]
             };
 
             updatedVerifiedPassword.value = val;
-            updatedVerifiedPassword.valid = isValid;
+            updatedVerifiedPassword.valid = isValid2;
 
             updatedAuthState[nam] = updatedVerifiedPassword;
             
@@ -109,10 +120,12 @@ const SignUp = (props) => {
                 ...updatedAuthState["password"]
             };
 
-            updatedPassword.valid = isValid;
+            updatedPassword.valid = isValid2;
 
             updatedAuthState["password"] = updatedPassword;
         }
+
+       
         else if (nam === "firstName") {
             const isValid = val.length > 0;
             (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Please enter your first name!</strong>);
