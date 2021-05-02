@@ -196,10 +196,6 @@ const EventPage = (props) => {
   };
   const [showSuggested, setShowSuggested] = useState(false);
   const handleShowSuggested = () => {
-    // TODO bing to joanne: it seems the browser handles timezone conversion by itself so I got rid of the code
-    // if this affects this in such a way that you no longer need to pass in an event copy to the backend, feel free
-    // to just pass availability: event.availability with the post request and get rid of eventCopy
-
     const eventCopy = event;
     axios.post("/suggestedTimes", { availability: eventCopy.availability })
       .then(response => {

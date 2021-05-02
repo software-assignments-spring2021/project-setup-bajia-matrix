@@ -175,7 +175,6 @@ const NewEvent = (props) => {
         axios.post("/events?new=true", newEventCopy)
             .then(response => {
                 console.log(response.data.data);
-                // TODO: Change to website
                 let eventURL = process.env.REACT_APP_BASE_URL.replaceAll(":4000", "") + "/event/" + response.data.newEventURL
                 setUrl(eventURL)
                 // After new event is created, send invitation emails to invitees

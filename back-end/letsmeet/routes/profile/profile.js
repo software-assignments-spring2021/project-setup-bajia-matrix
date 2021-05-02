@@ -130,7 +130,7 @@ router.post("/sendmail", (req, res, next) => {
      */
     const nodemailer = require("nodemailer");
     
-    console.log("post request to TODO");
+    console.log("post request to send an email to invitee");
 
     let transporter = nodemailer.createTransport({
         service: "gmail",

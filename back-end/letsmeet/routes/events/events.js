@@ -387,7 +387,6 @@ router.post("/emailCreator", (req, res, next) => {
         to: req.body.creatorEmail,
         subject: req.body.invitee.name.split(' ')[0] + " Accepted Your Event Invitation",
         generateTextFromHTML: true,
-        // TODO: update links
         html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
                     <img style="width: 100%; margin: 0 auto;" src="cid:LetsMeetLogo" /> \
                     <h1 style="color: #1d38ed;">Hey ' + req.body.event.creator.split(' ')[0] + ',</h1> \
