@@ -33,7 +33,7 @@
 
 .Password ul {
   list-style-position: outside;
-  /* font-weight: normal; */
+  font-weight: normal;
 }
 
 @media (min-width: 600px) {

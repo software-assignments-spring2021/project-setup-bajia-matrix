@@ -234,7 +234,7 @@ const SignUp = (props) => {
                     // send post call to event to update event attendee list and update their attendee id
                     axios.post("/events", {_id: urlParams.get('id'), attendee: response.data.uid, email: emailParam.toLowerCase()})
                         .then(response => {
-                            console.log('event attendee list updated successfully');
+                            console.log(response.data);
                         })
                         .catch(error => {
                             console.log(error);

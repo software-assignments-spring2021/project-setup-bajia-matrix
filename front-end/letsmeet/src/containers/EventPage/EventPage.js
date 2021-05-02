@@ -147,7 +147,7 @@ const EventPage = (props) => {
               }))
               axios.post("/events/newAttendee", newAttendee)
                 .then((response) => {
-                  console.log('successfully posted new attendee: ', response);
+                  console.log(response.data);
                 })
                 .catch((error) => {
                   console.log(error);
@@ -234,7 +234,7 @@ const EventPage = (props) => {
       // axios post call to update event's final time details
       axios.post("/events", eventCopy)
         .then((response) => {
-          console.log('successfully updated event\'s final time: ', response);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -293,7 +293,9 @@ const EventPage = (props) => {
     let eventCopy = event;
     eventCopy.invitees = invitees;
     axios.post("/events", eventCopy)
-      .then((response) => {})
+      .then((response) => {
+        console.log(response.data);
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -348,7 +350,6 @@ const EventPage = (props) => {
       axios.get("/profile?userid=" + id)
         .then((response) => {
           setUser(response.data);
-
         })
         .catch((error) => {
           console.log(error);
@@ -361,8 +362,7 @@ const EventPage = (props) => {
   const handleDelete = () => {
     axios.delete("/events?eventid=" + event._id)
       .then(response => {
-        console.log("canceled event");
-        console.log(response);
+        console.log(response.data);
         setShow(false);
         setState((prevState) => ({
           ...prevState,
@@ -396,7 +396,7 @@ const EventPage = (props) => {
     // axios post to update event withdrawn array
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully withdrew attendee from event: ', response);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -432,7 +432,9 @@ const EventPage = (props) => {
     eventCopy.description = description.description;
     // axios post to update event description
     axios.post("/events", eventCopy)
-      .then((response) => {})
+      .then((response) => {
+        console.log(response.data)
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -462,7 +464,7 @@ const EventPage = (props) => {
     })
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully updated attendee\'s announcement: ', response);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);

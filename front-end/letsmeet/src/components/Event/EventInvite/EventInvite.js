@@ -36,7 +36,7 @@ const eventInvite = (props) => {
     const declineEventHandler = () => {
         axios.delete("/events?pending=true&userid=" + props.userId + "&eventid=" + props.id)
             .then(response => {
-                console.log(response);
+                console.log(response.data);
                 window.location.reload(false);
             })
             .catch(error => {

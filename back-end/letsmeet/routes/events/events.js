@@ -360,7 +360,7 @@ router.post("/emailInvitee", (req, res, next) => {
             }
         })
     })
-    res.status(200).send("Email successfully sent");
+    res.status(200).send("200 OK: Email successfully sent");
 })
 
 //send email to creator when an invitee accepts the event
@@ -410,7 +410,7 @@ router.post("/emailCreator", (req, res, next) => {
             console.log("Email sent to " + req.body.creatorEmail);
         }
     })
-    res.status(200).send("Email successfully sent");
+    res.status(200).send("200 OK: Email successfully sent");
 })
 
 module.exports = router;

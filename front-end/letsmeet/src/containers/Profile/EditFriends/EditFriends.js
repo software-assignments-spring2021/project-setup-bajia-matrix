@@ -34,7 +34,6 @@ const EditFriends = (props) => {
         axios.get("/profile?userid=" + id)
             .then(response => {
                 setUser(response.data);
-                console.log(response.data.friends);
             })
             .catch(error => {
                 console.log(error.response.data);
@@ -101,21 +100,17 @@ const EditFriends = (props) => {
     const [isFriend, setIsFriend] = useState(false)
 
     function checkFriendship(e) {
-        // console.log("Im checking friendship with " + e)
         for (let friend of user.friends) {
             if(friend.email === e) {
-                // console.log("already friends with " + e)
                 setIsFriend(true)
                 return
             }
         }
         // Check MongoDB to see if email is associated with a user
         if (!isFriend) {
-            // console.log("Im checking Mongo for " + e)
             axios.get("/profile?findUser=true&searchEmail=" + e.trim())
                 .then(response => {
                     setData(response.data)
-                    console.log(response.data);
                 })
                 .catch(error => {
                     console.log(error.response.data);

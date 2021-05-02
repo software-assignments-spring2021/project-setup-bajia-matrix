@@ -12,9 +12,9 @@ router.use(bodyParser.json());
 
 router.post(
     "/signup",
-    body("firstName").not().isEmpty().trim().escape(),
-    body("lastName").not().isEmpty().trim().escape(),
-    body("email").isEmail(),
+    body("firstName").not().isEmpty(),
+    body("lastName").not().isEmpty(),
+    body("email").not().isEmpty(),
     body("password").isLength({ min: 8 }),
     body("verifiedPassword").isLength({ min: 8 }),
     async (req, res, next) => {
@@ -22,7 +22,7 @@ router.post(
         if (!errors.isEmpty()) {
             return res.status(500).send(errors.array()[0]);
         }
-
+        
         const {
             firstName,
             lastName,

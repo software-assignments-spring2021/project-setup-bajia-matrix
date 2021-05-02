@@ -97,7 +97,7 @@ const EditSupplies = (props) => {
         // send to database
         axios.post("/events", suppliesState)
         .then(response => {
-            console.log(response);
+            console.log(response.data);
         })
         .catch(error => {
             console.log(error.response.data);

@@ -18,7 +18,6 @@ const text = (props) => {
     const text = props.text;
 
     if (!text) {
-        console.log("string length is 0");
         return (null);
     }
 

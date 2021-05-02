@@ -172,7 +172,7 @@ router.post("/sendmail", (req, res, next) => {
             res.status(550).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
         } else {
             console.log("Email sent successfully");
-            res.status(200).send("Email sent successfully");
+            res.status(200).send("200 OK: Email sent successfully");
         }
     })
 })
@@ -196,7 +196,7 @@ router.delete("/removefriend", (req, res, next) => {
                 }
             }})
                 .then(user => {
-                    res.send("200 OK: Successfully removed each other from friend's list");
+                    res.send("200 OK: Successfully removed each other from friends list");
                 })
                 .catch(error => {
                     console.log("ERROR: Unable to retrieve friend");
