@@ -70,6 +70,9 @@ const SignUp = (props) => {
         const nam = event.target.name;
         const val = event.target.value;
 
+        // 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars
+
+
         if (nam === "password") {
             const isValid = val === authState.verifiedPassword.value;
             const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
@@ -152,6 +155,11 @@ const SignUp = (props) => {
                 setErrorMessage(<strong>Your passwords do not match!</strong>);
             }
 
+            const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+            const isValid2 = pattern.test(val);
+            (isValid2) ? setErrorMessage("") : setErrorMessage(<strong>Your passwords do not match or weak password!</strong>);
+
+
             const updatedVerifiedPassword = {
                 ...updatedAuthState[nam]
             };
@@ -170,6 +178,8 @@ const SignUp = (props) => {
 
             updatedAuthState["password"] = updatedPassword;
         }
+
+       
         else if (nam === "firstName") {
             const isValid = val.length > 0;
             (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Please enter your first name!</strong>);
