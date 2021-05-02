@@ -70,9 +70,6 @@ const SignUp = (props) => {
         const nam = event.target.name;
         const val = event.target.value;
 
-        // 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars
-
-
         if (nam === "password") {
             const isValid = val === authState.verifiedPassword.value;
             const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
@@ -96,8 +93,7 @@ const SignUp = (props) => {
                             </ul>
                         </strong>
                     </div>
-                )
-                // setErrorMessage(<strong>Your password is not strong enough: 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars</strong>);
+                );
                 setErrorMessage(message);
             }
             else {
@@ -128,6 +124,7 @@ const SignUp = (props) => {
             const isValid = val === authState.password.value;
             const pattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
             const isValid2 = pattern.test(val);
+
             if (isValid && isValid2) {
                 // both valid => no error
                 setErrorMessage("");
@@ -147,7 +144,6 @@ const SignUp = (props) => {
                         </strong>
                     </div>
                 );
-                // setErrorMessage(<strong>Your password is not strong enough: 1 lowercase, 1 uppercase, 1 numeric, 1 special, and at least 8 chars</strong>);
                 setErrorMessage(message);
             }
             else {
@@ -174,8 +170,6 @@ const SignUp = (props) => {
 
             updatedAuthState["password"] = updatedPassword;
         }
-
-       
         else if (nam === "firstName") {
             const isValid = val.length > 0;
             (isValid) ? setErrorMessage("") : setErrorMessage(<strong>Please enter your first name!</strong>);
@@ -240,7 +234,7 @@ const SignUp = (props) => {
                     // send post call to event to update event attendee list and update their attendee id
                     axios.post("/events", {_id: urlParams.get('id'), attendee: response.data.uid, email: emailParam.toLowerCase()})
                         .then(response => {
-                            console.log('event attendee list updated baby');
+                            console.log('event attendee list updated successfully');
                         })
                         .catch(error => {
                             console.log(error);

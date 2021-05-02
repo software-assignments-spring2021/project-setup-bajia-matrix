@@ -165,7 +165,6 @@ const EditFriends = (props) => {
         const userCopy = { ...user };
         const friendsList = [ ...userCopy.friends ];
         
-        console.log(param)
         const newFriend = {
             id: param._id,
             name: param.name,

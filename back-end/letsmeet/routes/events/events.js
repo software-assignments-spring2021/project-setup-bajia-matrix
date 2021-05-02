@@ -176,9 +176,7 @@ async function send(res, event) {
     }
 
     Event.findOneAndUpdate({_id: event._id}, event)
-        .then(update => {
-            //console.log(update);
-        })
+        .then(update => {})
         .catch(err => {
             console.log(error);
         })
@@ -341,7 +339,6 @@ router.post("/emailInvitee", (req, res, next) => {
             to: invitee.email,
             subject: req.body.creator + " wants you at their event!",
             generateTextFromHTML: true,
-            // TODO: update links
             html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
                         <img style="width: 100%; margin: 0 auto;" src="cid:LetsMeetLogo" /> \
                         <h1 style="color: #1d38ed;">Hey ' + invitee.name + ',</h1> \

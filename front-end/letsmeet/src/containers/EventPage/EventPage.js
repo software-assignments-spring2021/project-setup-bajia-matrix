@@ -72,7 +72,6 @@ const EventPage = (props) => {
       let eventQueryID = window.location.pathname.split("/")[2];
       axios.get("/events?eventid=" + eventQueryID)
         .then((response) => {
-          console.log('successfully get event: ', response.data);
           setEvent(response.data);
 
           // set global event context
@@ -294,16 +293,12 @@ const EventPage = (props) => {
     let eventCopy = event;
     eventCopy.invitees = invitees;
     axios.post("/events", eventCopy)
-      .then((response) => {
-        console.log('successfully posted new attendee: ', response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log(error);
       });
     axios.post("/events/emailInvitee", {invitees: emailInvitees, creator: event.creator})
-      .then((response) => {
-        console.log('successfully sent email to invitee(s)', response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log(error);
       });
@@ -437,9 +432,7 @@ const EventPage = (props) => {
     eventCopy.description = description.description;
     // axios post to update event description
     axios.post("/events", eventCopy)
-      .then((response) => {
-        console.log('successfully updated event\'s description: ', response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log(error);
       });

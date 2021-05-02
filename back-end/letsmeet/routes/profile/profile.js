@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
 const path = require("path");
 require("dotenv").config({ silent: true }); // save private data in .env file
@@ -129,8 +128,9 @@ router.post("/sendmail", (req, res, next) => {
     /**
      * Sends email when invite button is clicked via nodemailer
      */
-    const nodemailer = require("nodemailer")
-    console.log(process.env.GMAIL_PASSWORD)
+    const nodemailer = require("nodemailer");
+    
+    console.log("post request to TODO");
 
     let transporter = nodemailer.createTransport({
         service: "gmail",
@@ -141,7 +141,6 @@ router.post("/sendmail", (req, res, next) => {
         }
     })
 
-    console.log(req.query)
     let imagePath = path.join(__dirname, '/Logo.png');
 
     transporter.sendMail({
@@ -151,7 +150,6 @@ router.post("/sendmail", (req, res, next) => {
         subject: req.query.name.split(' ')[0] + " Invites You to Join Let\'s Meet", 
         text: "Hello " + req.query.searchTerm, 
         generateTextFromHTML: true,
-        // TODO: update links
         html: '<div style="padding: 10px 25px; border: 3px solid #1d38ed; margin: 20px auto; max-width: 600px;"> \
         <img src="cid:LetsMeetLogo" style="width: 100%; margin: 0 auto;"/> \
         <h1 style="color: #1d38ed;">Hey there!</h1> \
@@ -166,15 +164,15 @@ router.post("/sendmail", (req, res, next) => {
         attachments: [{
                 filename: 'Logo.png',
                 path: imagePath,
-                cid: 'LetsMeetLogo' //same cid value as in the html img src
+                cid: 'LetsMeetLogo' // same cid value as in the html img src
             }]
     }, (err, data) => {
         if (err) {
             console.log(err);
             res.status(550).send("ERROR 550: Issue sending email to " + req.query.searchTerm);
         } else {
-            console.log("Email sent");
-            res.status(200).send("Email successfully sent");
+            console.log("Email sent successfully");
+            res.status(200).send("Email sent successfully");
         }
     })
 })
