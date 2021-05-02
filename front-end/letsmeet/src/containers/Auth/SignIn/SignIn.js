@@ -28,7 +28,7 @@ const SignIn = (props) => {
 
         const nam = event.target.name;
         let val = event.target.value;
-        
+
         if (nam === "email") {
             val = val.toLowerCase();
         }

@@ -76,7 +76,7 @@ const sortByName = (array) => {
 
 router.post(
     "/",
-    body("supplies").notEmpty(),
+    body("supplies").not().isEmpty(),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

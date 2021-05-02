@@ -3,7 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const { body, validationResult } = require("express-validator");
 require("dotenv").config({ silent: true }); // save private data in .env file
 
@@ -12,11 +12,11 @@ const User = require("../../models/User");
 router.use(bodyParser.json());
 
 router.post("/signup",
-  body("firstName").notEmpty(),
-  body("lastName").notEmpty(),
-  body("email").notEmpty(),
-  body("password").notEmpty(),
-  body("verifiedPassword").notEmpty(),
+  body("firstName").not().isEmpty().trim().escape(),
+  body("lastName").not().isEmpty().trim().escape(),
+  body("email").isEmail(),
+  body("password").isLength({ min: 8 }),
+  body("verifiedPassword").isLength({ min: 8 }),
   async (req, res, next) => {
   
     const errors = validationResult(req);
@@ -68,9 +68,9 @@ router.post("/signup",
 
 // Create token and return to user (httpOnly cookies)
 router.post("/signin",
-    body("email").notEmpty(),
-    body("password").notEmpty(),
-     async (req, res, next) => {
+    body("email").isEmail(),
+    body("password").isLength({ min: 8 }),
+    async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
           return res.status(500).send(errors.array()[0]);
