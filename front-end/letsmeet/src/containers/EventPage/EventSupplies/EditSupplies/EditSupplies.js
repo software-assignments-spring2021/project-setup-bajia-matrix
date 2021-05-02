@@ -85,8 +85,8 @@ const EditSupplies = (props) => {
             id: profileState._id,
             supply: formData.addSupply,
             name: profileState.name,
-            amount: formData.amount,
-            owed: 0
+            amount: (Number(formData.amount)).toFixed(2),
+            owed: "0.00"
         })
 
         setSuppliesState(copySupplies);
@@ -97,7 +97,7 @@ const EditSupplies = (props) => {
         // send to database
         axios.post("/events", suppliesState)
         .then(response => {
-            console.log(response);
+            console.log(response.data);
         })
         .catch(error => {
             console.log(error.response.data);

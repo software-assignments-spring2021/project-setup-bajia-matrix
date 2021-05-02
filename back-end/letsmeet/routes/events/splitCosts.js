@@ -39,14 +39,15 @@ const calcOwedPerPerson = (supplies) => {
         total += parseFloat(currVal);
     }
 
-    const average = (total / count).toFixed(2);
-
+    const average = (Number(total / count)).toFixed(2);
+    
     // calculate the difference between each user's cost and the average (amount owed)
     for (let index = 0; index < supplies.length; index++) {
         currName = supplies[index].name;
         if (currName in dict) {
             // want the amount owed to show up once for each user
-            output[index].owed = dict[currName].toFixed(2) - average;
+            currVal = (Number(dict[currName])).toFixed(2);
+            output[index].owed = (currVal - average).toFixed(2);
             delete dict[currName];
         }
         else {
@@ -76,7 +77,7 @@ const sortByName = (array) => {
 
 router.post(
     "/",
-    body("supplies").notEmpty(),
+    body("supplies").not().isEmpty(),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

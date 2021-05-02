@@ -9,8 +9,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 // import custom files and components
 import classes from "./UnverifiedEvent.module.css";
-import EventTitle from "../../../components/EventParts/EventTitle/EventTitle";
-import EventAttendees from "../../../components/EventParts/EventAttendees/EventAttendees";
+import EventTitle from "../../EventParts/EventTitle/EventTitle";
+import EventAttendees from "../../EventParts/EventAttendees/EventAttendees";
 
 /*
   This component displays the Event page for the unverfied user.

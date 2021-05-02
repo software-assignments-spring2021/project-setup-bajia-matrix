@@ -46,7 +46,6 @@ const NewEvent = (props) => {
     function handleFinalDate(date, dateString) {
         setFinalDate(date.format('LL'))
         setFinalDay(moment(dateString).format('dddd'))
-        console.log(date)
     }
 
     /**
@@ -75,7 +74,6 @@ const NewEvent = (props) => {
 
     function handleChangeSchedule(e) {
         setSchedule(e)      // stores selected dates and times
-        console.log(e)
     }
 
     // Event pop-up after pressing submit
@@ -176,16 +174,14 @@ const NewEvent = (props) => {
 
         axios.post("/events?new=true", newEventCopy)
             .then(response => {
-                console.log(response)
-                console.log(response.data.newEventURL)
-                // TODO: Change to website
+                console.log(response.data.data);
                 let eventURL = process.env.REACT_APP_BASE_URL.replaceAll(":4000", "") + "/event/" + response.data.newEventURL
                 setUrl(eventURL)
                 // After new event is created, send invitation emails to invitees
                 if (props.isAuthenticated) {
                     axios.post("/events/emailInvitee", {invitees: newEventCopy.invitees, creator: newEventCopy.creator})
                         .then((response) => {
-                            console.log('successfully sent email to invitee(s)', response);
+                            console.log(response.data);
                         })
                         .catch((error) => {
                             console.log(error);
@@ -196,7 +192,6 @@ const NewEvent = (props) => {
                 console.log(error)
             });
         
-        console.log(newCreatedEvent);
         setIsModalVisible(true);
     }
 
