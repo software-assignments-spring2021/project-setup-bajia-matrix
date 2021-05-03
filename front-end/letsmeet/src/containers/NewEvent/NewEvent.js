@@ -79,16 +79,15 @@ const NewEvent = (props) => {
     // Event pop-up after pressing submit
     const [isModalVisible, setIsModalVisible] = useState(false)
 
-    const showModal = (param) => e => {
-        setIsModalVisible(true)
-        sendToBackend(param)
-    }
-
     const [url, setUrl] = useState("");
 
     let handleOk = () => { // Handles when 'OK' button is clicked on the pop-up modal
-        setIsModalVisible(false);
-        window.location.assign('/');
+        setIsModalVisible(false)
+        if (!props.isAuthenticated) {
+            window.location.assign("/event/" + url.split("/event/")[1])
+        } else {
+            window.location.assign("/")
+        }
     }
 
     const [profileState, setProfileState] = useState({
@@ -97,15 +96,17 @@ const NewEvent = (props) => {
 
     useEffect(() => {
         const id = localStorage.getItem("userID");
-      
-        axios.get("/profile?userid=" + id)
-            .then(response => {
-                setProfileState(response.data)
-            })
-            .catch(error => {
-                console.log(error);
-            })
-      }, []);
+        
+        if (props.isAuthenticated) {
+            axios.get("/profile?userid=" + id)
+                .then(response => {
+                    setProfileState(response.data)
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+      }, [props.isAuthenticated]);
 
     // Store the entire friend object as the value
     let friendsList = profileState.friends.map((friend, index) => (
@@ -380,6 +381,7 @@ const NewEvent = (props) => {
                     >
                         {props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} newEventAuthentication={true} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}/>}
                         {!props.isAuthenticated && <EventTitle title={form.getFieldValue('Event Title')} day={finalDay} date={finalDate} time={finalStartTime + ' - ' + finalEndTime} description={form.getFieldValue('Event Description')} location={form.getFieldValue('Location')}></EventTitle>}
+                        {!props.isAuthenticated && <p className={classes.warning}>Your event can only be accessed with this link. Remember to save it in a safe place.</p>}
                         <CopyToClipboard text={url} className={classes.copyLink}>
                             <Tag icon={<CopyOutlined/>} className={classes.copyButton}>Click to copy shareable event link</Tag>
                         </CopyToClipboard>

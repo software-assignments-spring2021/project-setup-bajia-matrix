@@ -70,3 +70,7 @@
 .spacing {
     height: 20px;
 }
+
+.warning {
+    color: red;
+}
