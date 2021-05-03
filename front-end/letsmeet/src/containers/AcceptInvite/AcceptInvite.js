@@ -34,7 +34,7 @@ const AcceptInvite = (props) => {
     
     // Used to select availability
     // Week view
-    const [startDate, setDate] = useState("3/28")
+    const [startDate, setDate] = useState("")
     const [schedule, setSchedule] = useState()
 
     // Used to populate event details from database
@@ -43,19 +43,17 @@ const AcceptInvite = (props) => {
         const userId = props.location.state.userId;
 
         axios.get("/events?eventid=" + id)
-            .then((response) => {
-                console.log(response.data)
+            .then(response => {
                 setEvent(response.data);
                 setDate(response.data.startDate);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.log(error.response.data);
                 props.history.push("/"); // redirect to home page if event no longer exists
             });
 
         axios.get("/profile?userid=" + userId)
             .then(response => {
-                console.log(response.data)
                 setUser(response.data)
             })
             .catch((error) => {
@@ -73,21 +71,17 @@ const AcceptInvite = (props) => {
 
     function handleChangeSchedule(e) {
         setSchedule(e)
-        console.log(e)
     }
 
     function updateInvitee() {
         // Remove user from invitee list
         axios.delete("/events?pending=true&userid=" + user._id + "&eventid=" + event._id)
             .then(response => {
-                console.log(response.data)
                 // TODO: axios call to email creator
-                console.log(user)
-                console.log(event)
+                
                 // Get creator details
                 axios.get("/profile?userid=" + event.creatorID)
                     .then(response => {
-                        console.log(response.data)
                         const creatorEmail = response.data.email
                         // Send email to creator
                         emailCreator(creatorEmail)
@@ -102,10 +96,8 @@ const AcceptInvite = (props) => {
     }
 
     function emailCreator(e) {
-        console.log(e)
         axios.post("/events/emailCreator", {invitee: user, event: event, creatorEmail: e})
             .then((response) => {
-                console.log('Successfully sent email to creator', response);
                 window.location.assign('/')
             })
             .catch((error) => {
@@ -134,8 +126,7 @@ const AcceptInvite = (props) => {
         }))
 
         axios.post("/events?_id=" + event._id, event)
-            .then(response => {
-                console.log(response.data)    
+            .then(response => { 
                 updateInvitee()
             })
             .catch(error => {

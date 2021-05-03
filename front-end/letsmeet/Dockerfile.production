@@ -1,4 +1,4 @@
-# Dockerfile for React client: will build the client app TODO...
+# Dockerfile for React client: will build the client app and expose it on port 80
 
 ### Stage 1: dependencies and build app
 FROM node:14.7-alpine AS builder

@@ -9,9 +9,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./EventPage.module.css";
 import axios from "../../axios";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import AttendeeEvent from "./AttendeeEvent/AttendeeEvent";
-import CreatorEvent from "./CreatorEvent/CreatorEvent";
-import UnverifiedEvent from "./UnverifiedEvent/UnverifiedEvent";
+import AttendeeEvent from "../../components/EventPages/AttendeeEvent/AttendeeEvent";
+import CreatorEvent from "../../components/EventPages/CreatorEvent/CreatorEvent";
+import UnverifiedEvent from "../../components/EventPages/UnverifiedEvent/UnverifiedEvent";
 import EventContext from '../../store/event-context';
 
 /*
@@ -72,7 +72,6 @@ const EventPage = (props) => {
       let eventQueryID = window.location.pathname.split("/")[2];
       axios.get("/events?eventid=" + eventQueryID)
         .then((response) => {
-          console.log('successfully get event: ', response.data);
           setEvent(response.data);
 
           // set global event context
@@ -148,7 +147,7 @@ const EventPage = (props) => {
               }))
               axios.post("/events/newAttendee", newAttendee)
                 .then((response) => {
-                  console.log('successfully posted new attendee: ', response);
+                  console.log(response.data);
                 })
                 .catch((error) => {
                   console.log(error);
@@ -197,10 +196,6 @@ const EventPage = (props) => {
   };
   const [showSuggested, setShowSuggested] = useState(false);
   const handleShowSuggested = () => {
-    // TODO bing to joanne: it seems the browser handles timezone conversion by itself so I got rid of the code
-    // if this affects this in such a way that you no longer need to pass in an event copy to the backend, feel free
-    // to just pass availability: event.availability with the post request and get rid of eventCopy
-
     const eventCopy = event;
     axios.post("/suggestedTimes", { availability: eventCopy.availability })
       .then(response => {
@@ -235,7 +230,7 @@ const EventPage = (props) => {
       // axios post call to update event's final time details
       axios.post("/events", eventCopy)
         .then((response) => {
-          console.log('successfully updated event\'s final time: ', response);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -295,15 +290,13 @@ const EventPage = (props) => {
     eventCopy.invitees = invitees;
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully posted new attendee: ', response);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
     axios.post("/events/emailInvitee", {invitees: emailInvitees, creator: event.creator})
-      .then((response) => {
-        console.log('successfully sent email to invitee(s)', response);
-      })
+      .then((response) => {})
       .catch((error) => {
         console.log(error);
       });
@@ -353,7 +346,6 @@ const EventPage = (props) => {
       axios.get("/profile?userid=" + id)
         .then((response) => {
           setUser(response.data);
-
         })
         .catch((error) => {
           console.log(error);
@@ -366,8 +358,7 @@ const EventPage = (props) => {
   const handleDelete = () => {
     axios.delete("/events?eventid=" + event._id)
       .then(response => {
-        console.log("canceled event");
-        console.log(response);
+        console.log(response.data);
         setShow(false);
         setState((prevState) => ({
           ...prevState,
@@ -401,7 +392,7 @@ const EventPage = (props) => {
     // axios post to update event withdrawn array
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully withdrew attendee from event: ', response);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -438,7 +429,7 @@ const EventPage = (props) => {
     // axios post to update event description
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully updated event\'s description: ', response);
+        console.log(response.data)
       })
       .catch((error) => {
         console.log(error);
@@ -469,7 +460,7 @@ const EventPage = (props) => {
     })
     axios.post("/events", eventCopy)
       .then((response) => {
-        console.log('successfully updated attendee\'s announcement: ', response);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
