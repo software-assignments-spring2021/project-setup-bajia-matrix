@@ -19,8 +19,8 @@ describe("SuggestedTimes routes", () => {
             };
             const response = await request(app).post("/suggestedTimes").send(data);
             expect(response.body).to.eql([
-                { Day: 'Friday', Date: '04/23/2021', Time: '12:00 PM' },
-                { Day: 'Saturday', Date: '04/24/2021', Time: '12:00 PM' }
+                { Day: 'Friday', Date: '04/23/2021', Time: '4:00 PM' },
+                { Day: 'Saturday', Date: '04/24/2021', Time: '4:00 PM' }
             ]);
         });
     });
@@ -64,9 +64,9 @@ describe("SuggestedTimes routes", () => {
             };
             const response = await request(app).post("/suggestedTimes").send(data);
             expect(response.body).to.eql([
-                { Day: 'Friday', Date: '04/23/2021', Time: '12:00 PM' },
-                { Day: 'Saturday', Date: '04/24/2021', Time: '12:00 PM' },
-                { Day: 'Sunday', Date: '04/25/2021', Time: '12:00 PM' }
+                { Day: 'Friday', Date: '04/23/2021', Time: '4:00 PM' },
+                { Day: 'Saturday', Date: '04/24/2021', Time: '4:00 PM' },
+                { Day: 'Sunday', Date: '04/25/2021', Time: '4:00 PM' }
             ]);
         });
     });
