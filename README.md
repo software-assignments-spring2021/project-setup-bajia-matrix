@@ -55,7 +55,7 @@ npm install
 npm start
 
 ```
-*Contact one of our team members for the .env file
+**Contact one of our team members for the .env file.*
 
 This repository will be used for team projects.
 
