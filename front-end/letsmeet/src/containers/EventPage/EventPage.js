@@ -74,17 +74,18 @@ const EventPage = (props) => {
         .then((response) => {
           setEvent(response.data);
 
-          // set global event context
-          axios.get("/profile?userid=" + response.data.creatorID)
-            .then(response => {
-              setEvent((prevState) => ({
-                ...prevState,
-                creatorAvi: response.data.avatar,
-              }))
-            })
-            .catch(error => {
-              console.log(error);
-            })
+          if (props.isAuthenticated) {
+            axios.get("/profile?userid=" + response.data.creatorID)
+              .then(response => {
+                setEvent((prevState) => ({
+                  ...prevState,
+                  creatorAvi: response.data.avatar,
+                }))
+              })
+              .catch(error => {
+                console.log(error);
+              })
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -479,7 +480,7 @@ const EventPage = (props) => {
   }, [event.attendees, user.name]);
 
   useEffect(() => {
-    if (props.isAuthenticated) {
+    if (props.isAuthenticated === true) {
       if (user.name && event.title) {
         if (user._id === event.creatorID && event.creator !== "") {
           setState(prevState => ({
@@ -494,7 +495,7 @@ const EventPage = (props) => {
         }
       }
     } else {
-      if (event.creator) {
+      if (!event.creator) {
         setState(prevState => ({
           ...prevState,
           unverified: true

@@ -176,7 +176,15 @@ const NewEvent = (props) => {
         axios.post("/events?new=true", newEventCopy)
             .then(response => {
                 console.log(response.data.data);
-                let eventURL = process.env.REACT_APP_BASE_URL.replaceAll(":4000", "") + "/event/" + response.data.newEventURL
+                let appURL = process.env.REACT_APP_BASE_URL;
+
+                if (appURL === "http://localhost:4000") {
+                    appURL = appURL.replaceAll(":4000", ":3000");
+                } else {
+                    appURL = appURL.replaceAll(":4000", "");
+                }
+
+                let eventURL = appURL + "/event/" + response.data.newEventURL
                 setUrl(eventURL)
                 // After new event is created, send invitation emails to invitees
                 if (props.isAuthenticated) {
