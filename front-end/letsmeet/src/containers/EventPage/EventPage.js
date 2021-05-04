@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { Redirect, withRouter } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import { Select } from "antd";
