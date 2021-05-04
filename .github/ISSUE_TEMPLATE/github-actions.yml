@@ -1,6 +1,8 @@
 name: github-actions
 
-on: [push]
+on: 
+  push:
+    branches: [$docker-event-page-errors]
 
 env: 
   API_BASE_URL: ${{process.env.API_BASE_URL}}
