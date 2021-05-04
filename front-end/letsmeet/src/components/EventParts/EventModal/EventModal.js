@@ -2,8 +2,10 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
-import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Tag } from 'antd';
 
 // import custom files and components
 import classes from "./EventModal.module.css";
@@ -27,11 +29,6 @@ import EventModalTimes from "../EventModalTimes/EventModalTimes";
     - onChecked: function that handles when user checks a suggested final time
     - handleFinal: function that update the event's time to the user selected final time
 */
-
-const handleCopy = (e, url) => {
-  navigator.clipboard.writeText(url);
-  e.target.style.backgroundColor = "gray";
-}
 
 const EventModal = (props) => {
   if (props.role === "attendee") {
@@ -63,7 +60,15 @@ const EventModal = (props) => {
           </Modal.Header>
           <Modal.Body className="px-5 pt-4">
             Copy and paste the link below to share this event:
-            <InputGroup className="my-3">
+            <Row>
+            <Col lg="auto">
+              <CopyToClipboard text={props.url} className={classes.CopyLink}>
+                <Tag className={classes.copyButton}>📋</Tag>
+              </CopyToClipboard>
+              <input type="text" value={props.url} readOnly className={classes.Input} />
+              </Col>
+            </Row>
+            {/* <InputGroup className="my-3">
               <InputGroup.Prepend onClick={(e) => {handleCopy(e, props.url)}}>
                 <InputGroup.Text>📋</InputGroup.Text>
               </InputGroup.Prepend>
@@ -73,7 +78,7 @@ const EventModal = (props) => {
                 defaultValue={props.url}
                 className="border pl-3"
               />
-            </InputGroup>
+            </InputGroup> */}
           </Modal.Body>
           <Modal.Footer className={classes.Footer}>
             <Button variant="secondary" onClick={props.close}>
