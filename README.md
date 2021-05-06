@@ -38,24 +38,43 @@ We wanted to develop an app that would not only make our lives much more conveni
 * [Contributions](https://github.com/agile-dev-assignments/project-setup-bajia-matrix/blob/master/CONTRIBUTING.md)
 
 # Building and Testing
-Run the following commands in the command line:
+### Run the following commands in the command line:
 ```
 git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git
 ```
-To start the server
+### System requirements:
+
+#### Environment variable:
+
+On Unix/MacOS:
+```
+export REACT_APP_BASE_URL=http://localhost:4000
+```
+On Windows: 
+```
+1. In Search, search for and then select: Edit environment variables for your account
+2. In the User variables section, click New to open the New User Variable dialog box.
+3. Enter the name of the variable (REACT_APP_BASE_URL) and its value (http://localhost:4000), and click OK. The variable is added to the User variables section of the Environment Variables dialog box.
+4. Click OK in the Environment Variables dialog box.
+```
+#### Secret .env file:
+
+** Contact one of our team members for the .env file, then place this into back-end/letsmeet directory.*
+
+### To start the server
 ```
 cd back-end/letsmeet
 npm install
 npm start
 ```
-To start the application
+### To start the application
 ```
 cd front-end/letsmeet
 npm install
 npm start
 
 ```
-**Contact one of our team members for the .env file.*
+
 
 This repository will be used for team projects.
 
