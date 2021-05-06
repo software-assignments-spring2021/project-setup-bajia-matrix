@@ -37,6 +37,9 @@ We wanted to develop an app that would not only make our lives much more conveni
 * [Original Proposal](https://github.com/agile-dev-assignments/user-experience-design-bajia-matrix)
 * [Contributions](https://github.com/agile-dev-assignments/project-setup-bajia-matrix/blob/master/CONTRIBUTING.md)
 
+## URL
+Our application is hosted in a Docker container at http://159.65.191.151.
+
 ## Local Setup
 * Clone repository onto local machine using Visual Studio OR
 * Clone through command line: `git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git`
