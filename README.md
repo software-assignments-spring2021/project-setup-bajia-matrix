@@ -66,7 +66,7 @@ make run-dev
 #### Address:
 Visit the application at http://localhost:3000
 
-
+## Instructions:
 This repository will be used for team projects.
 
 Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
