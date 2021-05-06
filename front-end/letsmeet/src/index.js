@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 /*
   This is the main entry point to our app.
 */
+console.log("Let's Meet App Started Successfully!");
 
 const app = (
   <BrowserRouter>
