@@ -152,6 +152,7 @@ const NewEvent = (props) => {
 
         let inviteesCopy = [];
         if (inviteesList.length > 0) {
+            // eslint-disable-next-line
             inviteesList.map((invitee) => {
                 inviteesCopy.push(JSON.parse(invitee));
             })
