@@ -30,10 +30,26 @@
 * Clone through command line: `git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git`
 
 ## Building and Testing the Project 
-Run the following commands in the command line:
+### System requirements:
+* This application requires Docker, please install at https://www.docker.com/get-started.
+* This application also uses Make scripts, install for your particular Operating System.
+
+#### Secret .env file:
+
+*Contact one of our team members for the .env file, then* 
 ```
-git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git
-cd front-end/letsmeet
-npm install
-npm start
+cd back-end/letsmeet/
+mkdir config
+cd config
+copy the contents of the .env file into a file called dev.env
 ```
+
+#### Build and start the container:
+From the root directory (project-setup-bajia-matrix)
+```
+make build-dev
+make run-dev
+```
+
+#### Address:
+Visit the application at http://localhost:3000
