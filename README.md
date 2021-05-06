@@ -37,43 +37,34 @@ We wanted to develop an app that would not only make our lives much more conveni
 * [Original Proposal](https://github.com/agile-dev-assignments/user-experience-design-bajia-matrix)
 * [Contributions](https://github.com/agile-dev-assignments/project-setup-bajia-matrix/blob/master/CONTRIBUTING.md)
 
-# Building and Testing
-### Run the following commands in the command line:
-```
-git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git
-```
+## Local Setup
+* Clone repository onto local machine using Visual Studio OR
+* Clone through command line: `git clone https://github.com/agile-dev-assignments/project-setup-bajia-matrix.git`
+
+## Building and Testing the Project 
 ### System requirements:
+* This application requires Docker, please install at https://www.docker.com/get-started.
+* This application also uses Make scripts, install for your particular Operating System.
 
-#### Environment variable:
-
-On Unix/MacOS:
-```
-export REACT_APP_BASE_URL=http://localhost:4000
-```
-On Windows: 
-```
-1. In Search, search for and then select: Edit environment variables for your account
-2. In the User variables section, click New to open the New User Variable dialog box.
-3. Enter the name of the variable (REACT_APP_BASE_URL) and its value (http://localhost:4000), and click OK. The variable is added to the User variables section of the Environment Variables dialog box.
-4. Click OK in the Environment Variables dialog box.
-```
 #### Secret .env file:
 
-** Contact one of our team members for the .env file, then place this into back-end/letsmeet directory.*
+*Contact one of our team members for the .env file, then* 
+```
+cd back-end/letsmeet/
+mkdir config
+cd config
+copy the contents of the .env file into a file called dev.env
+```
 
-### To start the server
+#### Build and start the container:
+From the root directory (project-setup-bajia-matrix)
 ```
-cd back-end/letsmeet
-npm install
-npm start
+make build-dev
+make run-dev
 ```
-### To start the application
-```
-cd front-end/letsmeet
-npm install
-npm start
 
-```
+#### Address:
+Visit the application at http://localhost:3000
 
 
 This repository will be used for team projects.
